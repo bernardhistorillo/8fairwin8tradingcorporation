@@ -17,9 +17,9 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->string('firstname');
             $table->string('lastname');
-            $table->string('email')->unique();
+            $table->string('email');
             $table->string('contact_number');
-            $table->string('username');
+            $table->string('username')->unique();
             $table->string('password');
             $table->string('pin_code')->default("0000");
             $table->string('referral_code');
@@ -28,7 +28,6 @@ class CreateUsersTable extends Migration
             $table->tinyInteger('rank')->default(0);
             $table->tinyInteger('stockist')->default(0);
             $table->string('photo')->nullable();
-            $table->dateTime('date_time_registered')->nullable();
             $table->tinyInteger('role')->default(0);
             $table->rememberToken();
             $table->timestamps();
