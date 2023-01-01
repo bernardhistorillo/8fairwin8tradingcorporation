@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('username')->unique();
             $table->string('password');
             $table->string('pin_code')->default("0000");
-            $table->string('referral_code');
+            $table->string('referral_code')->unique();
             $table->unsignedBigInteger('package_id')->default(0);;
             $table->unsignedBigInteger('sponsor')->default(1);
             $table->tinyInteger('rank')->default(0);

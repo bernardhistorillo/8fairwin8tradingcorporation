@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="title" content="{{ config('app.name') }} - @yield('title')" />
     <meta name="description" content="The Smart Market Exchange">
-    <meta name="author" content="Michael Alcala">
+    <meta name="author" content="{{ config('app.name') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <meta property="og:url" content="{{ URL::current() }}" />
@@ -25,22 +25,24 @@
 
     <link href="{{ mix('/css/app.css') }}" rel="stylesheet">
 
-    <title>{{ config('app.name') }} - @yield('title')</title>
+    <title>{{ config('app.name') }} | @yield('title')</title>
 </head>
-<body>
-@yield('content')
+<body class="app">
+    @yield('content')
 
-@include('includes.footer')
-@include('includes.modals')
+    @include('layouts.includes.modals')
 
-<input type="hidden" name="route_name" value="{{ Route::currentRouteName() }}" />
-<input type="hidden" name="app_url" value="{{ config('app.url') }}" />
+    <input type="hidden" name="route_name" value="{{ Route::currentRouteName() }}" />
+    <input type="hidden" name="app_url" value="{{ config('app.url') }}" />
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha512-uURl+ZXMBrF4AwGaWmEetzrd+J5/8NRkWAvJx5sbPSSuOb0bZLqf+tOzniObO00BjHa/dD7gub9oCGMLPQHtQA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.12.1/datatables.min.js"></script>
-<script src="{{ mix('/js/app.js') }}"></script>
+    <script src="{{ asset('lib/jquery/jquery-3.3.1.min.js') }}"></script>
+    <script src="{{ asset('lib/popper/js/popper.min.js') }}"></script>
+    <script src="{{ asset('lib/bootstrap/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('lib/pace-progress/pace.min.js') }}"></script>
+    <script src="{{ asset('lib/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
+    <script src="{{ asset('lib/coreui/js/coreui.min.js') }}"></script>
+    <script src="{{ asset('lib/coreui/js/custom-tooltips.min.js') }}"></script>
+    <script src="{{ mix('/js/app.js') }}"></script>
 
 </body>
 </html>

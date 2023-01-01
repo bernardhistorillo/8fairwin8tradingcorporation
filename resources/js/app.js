@@ -1,12 +1,13 @@
-var referral_code_on_change = function() {
+// Start: Registration
+let referral_code_on_change = function() {
     $("#register-sponsor-blank").css("display", "none");
     $("#register-sponsor-no-match").css("display", "none");
     $("#register-sponsor-has-match").css("display", "none");
     $("#register-sponsor-loading").css("display", "inline-block");
 
-    var referral_code = $("#register-sponsors-code").val();
+    let referral_code = $("#register-sponsors-code").val();
 
-    var check_sponsor = function() {
+    let check_sponsor = function() {
         $.ajax({
             method: "POST",
             url: "api/check_sponsor.php",
@@ -17,7 +18,7 @@ var referral_code_on_change = function() {
         }).done(function(response) {
             response = JSON.parse(response);
 
-            if(response.sponsor == "") {
+            if(!response.sponsor) {
                 $("#register-sponsor-blank").css("display", "none");
                 $("#register-sponsor-no-match").css("display", "inline-block");
                 $("#register-sponsor-has-match").css("display", "none");
@@ -37,7 +38,7 @@ var referral_code_on_change = function() {
         });
     };
 
-    if(referral_code == "") {
+    if(referral_code === "") {
         $("#register-sponsor-blank").css("display", "inline-block");
         $("#register-sponsor-no-match").css("display", "none");
         $("#register-sponsor-has-match").css("display", "none");
@@ -46,47 +47,6 @@ var referral_code_on_change = function() {
         check_sponsor();
     }
 };
-
-$(document).on("submit", "#login-form", function(e) {
-    $("#login").prop("disabled",true);
-    $("#login").html("Logging In...");
-
-    var username = $("#login-username").val();
-    var password = $("#login-password").val();
-
-    $.ajax({
-        method: "POST",
-        url: "api/login.php",
-        timeout: 30000,
-        data: {
-            username: username,
-            password: password
-        }
-    }).done(function(response) {
-        response = JSON.parse(response);
-
-        console.log(response);
-
-        if(response.error == "") {
-            $("#login").html("Redirecting...");
-            window.location = "dashboard.php";
-        } else {
-            $("#modal-error .modal-body").html(response.error);
-            $("#modal-error").modal("show");
-
-            $("#login").html("Log In");
-            $("#login").prop("disabled",false);
-        }
-    }).fail(function() {
-        $("#modal-error .modal-body").html("Unable To Connect To Server");
-        $("#modal-error").modal("show");
-
-        $("#login").html("Log In");
-        $("#login").prop("disabled",false);
-    });
-
-    e.preventDefault();
-});
 
 $(document).on("change", "#register-sponsors-code", function() {
     referral_code_on_change();
@@ -154,18 +114,62 @@ $(document).on("click", "#register", function() {
         $("#modal-warning .cancel").css("display","block");
     });
 });
+// End: Registration
 
-var genealogy;
-var genealogy_uplines;
-var root;
-var selected_node;
-var generate_referral_table_once = 0;
-var proof_of_payment_uploader = $('<input type="file" accept="image/*" />');
-var profile_picture_uploader = $('<input type="file" accept="image/*" />');
-var account_package = ["", "DBP - ", "DSP - ", "FDP - ", "DMP - "];
-var ranks = ["Free Account", "Dealer", "Explorer", "Pathfinder", "Navigator", "Master Guide", "Fair Winner", "Grand Fair Winner", "Royal Fair Winner", "Crown Fair Winner"];
+// Start: Log In
+$(document).on("submit", "#login-form", function(e) {
+    $("#login").prop("disabled",true);
+    $("#login").html("Logging In...");
 
-var get_genealogy = function() {
+    var username = $("#login-username").val();
+    var password = $("#login-password").val();
+
+    $.ajax({
+        method: "POST",
+        url: "api/login.php",
+        timeout: 30000,
+        data: {
+            username: username,
+            password: password
+        }
+    }).done(function(response) {
+        response = JSON.parse(response);
+
+        console.log(response);
+
+        if(response.error == "") {
+            $("#login").html("Redirecting...");
+            window.location = "dashboard.php";
+        } else {
+            $("#modal-error .modal-body").html(response.error);
+            $("#modal-error").modal("show");
+
+            $("#login").html("Log In");
+            $("#login").prop("disabled",false);
+        }
+    }).fail(function() {
+        $("#modal-error .modal-body").html("Unable To Connect To Server");
+        $("#modal-error").modal("show");
+
+        $("#login").html("Log In");
+        $("#login").prop("disabled",false);
+    });
+
+    e.preventDefault();
+});
+// End: Log In
+
+let genealogy;
+let genealogy_uplines;
+let root;
+let selected_node;
+let generate_referral_table_once = 0;
+let proof_of_payment_uploader = $('<input type="file" accept="image/*" />');
+let profile_picture_uploader = $('<input type="file" accept="image/*" />');
+let account_package = ["", "DBP - ", "DSP - ", "FDP - ", "DMP - "];
+let ranks = ["Free Account", "Dealer", "Explorer", "Pathfinder", "Navigator", "Master Guide", "Fair Winner", "Grand Fair Winner", "Royal Fair Winner", "Crown Fair Winner"];
+
+let get_genealogy = function() {
     $.ajax({
         method: "POST",
         url: "admin/api/get_genealogy.php",
@@ -194,7 +198,7 @@ var get_genealogy = function() {
     });
 };
 
-var generate_genealogy = function() {
+let generate_genealogy = function() {
     var uplines = [];
     uplines.push(selected_node);
     var parsed_upline = selected_node;
@@ -346,7 +350,7 @@ var generate_genealogy = function() {
     }
 };
 
-var load_cart = function(empty_cart) {
+let load_cart = function(empty_cart) {
     if(empty_cart) {
         remove_from_cart(0);
     }
@@ -392,7 +396,7 @@ var load_cart = function(empty_cart) {
     $("#total-points").html(numberFormat(total_points, true));
 };
 
-var remove_from_cart = function(id) {
+let remove_from_cart = function(id) {
     if(id == 0) {
         $(".cart").attr("data-added-to-cart", -1);
         $(".cart").css("background-color", "#0e4d22");
@@ -408,7 +412,7 @@ var remove_from_cart = function(id) {
     }
 }
 
-var numberFormat = function(x, decimal) {
+let numberFormat = function(x, decimal) {
     x = parseFloat(x);
     var parts = x.toFixed(2).toString().split(".");
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");

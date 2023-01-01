@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +15,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', [HomeController::class, 'index'])->name('home.index');
+
+Route::middleware(['guest'])->group(function() {
+    Route::get('/register', [AuthenticationController::class, 'registerPage'])->name('register.index');
+    Route::post('/register', [AuthenticationController::class, 'register'])->name('register.submit');
+    Route::post('/checkSponsor', [AuthenticationController::class, 'checkSponsor'])->name('register.checkSponsor');
+
+    Route::get('/login', [AuthenticationController::class, 'loginPage'])->name('login.index');
+    Route::post('/login', [AuthenticationController::class, 'login'])->name('login.submit');
 });
