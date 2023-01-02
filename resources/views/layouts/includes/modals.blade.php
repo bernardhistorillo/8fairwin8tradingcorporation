@@ -1,5 +1,5 @@
 <div class="modal fade" id="modal-success" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-success" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-success" role="document">
         <div class="modal-content">
             <div class="modal-header" style="background-color:#ffffff; color:#222222">
                 <h5 class="modal-title">Success</h5>
@@ -14,7 +14,7 @@
 </div>
 
 <div class="modal fade" id="modal-warning" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog modal-success" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-success" role="document">
         <div class="modal-content">
             <div class="modal-header" style="background-color:#ffffff; color:#222222">
                 <h5 class="modal-title">Confirmation</h5>
@@ -29,7 +29,7 @@
 </div>
 
 <div class="modal fade" id="modal-error" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-success" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-success" role="document">
         <div class="modal-content">
             <div class="modal-header" style="background-color:#ffffff; color:#222222">
                 <h5 class="modal-title">Error</h5>

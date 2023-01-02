@@ -66,7 +66,6 @@ class MigrateOldDatabase extends Command
         $out = new ConsoleOutput();
 
         $out->writeln('Migrating Users Table');
-        User::truncate();
         $users = DB::table('fw_accounts')->get();
         $newUsers = [];
 
@@ -90,12 +89,12 @@ class MigrateOldDatabase extends Command
             ];
         }
 
+//        User::truncate();
 //        foreach(array_chunk($newUsers,1000) as $data) {
 //            User::insert($data);
 //        }
 
         $out->writeln('Migrating Downlines Table');
-        Downline::truncate();
         $downlines = DB::table('fw_downlines')->get();
         $newDownlines = [];
 
@@ -109,12 +108,12 @@ class MigrateOldDatabase extends Command
             ];
         }
 
+//        Downline::truncate();
 //        foreach(array_chunk($newDownlines,1000) as $data) {
 //            Downline::insert($data);
 //        }
 
         $out->writeln('Migrating Gem Purchases Table');
-        GemPurchase::truncate();
         $gemPurchases = DB::table('fw_gem_purchases')->get();
         $newGemPurchases = [];
 
@@ -131,12 +130,12 @@ class MigrateOldDatabase extends Command
             ];
         }
 
+//        GemPurchase::truncate();
 //        foreach(array_chunk($newGemPurchases,1000) as $data) {
 //            GemPurchase::insert($data);
 //        }
 
         $out->writeln('Migrating Infinity Plus Incomes Table');
-        InfinityPlusIncome::truncate();
         $items = DB::table('fw_income_infinity_plus')->get();
         $newItems = [];
 
@@ -152,12 +151,12 @@ class MigrateOldDatabase extends Command
             ];
         }
 
+//        InfinityPlusIncome::truncate();
 //        foreach(array_chunk($newItems,1000) as $data) {
 //            InfinityPlusIncome::insert($data);
 //        }
 
         $out->writeln('Migrating Personal Rebate Incomes Table');
-        PersonalRebateIncome::truncate();
         $items = DB::table('fw_income_personal_rebate')->get();
         $newItems = [];
 
@@ -172,12 +171,12 @@ class MigrateOldDatabase extends Command
             ];
         }
 
+//        PersonalRebateIncome::truncate();
 //        foreach(array_chunk($newItems,1000) as $data) {
 //            PersonalRebateIncome::insert($data);
 //        }
 
         $out->writeln('Migrating Pool Share Incomes Table');
-        PoolShareIncome::truncate();
         $items = DB::table('fw_income_pool_share')->get();
         $newItems = [];
 
@@ -191,12 +190,12 @@ class MigrateOldDatabase extends Command
             ];
         }
 
+//        PoolShareIncome::truncate();
 //        foreach(array_chunk($newItems,1000) as $data) {
 //            PoolShareIncome::insert($data);
 //        }
 
         $out->writeln('Migrating Rank Incentive Incomes Table');
-        RankIncentiveIncome::truncate();
         $items = DB::table('fw_income_rank_incentive')->get();
         $newItems = [];
 
@@ -210,12 +209,12 @@ class MigrateOldDatabase extends Command
             ];
         }
 
+//        RankIncentiveIncome::truncate();
 //        foreach(array_chunk($newItems,1000) as $data) {
 //            RankIncentiveIncome::insert($data);
 //        }
 
         $out->writeln('Migrating Referral Incomes Table');
-        ReferralIncome::truncate();
         $items = DB::table('fw_income_referral')->get();
         $newItems = [];
 
@@ -232,12 +231,12 @@ class MigrateOldDatabase extends Command
             ];
         }
 
+//        ReferralIncome::truncate();
 //        foreach(array_chunk($newItems,1000) as $data) {
 //            ReferralIncome::insert($data);
 //        }
 
         $out->writeln('Migrating Royalty Bonus Incomes Table');
-        RoyaltyBonusIncome::truncate();
         $items = DB::table('fw_income_royalty_bonus')->get();
         $newItems = [];
 
@@ -252,12 +251,12 @@ class MigrateOldDatabase extends Command
             ];
         }
 
+//        RoyaltyBonusIncome::truncate();
 //        foreach(array_chunk($newItems,1000) as $data) {
 //            RoyaltyBonusIncome::insert($data);
 //        }
 
         $out->writeln('Migrating Stairstep Incomes Table');
-        StairstepIncome::truncate();
         $items = DB::table('fw_income_stairstep')->get();
         $newItems = [];
 
@@ -274,12 +273,12 @@ class MigrateOldDatabase extends Command
             ];
         }
 
+//        StairstepIncome::truncate();
 //        foreach(array_chunk($newItems,1000) as $data) {
 //            StairstepIncome::insert($data);
 //        }
 
         $out->writeln('Migrating Unilevel Incomes Table');
-        UnilevelIncome::truncate();
         $items = DB::table('fw_income_unilevel')->get();
         $newItems = [];
 
@@ -297,12 +296,12 @@ class MigrateOldDatabase extends Command
             ];
         }
 
+//        UnilevelIncome::truncate();
 //        foreach(array_chunk($newItems,1000) as $data) {
 //            UnilevelIncome::insert($data);
 //        }
 
         $out->writeln('Migrating Items Table');
-        Item::truncate();
         $items = DB::table('fw_items')->get();
         $newItems = [];
 
@@ -330,12 +329,12 @@ class MigrateOldDatabase extends Command
             ];
         }
 
+//        Item::truncate();
 //        foreach(array_chunk($newItems,1000) as $data) {
 //            Item::insert($data);
 //        }
 
         $out->writeln('Migrating Ordered Items Table');
-        OrderedItem::truncate();
         $items = DB::table('fw_ordered_items')->get();
         $newItems = [];
 
@@ -350,12 +349,12 @@ class MigrateOldDatabase extends Command
             ];
         }
 
+//        OrderedItem::truncate();
 //        foreach(array_chunk($newItems,1000) as $data) {
 //            OrderedItem::insert($data);
 //        }
 
         $out->writeln('Migrating Orders Table');
-        Order::truncate();
         $items = DB::table('fw_orders')->get();
         $newItems = [];
 
@@ -381,12 +380,12 @@ class MigrateOldDatabase extends Command
             ];
         }
 
+//        Order::truncate();
 //        foreach(array_chunk($newItems,1000) as $data) {
 //            Order::insert($data);
 //        }
 
         $out->writeln('Migrating Payout Information Table');
-        PayoutInformation::truncate();
         $items = DB::table('fw_payout_information')->get();
         $newItems = [];
 
@@ -403,12 +402,12 @@ class MigrateOldDatabase extends Command
             ];
         }
 
+//        PayoutInformation::truncate();
 //        foreach(array_chunk($newItems,1000) as $data) {
 //            PayoutInformation::insert($data);
 //        }
 
         $out->writeln('Migrating Pool Share Contribution Table');
-        PoolShareContribution::truncate();
         $items = DB::table('fw_pool_share_contributions')->get();
         $newItems = [];
 
@@ -421,12 +420,12 @@ class MigrateOldDatabase extends Command
             ];
         }
 
+//        PoolShareContribution::truncate();
 //        foreach(array_chunk($newItems,1000) as $data) {
 //            PoolShareContribution::insert($data);
 //        }
 
         $out->writeln('Migrating Rank Points Table');
-        RankPoint::truncate();
         $items = DB::table('fw_rank_points')->get();
         $newItems = [];
 
@@ -440,12 +439,12 @@ class MigrateOldDatabase extends Command
             ];
         }
 
+//        RankPoint::truncate();
 //        foreach(array_chunk($newItems,1000) as $data) {
 //            RankPoint::insert($data);
 //        }
 
         $out->writeln('Migrating Stockist Assignments Table');
-        StockistAssignment::truncate();
         $items = DB::table('fw_stockist_assignment')->get();
         $newItems = [];
 
@@ -457,12 +456,12 @@ class MigrateOldDatabase extends Command
             ];
         }
 
+//        StockistAssignment::truncate();
 //        foreach(array_chunk($newItems,1000) as $data) {
 //            StockistAssignment::insert($data);
 //        }
 
         $out->writeln('Migrating Transfers Table');
-        Transfer::truncate();
         $items = DB::table('fw_transfers')->get();
         $newItems = [];
 
@@ -476,12 +475,12 @@ class MigrateOldDatabase extends Command
             ];
         }
 
+//        Transfer::truncate();
 //        foreach(array_chunk($newItems,1000) as $data) {
 //            Transfer::insert($data);
 //        }
 
         $out->writeln('Migrating Winners Gem Values Table');
-        WinnersGemValue::truncate();
         $items = DB::table('fw_winners_gem_value')->get();
         $newItems = [];
 
@@ -493,12 +492,12 @@ class MigrateOldDatabase extends Command
             ];
         }
 
+//        WinnersGemValue::truncate();
 //        foreach(array_chunk($newItems,1000) as $data) {
 //            WinnersGemValue::insert($data);
 //        }
 
         $out->writeln('Migrating Withdrawals Table');
-        Withdrawal::truncate();
         $items = DB::table('fw_withdrawals')->get();
         $newItems = [];
 
@@ -514,6 +513,7 @@ class MigrateOldDatabase extends Command
             ];
         }
 
+//        Withdrawal::truncate();
 //        foreach(array_chunk($newItems,1000) as $data) {
 //            Withdrawal::insert($data);
 //        }

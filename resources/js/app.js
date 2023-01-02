@@ -1,5 +1,47 @@
+let appUrl;
+let currentRouteName;
+
+let allOnload = async function() {
+    appUrl = $("input[name='app_url']").val();
+    currentRouteName = $("input[name='route_name']").val();
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+};
+
+let pageOnload = async function() {
+    await allOnload();
+
+    // if(currentRouteName === "dashboard.index") {
+    //     homeOnload();
+    // }
+};
+let showErrorFromAjax = function(error) {
+    let content = "Something went wrong.";
+
+    if(error.responseJSON) {
+        content = error.responseJSON.message;
+
+        for (let prop in error.responseJSON.errors) {
+            if (Object.prototype.hasOwnProperty.call(error.responseJSON.errors, prop)) {
+                content += ' ' + error.responseJSON.errors[prop];
+            }
+        }
+    }
+
+    $("#modal-error .modal-body").html(content);
+    $("#modal-error").modal("show");
+};
+
+$(document).ready(function() {
+    pageOnload();
+});
+
 // Start: Registration
-let referral_code_on_change = function() {
+let referralCodeOnChange = function() {
     $("#register-sponsor-blank").css("display", "none");
     $("#register-sponsor-no-match").css("display", "none");
     $("#register-sponsor-has-match").css("display", "none");
@@ -7,17 +49,15 @@ let referral_code_on_change = function() {
 
     let referral_code = $("#register-sponsors-code").val();
 
-    let check_sponsor = function() {
+    let checkSponsor = function() {
         $.ajax({
             method: "POST",
-            url: "api/check_sponsor.php",
+            url: $("#register-sponsors-code").attr("data-action"),
             timeout: 30000,
             data: {
                 referral_code: referral_code
             }
         }).done(function(response) {
-            response = JSON.parse(response);
-
             if(!response.sponsor) {
                 $("#register-sponsor-blank").css("display", "none");
                 $("#register-sponsor-no-match").css("display", "inline-block");
@@ -31,10 +71,8 @@ let referral_code_on_change = function() {
                 $("#register-sponsor-has-match").css("display", "inline-block");
                 $("#register-sponsor-loading").css("display", "none");
             }
-        }).fail(function() {
-            setTimeout(function() {
-                check_sponsor();
-            },1000);
+        }).fail(function(error) {
+            showErrorFromAjax(error);
         });
     };
 
@@ -44,12 +82,12 @@ let referral_code_on_change = function() {
         $("#register-sponsor-has-match").css("display", "none");
         $("#register-sponsor-loading").css("display", "none");
     } else {
-        check_sponsor();
+        checkSponsor();
     }
 };
 
 $(document).on("change", "#register-sponsors-code", function() {
-    referral_code_on_change();
+    referralCodeOnChange();
 });
 
 $(document).on("click", "#register-show-confirmation", function() {
@@ -77,7 +115,7 @@ $(document).on("click", "#register", function() {
 
     $.ajax({
         method: "POST",
-        url: "api/register.php",
+        url: $("#register-show-confirmation").attr("data-action"),
         timeout: 30000,
         data: {
             firstname: firstname,
@@ -92,21 +130,13 @@ $(document).on("click", "#register", function() {
             sponsors_code: sponsors_code
         }
     }).done(function(response) {
-        response = JSON.parse(response);
+        $("#modal-success button[data-dismiss='modal']").removeAttr("data-dismiss");
+        $('#modal-success .proceed').attr("onclick", "window.location = '/dashboard'; $('#modal-success .proceed').prop('disabled',true); $('#modal-success .proceed').html('Redirecting...')");
 
-        if(response.error == "") {
-            $("#modal-success button[data-dismiss='modal']").removeAttr("data-dismiss");
-            $('#modal-success .proceed').attr("onclick", "window.location = 'dashboard.php'; $('#modal-success .proceed').prop('disabled',true); $('#modal-success .proceed').html('Redirecting...')");
-
-            $("#modal-success .modal-body").html("Congratulations! You have successfully created your account.");
-            $("#modal-success").modal("show");
-        } else {
-            $("#modal-error .modal-body").html(response.error);
-            $("#modal-error").modal("show");
-        }
-    }).fail(function() {
-        $("#modal-error .modal-body").html("Unable To Connect To Server");
-        $("#modal-error").modal("show");
+        $("#modal-success .modal-body").html("Congratulations! You have successfully created your account.");
+        $("#modal-success").modal("show");
+    }).fail(function(error) {
+        showErrorFromAjax(error);
     }).always(function() {
         $("#modal-warning").modal("hide");
         $("#modal-warning .proceed").html("Confirm");

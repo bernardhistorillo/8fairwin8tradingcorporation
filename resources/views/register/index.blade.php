@@ -102,7 +102,7 @@
                                     <i class="fas fa-users"></i>
                                 </span>
                             </div>
-                            <input class="form-control" id="register-sponsors-code" type="text" placeholder="Registration Code">
+                            <input class="form-control" id="register-sponsors-code" type="text" data-action="{{ route('register.checkSponsor') }}" placeholder="Registration Code">
                         </div>
                     </div>
 
@@ -160,7 +160,7 @@
                 </p>
 
                 <div class="text-center mt-2">
-                    <button class="btn btn-success" id="register-show-confirmation" type="button" style="width:160px">Create Account</button>
+                    <button class="btn btn-success" id="register-show-confirmation" type="button" data-action="{{ route('register.submit') }}" style="width:160px">Create Account</button>
                 </div>
             </div>
         </div>

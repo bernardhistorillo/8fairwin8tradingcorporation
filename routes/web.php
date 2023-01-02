@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -24,4 +25,16 @@ Route::middleware(['guest'])->group(function() {
 
     Route::get('/login', [AuthenticationController::class, 'loginPage'])->name('login.index');
     Route::post('/login', [AuthenticationController::class, 'login'])->name('login.submit');
+});
+
+Route::middleware(['auth'])->group(function() {
+    Route::get('/logout', [AuthenticationController::class, 'logout'])->name('auth.logout');
+
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+
+    Route::middleware(['admin'])->group(function() {
+        Route::prefix('admin')->group(function () {
+
+        });
+    });
 });

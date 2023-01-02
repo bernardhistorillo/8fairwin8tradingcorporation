@@ -22,10 +22,14 @@ class AuthenticationController extends Controller
             'username' => 'required|string|unique:users',
             'password' => 'required|string',
             'confirm_password' => 'required|same:password',
-            'pin_code' => 'required|numeric|min:4|max:4',
+            'pin_code' => 'required|numeric',
             'confirm_pin_code' => 'required|same:pin_code',
             'sponsors_code' => 'required|exists:users,referral_code',
         ]);
+
+        if(strlen($request->pin_code) != 4) {
+            abort(422, 'Pin Code must have 4 digits.');
+        }
 
         $user = User::where('email', $request->email)
             ->first();
@@ -34,7 +38,7 @@ class AuthenticationController extends Controller
             abort(422, 'Email address is already in use.');
         }
 
-        $upline = User::where('referral_code', $request->referral_code)
+        $upline = User::where('referral_code', $request->sponsors_code)
             ->first();
 
         $user = new User();
@@ -49,7 +53,7 @@ class AuthenticationController extends Controller
 
         $referralCodeExists = true;
         while($referralCodeExists) {
-            $referralCode = str_pad(rand(0, 999999), 6, STR_PAD_LEFT);
+            $referralCode = str_pad(rand(0, 999999), 8, STR_PAD_LEFT);
             $referralCodeExists = User::where('referral_code', $referralCode)
                 ->first();
         }
