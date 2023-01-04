@@ -28,7 +28,7 @@
                 <div class="card-body p-4">
                     <h4 class="text-center mb-3">Log In</h4>
 
-                    <form id="login-form">
+                    <form id="login-form" action="{{ route('login.submit') }}">
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                     <span class="input-group-text">

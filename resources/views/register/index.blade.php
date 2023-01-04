@@ -14,10 +14,10 @@
         <a href="{{ route('home.index') }}" style="color:#606060"><i class="fas fa-home"></i>&nbsp;&nbsp;Home</a>
     </li>
     <li class="breadcrumb-item breadcrumb-item-custom" style="padding-right:7px">
-        <a href="{{ route('login.index') }}" style="color:#0E4D22; font-weight:700"><i class="fas fa-sign-in-alt"></i>&nbsp;&nbsp;Log In</a>
+        <a href="{{ route('login.index') }}" style="color:#606060"><i class="fas fa-sign-in-alt"></i>&nbsp;&nbsp;Log In</a>
     </li>
     <li class="breadcrumb-item breadcrumb-item-custom">
-        <a href="{{ route('register.index') }}" style="color:#606060"><i class="fas fa-user-plus"></i>&nbsp;&nbsp;Register</a>
+        <a href="{{ route('register.index') }}" style="color:#0E4D22; font-weight:700"><i class="fas fa-user-plus"></i>&nbsp;&nbsp;Register</a>
     </li>
 </ol>
 

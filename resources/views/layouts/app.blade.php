@@ -27,7 +27,7 @@
 
     <title>{{ config('app.name') }} | @yield('title')</title>
 </head>
-<body class="app">
+<body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
     @yield('content')
 
     @include('layouts.includes.modals')

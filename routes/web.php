@@ -24,7 +24,7 @@ Route::middleware(['guest'])->group(function() {
     Route::post('/checkSponsor', [AuthenticationController::class, 'checkSponsor'])->name('register.checkSponsor');
 
     Route::get('/login', [AuthenticationController::class, 'loginPage'])->name('login.index');
-    Route::post('/login', [AuthenticationController::class, 'login'])->name('login.submit');
+    Route::post('/loginSubmit', [AuthenticationController::class, 'login'])->name('login.submit');
 });
 
 Route::middleware(['auth'])->group(function() {

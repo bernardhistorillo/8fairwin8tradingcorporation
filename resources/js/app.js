@@ -148,6 +148,8 @@ $(document).on("click", "#register", function() {
 
 // Start: Log In
 $(document).on("submit", "#login-form", function(e) {
+    e.preventDefault();
+
     $("#login").prop("disabled",true);
     $("#login").html("Logging In...");
 
@@ -156,36 +158,18 @@ $(document).on("submit", "#login-form", function(e) {
 
     $.ajax({
         method: "POST",
-        url: "api/login.php",
+        url: $("#login-form").attr("action"),
         timeout: 30000,
         data: {
             username: username,
             password: password
         }
     }).done(function(response) {
-        response = JSON.parse(response);
-
-        console.log(response);
-
-        if(response.error == "") {
-            $("#login").html("Redirecting...");
-            window.location = "dashboard.php";
-        } else {
-            $("#modal-error .modal-body").html(response.error);
-            $("#modal-error").modal("show");
-
-            $("#login").html("Log In");
-            $("#login").prop("disabled",false);
-        }
-    }).fail(function() {
-        $("#modal-error .modal-body").html("Unable To Connect To Server");
-        $("#modal-error").modal("show");
-
-        $("#login").html("Log In");
-        $("#login").prop("disabled",false);
+        $("#login").html("Redirecting...");
+        window.location = "/dashboard";
+    }).fail(function(error) {
+        showErrorFromAjax(error);
     });
-
-    e.preventDefault();
 });
 // End: Log In
 
