@@ -17,11 +17,11 @@
     <ul class="nav navbar-nav ml-auto">
         <li class="nav-item dropdown">
             <a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-user"></i> <span class="d-none d-sm-inline" style="margin-left:5px; margin-right:20px"><?php echo $account_details["firstname"] . " " . $account_details["lastname"]; ?></span>
+                <i class="fas fa-user"></i> <span class="d-none d-sm-inline" style="margin-left:5px; margin-right:20px">{{ Auth::user()->fullName() }}</span>
             </a>
             <div class="dropdown-menu dropdown-menu-right">
                 <div class="dropdown-header text-center">
-                    <strong>Username: <?php echo $account_details["username"]; ?></span></strong>
+                    <strong>Username: {{ Auth::user()->username }}</span></strong>
                 </div>
                 <a class="dropdown-item" href="javascript:void(0)" id="logout">
                     <i class="fa fa-lock"></i> Logout</a>
@@ -43,7 +43,7 @@
         </div>
         <div class="container-fluid pb-5">
             <div class="animated fadeIn">
-                <?php if($account_details["package_id"] == 0) { ?>
+                @if(Auth::user()->package_id == 0)
                 <div class="card">
                     <div class="card-body">
                         <div class="text-center">
@@ -57,7 +57,7 @@
                 </div>
 
                 <hr class="mb-4" style="background-color:#444444">
-                <?php } ?>
+                @endif
 
                 <div class="row align-items-center">
                     <div class="col-sm-12 col-lg-6">
@@ -180,13 +180,13 @@
                             <div class="card-body p-3 d-flex align-items-center">
                                 <i class="fa fa-trophy p-3 font-2xl mr-3" style="background-color:#0e4d22; color:#ffffff"></i>
                                 <div>
-                                    <div class="text-value-sm" style="color:#0e4d22; font-size:1.3em; line-height:20px"><?php echo $packages[$account_details["package_id"]] . $ranks[$account_details["rank"]]; ?></div>
+                                    <div class="text-value-sm" style="color:#0e4d22; font-size:1.3em; line-height:20px">{{ Auth::user()->packageAndRank() }}</div>
                                     <div class="text-muted text-uppercase font-weight-bold small" style="line-height:24px">Rank Status</div>
                                 </div>
                             </div>
                             <div class="card-footer px-3 py-2">
                                 <div class="btn-block text-muted d-flex justify-content-between align-items-center">
-                                    <span class="small font-weight-bold">Rank Points: <?php echo number_format($rank_points,"2"); ?></span>
+                                    <span class="small font-weight-bold">Rank Points: {{ number_format(Auth::user()->totalRankPoints()) }}</span>
                                 </div>
                             </div>
                         </div>
@@ -197,7 +197,7 @@
                             <div class="card-body p-3 d-flex align-items-center">
                                 <i class="fa fa-money-bill-wave p-3 font-2xl mr-3" style="background-color:#0e4d22; color:#ffffff"></i>
                                 <div>
-                                    <div class="text-value-sm" style="color:#0e4d22; font-size:1.5em">&#8369; <span id="pool-share-amount"><?php echo number_format($pool_share,"2"); ?></span></div>
+                                    <div class="text-value-sm" style="color:#0e4d22; font-size:1.5em">&#8369; <span id="pool-share-amount">{{ number_format($totalPoolShares) }}</span></div>
                                     <div class="text-muted text-uppercase font-weight-bold small">Pool Fund</div>
                                 </div>
                             </div>
@@ -215,7 +215,7 @@
                                 <i class="fa fa-users p-3 font-2xl mr-3" style="background-color:#0e4d22; color:#ffffff"></i>
                                 <div>
                                     <div class="text-value-sm" style="color:#0e4d22; font-size:1.1em"><span style="font-size:0.8em">Downlines:</span> <?php echo number_format($downline_count,0); ?></div>
-                                    <div class="text-value-sm" style="color:#0e4d22; font-size:1.1em; margin-top:-6px"><span style="font-size:0.8em">Referral Code:</span> <?php echo $account_details["referral_code"]; ?></div>
+                                    <div class="text-value-sm" style="color:#0e4d22; font-size:1.1em; margin-top:-6px"><span style="font-size:0.8em">Referral Code:</span> {{ Auth::user()->referral_code  }}</div>
                                     <div class="text-muted text-uppercase font-weight-bold small">Network</div>
                                 </div>
                             </div>

@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Hash;
 class DashboardController extends Controller
 {
     public function index(Request $request) {
-        return view('dashboard.index');
+        $totalPoolShares = HelperController::totalPoolShares();
+
+        return view('dashboard.index', compact('totalPoolShares'));
     }
 }
