@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -47,6 +48,10 @@ class User extends Authenticatable
         return $this->hasMany(Conversion::class);
     }
 
+    public function downlines() {
+        return $this->hasMany(Downline::class, 'upline');
+    }
+
     public function gemPurchases() {
         return $this->hasMany(GemPurchase::class);
     }
@@ -60,7 +65,7 @@ class User extends Authenticatable
     }
 
     public function infinityPlusIncomes() {
-        return $this->hasMany(InfinityPlusIncome::class);
+        return $this->hasMany(InfinityPlusIncome::class, 'upline');
     }
 
     public function orders() {
@@ -92,7 +97,7 @@ class User extends Authenticatable
     }
 
     public function referralIncomes() {
-        return $this->hasMany(ReferralIncome::class);
+        return $this->hasMany(ReferralIncome::class, 'upline');
     }
 
     public function royaltyBonusIncomes() {
@@ -100,11 +105,11 @@ class User extends Authenticatable
     }
 
     public function stairstepIncomes() {
-        return $this->hasMany(StairstepIncome::class);
+        return $this->hasMany(StairstepIncome::class, 'upline');
     }
 
     public function unilevelIncomes() {
-        return $this->hasMany(UnilevelIncome::class);
+        return $this->hasMany(UnilevelIncome::class, 'upline');
     }
 
     public function withdrawals() {
@@ -112,8 +117,97 @@ class User extends Authenticatable
     }
     // End: Relationships
 
+    public function downlineCount() {
+        return $this->downlines
+            ->count('id');
+    }
+
     public function fullName() {
         return $this->firstname . ' ' . $this->lastname;
+    }
+
+    public function income() {
+        $data['totalReferralIncome'] = $this->totalReferralIncome();
+        $data['totalUnilevelIncome'] = $this->totalUnilevelIncome();
+        $data['totalStairstepIncome'] = $this->totalStairstepIncome();
+        $data['totalPersonalRebateIncome'] = $this->totalPersonalRebateIncome();
+        $data['totalInfinityPlusIncome'] = $this->totalInfinityPlusIncome();
+        $data['totalRankIncentiveIncome'] = $this->totalRankIncentiveIncome();
+        $data['totalRoyaltyBonusIncome'] = $this->totalRoyaltyBonusIncome();
+        $data['totalPoolShareIncome'] = $this->totalPoolShareIncome();
+
+        $data['totalGemPurchases'] = $this->totalGemPurchases();
+        $data['totalGemsReceived'] = $this->totalGemsReceived();
+        $data['totalGemConvertedFromPeso'] = $this->totalGemConvertedFromPeso();
+        $data['totalAmountOfSoldOrdersAsACenterStockist'] = $this->totalAmountOfSoldOrdersAsACenterStockist();
+        $data['totalAmountOfOrdersPaid'] = $this->totalAmountOfOrdersPaid();
+        $data['totalGemsSent'] = $this->totalGemsSent();
+        $data['totalGemConvertedToPeso'] = $this->totalGemConvertedToPeso();
+        $data['totalGemFeeForConversion'] = $this->totalGemFeeForConversion();
+
+        $data['gemBalance'] = (
+            $data['totalGemPurchases'] +
+            $data['totalGemsReceived'] +
+            $data['totalGemConvertedFromPeso'] +
+            $data['totalAmountOfSoldOrdersAsACenterStockist']
+        ) - (
+            $data['totalAmountOfOrdersPaid'] +
+            $data['totalGemsSent'] +
+            $data['totalGemConvertedToPeso'] +
+            $data['totalGemFeeForConversion']
+        );
+
+        $data['totalIncome'] = (
+            $data['totalReferralIncome'] +
+            $data['totalUnilevelIncome'] +
+            $data['totalStairstepIncome'] +
+            $data['totalPersonalRebateIncome'] +
+            $data['totalInfinityPlusIncome'] +
+            $data['totalRankIncentiveIncome'] +
+            $data['totalRoyaltyBonusIncome'] +
+            $data['totalPoolShareIncome']
+        );
+
+        $data['totalPesoConvertedFromGem'] = $this->totalPesoConvertedFromGem();
+        $data['totalPesoConvertedToGem'] = $this->totalPesoConvertedToGem();
+        $data['totalWithdrawn'] = $this->totalWithdrawn();
+        $data['totalWithdrawalFee'] = $this->totalWithdrawalFee();
+        $data['totalPoolShareContribution'] = $this->totalPoolShareContribution();
+
+        $data['pesoBalance'] = (
+            $data['totalIncome'] +
+            $data['totalPesoConvertedFromGem']
+        ) - (
+            $data['totalWithdrawn'] +
+            $data['totalGemsSent'] +
+            $data['totalWithdrawalFee'] +
+            $data['totalPoolShareContribution']
+        );
+
+        return $data;
+    }
+
+    public function monthlyPVMaintenance() {
+        return $this->orders
+            ->where('type', 2)
+            ->where('stockist', 0)
+            ->where('created_at', '>=', Carbon::now()->format('Y-m-01 00:00:00'))
+            ->where('created_at', '<=', Carbon::now()->format('Y-m-t 23:59:59'))
+            ->sum('points_value');
+    }
+
+    public function requiredPVMaintenance() {
+        $requiredPVMaintenance = 100;
+
+        if($this->rank >= 2 && $this->rank <= 5) {
+            $requiredPVMaintenance = 200;
+        } else if($this->rank == 6) {
+            $requiredPVMaintenance = 300;
+        } else if($this->rank >= 7 && $this->rank <= 9) {
+            $requiredPVMaintenance = 500;
+        }
+
+        return $requiredPVMaintenance;
     }
 
     public function packageAndRank() {
@@ -121,6 +215,10 @@ class User extends Authenticatable
         $ranks = array("Free Account", "Dealer", "Explorer", "Pathfinder", "Navigator", "Master Guide", "Fair Winner", "Grand Fair Winner", "Royal Fair Winner", "Crown Fair Winner");
 
         return $packages[$this->package_id] . (($this->package_id > 0) ? ' - ' : '') . $ranks[$this->rank];
+    }
+
+    public function photo() {
+        return ($this->photo) ? asset($this->photo) : asset('img/profile-photos/default.png');
     }
 
     public function totalPesoConvertedToGem() {
@@ -189,55 +287,6 @@ class User extends Authenticatable
     public function totalGemsSent() {
         return $this->gemsSent
             ->sum('amount');
-    }
-
-    public function income() {
-        $data['totalReferralIncome'] = $this->totalReferralIncome();
-        $data['totalUnilevelIncome'] = $this->totalUnilevelIncome();
-        $data['totalStairstepIncome'] = $this->totalStairstepIncome();
-        $data['totalPersonalRebateIncome'] = $this->totalPersonalRebateIncome();
-        $data['totalInfinityPlusIncome'] = $this->totalInfinityPlusIncome();
-        $data['totalRankIncentiveIncome'] = $this->totalRankIncentiveIncome();
-        $data['totalRoyaltyBonusIncome'] = $this->totalRoyaltyBonusIncome();
-        $data['totalPoolShareIncome'] = $this->totalPoolShareIncome();
-
-        $data['totalGemPurchases'] = $this->totalGemPurchases();
-        $data['totalGemsReceived'] = $this->totalGemsReceived();
-        $data['totalGemConvertedFromPeso'] = $this->totalGemConvertedFromPeso();
-        $data['totalAmountOfSoldOrdersAsACenterStockist'] = $this->totalAmountOfSoldOrdersAsACenterStockist();
-
-        $data['totalAmountOfOrdersPaid'] = $this->totalAmountOfOrdersPaid();
-        $data['totalGemsSent'] = $this->totalGemsSent();
-        $data['totalPesoConvertedFromGem'] = $this->totalPesoConvertedFromGem();
-        $data['totalGemFeeForConversion'] = $this->totalGemFeeForConversion();
-
-        $data['gemBalance'] = (
-            $data['totalGemPurchases'] +
-            $data['totalGemsReceived'] +
-            $data['totalGemConvertedFromPeso'] +
-            $data['totalAmountOfSoldOrdersAsACenterStockist']
-        ) - (
-            $data['totalAmountOfOrdersPaid'] +
-            $data['totalGemsSent'] +
-            $data['totalPesoConvertedFromGem'] +
-            $data['totalGemFeeForConversion']
-        );
-
-        $data['total'] = (
-            $data['totalReferralIncome'] +
-            $data['totalUnilevelIncome'] +
-            $data['totalStairstepIncome'] +
-            $data['totalPersonalRebateIncome'] +
-            $data['totalInfinityPlusIncome'] +
-            $data['totalRankIncentiveIncome'] +
-            $data['totalRoyaltyBonusIncome'] +
-            $data['totalPoolShareIncome']
-        );
-
-        $data['totalGemFeeForConversion'] = $this->totalGemFeeForConversion();
-        $data['totalPesoConvertedToGem'] = $this->totalPesoConvertedToGem();
-
-        return $data;
     }
 
     public function totalInfinityPlusIncome() {

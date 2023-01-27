@@ -28,10 +28,17 @@
     <title>{{ config('app.name') }} | @yield('title')</title>
 </head>
 <body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
-    @yield('content')
+    @include('layouts.includes.navbar')
 
+    <div class="app-body">
+        @include('layouts.includes.sideNav')
+        @yield('content')
+    </div>
+
+    @include('layouts.includes.footer')
     @include('layouts.includes.modals')
 
+    <input type="hidden" name="winners_gem_value" value="{{ winnersGemValue() }}" />
     <input type="hidden" name="route_name" value="{{ Route::currentRouteName() }}" />
     <input type="hidden" name="app_url" value="{{ config('app.url') }}" />
 

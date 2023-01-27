@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Conversion;
 use App\Models\Downline;
 use App\Models\GemPurchase;
 use App\Models\InfinityPlusIncome;
@@ -64,6 +65,28 @@ class MigrateOldDatabase extends Command
         // Import first the old database
 
         $out = new ConsoleOutput();
+
+        $out->writeln('Migrating Conversions Table');
+        $items = DB::table('fw_conversions')->get();
+        $newItems = [];
+
+        foreach($items as $item) {
+            $newItems[] = [
+                'id' => $item->id,
+                'user_id' => $item->account_id,
+                'type' => $item->type,
+                'gem' => $item->gem,
+                'peso' => $item->peso,
+                'fee_in_gems' => $item->fee_in_gems,
+                'fee_in_pesos' => $item->fee_in_pesos,
+                'created_at' => $item->date_time,
+            ];
+        }
+
+//        Conversion::truncate();
+//        foreach(array_chunk($newItems,1000) as $data) {
+//            Conversion::insert($data);
+//        }
 
         $out->writeln('Migrating Users Table');
         $users = DB::table('fw_accounts')->get();
@@ -520,30 +543,30 @@ class MigrateOldDatabase extends Command
 
         $out->writeln('Dropping Old Tables');
 
-        Schema::dropIfExists('fw_accounts');
-        Schema::dropIfExists('fw_admin');
-        Schema::dropIfExists('fw_conversions');
-        Schema::dropIfExists('fw_downlines');
-        Schema::dropIfExists('fw_gem_purchases');
-        Schema::dropIfExists('fw_genealogy');
-        Schema::dropIfExists('fw_income_infinity_plus');
-        Schema::dropIfExists('fw_income_personal_rebate');
-        Schema::dropIfExists('fw_income_pool_share');
-        Schema::dropIfExists('fw_income_rank_incentive');
-        Schema::dropIfExists('fw_income_referral');
-        Schema::dropIfExists('fw_income_royalty_bonus');
-        Schema::dropIfExists('fw_income_stairstep');
-        Schema::dropIfExists('fw_income_unilevel');
-        Schema::dropIfExists('fw_items');
-        Schema::dropIfExists('fw_ordered_items');
-        Schema::dropIfExists('fw_orders');
-        Schema::dropIfExists('fw_payout_information');
-        Schema::dropIfExists('fw_pool_share_contributions');
-        Schema::dropIfExists('fw_rank_points');
-        Schema::dropIfExists('fw_stockist_assignment');
-        Schema::dropIfExists('fw_transfers');
-        Schema::dropIfExists('fw_winners_gem_value');
-        Schema::dropIfExists('fw_withdrawals');
+//        Schema::dropIfExists('fw_accounts');
+//        Schema::dropIfExists('fw_admin');
+//        Schema::dropIfExists('fw_conversions');
+//        Schema::dropIfExists('fw_downlines');
+//        Schema::dropIfExists('fw_gem_purchases');
+//        Schema::dropIfExists('fw_genealogy');
+//        Schema::dropIfExists('fw_income_infinity_plus');
+//        Schema::dropIfExists('fw_income_personal_rebate');
+//        Schema::dropIfExists('fw_income_pool_share');
+//        Schema::dropIfExists('fw_income_rank_incentive');
+//        Schema::dropIfExists('fw_income_referral');
+//        Schema::dropIfExists('fw_income_royalty_bonus');
+//        Schema::dropIfExists('fw_income_stairstep');
+//        Schema::dropIfExists('fw_income_unilevel');
+//        Schema::dropIfExists('fw_items');
+//        Schema::dropIfExists('fw_ordered_items');
+//        Schema::dropIfExists('fw_orders');
+//        Schema::dropIfExists('fw_payout_information');
+//        Schema::dropIfExists('fw_pool_share_contributions');
+//        Schema::dropIfExists('fw_rank_points');
+//        Schema::dropIfExists('fw_stockist_assignment');
+//        Schema::dropIfExists('fw_transfers');
+//        Schema::dropIfExists('fw_winners_gem_value');
+//        Schema::dropIfExists('fw_withdrawals');
 
         return 0;
     }

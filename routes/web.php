@@ -31,6 +31,15 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/logout', [AuthenticationController::class, 'logout'])->name('auth.logout');
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+    Route::get('/earnings', [DashboardController::class, 'index'])->name('earnings.index');
+    Route::get('/orders', [DashboardController::class, 'index'])->name('orders.index');
+    Route::get('/network', [DashboardController::class, 'index'])->name('network.index');
+    Route::get('/products', [DashboardController::class, 'index'])->name('products.index');
+    Route::get('/account', [DashboardController::class, 'index'])->name('account.index');
+    Route::get('/transfers', [DashboardController::class, 'index'])->name('transfers.index');
+    Route::get('/conversions', [DashboardController::class, 'index'])->name('conversions.index');
+    Route::get('/withdrawals', [DashboardController::class, 'index'])->name('withdrawals.index');
+    Route::get('/terminal', [DashboardController::class, 'index'])->name('terminal.index');
 
     Route::middleware(['admin'])->group(function() {
         Route::prefix('admin')->group(function () {

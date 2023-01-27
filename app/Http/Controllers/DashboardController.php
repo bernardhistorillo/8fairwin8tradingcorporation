@@ -9,9 +9,10 @@ use Illuminate\Support\Facades\Hash;
 
 class DashboardController extends Controller
 {
-    public function index(Request $request) {
-        $totalPoolShares = HelperController::totalPoolShares();
+    public function index() {
+        $income = Auth::user()->income();
+        $winnersGemValue = winnersGemValue();
 
-        return view('dashboard.index', compact('totalPoolShares'));
+        return view('dashboard.index', compact('income', 'winnersGemValue'));
     }
 }

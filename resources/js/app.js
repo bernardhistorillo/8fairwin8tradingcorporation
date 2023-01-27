@@ -1,9 +1,11 @@
 let appUrl;
 let currentRouteName;
+let winnersGemValue;
 
 let allOnload = async function() {
     appUrl = $("input[name='app_url']").val();
     currentRouteName = $("input[name='route_name']").val();
+    winnersGemValue = parseFloat($("input[name='winners_gem_value']").val());
 
     $.ajaxSetup({
         headers: {
@@ -795,13 +797,11 @@ $(document).on("click", "#place-order", function() {
 });
 
 $(document).on("change", "#purchase-winners-gem-amount", function() {
-    let winners_gem_value = parseFloat($("#winners-gem-value").html());
-    $("#purchase-winners-gem-price").val(parseFloat($(this).val() * winners_gem_value).toFixed(2));
+    $("#purchase-winners-gem-price").val(parseFloat($(this).val() * winnersGemValue).toFixed(2));
 });
 
 $(document).on("change", "#purchase-winners-gem-price", function() {
-    let winners_gem_value = parseFloat($("#winners-gem-value").html());
-    $("#purchase-winners-gem-amount").val(parseFloat($(this).val() / winners_gem_value).toFixed(2));
+    $("#purchase-winners-gem-amount").val(parseFloat($(this).val() / winnersGemValue).toFixed(2));
 });
 
 $(document).on("click", "#purchase-winners-gem-show-modal", function() {
@@ -822,7 +822,6 @@ $(document).on("click", "#purchase-winners-gem", function() {
     $("#modal-warning button[data-dismiss='modal']").css("display","none");
 
     let price = $("#purchase-winners-gem-price").val();
-    let winners_gem_value = parseFloat($("#winners-gem-value").html());
 
     let proof_of_payments = [];
     $("#proof-of-payment-container .proof-of-payment[data-has-image='1']").each(function() {
@@ -837,7 +836,7 @@ $(document).on("click", "#purchase-winners-gem", function() {
         url: "api/purchase-winners-gem.php",
         data: {
             price: price,
-            winners_gem_value: winners_gem_value,
+            winners_gem_value: winnersGemValue,
             proof_of_payments: JSON.stringify(proof_of_payments)
         },
         timeout: 30000
@@ -853,10 +852,8 @@ $(document).on("click", "#purchase-winners-gem", function() {
             $('#modal-success').modal('show');
         } else {
             if(response.type == "winners-gem-update") {
-                $("#winners-gem-value").html(response.winners_gem_value);
-
-                let winners_gem_value = parseFloat($("#winners-gem-value").html());
-                $("#purchase-winners-gem-amount").val(parseFloat($(this).val() / winners_gem_value).toFixed(2));
+                winnersGemValue = parseFloat(response.winners_gem_value);
+                $("#purchase-winners-gem-amount").val(parseFloat($(this).val() / winnersGemValue).toFixed(2));
             }
 
             $("#modal-error .modal-body").html(response.error);
@@ -1018,10 +1015,9 @@ $(document).on("click", "#transfer-winners-gem", function() {
         response = JSON.parse(response);
         if(response.error == "") {
             let receiver = $("#transfer-receiver-has-match").html();
-            let winners_gem_value = parseFloat($("#winners-gem-value").html());
 
             $("#winners-gem-balance").html(numberFormat(response.gem_balance,true));
-            $("#winners-gem-balance-in-pesos").html(numberFormat(response.gem_balance * winners_gem_value,true));
+            $("#winners-gem-balance-in-pesos").html(numberFormat(response.gem_balance * winnersGemValue,true));
             $("#winners-gem-sent").html(numberFormat(response.gems_sent,true));
 
             $('#modal-success .modal-body').html("You have successfully sent " + numberFormat(amount,true) + " <i class='fas fa-gem' style='font-size:0.8em'></i> to " + receiver + ".");
@@ -1042,17 +1038,14 @@ $(document).on("click", "#transfer-winners-gem", function() {
 });
 
 $(document).on("change", "#convert-peso-to-gem-amount", function() {
-    let winners_gem_value = parseFloat($("#winners-gem-value").html());
-
-    $("#convert-total-winners-gem").html(numberFormat($(this).val() / winners_gem_value, true));
+    $("#convert-total-winners-gem").html(numberFormat($(this).val() / winnersGemValue, true));
 });
 
 $(document).on("change", "#convert-gem-to-peso-amount", function() {
     let amount = parseFloat($("#convert-gem-to-peso-amount").val());
-    let winners_gem_value = parseFloat($("#winners-gem-value").html());
 
-    $("#convert-total-peso").html(numberFormat(amount * winners_gem_value,true));
-    $("#convert-gem-to-peso-fee-peso").html(numberFormat((amount * winners_gem_value) * 0.02,true));
+    $("#convert-total-peso").html(numberFormat(amount * winnersGemValue,true));
+    $("#convert-gem-to-peso-fee-peso").html(numberFormat((amount * winnersGemValue) * 0.02,true));
     $("#convert-gem-to-peso-fee-gem").html(numberFormat(amount * 0.02,true));
     $("#convert-gem-to-peso-total-gems").html(numberFormat(amount * 1.02,true));
 });
@@ -1078,7 +1071,6 @@ $(document).on("click", "#convert", function() {
     $("#modal-warning .proceed").html("Processing...");
     $("#modal-warning button[data-dismiss='modal']").css("display","none");
 
-    let winners_gem_value = parseFloat($("#winners-gem-value").html());
     let type = $(".convert-tab.active").data("type");
     let amount = parseFloat($("#convert-" + type + "-amount").val());
 
@@ -1088,26 +1080,22 @@ $(document).on("click", "#convert", function() {
         data: {
             type: type,
             amount: amount,
-            winners_gem_value: winners_gem_value
+            winners_gem_value: winnersGemValue
         },
         timeout: 30000
     }).done(function(response) {
         response = JSON.parse(response);
         if(response.error == "") {
-            let winners_gem_value = parseFloat($("#winners-gem-value").html());
-
             $("#winners-gem-balance").html(numberFormat(response.gem_balance,true));
-            $("#winners-gem-balance-in-pesos").html(numberFormat(response.gem_balance * winners_gem_value,true));
+            $("#winners-gem-balance-in-pesos").html(numberFormat(response.gem_balance * winnersGemValue,true));
             $("#peso-balance").html(numberFormat(response.peso_balance,true));
 
             $('#modal-success .modal-body').html("You have successfully converted &#x20B1;&nbsp;" + numberFormat(amount,true) + " to Winners Gem.");
             $('#modal-success').modal('show');
         } else {
             if(response.type == "winners-gem-update") {
-                $("#winners-gem-value").html(response.winners_gem_value);
-
-                let winners_gem_value = parseFloat($("#winners-gem-value").html());
-                $("#purchase-winners-gem-amount").val(parseFloat($(this).val() / winners_gem_value).toFixed(2));
+                winnersGemValue = parseFloat(response.winners_gem_value);
+                $("#purchase-winners-gem-amount").val(parseFloat($(this).val() / winnersGemValue).toFixed(2));
             }
 
             $("#modal-error .modal-body").html(response.error);
