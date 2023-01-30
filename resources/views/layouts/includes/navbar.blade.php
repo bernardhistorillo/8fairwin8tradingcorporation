@@ -3,7 +3,7 @@
         <span class="navbar-toggler-icon" style="color:#134c21"></span>
     </button>
     <a class="navbar-brand" href="{{ route('home.index') }}" style="padding-left:10px">
-        <img class="navbar-brand-full" src="img1/about-img.jpg" style="width:80px" alt="">
+        <img class="navbar-brand-full" src="{{ asset('img1/about-img.jpg') }}" style="width:80px" alt="">
         <!--    <img class="navbar-brand-minimized" src="img1/about-img.jpg" style="width:45px" alt="">-->
     </a>
     <button class="navbar-toggler sidebar-toggler d-md-down-none" type="button" data-toggle="sidebar-lg-show"  style="color:#134c21">

@@ -17,9 +17,44 @@ let allOnload = async function() {
 let pageOnload = async function() {
     await allOnload();
 
-    // if(currentRouteName === "dashboard.index") {
-    //     homeOnload();
-    // }
+    if(currentRouteName === "income.index") {
+        incomeOnload();
+    } else if(currentRouteName === "orders.index") {
+        ordersOnload();
+    } else if(currentRouteName === "network.index") {
+        networkOnload();
+    } else if(currentRouteName === "transfers.index") {
+        transfersOnload();
+    } else if(currentRouteName === "conversions.index") {
+        conversionsOnload();
+    } else if(currentRouteName === "withdrawals.index") {
+        withdrawalsOnload();
+    }
+};
+let incomeOnload = function() {
+    initializeDataTables();
+};
+let ordersOnload = function() {
+    initializeDataTables();
+};
+let networkOnload = function() {
+    initializeDataTables();
+};
+let transfersOnload = function() {
+    initializeDataTables();
+};
+let conversionsOnload = function() {
+    initializeDataTables();
+};
+let withdrawalsOnload = function() {
+    initializeDataTables();
+};
+let initializeDataTables = function() {
+    $(".data-table").DataTable({
+        "aaSorting": []
+    });
+    $(".loading-text").css("display", "none");
+    $(".data-table").css("display", "table");
 };
 let showErrorFromAjax = function(error) {
     let content = "Something went wrong.";
@@ -519,14 +554,6 @@ profile_picture_uploader.on("change", function() {
 $(document).ready(function() {
     var page_name = location.href.split("/").slice(-1);
     page_name = page_name[0].split(".");
-
-    if (page_name[0] == "network" || page_name[0] == "orders" || page_name[0] == "earnings" || page_name[0] == "withdrawals" || page_name[0] == "transfers" || page_name[0] == "conversions") {
-        $(".data-table").DataTable({
-            "aaSorting": []
-        });
-        $(".loading-text").css("display", "none");
-        $(".data-table").css("display", "table");
-    }
 
     if (page_name[0] == "terminal") {
         $(".data-table").DataTable({

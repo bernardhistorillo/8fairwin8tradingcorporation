@@ -9,6 +9,7 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 var appUrl;
 var currentRouteName;
+var winnersGemValue;
 var allOnload = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
     return _regeneratorRuntime().wrap(function _callee$(_context) {
@@ -16,12 +17,13 @@ var allOnload = /*#__PURE__*/function () {
         case 0:
           appUrl = $("input[name='app_url']").val();
           currentRouteName = $("input[name='route_name']").val();
+          winnersGemValue = parseFloat($("input[name='winners_gem_value']").val());
           $.ajaxSetup({
             headers: {
               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
           });
-        case 3:
+        case 4:
         case "end":
           return _context.stop();
       }
@@ -39,6 +41,20 @@ var pageOnload = /*#__PURE__*/function () {
           _context2.next = 2;
           return allOnload();
         case 2:
+          if (currentRouteName === "income.index") {
+            incomeOnload();
+          } else if (currentRouteName === "orders.index") {
+            ordersOnload();
+          } else if (currentRouteName === "network.index") {
+            networkOnload();
+          } else if (currentRouteName === "transfers.index") {
+            transfersOnload();
+          } else if (currentRouteName === "conversions.index") {
+            conversionsOnload();
+          } else if (currentRouteName === "withdrawals.index") {
+            withdrawalsOnload();
+          }
+        case 3:
         case "end":
           return _context2.stop();
       }
@@ -48,6 +64,31 @@ var pageOnload = /*#__PURE__*/function () {
     return _ref2.apply(this, arguments);
   };
 }();
+var incomeOnload = function incomeOnload() {
+  initializeDataTables();
+};
+var ordersOnload = function ordersOnload() {
+  initializeDataTables();
+};
+var networkOnload = function networkOnload() {
+  initializeDataTables();
+};
+var transfersOnload = function transfersOnload() {
+  initializeDataTables();
+};
+var conversionsOnload = function conversionsOnload() {
+  initializeDataTables();
+};
+var withdrawalsOnload = function withdrawalsOnload() {
+  initializeDataTables();
+};
+var initializeDataTables = function initializeDataTables() {
+  $(".data-table").DataTable({
+    "aaSorting": []
+  });
+  $(".loading-text").css("display", "none");
+  $(".data-table").css("display", "table");
+};
 var showErrorFromAjax = function showErrorFromAjax(error) {
   var content = "Something went wrong.";
   if (error.responseJSON) {
@@ -480,13 +521,6 @@ profile_picture_uploader.on("change", function () {
 $(document).ready(function () {
   var page_name = location.href.split("/").slice(-1);
   page_name = page_name[0].split(".");
-  if (page_name[0] == "network" || page_name[0] == "orders" || page_name[0] == "earnings" || page_name[0] == "withdrawals" || page_name[0] == "transfers" || page_name[0] == "conversions") {
-    $(".data-table").DataTable({
-      "aaSorting": []
-    });
-    $(".loading-text").css("display", "none");
-    $(".data-table").css("display", "table");
-  }
   if (page_name[0] == "terminal") {
     $(".data-table").DataTable({
       "aaSorting": [],
@@ -717,12 +751,10 @@ $(document).on("click", "#place-order", function () {
   });
 });
 $(document).on("change", "#purchase-winners-gem-amount", function () {
-  var winners_gem_value = parseFloat($("#winners-gem-value").html());
-  $("#purchase-winners-gem-price").val(parseFloat($(this).val() * winners_gem_value).toFixed(2));
+  $("#purchase-winners-gem-price").val(parseFloat($(this).val() * winnersGemValue).toFixed(2));
 });
 $(document).on("change", "#purchase-winners-gem-price", function () {
-  var winners_gem_value = parseFloat($("#winners-gem-value").html());
-  $("#purchase-winners-gem-amount").val(parseFloat($(this).val() / winners_gem_value).toFixed(2));
+  $("#purchase-winners-gem-amount").val(parseFloat($(this).val() / winnersGemValue).toFixed(2));
 });
 $(document).on("click", "#purchase-winners-gem-show-modal", function () {
   $("#modal-warning .modal-body").html("Your Winners Gem purchase request will now be submitted");
@@ -739,7 +771,6 @@ $(document).on("click", "#purchase-winners-gem", function () {
   $("#modal-warning .proceed").html("Processing...");
   $("#modal-warning button[data-dismiss='modal']").css("display", "none");
   var price = $("#purchase-winners-gem-price").val();
-  var winners_gem_value = parseFloat($("#winners-gem-value").html());
   var proof_of_payments = [];
   $("#proof-of-payment-container .proof-of-payment[data-has-image='1']").each(function () {
     proof_of_payments.push({
@@ -752,7 +783,7 @@ $(document).on("click", "#purchase-winners-gem", function () {
     url: "api/purchase-winners-gem.php",
     data: {
       price: price,
-      winners_gem_value: winners_gem_value,
+      winners_gem_value: winnersGemValue,
       proof_of_payments: JSON.stringify(proof_of_payments)
     },
     timeout: 30000
@@ -766,9 +797,8 @@ $(document).on("click", "#purchase-winners-gem", function () {
       $('#modal-success').modal('show');
     } else {
       if (response.type == "winners-gem-update") {
-        $("#winners-gem-value").html(response.winners_gem_value);
-        var _winners_gem_value = parseFloat($("#winners-gem-value").html());
-        $("#purchase-winners-gem-amount").val(parseFloat($(this).val() / _winners_gem_value).toFixed(2));
+        winnersGemValue = parseFloat(response.winners_gem_value);
+        $("#purchase-winners-gem-amount").val(parseFloat($(this).val() / winnersGemValue).toFixed(2));
       }
       $("#modal-error .modal-body").html(response.error);
       $("#modal-error").modal('show');
@@ -913,9 +943,8 @@ $(document).on("click", "#transfer-winners-gem", function () {
     response = JSON.parse(response);
     if (response.error == "") {
       var receiver = $("#transfer-receiver-has-match").html();
-      var winners_gem_value = parseFloat($("#winners-gem-value").html());
       $("#winners-gem-balance").html(numberFormat(response.gem_balance, true));
-      $("#winners-gem-balance-in-pesos").html(numberFormat(response.gem_balance * winners_gem_value, true));
+      $("#winners-gem-balance-in-pesos").html(numberFormat(response.gem_balance * winnersGemValue, true));
       $("#winners-gem-sent").html(numberFormat(response.gems_sent, true));
       $('#modal-success .modal-body').html("You have successfully sent " + numberFormat(amount, true) + " <i class='fas fa-gem' style='font-size:0.8em'></i> to " + receiver + ".");
       $('#modal-success').modal('show');
@@ -934,14 +963,12 @@ $(document).on("click", "#transfer-winners-gem", function () {
   });
 });
 $(document).on("change", "#convert-peso-to-gem-amount", function () {
-  var winners_gem_value = parseFloat($("#winners-gem-value").html());
-  $("#convert-total-winners-gem").html(numberFormat($(this).val() / winners_gem_value, true));
+  $("#convert-total-winners-gem").html(numberFormat($(this).val() / winnersGemValue, true));
 });
 $(document).on("change", "#convert-gem-to-peso-amount", function () {
   var amount = parseFloat($("#convert-gem-to-peso-amount").val());
-  var winners_gem_value = parseFloat($("#winners-gem-value").html());
-  $("#convert-total-peso").html(numberFormat(amount * winners_gem_value, true));
-  $("#convert-gem-to-peso-fee-peso").html(numberFormat(amount * winners_gem_value * 0.02, true));
+  $("#convert-total-peso").html(numberFormat(amount * winnersGemValue, true));
+  $("#convert-gem-to-peso-fee-peso").html(numberFormat(amount * winnersGemValue * 0.02, true));
   $("#convert-gem-to-peso-fee-gem").html(numberFormat(amount * 0.02, true));
   $("#convert-gem-to-peso-total-gems").html(numberFormat(amount * 1.02, true));
 });
@@ -961,7 +988,6 @@ $(document).on("click", "#convert", function () {
   $("#modal-warning .proceed").prop("disabled", true);
   $("#modal-warning .proceed").html("Processing...");
   $("#modal-warning button[data-dismiss='modal']").css("display", "none");
-  var winners_gem_value = parseFloat($("#winners-gem-value").html());
   var type = $(".convert-tab.active").data("type");
   var amount = parseFloat($("#convert-" + type + "-amount").val());
   $.ajax({
@@ -970,23 +996,21 @@ $(document).on("click", "#convert", function () {
     data: {
       type: type,
       amount: amount,
-      winners_gem_value: winners_gem_value
+      winners_gem_value: winnersGemValue
     },
     timeout: 30000
   }).done(function (response) {
     response = JSON.parse(response);
     if (response.error == "") {
-      var _winners_gem_value2 = parseFloat($("#winners-gem-value").html());
       $("#winners-gem-balance").html(numberFormat(response.gem_balance, true));
-      $("#winners-gem-balance-in-pesos").html(numberFormat(response.gem_balance * _winners_gem_value2, true));
+      $("#winners-gem-balance-in-pesos").html(numberFormat(response.gem_balance * winnersGemValue, true));
       $("#peso-balance").html(numberFormat(response.peso_balance, true));
       $('#modal-success .modal-body').html("You have successfully converted &#x20B1;&nbsp;" + numberFormat(amount, true) + " to Winners Gem.");
       $('#modal-success').modal('show');
     } else {
       if (response.type == "winners-gem-update") {
-        $("#winners-gem-value").html(response.winners_gem_value);
-        var _winners_gem_value3 = parseFloat($("#winners-gem-value").html());
-        $("#purchase-winners-gem-amount").val(parseFloat($(this).val() / _winners_gem_value3).toFixed(2));
+        winnersGemValue = parseFloat(response.winners_gem_value);
+        $("#purchase-winners-gem-amount").val(parseFloat($(this).val() / winnersGemValue).toFixed(2));
       }
       $("#modal-error .modal-body").html(response.error);
       $("#modal-error").modal('show');

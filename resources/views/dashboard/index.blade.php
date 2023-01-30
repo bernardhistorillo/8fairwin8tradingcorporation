@@ -104,7 +104,7 @@
                             </div>
                         </div>
                         <div class="card-footer px-3 py-2">
-                            <a class="btn-block text-muted d-flex justify-content-between align-items-center" href="{{ route('earnings.index') }}">
+                            <a class="btn-block text-muted d-flex justify-content-between align-items-center" href="{{ route('income.index') }}">
                                 <span class="small font-weight-bold">View Earnings</span>
                                 <i class="fa fa-angle-right"></i>
                             </a>
@@ -217,7 +217,7 @@
                             </div>
                         </div>
                         <div class="card-footer bg-success px-3 py-2">
-                            <a class="btn-block text-muted d-flex justify-content-between align-items-center" href="{{ route('earnings.index') }}">
+                            <a class="btn-block text-muted d-flex justify-content-between align-items-center" href="{{ route('income.index') }}">
                                 <span class="small font-weight-bold">View More</span>
                                 <i class="fa fa-angle-right"></i>
                             </a>
@@ -235,7 +235,7 @@
                             </div>
                         </div>
                         <div class="card-footer bg-warning px-3 py-2">
-                            <a class="btn-block text-muted d-flex justify-content-between align-items-center" href="{{ route('earnings.index') }}">
+                            <a class="btn-block text-muted d-flex justify-content-between align-items-center" href="{{ route('income.index') }}">
                                 <span class="small font-weight-bold">View More</span>
                                 <i class="fa fa-angle-right"></i>
                             </a>
@@ -253,7 +253,7 @@
                             </div>
                         </div>
                         <div class="card-footer bg-primary px-3 py-2">
-                            <a class="btn-block text-muted d-flex justify-content-between align-items-center" href="{{ route('earnings.index') }}">
+                            <a class="btn-block text-muted d-flex justify-content-between align-items-center" href="{{ route('income.index') }}">
                                 <span class="small font-weight-bold">View More</span>
                                 <i class="fa fa-angle-right"></i>
                             </a>
@@ -271,7 +271,7 @@
                             </div>
                         </div>
                         <div class="card-footer bg-danger px-3 py-2">
-                            <a class="btn-block text-muted d-flex justify-content-between align-items-center" href="{{ route('earnings.index') }}">
+                            <a class="btn-block text-muted d-flex justify-content-between align-items-center" href="{{ route('income.index') }}">
                                 <span class="small font-weight-bold">View More</span>
                                 <i class="fa fa-angle-right"></i>
                             </a>
@@ -289,7 +289,7 @@
                             </div>
                         </div>
                         <div class="card-footer bg-indigo px-3 py-2">
-                            <a class="btn-block text-muted d-flex justify-content-between align-items-center" href="{{ route('earnings.index') }}">
+                            <a class="btn-block text-muted d-flex justify-content-between align-items-center" href="{{ route('income.index') }}">
                                 <span class="small font-weight-bold">View More</span>
                                 <i class="fa fa-angle-right"></i>
                             </a>
@@ -307,7 +307,7 @@
                             </div>
                         </div>
                         <div class="card-footer bg-cyan px-3 py-2">
-                            <a class="btn-block text-muted d-flex justify-content-between align-items-center" href="{{ route('earnings.index') }}">
+                            <a class="btn-block text-muted d-flex justify-content-between align-items-center" href="{{ route('income.index') }}">
                                 <span class="small font-weight-bold">View More</span>
                                 <i class="fa fa-angle-right"></i>
                             </a>
@@ -324,7 +324,7 @@
                             </div>
                         </div>
                         <div class="card-footer bg-gray px-3 py-2">
-                            <a class="btn-block text-muted d-flex justify-content-between align-items-center" href="{{ route('earnings.index') }}">
+                            <a class="btn-block text-muted d-flex justify-content-between align-items-center" href="{{ route('income.index') }}">
                                 <span class="small font-weight-bold">View More</span>
                                 <i class="fa fa-angle-right"></i>
                             </a>

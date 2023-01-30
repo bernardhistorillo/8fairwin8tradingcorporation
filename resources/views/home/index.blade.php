@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Log In')
+@section('title', 'Home')
 
 @section('content')
 <nav class="app-header navbar" style="position:relative">

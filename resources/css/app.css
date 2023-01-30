@@ -83,9 +83,8 @@ body::-webkit-scrollbar-thumb {
 }
 
 .page-item.active .page-link {
-    background-color:#dc3545;
-    border-color:#dc3545;
-    color:#ffffff;
+    background-color: #0e4d22!important;
+    border-color: #0e4d22!important;
 }
 
 .breadcrumb-item-custom + .breadcrumb-item-custom::before {

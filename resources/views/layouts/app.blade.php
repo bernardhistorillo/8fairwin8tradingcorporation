@@ -20,6 +20,7 @@
     <link href="{{ asset('lib/coreui/icons/css/coreui-icons.min.css') }}" rel="stylesheet">
     <link href="{{ asset('lib/flag-icon-css/css/flag-icon.min.css') }}" rel="stylesheet">
     <link href="{{ asset('lib/font-awesome/css/all.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('lib/datatables/datatables.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('lib/pace-progress/css/pace.min.css') }}" rel="stylesheet">
 
@@ -49,6 +50,7 @@
     <script src="{{ asset('lib/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
     <script src="{{ asset('lib/coreui/js/coreui.min.js') }}"></script>
     <script src="{{ asset('lib/coreui/js/custom-tooltips.min.js') }}"></script>
+    <script src="{{ asset('lib/datatables/datatables.min.js') }}"></script>
     <script src="{{ mix('/js/app.js') }}"></script>
 
 </body>

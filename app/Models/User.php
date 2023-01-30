@@ -212,9 +212,8 @@ class User extends Authenticatable
 
     public function packageAndRank() {
         $packages = ["", "DBP", "DSP",  "FDP", "DMP"];
-        $ranks = array("Free Account", "Dealer", "Explorer", "Pathfinder", "Navigator", "Master Guide", "Fair Winner", "Grand Fair Winner", "Royal Fair Winner", "Crown Fair Winner");
 
-        return $packages[$this->package_id] . (($this->package_id > 0) ? ' - ' : '') . $ranks[$this->rank];
+        return $packages[$this->package_id] . (($this->package_id > 0) ? ' - ' : '') . ranks()[$this->rank];
     }
 
     public function photo() {

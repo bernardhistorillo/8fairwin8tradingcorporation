@@ -39,3 +39,16 @@ if(!function_exists('winnersGemValue')) {
         return $winnersGemValue['percentage'];
     }
 }
+
+if(!function_exists('fullName')) {
+    function fullName($data) {
+        return $data['firstname'] . ' ' . $data['lastname'];
+    }
+}
+
+if(!function_exists('ranks')) {
+    function ranks() {
+        return $ranks = array("Free Account", "Dealer", "Explorer", "Pathfinder", "Navigator", "Master Guide", "Fair Winner", "Grand Fair Winner", "Royal Fair Winner", "Crown Fair Winner");
+    }
+}
+

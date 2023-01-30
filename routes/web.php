@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\IncomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,7 +32,7 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/logout', [AuthenticationController::class, 'logout'])->name('auth.logout');
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
-    Route::get('/earnings', [DashboardController::class, 'index'])->name('earnings.index');
+    Route::get('/earnings/{type?}', [IncomeController::class, 'index'])->name('income.index');
     Route::get('/orders', [DashboardController::class, 'index'])->name('orders.index');
     Route::get('/network', [DashboardController::class, 'index'])->name('network.index');
     Route::get('/products', [DashboardController::class, 'index'])->name('products.index');
