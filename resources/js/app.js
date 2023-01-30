@@ -1790,7 +1790,7 @@ $(document).on("click", "#mark-order-as-complete", function() {
             content += '		<thead>';
             content += '			<tr style="background-color:#f9f9f9">';
             content += '				<th></th>';
-            content += '				<th>Date &amp; Time Placed</th>';
+            content += '				<th>Date&nbsp;&amp; Time Placed</th>';
             content += '				<th>Type</th>';
             content += '				<th>Reference</th>';
             content += '				<th>Account</th>';
@@ -1825,8 +1825,8 @@ $(document).on("click", "#mark-order-as-complete", function() {
             content += '		<thead>';
             content += '			<tr style="background-color:#f9f9f9">';
             content += '				<th></th>';
-            content += '				<th>Date &amp; Time Placed</th>';
-            content += '				<th>Date &amp; Time Completed</th>';
+            content += '				<th>Date&nbsp;&amp; Time Placed</th>';
+            content += '				<th>Date&nbsp;&amp; Time Completed</th>';
             content += '				<th>Type</th>';
             content += '				<th>Reference</th>';
             content += '				<th>Account</th>';

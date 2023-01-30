@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\IncomeController;
+use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,7 +34,7 @@ Route::middleware(['auth'])->group(function() {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
     Route::get('/earnings/{type?}', [IncomeController::class, 'index'])->name('income.index');
-    Route::get('/orders', [DashboardController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{type?}', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/network', [DashboardController::class, 'index'])->name('network.index');
     Route::get('/products', [DashboardController::class, 'index'])->name('products.index');
     Route::get('/account', [DashboardController::class, 'index'])->name('account.index');
