@@ -71,6 +71,7 @@ var ordersOnload = function ordersOnload() {
   initializeDataTables();
 };
 var networkOnload = function networkOnload() {
+  getGenealogy();
   initializeDataTables();
 };
 var transfersOnload = function transfersOnload() {
@@ -227,7 +228,6 @@ $(document).on("submit", "#login-form", function (e) {
 // End: Log In
 
 var genealogy;
-var genealogy_uplines;
 var root;
 var selected_node;
 var generate_referral_table_once = 0;
@@ -235,33 +235,26 @@ var proof_of_payment_uploader = $('<input type="file" accept="image/*" />');
 var profile_picture_uploader = $('<input type="file" accept="image/*" />');
 var account_package = ["", "DBP - ", "DSP - ", "FDP - ", "DMP - "];
 var ranks = ["Free Account", "Dealer", "Explorer", "Pathfinder", "Navigator", "Master Guide", "Fair Winner", "Grand Fair Winner", "Royal Fair Winner", "Crown Fair Winner"];
-var get_genealogy = function get_genealogy() {
+var getGenealogy = function getGenealogy() {
   $.ajax({
     method: "POST",
-    url: "admin/api/get_genealogy.php",
+    url: $("input[name='get-genealogy-route']").val(),
     timeout: 30000,
     data: {
       type: 2
     }
   }).done(function (response) {
-    response = JSON.parse(response);
-    if (response.error == "") {
-      genealogy = response.genealogy;
-      genealogy_uplines = response.genealogy_uplines;
-      root = response.root;
-      selected_node = response.root;
-      generate_genealogy();
-    } else {
-      $("#modal-error .modal-body").html(response.error);
-      $("#modal-error").modal("show");
-    }
+    genealogy = response.genealogy;
+    root = response.root;
+    selected_node = response.root;
+    generateGenealogy();
   }).fail(function () {
     setTimeout(function () {
-      get_genealogy();
+      getGenealogy();
     }, 1000);
   });
 };
-var generate_genealogy = function generate_genealogy() {
+var generateGenealogy = function generateGenealogy() {
   var uplines = [];
   uplines.push(selected_node);
   var parsed_upline = selected_node;
@@ -322,16 +315,17 @@ var generate_genealogy = function generate_genealogy() {
     for (var k = 0; k < nodes_to_be_parsed.length; k++) {
       for (var i = 0; i < genealogy.length; i++) {
         if (genealogy[i].upline == nodes_to_be_parsed[k]) {
+          console.log(genealogy[i].upline);
+          var content = ' <p class="node-name">' + genealogy[i].firstname + ' ' + genealogy[i].lastname + '</p>';
+          content += '    <p class="node-id">' + genealogy[i].downline + '</p>';
+          content += '    <p class="node-rank">' + account_package[genealogy[i].package_id] + ranks[genealogy[i].rank] + '</p>';
+          content += '    <p class="node-username">Username: ' + genealogy[i].username + '</p>';
+          content += '    <p class="node-referral_code">Referral Code: ' + genealogy[i].referral_code + ' </p>';
+          content += '    <p class="node-referral_code">Referral Code: ' + genealogy[i].referral_code + ' </p>';
+          content += '    <p class="node-button"><button class="btn btn-success btn-sm node-expand" value="' + genealogy[i].downline + '" style="background-color:#0e4d22">Expand</button></p>';
           nodes[genealogy[i].downline] = {
             parent: nodes[genealogy[i].upline],
-            text: {
-              name: genealogy[i].firstname + " " + genealogy[i].lastname,
-              id: genealogy[i].downline,
-              rank: account_package[genealogy[i].package_id] + ranks[genealogy[i].rank],
-              username: "Username: " + genealogy[i].username,
-              referral_code: "Referral Code: " + genealogy[i].referral_code,
-              button: ""
-            }
+            innerHTML: content
           };
           chart_config.push(nodes[genealogy[i].downline]);
           nodes_to_be_parsed_temp.push(genealogy[i].downline);
@@ -352,6 +346,7 @@ var generate_genealogy = function generate_genealogy() {
     table_content += '			</tr>';
     table_content += '		</thead>';
     table_content += '		<tbody>';
+    console.log(genealogy);
     while (nodes_to_be_parsed.length > 0) {
       var nodes_to_be_parsed_temp = [];
       for (var k = 0; k < nodes_to_be_parsed.length; k++) {
@@ -361,7 +356,7 @@ var generate_genealogy = function generate_genealogy() {
             table_content += '		<td>' + genealogy[i].firstname + ' ' + genealogy[i].lastname + '</td>';
             table_content += '		<td>' + genealogy[i].username + '</td>';
             table_content += '		<td>' + genealogy[i].referral_code + '</td>';
-            table_content += '		<td>' + genealogy_uplines[i - 1].firstname + ' ' + genealogy_uplines[i - 1].lastname + '</td>';
+            table_content += '		<td>' + genealogy[i].upline_firstname + ' ' + genealogy[i].upline_lastname + '</td>';
             table_content += '	</tr>';
             nodes_to_be_parsed_temp.push(genealogy[i].downline);
           }
@@ -380,11 +375,6 @@ var generate_genealogy = function generate_genealogy() {
   if ($("#has-network").attr("data-value") == 1) {
     setTimeout(function () {
       new Treant(chart_config);
-      $(".node").each(function () {
-        if ($(this).find(".node-id").html() != selected_node) {
-          $(this).find(".node-button").html('<button class="btn btn-success btn-sm node-expand" value="' + $(this).find(".node-id").html() + '" style="background-color:#0e4d22">Expand</button>');
-        }
-      });
       $('#chart').animate({
         scrollLeft: parseFloat($('.root').css("left")) - $('#chart').width() / 2 + $('.node').width() / 2
       }, 500);
@@ -534,28 +524,6 @@ $(document).ready(function () {
     $(".loading-text").css("display", "none");
     $(".data-table, #items-table").css("display", "table");
   }
-  if (page_name[0] == "network") {
-    get_genealogy();
-  }
-});
-$(document).on("click", "#logout", function () {
-  $("#logout").prop("disabled", true);
-  $("#logout").html('Logging Out...');
-  $.ajax({
-    url: "api/logout.php",
-    timeout: 30000
-  }).done(function (response) {
-    $('#modal-success .proceed').removeAttr("data-dismiss");
-    $('#modal-success .proceed').attr("onclick", "window.location='login.php';");
-    $('#modal-success .modal-body').html("You have successfully logged out.");
-    $('#modal-success').modal('show');
-  }).fail(function () {
-    $('#modal-error .modal-body').html("Unable to connect to server.");
-    $('#modal-error').modal('show');
-  }).always(function () {
-    $("#logout").html("Log Out");
-    $("#logout").prop("disabled", false);
-  });
 });
 $(document).on("click", ".products-tab", function () {
   load_cart(true);
@@ -1111,15 +1079,15 @@ $(document).on("click", "#contribute-to-pool-share", function () {
 });
 $(document).on("click", ".node-expand", function () {
   selected_node = $(this).val();
-  generate_genealogy();
+  generateGenealogy();
 });
 $(document).on("click", ".uplines", function () {
   selected_node = $(this).attr("node-id");
-  generate_genealogy();
+  generateGenealogy();
 });
 $(document).on("change", "#number-of-levels-to-be-shown", function () {
   if ($("#number-of-levels-to-be-shown").val() >= 1) {
-    generate_genealogy();
+    generateGenealogy();
   } else {
     $("#modal-error .modal-body").html("Invalid Input");
     $("#modal-error").modal("show");

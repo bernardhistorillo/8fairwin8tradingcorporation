@@ -20,6 +20,7 @@
     <link href="{{ asset('lib/coreui/icons/css/coreui-icons.min.css') }}" rel="stylesheet">
     <link href="{{ asset('lib/flag-icon-css/css/flag-icon.min.css') }}" rel="stylesheet">
     <link href="{{ asset('lib/font-awesome/css/all.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('lib/treantjs/css/Treant.css') }}" rel="stylesheet"/>
     <link href="{{ asset('lib/datatables/datatables.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('lib/pace-progress/css/pace.min.css') }}" rel="stylesheet">
@@ -28,15 +29,22 @@
 
     <title>{{ config('app.name') }} | @yield('title')</title>
 </head>
-<body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
+<body class="{{ Auth::check() ? 'app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show' : ''}}">
     @include('layouts.includes.navbar')
 
+    @if(Auth::check())
     <div class="app-body">
         @include('layouts.includes.sideNav')
         @yield('content')
     </div>
+    @else
+        @yield('content')
+    @endif
 
-    @include('layouts.includes.footer')
+    @if(Auth::check())
+        @include('layouts.includes.footer')
+    @endif
+
     @include('layouts.includes.modals')
 
     <input type="hidden" name="winners_gem_value" value="{{ winnersGemValue() }}" />
@@ -51,6 +59,8 @@
     <script src="{{ asset('lib/coreui/js/coreui.min.js') }}"></script>
     <script src="{{ asset('lib/coreui/js/custom-tooltips.min.js') }}"></script>
     <script src="{{ asset('lib/datatables/datatables.min.js') }}"></script>
+    <script src="{{ asset('lib/treantjs/js/raphael.js') }}"></script>
+    <script src="{{ asset('lib/treantjs/js/Treant.js') }}"></script>
     <script src="{{ mix('/js/app.js') }}"></script>
 
 </body>

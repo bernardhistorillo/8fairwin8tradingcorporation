@@ -1,4 +1,4 @@
-<header class="app-header navbar" style="background-color:#deefbb">
+<header class="app-header navbar">
     <button class="navbar-toggler sidebar-toggler d-lg-none mr-auto" type="button" data-toggle="sidebar-show">
         <span class="navbar-toggler-icon" style="color:#134c21"></span>
     </button>
@@ -6,7 +6,9 @@
         <img class="navbar-brand-full" src="{{ asset('img1/about-img.jpg') }}" style="width:80px" alt="">
         <!--    <img class="navbar-brand-minimized" src="img1/about-img.jpg" style="width:45px" alt="">-->
     </a>
-    <button class="navbar-toggler sidebar-toggler d-md-down-none" type="button" data-toggle="sidebar-lg-show"  style="color:#134c21">
+
+    @if(Auth::check())
+    <button class="navbar-toggler sidebar-toggler d-md-down-none" type="button" data-toggle="sidebar-lg-show" style="color:#134c21">
         <span class="navbar-toggler-icon" style="color:#134c21"></span>
     </button>
     <ul class="nav navbar-nav ml-auto">
@@ -18,9 +20,10 @@
                 <div class="dropdown-header text-center">
                     <strong>Username: {{ Auth::user()->username }}</span></strong>
                 </div>
-                <a class="dropdown-item" href="javascript:void(0)" id="logout">
+                <a class="dropdown-item" href="{{ route('auth.logout') }}">
                     <i class="fa fa-lock"></i> Logout</a>
             </div>
         </li>
     </ul>
+    @endif
 </header>

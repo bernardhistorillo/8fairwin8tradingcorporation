@@ -3,24 +3,6 @@
 @section('title', 'Log In')
 
 @section('content')
-<nav class="app-header navbar" style="position:relative">
-    <a class="navbar-brand" href="{{ route('home.index') }}">
-        <img class="navbar-brand-full" src="img1/about-img.jpg?v=1" style="width:80px" alt="">
-    </a>
-</nav>
-
-<ol class="breadcrumb mb-0">
-    <li class="breadcrumb-item breadcrumb-item-custom" style="padding-right:7px">
-        <a href="{{ route('home.index') }}" style="color:#606060"><i class="fas fa-home"></i>&nbsp;&nbsp;Home</a>
-    </li>
-    <li class="breadcrumb-item breadcrumb-item-custom" style="padding-right:7px">
-        <a href="{{ route('login.index') }}" style="color:#0E4D22; font-weight:700"><i class="fas fa-sign-in-alt"></i>&nbsp;&nbsp;Log In</a>
-    </li>
-    <li class="breadcrumb-item breadcrumb-item-custom">
-        <a href="{{ route('register.index') }}" style="color:#606060"><i class="fas fa-user-plus"></i>&nbsp;&nbsp;Register</a>
-    </li>
-</ol>
-
 <div class="container">
     <div class="row align-items-center justify-content-center" style="min-height: calc(100vh - 101px)">
         <div class="col-md-8 col-lg-6 my-5">
@@ -51,7 +33,7 @@
                     </form>
                 </div>
             </div>
-            <div class="text-center"> <p> Not a member yet? <a href="https://fairwintradingcorp.com/portal/register.php">Sign Up</a></p>
+            <div class="text-center"> <p> Not a member yet? <a href="{{ route('register.index') }}">Sign Up</a></p>
         </div>
     </div>
 </div>
