@@ -40,7 +40,7 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/network', [NetworkController::class, 'index'])->name('network.index');
     Route::post('/network/getGenealogy', [NetworkController::class, 'getGenealogy'])->name('network.getGenealogy');
 
-    Route::get('/products', [DashboardController::class, 'index'])->name('products.index');
+    Route::get('/products', [ProductController::class, 'index'])->name('products.index');
     Route::get('/account', [DashboardController::class, 'index'])->name('account.index');
     Route::get('/transfers', [DashboardController::class, 'index'])->name('transfers.index');
     Route::get('/conversions', [DashboardController::class, 'index'])->name('conversions.index');
