@@ -718,10 +718,10 @@ $(document).on("click", "#place-order", function () {
     $("#modal-warning button[data-dismiss='modal']").css("display", "block");
   });
 });
-$(document).on("change", "#purchase-winners-gem-amount", function () {
+$(document).on("input", "#purchase-winners-gem-amount", function () {
   $("#purchase-winners-gem-price").val(parseFloat($(this).val() * winnersGemValue).toFixed(2));
 });
-$(document).on("change", "#purchase-winners-gem-price", function () {
+$(document).on("input", "#purchase-winners-gem-price", function () {
   $("#purchase-winners-gem-amount").val(parseFloat($(this).val() / winnersGemValue).toFixed(2));
 });
 $(document).on("click", "#purchase-winners-gem-show-modal", function () {
@@ -756,24 +756,20 @@ $(document).on("click", "#purchase-winners-gem", function () {
     },
     timeout: 30000
   }).done(function (response) {
-    response = JSON.parse(response);
-    if (response.error == "") {
+    if (response.type && response.type == "winners-gem-update") {
+      winnersGemValue = parseFloat(response.winners_gem_value);
+      $("#purchase-winners-gem-amount").val(parseFloat($(this).val() / winnersGemValue).toFixed(2));
+      $("#modal-error .modal-body").html("Winners Gem value has just changed. Winners Gem to be purchased was updated.");
+      $("#modal-error").modal('show');
+    } else {
       $("#purchase-winners-gem-amount").val(0);
       $('#modal-success .proceed').removeAttr("data-dismiss");
       $('#modal-success .proceed').attr("onclick", "window.location = 'orders.php?view=winners-gem'; $('#modal-success .proceed').prop('disabled',true); $('#modal-success .proceed').html('Redirecting...')");
       $('#modal-success .modal-body').html("You have successfully submitted your Winners Gem purchase request.");
       $('#modal-success').modal('show');
-    } else {
-      if (response.type == "winners-gem-update") {
-        winnersGemValue = parseFloat(response.winners_gem_value);
-        $("#purchase-winners-gem-amount").val(parseFloat($(this).val() / winnersGemValue).toFixed(2));
-      }
-      $("#modal-error .modal-body").html(response.error);
-      $("#modal-error").modal('show');
     }
-  }).fail(function () {
-    $("#modal-error .modal-body").html("Unable to connect to server.");
-    $("#modal-error").modal('show');
+  }).fail(function (error) {
+    showErrorFromAjax(error);
   }).always(function () {
     $("#modal-warning").modal('hide');
     $("#modal-warning .proceed").html("Confirm");
@@ -968,24 +964,20 @@ $(document).on("click", "#convert", function () {
     },
     timeout: 30000
   }).done(function (response) {
-    response = JSON.parse(response);
-    if (response.error == "") {
+    if (response.type && response.type == "winners-gem-update") {
+      winnersGemValue = parseFloat(response.winners_gem_value);
+      $("#purchase-winners-gem-amount").val(parseFloat($(this).val() / winnersGemValue).toFixed(2));
+      $("#modal-error .modal-body").html("Winners Gem value has just changed. Winners Gem to be purchased was updated.");
+      $("#modal-error").modal('show');
+    } else {
       $("#winners-gem-balance").html(numberFormat(response.gem_balance, true));
       $("#winners-gem-balance-in-pesos").html(numberFormat(response.gem_balance * winnersGemValue, true));
       $("#peso-balance").html(numberFormat(response.peso_balance, true));
       $('#modal-success .modal-body').html("You have successfully converted &#x20B1;&nbsp;" + numberFormat(amount, true) + " to Winners Gem.");
       $('#modal-success').modal('show');
-    } else {
-      if (response.type == "winners-gem-update") {
-        winnersGemValue = parseFloat(response.winners_gem_value);
-        $("#purchase-winners-gem-amount").val(parseFloat($(this).val() / winnersGemValue).toFixed(2));
-      }
-      $("#modal-error .modal-body").html(response.error);
-      $("#modal-error").modal('show');
     }
   }).fail(function () {
-    $("#modal-error .modal-body").html("Unable to connect to server.");
-    $("#modal-error").modal('show');
+    showErrorFromAjax(error);
   }).always(function () {
     $("#modal-warning").modal('hide');
     $("#modal-warning .proceed").html("Confirm");
