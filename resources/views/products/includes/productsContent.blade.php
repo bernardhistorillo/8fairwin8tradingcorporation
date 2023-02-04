@@ -187,6 +187,7 @@
 
 		<div class="card">
 			<div class="card-body">
+                <input type="hidden" name="place-order-route" value="{{ route('products.placeOrder') }}" />
 				<button class="btn btn-success btn-lg" id="place-order-confirm" data-terminal-account="{{ ($terminalAccount) ?? 0 }}" data-stockist="0" style="background-color:#0e4d22; width:100%">Place Order</button>
 			</div>
 		</div>

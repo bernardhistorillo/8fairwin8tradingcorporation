@@ -42,6 +42,9 @@ Route::middleware(['auth'])->group(function() {
     Route::post('/network/getGenealogy', [NetworkController::class, 'getGenealogy'])->name('network.getGenealogy');
 
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+    Route::post('/products/purchaseWinnersGem', [ProductController::class, 'purchaseWinnersGem'])->name('products.purchaseWinnersGem');
+    Route::post('/products/placeOrder', [ProductController::class, 'placeOrder'])->name('products.placeOrder');
+
     Route::get('/account', [DashboardController::class, 'index'])->name('account.index');
     Route::get('/transfers', [DashboardController::class, 'index'])->name('transfers.index');
     Route::get('/conversions', [DashboardController::class, 'index'])->name('conversions.index');

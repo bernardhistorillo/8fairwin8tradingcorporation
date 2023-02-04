@@ -683,7 +683,7 @@ $(document).on("click", "#place-order", function () {
   });
   $.ajax({
     method: "POST",
-    url: "api/place-order.php",
+    url: $("input[name='place-order-route']").val(),
     data: {
       terminal_account: $("#place-order-confirm").data("terminal-account"),
       items: JSON.stringify(ordered_items),
@@ -748,7 +748,7 @@ $(document).on("click", "#purchase-winners-gem", function () {
   });
   $.ajax({
     method: "POST",
-    url: "api/purchase-winners-gem.php",
+    url: $("input[name='purchase-winners-gem-route']").val(),
     data: {
       price: price,
       winners_gem_value: winnersGemValue,
@@ -764,7 +764,7 @@ $(document).on("click", "#purchase-winners-gem", function () {
     } else {
       $("#purchase-winners-gem-amount").val(0);
       $('#modal-success .proceed').removeAttr("data-dismiss");
-      $('#modal-success .proceed').attr("onclick", "window.location = 'orders.php?view=winners-gem'; $('#modal-success .proceed').prop('disabled',true); $('#modal-success .proceed').html('Redirecting...')");
+      $('#modal-success .proceed').attr("onclick", "window.location = 'orders/winnersgem'; $('#modal-success .proceed').prop('disabled',true); $('#modal-success .proceed').html('Redirecting...')");
       $('#modal-success .modal-body').html("You have successfully submitted your Winners Gem purchase request.");
       $('#modal-success').modal('show');
     }

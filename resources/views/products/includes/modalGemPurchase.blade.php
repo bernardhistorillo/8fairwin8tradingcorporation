@@ -6,6 +6,8 @@
 				<button class="close" data-dismiss="modal">&times;</button>
 			</div>
 			<div class="modal-body">
+                <input type="hidden" name="purchase-winners-gem-route" value="{{ route('products.purchaseWinnersGem') }}" />
+
 				<div class="row">
 					<div class="col-sm-6 mb-3">
 						<small>Winners Gem</small>
@@ -18,7 +20,7 @@
 							<input type="number" class="form-control text-center" id="purchase-winners-gem-amount" value="0" min="0" />
 						</div>
 					</div>
-					
+
 					<div class="col-sm-6 mb-3">
 						<small>Total Price</small>
 						<div class="input-group">
@@ -29,7 +31,7 @@
 						</div>
 					</div>
 				</div>
-				
+
 				<div class="mb-2">
 					<small>Proof of Payment</small>
 					<div class="row mt-2 no-gutters" id="proof-of-payment-container" style="margin-left:-4px; margin-right:-4px">
@@ -41,7 +43,7 @@
 							</div>
 						</div>
 					</div>
-					
+
 					<div id="proof-of-payment-content" class="d-none">
 						<div class="col-6 px-1" style="margin-bottom:10px">
 							<div class="proof-of-payment" data-has-image="0" style="width:100%; height:180px; background-color:#eeeeee; border:2px solid #0e4d22; position:relative; cursor:pointer">
