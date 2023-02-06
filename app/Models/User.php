@@ -117,6 +117,12 @@ class User extends Authenticatable
     }
     // End: Relationships
 
+    public function directCount() {
+        return $this->downlines()
+            ->where('level', 1)
+            ->count('id');
+    }
+
     public function downlineCount() {
         return $this->downlines
             ->count('id');
@@ -196,6 +202,16 @@ class User extends Authenticatable
             ->sum('points_value');
     }
 
+    public function rankLegCount($rank) {
+        return $this->downlines()
+            ->join('users', function($join) use ($rank) {
+                $join->on('downline', 'users.id');
+                $join->where('rank', $rank);
+            })
+            ->distinct('leg')
+            ->count('leg');
+    }
+
     public function requiredPVMaintenance() {
         $requiredPVMaintenance = 100;
 
@@ -211,7 +227,7 @@ class User extends Authenticatable
     }
 
     public function packageAndRank() {
-        $packages = ["", "DBP", "DSP",  "FDP", "DMP"];
+        $packages = ["", "DBP", "DSP", "FDP", "DMP"];
 
         return $packages[$this->package_id] . (($this->package_id > 0) ? ' - ' : '') . ranks()[$this->rank];
     }

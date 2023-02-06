@@ -19,8 +19,8 @@ class CreateConversionsTable extends Migration
             $table->tinyInteger('type');
             $table->decimal('gem', 65, 18);
             $table->decimal('peso', 65, 18);
-            $table->decimal('fee_in_gems', 65, 18);
-            $table->decimal('fee_in_pesos', 65, 18);
+            $table->decimal('fee_in_gems', 65, 18)->default(0);
+            $table->decimal('fee_in_pesos', 65, 18)->default(0);
             $table->timestamps();
         });
     }

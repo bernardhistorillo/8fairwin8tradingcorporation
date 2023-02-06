@@ -27,12 +27,12 @@
                                     <i class="fas fa-exclamation" style="color:#0e4d22; font-size:4em"></i>
                                 </div>
                             </div>
-                            <h5 class="text-center mt-4">Be a Fairwin Reseller! to get the most out of this program. You
-                                can be one by purchasing one of our packages.</h5>
-                            <div class="text-center mt-4 mb-3"><a class="btn btn-success"
-                                                                  href="{{ route('products.index', ['type' => 1]) }}"
-                                                                  style="background-color:#0e4d22"><i
-                                        class="fas fa-box"></i>&nbsp;&nbsp;Go to Packages</a></div>
+                            <h5 class="text-center mt-4">Be a Fairwin Reseller! to get the most out of this program. You can be one by purchasing one of our packages.</h5>
+                            <div class="text-center mt-4 mb-3">
+                                <a class="btn btn-success" href="{{ route('products.index', ['type' => 1]) }}" style="background-color:#0e4d22">
+                                    <i class="fas fa-box"></i>&nbsp;&nbsp;Go to Packages
+                                </a>
+                            </div>
                         </div>
                     </div>
 
