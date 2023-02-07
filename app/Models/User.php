@@ -108,6 +108,10 @@ class User extends Authenticatable
         return $this->hasMany(StairstepIncome::class, 'upline');
     }
 
+    public function stockistAssignment() {
+        return $this->hasOne(StockistAssignment::class, 'assigned');
+    }
+
     public function unilevelIncomes() {
         return $this->hasMany(UnilevelIncome::class, 'upline');
     }
@@ -234,6 +238,35 @@ class User extends Authenticatable
 
     public function photo() {
         return ($this->photo) ? asset($this->photo) : asset('img/profile-photos/default.png');
+    }
+
+    public function terminalWinnersGem() {
+        $stockedItems = $this->orders()
+            ->select('ordered_items.*')
+            ->join('ordered_items', 'orders.id', 'ordered_items.order_id')
+            ->where('stockist', $this->stockist)
+            ->whereNotNull('date_time_completed')
+            ->get();
+
+        $terminalWinnersGem["stockedPoints"] = 0;
+        foreach($stockedItems as $stockedItem) {
+            $terminalWinnersGem["stockedPoints"] += $stockedItem["quantity"] * $stockedItem["points_value"];
+        }
+
+        $orderedItems = $this->ordersAsATerminal()
+            ->select('ordered_items.*')
+            ->join('ordered_items', 'orders.id', 'ordered_items.order_id')
+            ->whereNotNull('date_time_completed')
+            ->get();
+
+        $terminalWinnersGem["orderedPoints"] = 0;
+        foreach($orderedItems as $orderedItem) {
+            $terminalWinnersGem["orderedPoints"] += $orderedItem["quantity"] * $orderedItem["points_value"];
+        }
+
+        $terminalWinnersGem["balance"] = $terminalWinnersGem["stockedPoints"] - $terminalWinnersGem["orderedPoints"];
+
+        return $terminalWinnersGem;
     }
 
     public function totalPesoConvertedToGem() {

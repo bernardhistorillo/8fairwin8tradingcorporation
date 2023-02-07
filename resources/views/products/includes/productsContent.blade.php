@@ -1,9 +1,9 @@
 <nav id="products-tab-container" class="nav nav-pills nav-justified {{ (!$showProductsTab) ? 'd-none' : '' }}" data-hidden="{{ (!$showProductsTab) ? '1' : '0' }}">
 	<a class="nav-link active products-tab" data-type="2" style="cursor:pointer">Products</a>
-	<a class="nav-link products-tab" data-type="1" data-package-id="{{ ($terminalAccount) ? $terminalAccountDetails["package_id"] : Auth::user()->package_id }}" style="cursor:pointer">Packages</a>
+	<a class="nav-link products-tab" data-type="1" data-package-id="{{ ($terminalUser) ? $terminalUserDetails["package_id"] : Auth::user()->package_id }}" style="cursor:pointer">Packages</a>
 </nav>
 
-@if(!$terminalAccount)
+@if(!$terminalUser)
 <div class="card d-lg-none mt-4">
 	@include('products.includes.myBalanceCardContent')
 </div>
@@ -16,8 +16,8 @@
 				<div class="row px-1">
 					@foreach($items as $item)
 					<div class="col-md-6 col-lg-12 col-xl-6 px-2 products-section {{ ($item["type"] == 1) ? 'd-none' : '' }}" data-type="{{ $item["type"] }}" data-package-id="{{ $item["package_id"] }}">
-						<div class="brand-card product-container mb-3" data-id="{{ $item["id"] }}" data-name="{{ $item["name"] }}" data-price="{{ ((!$terminalAccount && Auth::user()->package_id > 0) || ($terminalAccount && $terminalAccountDetails["package_id"] > 0)) ? $item["distributors_price"] / $winnersGemValue : $item["suggested_retail_price"] / $winnersGemValue }}" data-points="{{ $item["points_value"] }}" data-center-price="{{ $item["center_price"] / $winnersGemValue }}" data-mobile-price="{{ $item["mobile_price"] / $winnersGemValue }}" data-distributors-price="{{ $item["distributors_price"] / $winnersGemValue }}" data-srp="{{ $item["suggested_retail_price"] / $winnersGemValue }}" data-quantity="1">
-                            @if(!$terminalAccount)
+						<div class="brand-card product-container mb-3" data-id="{{ $item["id"] }}" data-name="{{ $item["name"] }}" data-price="{{ ((!$terminalUser && Auth::user()->package_id > 0) || ($terminalUser && $terminalUserDetails["package_id"] > 0)) ? $item["distributors_price"] / $winnersGemValue : $item["suggested_retail_price"] / $winnersGemValue }}" data-points="{{ $item["points_value"] }}" data-center-price="{{ $item["center_price"] / $winnersGemValue }}" data-mobile-price="{{ $item["mobile_price"] / $winnersGemValue }}" data-distributors-price="{{ $item["distributors_price"] / $winnersGemValue }}" data-srp="{{ $item["suggested_retail_price"] / $winnersGemValue }}" data-quantity="1">
+                            @if(!$terminalUser)
 						   	<span class="stock d-none">{{ $item->terminalItemStock(Auth::user()->id, Auth::user()->stockist)['inStock'] }}</span>
 							@endif
 							<a href="{{ $item->photo() }}" data-fancybox="images" data-caption="{{ $item["name"] }}" style="text-align:center">
@@ -36,7 +36,7 @@
 										<td class="p-2" style="border-right:1px solid #dddddd; vertical-align:inherit">
 											<div class="text-value crossed-price" style="font-size:0.95em; line-height:10px"><span style="text-decoration:line-through">{{ number_format($item["suggested_retail_price"] / $winnersGemValue, 2) }} <i class="fas fa-gem" style="font-size:0.8em"></i></span></div>
 											<div class="text-value">
-										 		<span class="price">{{ ((!$terminalAccount && Auth::user()->package_id > 0) || ($terminalAccount && $terminalAccountDetails["package_id"] > 0)) ? number_format($item["distributors_price"] / $winnersGemValue, 2) : number_format($item["suggested_retail_price"] / $winnersGemValue, 2) }}</span>
+										 		<span class="price">{{ ((!$terminalUser && Auth::user()->package_id > 0) || ($terminalUser && $terminalUserDetails["package_id"] > 0)) ? number_format($item["distributors_price"] / $winnersGemValue, 2) : number_format($item["suggested_retail_price"] / $winnersGemValue, 2) }}</span>
 											 	&nbsp;<i class="fas fa-gem" style="font-size:0.8em"></i>
 											</div>
 											<div class="text-uppercase text-muted small">Winners Gem</div>
@@ -64,7 +64,7 @@
 	</div>
 
 	<div class="col-lg-6 col-xl-4">
-        @if(!$terminalAccount)
+        @if(!$terminalUser)
 		<div class="card d-none d-lg-block">
             @include('products.includes.myBalanceCardContent')
 		</div>
@@ -92,7 +92,7 @@
 								<th class="text-left">Quantity</th>
 								<td class="text-right" id="total-quantity">0</td>
 							</tr>
-							@if((!$terminalAccount && Auth::user()->package_id > 0) || ($terminalAccount && $terminalAccountDetails["package_id"] > 0))
+							@if((!$terminalUser && Auth::user()->package_id > 0) || ($terminalUser && $terminalUserDetails["package_id"] > 0))
 							<tr>
 								<th class="text-left">Points</th>
 								<td class="text-right"><span id="total-points">0</span> PV</td>
@@ -188,7 +188,7 @@
 		<div class="card">
 			<div class="card-body">
                 <input type="hidden" name="place-order-route" value="{{ route('products.placeOrder') }}" />
-				<button class="btn btn-success btn-lg" id="place-order-confirm" data-terminal-account="{{ ($terminalAccount) ?? 0 }}" data-stockist="0" style="background-color:#0e4d22; width:100%">Place Order</button>
+				<button class="btn btn-success btn-lg" id="place-order-confirm" data-terminal-account="{{ ($terminalUser) ?? 0 }}" data-stockist="0" style="background-color:#0e4d22; width:100%">Place Order</button>
 			</div>
 		</div>
 	</div>

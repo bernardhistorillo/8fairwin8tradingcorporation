@@ -7,6 +7,7 @@ use App\Models\Downline;
 use App\Models\GemPurchase;
 use App\Models\Item;
 use App\Models\Order;
+use App\Models\OrderedItem;
 use App\Models\RankIncentiveIncome;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -23,13 +24,13 @@ class ProductController extends Controller
             ->orderBy('name')
             ->get();
 
-        $terminalAccount = false;
-        $terminalAccountDetails = false;
+        $terminalUser = false;
+        $terminalUserDetails = false;
 
-        $showProductsTab = (!$terminalAccount && Auth::user()->package_id != 3) || ($terminalAccount && $terminalAccountDetails["package_id"] != 3);
+        $showProductsTab = (!$terminalUser && Auth::user()->package_id != 3) || ($terminalUser && $terminalUserDetails["package_id"] != 3);
         $income = Auth::user()->income();
 
-        return view('products.index', compact('winnersGemValue', 'items', 'showProductsTab', 'terminalAccount', 'terminalAccountDetails', 'income'));
+        return view('products.index', compact('winnersGemValue', 'items', 'showProductsTab', 'terminalUser', 'terminalUserDetails', 'income'));
     }
 
     public function purchaseWinnersGem(Request $request) {
@@ -107,7 +108,7 @@ class ProductController extends Controller
         $isPromoted = false;
 
 //        Execute upon purchase of a package
-//        if($type == 1 && ($package_id == 1 || $package_id == 2 || $package_id == 3 || $package_id == 4) && $account_id == $current_account_id && $current_rank == 0) {
+//        if($type == 1 && ($package_id == 1 || $package_id == 2 || $package_id == 3 || $package_id == 4) && $account_id == $purchaser && $current_rank == 0) {
 //            $new_rank = 1;
 //        }
 
@@ -164,8 +165,13 @@ class ProductController extends Controller
     public function placeOrder(Request $request) {
         $request->validate([
             'items' => 'required',
-            'stockist' => 'required|numeric',
+            'stockist' => 'required|numeric', // 0 => is not a stockist, 1 => is a mobile stockist, 2 => is a center stockist
             'terminal_account' => 'required',
+            'full_name' => 'required',
+            'contact_number' => 'required',
+            'barangay' => 'required',
+            'city' => 'required',
+            'zip_code' => 'required',
         ]);
 
         $items = $request->items;
@@ -174,7 +180,7 @@ class ProductController extends Controller
         }
 
         if(count($items) > 0) {
-            $terminalAccount = null;
+            $terminalUser = null;
 
             if($request->terminal_account == 0) {
                 $purchaser = Auth::user();
@@ -184,11 +190,9 @@ class ProductController extends Controller
                 }
             } else {
                 if(Auth::user()->stockist > 0) {
-                    $terminal_account_id = base64_decode($_POST["terminal_account"]);
-
-                    $terminalAccount = User::find($terminal_account_id);
-                    if($terminalAccount) {
-                        $purchaser = $terminalAccount;
+                    $terminalUser = User::find(base64_decode($request->terminal_account));
+                    if($terminalUser) {
+                        $purchaser = $terminalUser;
                     } else {
                         abort(422, "Invalid Purchaser");
                     }
@@ -198,141 +202,111 @@ class ProductController extends Controller
             }
 
             if($request->stockist == 1) {
-
-
-                $sql = $db->prepare("SELECT `stockist` FROM `fw_stockist_assignment` WHERE `assigned` = ?");
-                if(!$sql->execute(array($current_account_id))) { error(""); }
-                $terminal_account_id = $sql->fetch(PDO::FETCH_ASSOC);
-                $terminal_account_id = $terminal_account_id["stockist"];
+                $terminalUser = $purchaser->stockistAssignment->stockistUser;
             } else if($request->stockist == 2) {
-                $terminalAccount = null;
+                $terminalUser = null;
             }
 
-            if($terminalAccount) {
-                // get what type of stockist the terminal account is
-                $sql = $db->prepare("SELECT `stockist` FROM `fw_accounts` WHERE `id` = ?");
-                if (!$sql->execute(array($terminal_account_id))) { error(""); }
-                $terminal_stockist = $sql->fetch(PDO::FETCH_ASSOC);
-                $terminal_stockist = $terminal_stockist["stockist"];
-            }
+            $totalPrice = 0;
+            $totalPointsValue = 0;
+            $lessInStock = 0;
 
-            if(!$mass_place_order) {
-                $total_price = 0;
-                $total_points_value = 0;
-                $less_in_stock = 0;
+            $winnersGemValue = winnersGemValue();
 
-                $winnersGemValue = winnersGemValue();
-
-                for($i = 0; $i < count($items); $i++) {
-                    if($request->stockist == 0) {
-                        $sql = $db->prepare("SELECT `rank` FROM `fw_accounts` WHERE `id` = ?");
-                        if (!$sql->execute(array($current_account_id))) { error(""); }
-                        $rank = $sql->fetch(PDO::FETCH_ASSOC);
-
-                        if($rank["rank"] > 0) {
-                            $price = "distributors_price";
-                        } else {
-                            $price = "suggested_retail_price";
-                        }
-                    } else if($request->stockist == 1) {
-                        $price = "mobile_price";
-                    } else if($request->stockist == 2) {
-                        $price = "center_price";
-                    }
-
-                    $sql = $db->prepare("SELECT `type`, `" . $price . "`, `points_value` FROM `fw_items` WHERE `id` = ?");
-                    if (!$sql->execute(array($items[$i]->id))) { error(""); }
-                    $item_details = $sql->fetch(PDO::FETCH_ASSOC);
-
-                    $type = $item_details["type"];
-
-                    $items[$i]->price = $item_details[$price] / $winnersGemValue;
-                    $items[$i]->points_value = $item_details["points_value"];
-
-                    $total_price += $items[$i]->quantity * $items[$i]->price;
-                    $total_points_value += $items[$i]->quantity * $items[$i]->points_value;
-
-                    if($terminalAccount && $request->stockist != 2) { // if purchased by a stockist but not a center stockist, stock is checked
-                        $item_stock = terminal_item_stock($items[$i]->id, $terminal_account_id, $terminal_stockist);
-
-                        if($item_stock["in_stock"] < $items[$i]->quantity) {
-                            $less_in_stock++;
-                        }
-                    }
+            for($i = 0; $i < count($items); $i++) {
+                if($request->stockist == 1) {
+                    $price = "mobile_price";
+                } else if($request->stockist == 2) {
+                    $price = "center_price";
+                } else {
+                    $price = ($purchaser['rank'] > 0) ? "distributors_price" : "suggested_retail_price";
                 }
 
-                if($terminalAccount && $request->stockist != 2) { // if purchased by a stockist but not a center stockist, stock is checked
-                    if($less_in_stock > 0) {
-                        error($less_in_stock . " of the items to be ordered " . (($less_in_stock > 1) ? "are" : "is") . " less in stock.");
+                $itemDetails = Item::find($items[$i]->id);
+
+                // 1 => package, 2 => product
+                $type = $itemDetails["type"];
+
+                $items[$i]->price = $itemDetails[$price] / $winnersGemValue;
+                $items[$i]->points_value = $itemDetails["points_value"];
+
+                $totalPrice += $items[$i]->quantity * $items[$i]->price;
+                $totalPointsValue += $items[$i]->quantity * $items[$i]->points_value;
+
+                // If purchased by a stockist but not a center stockist, stock is checked
+                if($terminalUser && $request->stockist != 2) {
+                    $itemStock = $itemDetails->terminalItemStock($terminalUser['id'], $terminalUser['stockist']);
+
+                    if($itemStock["in_stock"] < $items[$i]->quantity) {
+                        $lessInStock++;
                     }
                 }
-            } else {
-                $total_price = $order["price"];
-                $total_points_value = $order["points_value"];
-                $type = $order["type"];
             }
+
+            abort_if($lessInStock > 0, 422, $lessInStock . " of the items to be ordered " . (($lessInStock > 1) ? "are" : "is") . " less in stock.");
 
             if($request->stockist) {
                 $type = 2;
             }
 
-            if(!$mass_place_order) {
-                if($terminalAccount) {
-                    $terminal_winners_gem = terminal_winners_gem($_SESSION["fw_account_id"]);
-
-                    if(number_format($terminal_winners_gem["balance"],"2",".","") < number_format($total_points_value,"2",".","")) {
-                        error("Insufficient Winners Gem");
-                    }
-                } else {
-                    $earnings = earnings($current_account_id);
-
-                    if(number_format($earnings["gem_balance"],"2",".","") < number_format($total_price,"2",".","")) {
-                        error("Insufficient Winners Gem");
-                    }
-                }
+            if($terminalUser) {
+                $terminalWinnersGem = $terminalUser->terminalWinnersGem();
+                abort_if($terminalWinnersGem["balance"] < $totalPointsValue, 422, "Insufficient Winners Gem");
+            } else {
+                $income = $purchaser->income();
+                abort_if($income["gemBalance"] < $totalPrice, 422, "Insufficient Winners Gem");
             }
 
-            if(!$mass_place_order) {
-                $code_exists = 1;
-                while ($code_exists == 1) {
-                    $characters = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-                    $characters_length = strlen($characters);
-                    $generated_code = "";
-                    for ($j = 0; $j < 8; $j++) {
-                        $generated_code = $generated_code . $characters[rand(0, $characters_length - 1)];
-                    }
-                    $sql = $db->prepare("SELECT `id` FROM `fw_orders` WHERE `reference` = ?");
-                    if (!$sql->execute(array($generated_code))) { error(""); }
-                    $code_exists = $sql->rowCount();
-                }
+            do {
+                $referenceCode = generateCode(8);
+                $codeExists = Order::where('reference', 'LIKE', $referenceCode)
+                    ->first();
+            } while ($codeExists);
 
-                if($request->stockist == 0) {
-                    $pool_share = ($type == 1) ? $total_points_value : $total_points_value * 0.1;
-                } else {
-                    $pool_share = 0;
-                }
-
-                $sql = $db->prepare("INSERT INTO `fw_orders`(`type`, `stockist`, `reference`, `account_id`, `price`, `points_value`, `pool_share`, `full_name`, `contact_number`, `barangay`, `city`, `province`, `zip_code`, `terminal_account_id`, `date_time_placed`, `date_time_completed`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-                if(!$sql->execute(array($type, $request->stockist, $generated_code, $current_account_id, $total_price, $total_points_value, $pool_share, $full_name, $contact_number, $barangay, $city, $province, $zip_code, $terminal_account_id, $date_time, "0000-00-00 00:00:00"))) { error(""); }
-                $order_id = $db->lastInsertId();
-
-                for($i = 0; $i < count($items); $i++) {
-                    $sql = $db->prepare("INSERT INTO `fw_ordered_items`(`order_id`, `item_id`, `quantity`, `price`, `points_value`) VALUES (?, ?, ?, ?, ?)");
-                    if (!$sql->execute(array($order_id, $items[$i]->id, $items[$i]->quantity, $items[$i]->price, $items[$i]->points_value))) { error(""); }
-                }
+            // If purchaser is not a stockist
+            if($request->stockist == 0) {
+                // If the item is a package, pool share is the total points value, else, just 10%
+                $poolShare = ($type == 1) ? $totalPointsValue : $totalPointsValue * 0.1;
             } else {
-                $order_id = $order["id"];
+                $poolShare = 0;
+            }
+
+            $order = new Order();
+            $order->type = $type;
+            $order->stockist = $request->stockist;
+            $order->reference = $referenceCode;
+            $order->user_id = $purchaser['id'];
+            $order->price = $totalPrice;
+            $order->points_value = $totalPointsValue;
+            $order->pool_share = $poolShare;
+            $order->full_name = $request->full_name;
+            $order->contact_number = $request->contact_number;
+            $order->barangay = $request->barangay;
+            $order->city = $request->city;
+            $order->province = $request->province;
+            $order->zip_code = $request->zip_code;
+            $order->terminal_user_id = $terminalUser['id'];
+            $order->save();
+
+            for($i = 0; $i < count($items); $i++) {
+                $orderedItem = new OrderedItem();
+                $orderedItem->order_id = $order['id'];
+                $orderedItem->item_id = $items[$i]->id;
+                $orderedItem->quantity = $items[$i]->quantity;
+                $orderedItem->price = $items[$i]->price;
+                $orderedItem->points_value = $items[$i]->points_value;
+                $orderedItem->save();
             }
 
             if($request->stockist == 0) {
-                if($type == 1 && $current_account_id > 1) { // Package Purchase
+                if($type == 1 && $purchaser['id'] > 1) { // Package Purchase
                     $sql = $db->prepare("SELECT `item_id` FROM `fw_ordered_items` WHERE `order_id` = ?");
-                    if (!$sql->execute(array($order_id))) { error(""); }
+                    if (!$sql->execute(array($order['id']))) { error(""); }
                     $item_id = $sql->fetch(PDO::FETCH_ASSOC);
                     $item_id = $item_id["item_id"];
 
                     $sql = $db->prepare("SELECT `package_id`, `sponsor`, `rank` FROM `fw_accounts` WHERE `id` = ?");
-                    if (!$sql->execute(array($current_account_id))) { error(""); }
+                    if (!$sql->execute(array($purchaser['id']))) { error(""); }
                     $account = $sql->fetch(PDO::FETCH_ASSOC);
                     $package_id = $account["package_id"];
 
@@ -349,19 +323,19 @@ class ProductController extends Controller
                         $package_id = $purchased_package;
 
                         $sql = $db->prepare("UPDATE `fw_accounts` SET `package_id` = ? WHERE `id` = ?");
-                        if (!$sql->execute(array($purchased_package, $current_account_id))) { error(""); }
+                        if (!$sql->execute(array($purchased_package, $purchaser['id']))) { error(""); }
                     }
 
                     $sql = $db->prepare("SELECT `id` FROM `fw_genealogy` WHERE `upline` = ? AND `downline` = ?");
-                    if (!$sql->execute(array($account["sponsor"], $current_account_id))) { error(""); }
+                    if (!$sql->execute(array($account["sponsor"], $purchaser['id']))) { error(""); }
                     if ($sql->rowCount() == 0) {
                         $sql = $db->prepare("INSERT INTO `fw_genealogy`(`upline`, `downline`) VALUES (?, ?)");
-                        if (!$sql->execute(array($account["sponsor"], $current_account_id))) { error(""); }
+                        if (!$sql->execute(array($account["sponsor"], $purchaser['id']))) { error(""); }
 
                         // Downline Ranks
                         $upline = $account["sponsor"];
                         $upline_rank = $account["rank"];
-                        $downline = $current_account_id;
+                        $downline = $purchaser['id'];
                         $level = 1;
 
                         $sql = $db->prepare("SELECT `downline` FROM `fw_genealogy` WHERE `upline` = ?");
@@ -375,7 +349,7 @@ class ProductController extends Controller
                         }
 
                         $sql = $db->prepare("INSERT INTO `fw_downlines`(`upline`, `downline`, `leg`, `level`) VALUES (?, ?, ?, ?)");
-                        if (!$sql->execute(array($upline, $current_account_id, $i + 1, $level++))) { error(""); }
+                        if (!$sql->execute(array($upline, $purchaser['id'], $i + 1, $level++))) { error(""); }
 
                         $downline = $upline;
 
@@ -396,7 +370,7 @@ class ProductController extends Controller
                             }
 
                             $sql = $db->prepare("INSERT INTO `fw_downlines`(`upline`, `downline`, `leg`, `level`) VALUES (?, ?, ?, ?)");
-                            if (!$sql->execute(array($upline["upline"], $current_account_id, $i + 1, $level++))) { error(""); }
+                            if (!$sql->execute(array($upline["upline"], $purchaser['id'], $i + 1, $level++))) { error(""); }
 
                             $downline = $upline["upline"];
 
@@ -411,7 +385,7 @@ class ProductController extends Controller
                     $dream_builder_income = array(300, 75, 75, 75, 75, 25, 25, 25);
                     $fairwin_dream_income = array(500, 20, 20, 20, 20, 10, 10, 10);
 
-                    $downline = $current_account_id;
+                    $downline = $purchaser['id'];
 
                     $statement = '';
                     $values = array();
@@ -441,7 +415,7 @@ class ProductController extends Controller
 
                         if($upline_package_id == 4) {
                             $statement .= "INSERT INTO `fw_income_referral`(`order_id`, `upline`, `downline`, `level`, `amount`, `dream_maker_percentage`, `date_time`) VALUES (?, ?, ?, ?, ?, ?, ?);";
-                            $values = array_merge($values, array($order_id, $upline, $current_account_id, $i, $amount * 0.7, 0.7, $date_time));
+                            $values = array_merge($values, array($order['id'], $upline, $purchaser['id'], $i, $amount * 0.7, 0.7, $date_time));
 
                             $sql = $db->prepare("SELECT `upline` FROM `fw_downlines`, `fw_accounts` WHERE `downline` = ? AND `upline` = `fw_accounts`.`id` AND (`package_id` = 1 OR `package_id` = 2 OR `package_id` = 3) ORDER BY `level` ASC LIMIT 1");
                             if (!$sql->execute(array($upline))) { error(""); }
@@ -449,11 +423,11 @@ class ProductController extends Controller
 
                             if($dsp_dbp_fdp_upline) {
                                 $statement .= "INSERT INTO `fw_income_referral`(`order_id`, `upline`, `downline`, `level`, `amount`, `dream_maker_percentage`, `date_time`) VALUES (?, ?, ?, ?, ?, ?, ?);";
-                                $values = array_merge($values, array($order_id, $dsp_dbp_fdp_upline['upline'], $current_account_id, $i, $amount * 0.3, 0.3, $date_time));
+                                $values = array_merge($values, array($order['id'], $dsp_dbp_fdp_upline['upline'], $purchaser['id'], $i, $amount * 0.3, 0.3, $date_time));
                             }
                         } else {
                             $statement .= "INSERT INTO `fw_income_referral`(`order_id`, `upline`, `downline`, `level`, `amount`, `dream_maker_percentage`, `date_time`) VALUES (?, ?, ?, ?, ?, ?, ?);";
-                            $values = array_merge($values, array($order_id, $upline, $current_account_id, $i, $amount, 0, $date_time));
+                            $values = array_merge($values, array($order['id'], $upline, $purchaser['id'], $i, $amount, 0, $date_time));
                         }
 
                         $downline = $upline;
@@ -470,7 +444,7 @@ class ProductController extends Controller
 
                     // infinity plus bonus
                     $sql = $db->prepare("SELECT `upline`, `rank`, `level` FROM ( (SELECT `upline`, `rank`, `level` FROM `fw_downlines`, `fw_accounts` WHERE `downline` = ? AND `upline` = `fw_accounts`.`id` AND `rank` = 2 ORDER BY `level` ASC LIMIT 2) UNION ALL (SELECT `upline`, `rank`, `level` FROM `fw_downlines`, `fw_accounts` WHERE `downline` = ? AND `upline` = `fw_accounts`.`id` AND `rank` = 3 ORDER BY `level` ASC LIMIT 2) UNION ALL (SELECT `upline`, `rank`, `level` FROM `fw_downlines`, `fw_accounts` WHERE `downline` = ? AND `upline` = `fw_accounts`.`id` AND `rank` = 4 ORDER BY `level` ASC LIMIT 2) UNION ALL (SELECT `upline`, `rank`, `level` FROM `fw_downlines`, `fw_accounts` WHERE `downline` = ? AND `upline` = `fw_accounts`.`id` AND `rank` = 5 ORDER BY `level` ASC LIMIT 2) UNION ALL (SELECT `upline`, `rank`, `level` FROM `fw_downlines`, `fw_accounts` WHERE `downline` = ? AND `upline` = `fw_accounts`.`id` AND `rank` = 6 ORDER BY `level` ASC LIMIT 2) UNION ALL (SELECT `upline`, `rank`, `level` FROM `fw_downlines`, `fw_accounts` WHERE `downline` = ? AND `upline` = `fw_accounts`.`id` AND `rank` = 7 ORDER BY `level` ASC LIMIT 2) UNION ALL (SELECT `upline`, `rank`, `level` FROM `fw_downlines`, `fw_accounts` WHERE `downline` = ? AND `upline` = `fw_accounts`.`id` AND `rank` = 8 ORDER BY `level` ASC LIMIT 2) UNION ALL (SELECT `upline`, `rank`, `level` FROM `fw_downlines`, `fw_accounts` WHERE `downline` = ? AND `upline` = `fw_accounts`.`id` AND `rank` = 9 ORDER BY `level` ASC LIMIT 1) ) AS `table` WHERE `rank` >= 2 ORDER BY `level` ASC");
-                    if (!$sql->execute(array($current_account_id, $current_account_id, $current_account_id, $current_account_id, $current_account_id, $current_account_id, $current_account_id, $current_account_id))) { error(""); }
+                    if (!$sql->execute(array($purchaser['id'], $purchaser['id'], $purchaser['id'], $purchaser['id'], $purchaser['id'], $purchaser['id'], $purchaser['id'], $purchaser['id']))) { error(""); }
                     $uplines = $sql->fetchAll(PDO::FETCH_ASSOC);
 
                     for($i = 0; $i < count($uplines); $i++) {
@@ -514,7 +488,7 @@ class ProductController extends Controller
                         }
 
                         $statement .= "INSERT INTO `fw_income_infinity_plus`(`order_id`, `upline`, `downline`, `level`, `amount`, `date_time`) VALUES (?, ?, ?, ?, ?, ?);";
-                        $values = array_merge($values, array($order_id, $upline['upline'], $current_account_id, $upline['level'], $amount, $date_time));
+                        $values = array_merge($values, array($order['id'], $upline['upline'], $purchaser['id'], $upline['level'], $amount, $date_time));
 
                         for ($i = $upline['rank'] + 1; $i < count($infinity_plus_income); $i++) {
                             $infinity_plus_income[$i] = $infinity_plus_income[$i] - $minus_lower;
@@ -527,7 +501,7 @@ class ProductController extends Controller
                     }
                 } else if($type == 2) { // Product Purchase
                     $sql = $db->prepare("SELECT `rank`, `package_id` FROM `fw_accounts` WHERE `id` = ?");
-                    if (!$sql->execute(array($current_account_id))) { error(""); }
+                    if (!$sql->execute(array($purchaser['id']))) { error(""); }
                     $account = $sql->fetch(PDO::FETCH_ASSOC);
 
                     // personal rebate
@@ -536,44 +510,44 @@ class ProductController extends Controller
 
                         if($account['package_id'] == 4) {
                             $sql = $db->prepare("INSERT INTO `fw_income_personal_rebate`(`order_id`, `account_id`, `amount`, `dream_maker_percentage`, `date_time`) VALUES (?, ?, ?, ?, ?)");
-                            if(!$sql->execute(array($order_id, $current_account_id, $total_points_value * $personal_rebate_percentages[$account["rank"]] * 0.7, 0.7, $date_time))) { error(""); }
+                            if(!$sql->execute(array($order['id'], $purchaser['id'], $totalPointsValue * $personal_rebate_percentages[$account["rank"]] * 0.7, 0.7, $date_time))) { error(""); }
 
                             $sql = $db->prepare("SELECT `upline` FROM `fw_downlines`, `fw_accounts` WHERE `downline` = ? AND `upline` = `fw_accounts`.`id` AND (`package_id` = 1 OR `package_id` = 2 OR `package_id` = 3) ORDER BY `level` ASC LIMIT 1");
-                            if (!$sql->execute(array($current_account_id))) { error(""); }
+                            if (!$sql->execute(array($purchaser['id']))) { error(""); }
                             $dsp_dbp_fdp_upline = $sql->fetch(PDO::FETCH_ASSOC);
 
                             if($dsp_dbp_fdp_upline) {
                                 $sql = $db->prepare("INSERT INTO `fw_income_personal_rebate`(`order_id`, `account_id`, `amount`, `dream_maker_percentage`, `date_time`) VALUES (?, ?, ?, ?, ?)");
-                                if(!$sql->execute(array($order_id, $dsp_dbp_fdp_upline['upline'], $total_points_value * $personal_rebate_percentages[$account["rank"]] * 0.3, 0.3, $date_time))) { error(""); }
+                                if(!$sql->execute(array($order['id'], $dsp_dbp_fdp_upline['upline'], $totalPointsValue * $personal_rebate_percentages[$account["rank"]] * 0.3, 0.3, $date_time))) { error(""); }
                             }
                         } else {
                             $sql = $db->prepare("INSERT INTO `fw_income_personal_rebate`(`order_id`, `account_id`, `amount`, `dream_maker_percentage`, `date_time`) VALUES (?, ?, ?, ?, ?)");
-                            if(!$sql->execute(array($order_id, $current_account_id, $total_points_value * $personal_rebate_percentages[$account["rank"]], 0, $date_time))) { error(""); }
+                            if(!$sql->execute(array($order['id'], $purchaser['id'], $totalPointsValue * $personal_rebate_percentages[$account["rank"]], 0, $date_time))) { error(""); }
                         }
 
-                        automatic_fdp_upgrade($current_account_id, $account["rank"], $account["package_id"]);
+                        automatic_fdp_upgrade($purchaser['id'], $account["rank"], $account["package_id"]);
                     }
 
-                    if($current_account_id > 1) {
+                    if($purchaser['id'] > 1) {
                         // check updated monthly maintenance of buyer
-                        $monthly_pv_maintenance = monthly_pv_maintenance($current_account_id, $start_of_month, $end_of_month);
+                        $monthly_pv_maintenance = monthly_pv_maintenance($purchaser['id'], $start_of_month, $end_of_month);
 
                         if ($monthly_pv_maintenance["points"] >= 100) {
                             $sql = $db->prepare("UPDATE `fw_income_unilevel` SET `received` = 1 WHERE `upline` = ? AND `date_time` >= ? AND `date_time` <= ?");
-                            if (!$sql->execute(array($current_account_id, $start_of_month, $end_of_month))) { error(""); }
+                            if (!$sql->execute(array($purchaser['id'], $start_of_month, $end_of_month))) { error(""); }
 
                             if(($account['rank'] >= 2 && $account['rank'] <= 5 && $monthly_pv_maintenance["points"] >= 200) || ($account['rank'] == 6 && $monthly_pv_maintenance["points"] >= 300) || ($account['rank'] >= 7 && $account['rank'] <= 9 && $monthly_pv_maintenance["points"] >= 500)) {
                                 $sql = $db->prepare("UPDATE `fw_income_stairstep` SET `received` = 1 WHERE `upline` = ? AND `date_time` >= ? AND `date_time` <= ?");
-                                if (!$sql->execute(array($current_account_id, $start_of_month, $end_of_month))) { error(""); }
+                                if (!$sql->execute(array($purchaser['id'], $start_of_month, $end_of_month))) { error(""); }
                             }
 
-                            automatic_fdp_upgrade($current_account_id, $account["rank"], $account["package_id"]);
+                            automatic_fdp_upgrade($purchaser, $account["rank"], $account["package_id"]);
                         }
 
                         // unilevel
                         $unilevel_income = array(0.05, 0.05, 0.05, 0.05, 0.05, 0.03, 0.03, 0.03);
 
-                        $downline = $current_account_id;
+                        $downline = $purchaser['id'];
 
                         $statement = '';
                         $values = array();
@@ -599,11 +573,11 @@ class ProductController extends Controller
                                 $received = ($monthly_pv_maintenance["points"] >= 100 || in_array($upline, $excepted_accounts)) ? 1 : 0;
                             }
 
-                            $amount = $total_points_value * $unilevel_income[$i - 1];
+                            $amount = $totalPointsValue * $unilevel_income[$i - 1];
 
                             if($upline_package_id == 4) {
                                 $statement .= "INSERT INTO `fw_income_unilevel`(`order_id`, `upline`, `downline`, `level`, `amount`, `received`, `dream_maker_percentage`, `date_time`) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
-                                $values = array_merge($values, array($order_id, $upline, $current_account_id, $i, $amount * 0.7, $received, 0.7, $date_time));
+                                $values = array_merge($values, array($order['id'], $upline, $purchaser['id'], $i, $amount * 0.7, $received, 0.7, $date_time));
 
                                 $sql = $db->prepare("SELECT `upline` FROM `fw_downlines`, `fw_accounts` WHERE `downline` = ? AND `upline` = `fw_accounts`.`id` AND (`package_id` = 1 OR `package_id` = 2 OR `package_id` = 3) ORDER BY `level` ASC LIMIT 1");
                                 if (!$sql->execute(array($upline))) { error(""); }
@@ -611,11 +585,11 @@ class ProductController extends Controller
 
                                 if($dsp_dbp_fdp_upline) {
                                     $statement .= "INSERT INTO `fw_income_unilevel`(`order_id`, `upline`, `downline`, `level`, `amount`, `received`, `dream_maker_percentage`, `date_time`) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
-                                    $values = array_merge($values, array($order_id, $dsp_dbp_fdp_upline['upline'], $current_account_id, $i, $amount * 0.3, $received, 0.3, $date_time));
+                                    $values = array_merge($values, array($order['id'], $dsp_dbp_fdp_upline['upline'], $purchaser['id'], $i, $amount * 0.3, $received, 0.3, $date_time));
                                 }
                             } else {
                                 $statement .= "INSERT INTO `fw_income_unilevel`(`order_id`, `upline`, `downline`, `level`, `amount`, `received`, `dream_maker_percentage`, `date_time`) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
-                                $values = array_merge($values, array($order_id, $upline, $current_account_id, $i, $amount, $received, 0, $date_time));
+                                $values = array_merge($values, array($order['id'], $upline, $purchaser['id'], $i, $amount, $received, 0, $date_time));
                             }
 
                             $downline = $upline;
@@ -633,7 +607,7 @@ class ProductController extends Controller
                         // stairstep
                         if($account["rank"] <= 6) {
                             $sql = $db->prepare("SELECT `upline`, `rank`, `level` FROM ( (SELECT `upline`, `rank`, `level` FROM `fw_downlines`, `fw_accounts` WHERE `downline` = ? AND `upline` = `fw_accounts`.`id` AND `rank` = 2 ORDER BY `level` ASC LIMIT 2) UNION ALL (SELECT `upline`, `rank`, `level` FROM `fw_downlines`, `fw_accounts` WHERE `downline` = ? AND `upline` = `fw_accounts`.`id` AND `rank` = 3 ORDER BY `level` ASC LIMIT 2) UNION ALL (SELECT `upline`, `rank`, `level` FROM `fw_downlines`, `fw_accounts` WHERE `downline` = ? AND `upline` = `fw_accounts`.`id` AND `rank` = 4 ORDER BY `level` ASC LIMIT 2) UNION ALL (SELECT `upline`, `rank`, `level` FROM `fw_downlines`, `fw_accounts` WHERE `downline` = ? AND `upline` = `fw_accounts`.`id` AND `rank` = 5 ORDER BY `level` ASC LIMIT 2) UNION ALL (SELECT `upline`, `rank`, `level` FROM `fw_downlines`, `fw_accounts` WHERE `downline` = ? AND `upline` = `fw_accounts`.`id` AND `rank` = 6 ORDER BY `level` ASC LIMIT 1) UNION ALL (SELECT `upline`, `rank`, `level` FROM `fw_downlines`, `fw_accounts` WHERE `downline` = ? AND `upline` = `fw_accounts`.`id` AND `rank` = 7 ORDER BY `level` ASC LIMIT 1) UNION ALL (SELECT `upline`, `rank`, `level` FROM `fw_downlines`, `fw_accounts` WHERE `downline` = ? AND `upline` = `fw_accounts`.`id` AND `rank` = 8 ORDER BY `level` ASC LIMIT 1) UNION ALL (SELECT `upline`, `rank`, `level` FROM `fw_downlines`, `fw_accounts` WHERE `downline` = ? AND `upline` = `fw_accounts`.`id` AND `rank` = 9 ORDER BY `level` ASC LIMIT 1) ) AS `table` WHERE `rank` >= ? ORDER BY `level` ASC");
-                            if (!$sql->execute(array($current_account_id, $current_account_id, $current_account_id, $current_account_id, $current_account_id, $current_account_id, $current_account_id, $current_account_id, $account["rank"]))) { error(""); }
+                            if (!$sql->execute(array($purchaser['id'], $purchaser['id'], $purchaser['id'], $purchaser['id'], $purchaser['id'], $purchaser['id'], $purchaser['id'], $purchaser['id'], $account["rank"]))) { error(""); }
                             $uplines = $sql->fetchAll(PDO::FETCH_ASSOC);
 
                             for($i = 0; $i < count($uplines); $i++) {
@@ -682,10 +656,10 @@ class ProductController extends Controller
 
                                 foreach ($uplines as $key => $upline) {
                                     if (($upline["rank"] == $account["rank"] || ($key >= 1 && $upline['rank'] == $uplines[$key - 1]["rank"])) && $upline['rank'] < 6) {
-                                        $amount = ($total_points_value * $stairstep_income[$upline['rank'] + 1]) * 0.5;
+                                        $amount = ($totalPointsValue * $stairstep_income[$upline['rank'] + 1]) * 0.5;
                                         $minus_lower = $stairstep_income[$upline['rank'] + 1] * 0.5;
                                     } else {
-                                        $amount = $total_points_value * $stairstep_income[$upline['rank']];
+                                        $amount = $totalPointsValue * $stairstep_income[$upline['rank']];
                                         $minus_lower = $stairstep_income[$upline['rank']];
                                     }
 
@@ -694,7 +668,7 @@ class ProductController extends Controller
                                     $received = (($upline['rank'] >= 2 && $upline['rank'] <= 5 && $monthly_pv_maintenance["points"] >= 200) || ($upline['rank'] == 6 && $monthly_pv_maintenance["points"] >= 300) || ($upline['rank'] >= 7 && $upline['rank'] <= 9 && $monthly_pv_maintenance["points"] >= 500) || in_array($upline['upline'], $excepted_accounts)) ? 1 : 0;
 
                                     $statement .= "INSERT INTO `fw_income_stairstep`(`order_id`, `upline`, `downline`, `level`, `amount`, `received`, `date_time`) VALUES (?, ?, ?, ?, ?, ?, ?);";
-                                    $values = array_merge($values, array($order_id, $upline['upline'], $current_account_id, $upline['level'], $amount, $received, $date_time));
+                                    $values = array_merge($values, array($order['id'], $upline['upline'], $purchaser['id'], $upline['level'], $amount, $received, $date_time));
 
                                     for ($i = $upline['rank'] + 1; $i < count($stairstep_income); $i++) {
                                         $stairstep_income[$i] = $stairstep_income[$i] - $minus_lower;
@@ -711,12 +685,12 @@ class ProductController extends Controller
                 }
 
                 $sql = $db->prepare("INSERT INTO `fw_rank_points`(`account_id`, `order_id`, `points_value`, `date_time`) VALUES (?, ?, ?, ?)");
-                if (!$sql->execute(array($current_account_id, $order_id, $total_points_value, $date_time))) { error(""); }
+                if (!$sql->execute(array($purchaser['id'], $order['id'], $totalPointsValue, $date_time))) { error(""); }
 
-                update_rank_points($current_account_id, $current_account_id);
+                update_rank_points($purchaser['id'], $purchaser['id']);
 
                 $sql = $db->prepare("SELECT `upline`, `package_id` FROM `fw_genealogy`, `fw_accounts` WHERE `downline` = ? AND `upline` = `fw_accounts`.`id`");
-                if (!$sql->execute(array($current_account_id))) { error(""); }
+                if (!$sql->execute(array($purchaser['id']))) { error(""); }
 
                 while ($sql->rowCount() == 1) {
                     $upline = $sql->fetch(PDO::FETCH_ASSOC);
@@ -724,13 +698,13 @@ class ProductController extends Controller
                     if ($type == 1 && $upline["package_id"] == 2 && $package_id == 1) {
                         $rank_points = 25;
                     } else {
-                        $rank_points = $total_points_value;
+                        $rank_points = $totalPointsValue;
                     }
 
                     $sql = $db->prepare("INSERT INTO `fw_rank_points`(`account_id`, `order_id`, `points_value`, `date_time`) VALUES (?, ?, ?, ?);");
-                    if (!$sql->execute(array($upline["upline"], $order_id, $rank_points, $date_time))) { error(""); }
+                    if (!$sql->execute(array($upline["upline"], $order['id'], $rank_points, $date_time))) { error(""); }
 
-                    update_rank_points($current_account_id, $upline["upline"]);
+                    update_rank_points($purchaser['id'], $upline["upline"]);
 
                     $sql = $db->prepare("SELECT `upline`, `package_id` FROM `fw_genealogy`, `fw_accounts` WHERE `downline` = ? AND `upline` = `fw_accounts`.`id`");
                     if (!$sql->execute(array($upline["upline"]))) { error(""); }

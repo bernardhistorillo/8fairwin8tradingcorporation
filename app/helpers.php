@@ -85,3 +85,17 @@ if(!function_exists('fairwinDreamPackagePrice')) {
         return $item['suggested_retail_price'];
     }
 }
+
+if(!function_exists('generateCode')) {
+    function generateCode($length) {
+        $characters = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+        $charactersLength = strlen($characters);
+        $generatedCode = "";
+        for ($j = 0; $j < $length; $j++) {
+            $generatedCode = $generatedCode . $characters[rand(0, $charactersLength - 1)];
+        }
+
+        return $generatedCode;
+    }
+}
+
