@@ -41,7 +41,9 @@ var pageOnload = /*#__PURE__*/function () {
           _context2.next = 2;
           return allOnload();
         case 2:
-          if (currentRouteName === "income.index") {
+          if (currentRouteName === "home.index") {
+            homeOnload();
+          } else if (currentRouteName === "income.index") {
             incomeOnload();
           } else if (currentRouteName === "orders.index") {
             ordersOnload();
@@ -64,6 +66,44 @@ var pageOnload = /*#__PURE__*/function () {
     return _ref2.apply(this, arguments);
   };
 }();
+var homeOnload = function homeOnload() {
+  $(".products-carousel").slick({
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 2000,
+    centerMode: true,
+    centerPadding: '150px',
+    responsive: [{
+      breakpoint: 1400,
+      settings: {
+        slidesToShow: 3,
+        centerPadding: '150px'
+      }
+    }, {
+      breakpoint: 1200,
+      settings: {
+        slidesToShow: 2
+      }
+    }, {
+      breakpoint: 992,
+      settings: {
+        slidesToShow: 2
+      }
+    }, {
+      breakpoint: 768,
+      settings: {
+        slidesToShow: 1
+      }
+    }, {
+      breakpoint: 576,
+      settings: {
+        slidesToShow: 1,
+        centerPadding: '0'
+      }
+    }]
+  });
+};
 var incomeOnload = function incomeOnload() {
   initializeDataTables();
 };
@@ -105,6 +145,14 @@ var showErrorFromAjax = function showErrorFromAjax(error) {
 };
 $(document).ready(function () {
   pageOnload();
+});
+$(window).on('scroll', function () {
+  var navbar = $(".navbar");
+  if ($(this).scrollTop() > 0) {
+    navbar.addClass("scrolled");
+  } else {
+    navbar.removeClass("scrolled");
+  }
 });
 
 // Start: Registration
