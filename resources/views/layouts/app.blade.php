@@ -34,7 +34,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,700;0,800;0,900;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
-    <link href="{{ mix('/css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset(mix('css/app.css')) }}" rel="stylesheet">
 
     <title>{{ config('app.name') }} | @yield('title')</title>
 </head>
@@ -75,7 +75,8 @@
     <script src="{{ asset('lib/treantjs/js/raphael.js') }}"></script>
     <script src="{{ asset('lib/treantjs/js/Treant.js') }}"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
-    <script src="{{ mix('/js/app.js') }}"></script>
+    <script src="{{ asset(mix('/js/app.js')) }}"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCQSFHeqlKHBbfMQSN27kDpm2u7YSM5KZk"></script>
 
 </body>
 </html>

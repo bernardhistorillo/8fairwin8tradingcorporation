@@ -1,6 +1,7 @@
 let appUrl;
 let currentRouteName;
 let winnersGemValue;
+let mapIsInitialized = false;
 
 let allOnload = async function() {
     appUrl = $("input[name='app_url']").val();
@@ -92,6 +93,83 @@ let conversionsOnload = function() {
 let withdrawalsOnload = function() {
     initializeDataTables();
 };
+let initMap = function() {
+    let map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 5.8,
+        disableDefaultUI: true,
+        center: {
+            lat: 14.09782,
+            lng: 121.33163
+        },
+        styles: [
+            {
+                "featureType": "landscape",
+                "elementType": "geometry",
+                "stylers": [
+                    {
+                        "color": "#e3b504"
+                    }
+                ]
+            }, {
+                "featureType": "landscape.natural.terrain",
+                "elementType": "geometry",
+                "stylers": [
+                    {
+                        "saturation": -100
+                    }
+                ]
+            }, {
+                "featureType": "poi",
+                "elementType": "geometry",
+                "stylers": [
+                    {
+                        "color": "#e3b504"
+                    }
+                ]
+            }, {
+                "featureType": "road",
+                "elementType": "geometry",
+                "stylers": [
+                    {
+                        "color": "#ffffff"
+                    }
+                ]
+            }, {
+                "featureType": "water",
+                "elementType": "geometry",
+                "stylers": [
+                    {
+                        "color": "#104d22"
+                    }
+                ]
+            }, {
+                "featureType": "water",
+                "elementType": "labels",
+                "stylers": [
+                    {
+                        "color": "#ffffff"
+                    }
+                ]
+            }
+        ]
+    });
+
+    let marker = new google.maps.Marker({
+        position: {
+            lat: 14.09782,
+            lng: 121.33163
+        },
+        map: map,
+        icon: {
+            url: appUrl + "/img/contact/map-marker.png",
+            scaledSize: new google.maps.Size(80, 80)
+        }
+    });
+
+    if(map) {
+        mapIsInitialized = true;
+    }
+};
 let initializeDataTables = function() {
     $(".data-table").DataTable({
         "aaSorting": []
@@ -115,6 +193,13 @@ let showErrorFromAjax = function(error) {
     $("#modal-error .modal-body").html(content);
     $("#modal-error").modal("show");
 };
+function getOffset(el) {
+    const rect = el.getBoundingClientRect();
+    return {
+        left: rect.left + window.scrollX,
+        top: rect.top + window.scrollY
+    };
+}
 
 $(document).ready(function() {
     pageOnload();
@@ -127,6 +212,10 @@ $(window).on('scroll', function() {
         navbar.addClass("scrolled");
     } else {
         navbar.removeClass("scrolled");
+    }
+
+    if($(this).scrollTop() + $(this).height() >= getOffset($("#footer")[0]).top && !mapIsInitialized) {
+        initMap();
     }
 });
 

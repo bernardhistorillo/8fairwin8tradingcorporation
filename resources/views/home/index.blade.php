@@ -47,7 +47,7 @@
 
 <div class="bg-white w-100 py-5">
     <div class="container py-5">
-        <div class="row justify-content-center align-items-center pt-5">
+        <div class="row justify-content-center align-items-center">
             <div class="col-lg-5 col-xxl-4 mb-5 mb-lg-0">
                 <div class="row justify-content-center">
                     <div class="col-10 col-sm-8 col-md-6 col-lg-12">
@@ -208,6 +208,28 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="background-image-cover w-100 py-5" style="background-image:url('{{ asset('img/awards/background.webp') }}')">
+    <div class="container py-5">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-md-6 col-lg-5 col-xl-4 mb-5 mb-md-0">
+                <div class="row justify-content-center">
+                    <div class="col-10 col-sm-8 col-md-12">
+                        <img src="{{ asset('img/awards/award.webp') }}" class="w-100" style="border:2px solid #e3b504; border-radius:20px" alt="2023 People's Choice Excellence Awardee | 8Fairwin8 Trading Corporation" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="ps-md-3 ps-lg-5">
+                    <p class="text-white code-pro-bold-lc line-height-110 font-size-200 font-size-sm-230 font-size-md-180 font-size-lg-240 font-size-xl-260 font-size-xxl-280 text-center text-md-start mb-4">2023 People's Choice Excellence Awardee</p>
+                    <p class="text-white code-pro-lc text-center text-md-start font-size-110 font-size-sm-120 font-size-md-90 font-size-lg-110 font-size-xl-110 font-size-xxl-130 mb-3">8Fairwin8 Trading Corporation is proud to be selected as the OUTSTANDING BEAUTY / HEALTH & WELLNESS BUSINESS OPPORTUNITY COMPANY in the 41st People's Choice Excellence Awards held on MARCH 5, 2023 (SUNDAY), 6:00 PM at SOFITEL HOTEL & RESORTS, PHILIPPINE PLAZA MANILA.</p>
+                    <p class="text-white code-pro-lc text-center text-md-start font-size-110 font-size-sm-120 font-size-md-90 font-size-lg-110 font-size-xl-110 font-size-xxl-130 mb-0">We would like to extend our sincere gratitude to all of our supporters for helping us achieve this great honor.</p>
                 </div>
             </div>
         </div>
@@ -508,27 +530,23 @@
 <div class="bg-color-2 pt-5 pb-0 pb-lg-5 overflow-hidden" id="footer">
     <div class="container">
         <div class="row align-items-center">
-            <div class="col-md-6 col-lg-4 order-0 px-sm-5 px-md-0">
-                <div class="px-4 px-sm-5 pe-md-5 pe-lg-3">
-                    <div class="px-5 pt-2 pt-lg-4">
-                        <div class="px-3 pt-lg-3 pt-xl-0">
-                            <img src="{{ asset('img/logo/fairwin-white-2.webp') }}" class="w-100" alt="8Fairwin8 Trading Corporation">
-                        </div>
-                    </div>
+            <div class="col-md-6 col-lg-4 order-0 px-sm-5 px-md-0 mb-5 mb-md-0">
+                <div class="px-4 px-sm-5 pe-md-5 pe-lg-4">
+                    <img src="{{ asset('img/logo/fairwin-white-2.webp') }}" class="w-100" alt="8Fairwin8 Trading Corporation">
                 </div>
             </div>
 
-            <div class="col-12 col-lg-4 order-2 order-lg-1 pt-4 pt-lg-0 my-5 my-lg-0">
-                <p class="code-pro-bold-lc text-color-1 text-center text-lg-start font-size-sm-120 font-size-md-100 font-size-lg-90 font-size-xl-110 font-size-xxl-130 font-weight-700 mb-2">WHERE TO FIND US</p>
-                <p class="code-pro-lc text-white text-center text-lg-start font-size-sm-120 font-size-md-100 font-size-lg-90 font-size-xl-110 font-size-xxl-130 line-height-110 mb-3">V-A #35 Makokak Street Corner A. Mabini Street, San Pablo City, Laguna, Philippines</p>
+            <div class="col-12 col-lg-4 order-2 order-lg-1 pt-4 pt-lg-0 mt-4 mb-5 my-lg-0">
+                <p class="code-pro-bold-lc text-color-1 text-center text-lg-start font-size-sm-140 font-size-md-100 font-size-lg-90 font-size-xl-110 font-size-xxl-130 font-weight-700 mb-2">WHERE TO FIND US</p>
+                <p class="code-pro-lc text-white text-center text-lg-start font-size-sm-140 font-size-md-100 font-size-lg-90 font-size-xl-110 font-size-xxl-130 line-height-110 mb-3">V-A #35 Makokak Street Corner A. Mabini Street, San Pablo City, Laguna, Philippines</p>
 
-                <p class="code-pro-bold-lc text-color-1 text-center text-lg-start font-size-sm-120 font-size-md-100 font-size-lg-90 font-size-xl-110 font-size-xxl-130 font-weight-700 mb-2">CONTACT US</p>
+                <p class="code-pro-bold-lc text-color-1 text-center text-lg-start font-size-sm-140 font-size-md-100 font-size-lg-90 font-size-xl-110 font-size-xxl-130 font-weight-700 mb-2">CONTACT US</p>
                 <a href="tel:+639176701822" target="_blank" class="d-flex justify-content-center justify-content-lg-start align-items-center link-color-1 text-decoration-none mb-2">
                     <div>
                         <i class="fa-solid fa-circle-phone text-color-1 font-size-160"></i>
                     </div>
                     <div class="ps-3 ps-sm-4 ps-lg-3 ps-xl-4">
-                        <p class="code-pro-lc font-size-sm-120 font-size-md-100 font-size-lg-90 font-size-xl-110 font-size-xxl-130 line-height-110 mb-0">(+63) 917 670 1822</p>
+                        <p class="code-pro-lc font-size-sm-140 font-size-md-100 font-size-lg-90 font-size-xl-110 font-size-xxl-130 line-height-110 mb-0">(+63) 917 670 1822</p>
                     </div>
                 </a>
                 <a href="mailto:8fairwintradingcorp8@gmail.com" target="_blank" class="d-flex justify-content-center justify-content-lg-start align-items-center link-color-1 text-decoration-none mb-3">
@@ -536,22 +554,22 @@
                         <i class="fa-solid fa-circle-envelope text-color-1 font-size-160"></i>
                     </div>
                     <div class="ps-3 ps-sm-4 ps-lg-3 ps-xl-4">
-                        <p class="code-pro-lc font-size-sm-120 font-size-md-100 font-size-lg-90 font-size-xl-110 font-size-xxl-130 line-height-110 mb-0">8fairwintradingcorp8@gmail.com</p>
+                        <p class="code-pro-lc font-size-sm-140 font-size-md-100 font-size-lg-90 font-size-xl-110 font-size-xxl-130 line-height-110 mb-0">8fairwintradingcorp8@gmail.com</p>
                     </div>
                 </a>
 
-                <p class="code-pro-bold-lc text-color-1 text-center text-lg-start font-size-sm-120 font-size-md-100 font-size-lg-90 font-size-xl-110 font-size-xxl-130 font-weight-700 mb-2">CONNECT WITH US</p>
+                <p class="code-pro-bold-lc text-color-1 text-center text-lg-start font-size-sm-140 font-size-md-100 font-size-lg-90 font-size-xl-110 font-size-xxl-130 font-weight-700 mb-2">CONNECT WITH US</p>
                 <a href="https://facebook.com/8fairwin8family" target="_blank" class="d-flex justify-content-center justify-content-lg-start align-items-center link-color-1 text-decoration-none mb-2">
                     <div>
                         <i class="fa-brands fa-facebook text-color-1 font-size-160"></i>
                     </div>
                     <div class="ps-3 ps-sm-4 ps-lg-3 ps-xl-4">
-                        <p class="code-pro-lc font-size-sm-120 font-size-md-100 font-size-lg-90 font-size-xl-110 font-size-xxl-130 line-height-110 mb-0">facebook.com/8fairwin8family</p>
+                        <p class="code-pro-lc font-size-sm-140 font-size-md-100 font-size-lg-90 font-size-xl-110 font-size-xxl-130 line-height-110 mb-0">facebook.com/8fairwin8family</p>
                     </div>
                 </a>
             </div>
 
-            <div class="col-12 col-md-6 col-lg-4 order-1 order-lg-2 d-none d-md-block">
+            <div class="col-12 col-md-6 col-lg-4 order-1 order-lg-2">
                 <div class="pt-5 pb-3 px-lg-4" id="map" style="position: relative; overflow: hidden;"><div style="height: 100%; width: 100%; position: absolute; top: 0px; left: 0px; background-color: rgb(229, 227, 223);"><div class="gm-err-container"><div class="gm-err-content"><div class="gm-err-icon"><img src="https://maps.gstatic.com/mapfiles/api-3/images/icon_error.png" alt="" draggable="false" style="user-select: none;"></div><div class="gm-err-title">Oops! Something went wrong.</div><div class="gm-err-message">This page didn't load Google Maps correctly. See the JavaScript console for technical details.</div></div></div></div></div>
             </div>
         </div>

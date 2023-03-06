@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 Route::get('/test', [TestController::class, 'index']);
+Route::get('/artisan', [TestController::class, 'artisan']);
 
 Route::middleware(['guest'])->group(function() {
     Route::get('/register', [AuthenticationController::class, 'registerPage'])->name('register.index');

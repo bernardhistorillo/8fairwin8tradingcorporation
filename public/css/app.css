@@ -143,21 +143,21 @@
 #accordion-faq .accordion-button:not(.collapsed)::after {
     background-image: var(--bs-accordion-btn-icon);
 }
-/* Start: Scrollbar */
-*::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-}
+/*!* Start: Scrollbar *!*/
+/**::-webkit-scrollbar {*/
+/*    width: 8px;*/
+/*    height: 8px;*/
+/*}*/
 
-*::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0);
-}
+/**::-webkit-scrollbar-track {*/
+/*    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0);*/
+/*}*/
 
-*::-webkit-scrollbar-thumb {
-    background-color: #606060;
-    outline: 1px solid slategrey;
-}
-/* End: Scrollbar */
+/**::-webkit-scrollbar-thumb {*/
+/*    background-color: #606060;*/
+/*    outline: 1px solid slategrey;*/
+/*}*/
+/*!* End: Scrollbar *!*/
 
 /* ################################################################################################################# */
 /* ################################################################################################################# */
@@ -173,6 +173,9 @@
 }
 .ideas-line-right {
     border-left:6px solid #e3b504;
+}
+#map {
+    height:250px;
 }
 
 /* SM */
@@ -224,6 +227,9 @@
     .ideas-top-right-card {
         margin-top:92px;
     }
+    #map {
+        height:296px;
+    }
 }
 
 /* XL */
@@ -250,6 +256,9 @@
     .idea-number-left {
         bottom:20px;
         left:20px;
+    }
+    #map {
+        height:320px;
     }
 }
 
