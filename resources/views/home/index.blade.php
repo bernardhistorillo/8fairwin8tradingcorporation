@@ -24,7 +24,7 @@
 {{--                        <a class="nav-link aileron-bold link-color-1 px-md-3 px-xl-4 " href="http://thebluhotel.test/contact">CONTACT</a>--}}
 {{--                    </li>--}}
                     <li class="nav-item ms-md-3 ms-xl-4">
-                        <a class="btn aileron-bold font-weight-500 px-4 py-2 mb-4 mb-lg-0 btn-custom-1" href="https://booking.bluhotelalbay.com/booking/book-rooms-thebluhotel" target="_blank" rel="noreferrer">REGISTER NOW</a>
+                        <a class="btn aileron-bold font-weight-500 px-4 py-2 mb-4 mb-lg-0 btn-custom-1" href="https://8fairwin8tradingcorp.com/access/register.php">REGISTER NOW</a>
                     </li>
                 </ul>
             </div>
@@ -34,8 +34,8 @@
     <div class="container">
         <div class="row align-items-center py-5 min-vh-100">
             <div class="col-md-11 col-lg-9 col-xl-8 pt-4 mt-5 mb-5">
-                <p class="code-pro-bold-lc font-size-320 font-size-sm-400 font-size-md-420 font-size-lg-450 font-size-xl-480 font-size-xxl-560 text-center text-md-start text-white line-height-100 mb-4">Let nature <span class="code-pro-bold-lc text-color-1">heal</span> <br>and <span class="code-pro-bold-lc text-color-1">protect</span> you from within.</p>
-                <h1 class="aileron-regular font-size-120 font-size-sm-130 font-size-md-130 font-size-lg-130 font-size-xl-140 font-size-xxl-160 text-center text-md-start text-white line-height-140 mb-5">8Fairwin8 Trading Corporation is a leading provider of wellness solutions designed to help individuals achieve optimal health and well-being.</h1>
+                <p class="code-pro-bold-lc font-size-320 font-size-sm-400 font-size-md-420 font-size-lg-450 font-size-xl-480 font-size-xxl-560 text-center text-md-start text-white line-height-100 mb-4"><span id="text-1">Let nature</span> <span id="text-2">heal</span> <br><span id="text-3">and</span> <span id="text-4">protect</span> <span id="text-5">you from within.</span></p>
+                <h1 class="aileron-regular font-size-120 font-size-sm-130 font-size-md-130 font-size-lg-130 font-size-xl-140 font-size-xxl-160 text-center text-md-start text-white line-height-140 mb-5" id="text-6">8Fairwin8 Trading Corporation is a leading provider of wellness solutions designed to help individuals achieve optimal health and well-being.</h1>
 
                 <div class="text-center text-md-start mb-2">
                     <a href="http://thebluhotel.test/contact" class="btn btn-custom-1 font-size-110 aileron-bold px-4 px-sm-5 py-3">EXPERIENCE WELLNESS TODAY</a>
@@ -72,7 +72,7 @@
     <div class="container py-5">
         <div class="row justify-content-center align-items-stretch pt-5">
             <div class="col-md-6 mb-5 pb-5 pb-md-0 mb-md-0">
-                <div class="card h-100" style="border-radius:30px">
+                <div class="card h-100" data-aos="fade-down" style="border-radius:30px">
                     <div class="card-body px-md-4 py-4">
                         <div class="d-flex justify-content-center align-items-center vision-mission-icon mb-4">
                             <div class="d-flex justify-content-center align-items-center bg-color-1" style="width:90px; height:90px; border-radius:50%; border:4px solid #104d22">
@@ -91,7 +91,7 @@
             </div>
 
             <div class="col-md-6">
-                <div class="card h-100" style="border-radius:30px">
+                <div class="card h-100" data-aos="fade-down" data-aos-delay="100" style="border-radius:30px">
                     <div class="card-body px-md-4 py-4">
                         <div class="d-flex justify-content-center align-items-center vision-mission-icon mb-4">
                             <div class="d-flex justify-content-center align-items-center bg-color-2" style="width:90px; height:90px; border-radius:50%; border:4px solid #e3b504">
@@ -156,7 +156,7 @@
                             <div class="d-flex justify-content-start justify-content-md-end">
                                 <div class="ps-5 ps-md-0 pe-md-3 ps-lg-0 pe-lg-4 px-xl-4 px-xxl-5 text-start text-md-end line-height-130 font-size-110 font-size-sm-130 font-size-md-100 font-size-lg-140 font-size-lg-140 font-size-xl-160">
                                     <p class="code-pro-bold-lc font-size-110 text-color-1 mb-3">Unique Ideas</p>
-                                    <p class="aileron-regular text-white mb-0">Fairwin is a system generated ideas that helps every distributor to make their business manageable. You can work from home and send products without living your house or purchase products and encode new distributors using your phone and internet.</p>
+                                    <p class="aileron-regular text-white mb-0">Fairwin is a system generated ideas that helps every distributor to make their business manageable. You can work from home and send products without leaving your house or purchase products and encode new distributors using your phone and internet.</p>
                                 </div>
                             </div>
                         </div>
@@ -217,7 +217,7 @@
 <div class="background-image-cover w-100 py-5" style="background-image:url('{{ asset('img/awards/background.webp') }}')">
     <div class="container py-5">
         <div class="row justify-content-center align-items-center">
-            <div class="col-md-6 col-lg-5 col-xl-4 mb-5 mb-md-0">
+            <div class="col-md-6 col-lg-5 col-xl-5 col-xxl-4 mb-5 mb-md-0">
                 <div class="row justify-content-center">
                     <div class="col-10 col-sm-8 col-md-12">
                         <img src="{{ asset('img/awards/award.webp') }}" class="w-100" style="border:2px solid #e3b504; border-radius:20px" alt="2023 People's Choice Excellence Awardee | 8Fairwin8 Trading Corporation" />
@@ -226,10 +226,22 @@
             </div>
 
             <div class="col-md-6">
-                <div class="ps-md-3 ps-lg-5">
-                    <p class="text-white code-pro-bold-lc line-height-110 font-size-200 font-size-sm-230 font-size-md-180 font-size-lg-240 font-size-xl-260 font-size-xxl-280 text-center text-md-start mb-4">2023 People's Choice Excellence Awardee</p>
-                    <p class="text-white code-pro-lc text-center text-md-start font-size-110 font-size-sm-120 font-size-md-90 font-size-lg-110 font-size-xl-110 font-size-xxl-130 mb-3">8Fairwin8 Trading Corporation is proud to be selected as the OUTSTANDING BEAUTY / HEALTH & WELLNESS BUSINESS OPPORTUNITY COMPANY in the 41st People's Choice Excellence Awards held on MARCH 5, 2023 (SUNDAY), 6:00 PM at SOFITEL HOTEL & RESORTS, PHILIPPINE PLAZA MANILA.</p>
-                    <p class="text-white code-pro-lc text-center text-md-start font-size-110 font-size-sm-120 font-size-md-90 font-size-lg-110 font-size-xl-110 font-size-xxl-130 mb-0">We would like to extend our sincere gratitude to all of our supporters for helping us achieve this great honor.</p>
+                <div class="ps-md-3 ps-lg-4 ps-xl-5">
+                    <div class="row justify-content-between align-items-center mb-3">
+                        <div class="col-8 col-sm-9 col-md-9">
+                            <p class="text-white code-pro-bold-lc line-height-110 font-size-140 font-size-sm-220 font-size-md-130 font-size-lg-170 font-size-xl-210 font-size-xxl-250 mb-0">2023 People's Choice Excellence Awardee</p>
+                        </div>
+                        <div class="col-4 col-sm-3 col-md-3">
+                            <img src="{{ asset('img/awards/pcea.webp') }}" class="w-100 rounded-circle" style="border-radius:20px" alt="2023 People's Choice Excellence Awardee | 8Fairwin8 Trading Corporation" />
+                        </div>
+                    </div>
+
+                    <p class="text-white code-pro-lc text-center text-md-start font-size-110 font-size-sm-120 font-size-md-90 font-size-lg-100 font-size-xl-110 font-size-xxl-120 mb-3">8Fairwin8 Trading Corporation is proud to be selected as the OUTSTANDING BEAUTY / HEALTH & WELLNESS BUSINESS OPPORTUNITY COMPANY in the 41st People's Choice Excellence Awards held on MARCH 5, 2023 (SUNDAY), 6:00 PM at SOFITEL HOTEL & RESORTS, PHILIPPINE PLAZA MANILA.</p>
+                    <p class="text-white code-pro-lc text-center text-md-start font-size-110 font-size-sm-120 font-size-md-90 font-size-lg-100 font-size-xl-110 font-size-xxl-120 mb-5 mb-md-4">We would like to extend our sincere gratitude to all of our supporters for helping us achieve this great honor.</p>
+
+                    <div class="text-center text-md-start">
+                        <a href="https://facebook.com/watch/?v=534750915480069" target="_blank" rel="noreferrer" class="btn btn-custom-1 code-pro-lc px-5 py-3">Check out the event</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -282,6 +294,12 @@
         </div>
         <div class="item">
             <img src="{{ asset('img/products/product-8.webp') }}" class="w-100" alt="8Fairwin8 Trading Corporation" />
+        </div>
+        <div class="item">
+            <img src="{{ asset('img/products/product-9.webp') }}" class="w-100" alt="8Fairwin8 Trading Corporation" />
+        </div>
+        <div class="item">
+            <img src="{{ asset('img/products/product-10.webp') }}" class="w-100" alt="8Fairwin8 Trading Corporation" />
         </div>
     </div>
 </div>
@@ -517,9 +535,9 @@
                     <p class="aileron-regular text-center line-height-140 font-size-140 font-size-sm-140 font-size-md-150 font-size-lg-160 font-size-xl-170 font-size-xxl-170 px-4 px-sm-0 mb-5 pb-3">Together, we can create a world where everyone has the opportunity to live their best, healthiest life.</p>
 
                     <div class="text-center">
-                        <button class="btn btn-custom-2 font-size-xl-120 py-3 px-5">
+                        <a href="https://8fairwin8tradingcorp.com/access/register.php" class="btn btn-custom-2 font-size-xl-120 py-3 px-5">
                             <span class="aileron-bold px-4 px-sm-5">REGISTER NOW</span>
-                        </button>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -541,20 +559,20 @@
                 <p class="code-pro-lc text-white text-center text-lg-start font-size-sm-140 font-size-md-100 font-size-lg-90 font-size-xl-110 font-size-xxl-130 line-height-110 mb-3">V-A #35 Makokak Street Corner A. Mabini Street, San Pablo City, Laguna, Philippines</p>
 
                 <p class="code-pro-bold-lc text-color-1 text-center text-lg-start font-size-sm-140 font-size-md-100 font-size-lg-90 font-size-xl-110 font-size-xxl-130 font-weight-700 mb-2">CONTACT US</p>
-                <a href="tel:+639176701822" target="_blank" class="d-flex justify-content-center justify-content-lg-start align-items-center link-color-1 text-decoration-none mb-2">
+                <a href="tel:+639752987452" target="_blank" class="d-flex justify-content-center justify-content-lg-start align-items-center link-color-1 text-decoration-none mb-2">
                     <div>
                         <i class="fa-solid fa-circle-phone text-color-1 font-size-160"></i>
                     </div>
                     <div class="ps-3 ps-sm-4 ps-lg-3 ps-xl-4">
-                        <p class="code-pro-lc font-size-sm-140 font-size-md-100 font-size-lg-90 font-size-xl-110 font-size-xxl-130 line-height-110 mb-0">(+63) 917 670 1822</p>
+                        <p class="code-pro-lc font-size-sm-140 font-size-md-100 font-size-lg-90 font-size-xl-110 font-size-xxl-130 line-height-110 mb-0">(+63) 975 298 7452</p>
                     </div>
                 </a>
-                <a href="mailto:8fairwintradingcorp8@gmail.com" target="_blank" class="d-flex justify-content-center justify-content-lg-start align-items-center link-color-1 text-decoration-none mb-3">
+                <a href="mailto:admin@8fairwin8tradingcorp.com" target="_blank" class="d-flex justify-content-center justify-content-lg-start align-items-center link-color-1 text-decoration-none mb-3">
                     <div>
                         <i class="fa-solid fa-circle-envelope text-color-1 font-size-160"></i>
                     </div>
                     <div class="ps-3 ps-sm-4 ps-lg-3 ps-xl-4">
-                        <p class="code-pro-lc font-size-sm-140 font-size-md-100 font-size-lg-90 font-size-xl-110 font-size-xxl-130 line-height-110 mb-0">8fairwintradingcorp8@gmail.com</p>
+                        <p class="code-pro-lc font-size-sm-140 font-size-md-100 font-size-lg-90 font-size-xl-110 font-size-xxl-130 line-height-110 mb-0">admin@8fairwin8tradingcorp.com</p>
                     </div>
                 </a>
 

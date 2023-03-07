@@ -35,6 +35,69 @@ let pageOnload = async function() {
     }
 };
 let homeOnload = function() {
+    let textWrapper1 = document.querySelector('#text-1');
+    textWrapper1.innerHTML = textWrapper1.textContent.replace(/\S/g, "<span class='letter code-pro-bold-lc'>$&</span>");
+
+    let textWrapper2 = document.querySelector('#text-2');
+    textWrapper2.innerHTML = textWrapper2.textContent.replace(/\S/g, "<span class='letter code-pro-bold-lc text-color-1'>$&</span>");
+
+    let textWrapper3 = document.querySelector('#text-3');
+    textWrapper3.innerHTML = textWrapper3.textContent.replace(/\S/g, "<span class='letter code-pro-bold-lc'>$&</span>");
+
+    let textWrapper4 = document.querySelector('#text-4');
+    textWrapper4.innerHTML = textWrapper4.textContent.replace(/\S/g, "<span class='letter code-pro-bold-lc text-color-1'>$&</span>");
+
+    let textWrapper5 = document.querySelector('#text-5');
+    textWrapper5.innerHTML = textWrapper5.textContent.replace(/\S/g, "<span class='letter code-pro-bold-lc'>$&</span>");
+
+    let textWrapper6 = document.querySelector('#text-6');
+    textWrapper6.innerHTML = textWrapper6.textContent.replace(/\S/g, "<span class='letter aileron-regular'>$&</span>");
+
+    anime.timeline({loop: false})
+        .add({
+            targets: '#text-1 .letter',
+            opacity: [0,1],
+            easing: "easeInOutQuad",
+            duration: 150,
+            delay: (el, i) => 80 * (i+1)
+        }).add({
+            targets: '#text-2 .letter',
+            opacity: [0,1],
+            easing: "easeInOutQuad",
+            duration: 150,
+            delay: (el, i) => 80 * (i+1)
+        }).add({
+            targets: '#text-3 .letter',
+            opacity: [0,1],
+            easing: "easeInOutQuad",
+            duration: 150,
+            delay: (el, i) => 80 * (i+1)
+        }).add({
+            targets: '#text-4 .letter',
+            opacity: [0,1],
+            easing: "easeInOutQuad",
+            duration: 150,
+            delay: (el, i) => 80 * (i+1)
+        }).add({
+            targets: '#text-5 .letter',
+            opacity: [0,1],
+            easing: "easeInOutQuad",
+            duration: 150,
+            delay: (el, i) => 80 * (i+1)
+        }).add({
+            targets: '#text-6 .letter',
+            opacity: [0,1],
+            easing: "easeInOutQuad",
+            duration: 40,
+            delay: (el, i) => 10 * (i+1)
+        }).add({
+            targets: '#text-6 .letter',
+            opacity: [1,1],
+            easing: "easeInOutQuad",
+            duration: 50,
+            delay: (el, i) => 30 * (i+1)
+        });
+
     $(".products-carousel").slick({
         slidesToShow: 3,
         slidesToScroll: 1,
@@ -73,6 +136,8 @@ let homeOnload = function() {
             }
         ]
     });
+
+    AOS.init();
 };
 let incomeOnload = function() {
     initializeDataTables();
