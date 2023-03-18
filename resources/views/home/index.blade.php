@@ -4,32 +4,7 @@
 
 @section('content')
 <div class="background-image-cover" style="background-image:url('{{ asset('img/background/background-1.webp') }}')">
-    <nav class="navbar navbar-dark fixed-top navbar-expand-lg">
-        <div class="container">
-            <a class="navbar-brand" href="{{ route('home.index') }}">
-                <img src="{{ asset('img/logo/fairwin-horizontal-white.webp') }}" alt="8Fairwin8 Trading Corporation">
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                <ul class="navbar-nav ms-auto font-weight-300 font-size-100 justify-content-center">
-{{--                    <li class="nav-item">--}}
-{{--                        <a class="nav-link link-color-1 px-md-3 px-xl-4 aileron-bold font-weight-600 active" aria-current="page" href="http://thebluhotel.test">HOME</a>--}}
-{{--                    </li>--}}
-{{--                    <li class="nav-item">--}}
-{{--                        <a class="nav-link aileron-bold link-color-1 px-md-3 px-xl-4 " aria-current="page" href="http://thebluhotel.test/rooms">PRODUCTS</a>--}}
-{{--                    </li>--}}
-{{--                    <li class="nav-item mb-2 mb-lg-0">--}}
-{{--                        <a class="nav-link aileron-bold link-color-1 px-md-3 px-xl-4 " href="http://thebluhotel.test/contact">CONTACT</a>--}}
-{{--                    </li>--}}
-                    <li class="nav-item ms-md-3 ms-xl-4">
-                        <a class="btn aileron-bold font-weight-500 px-4 py-2 mb-4 mb-lg-0 btn-custom-1" href="https://8fairwin8tradingcorp.com/access/register.php">REGISTER NOW</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    @include('home.includes.nav')
 
     <div class="container">
         <div class="row align-items-center py-5 min-vh-100">
@@ -38,7 +13,7 @@
                 <h1 class="aileron-regular font-size-120 font-size-sm-130 font-size-md-130 font-size-lg-130 font-size-xl-140 font-size-xxl-160 text-center text-md-start text-white line-height-140 mb-5" id="text-6">8Fairwin8 Trading Corporation is a leading provider of wellness solutions designed to help individuals achieve optimal health and well-being.</h1>
 
                 <div class="text-center text-md-start mb-2">
-                    <a href="http://thebluhotel.test/contact" class="btn btn-custom-1 font-size-110 aileron-bold px-4 px-sm-5 py-3">EXPERIENCE WELLNESS TODAY</a>
+                    <a href="https://8fairwin8tradingcorp.com/access/register.php" class="btn btn-custom-1 font-size-110 aileron-bold px-4 px-sm-5 py-3">EXPERIENCE WELLNESS TODAY</a>
                 </div>
             </div>
         </div>
@@ -114,14 +89,14 @@
 
 <div class="bg-white w-100 py-5">
     <div class="container py-5">
-        <p class="text-color-1 neuemontreal-bold line-height-110 font-size-200 font-size-sm-230 font-size-md-250 font-size-lg-300 font-size-xl-320 font-size-xxl-320 text-center mb-5 pb-2 pb-md-4">OUR CORPORATE<br>SOCIAL RESPONSIBILITY</p>
+        <p class="text-color-1 code-pro-bold-lc line-height-110 font-size-200 font-size-sm-230 font-size-md-250 font-size-lg-300 font-size-xl-320 font-size-xxl-320 text-center mb-5 pb-2 pb-md-4">OUR CORPORATE<br>SOCIAL RESPONSIBILITY</p>
 
         <div class="row align-items-stretched mx-0">
             <div class="col-md-6 px-0 ideas-line-right">
                 <div data-aos="fade-down" data-aos-delay="100" class="aos-init aos-animate">
                     <div class="card bg-color-2 border-0 mb-4 mb-md-5">
                         <div class="card-body px-4 ps-sm-5 ps-md-4 pe-md-5 px-xl-5 py-4 py-lg-5 position-relative">
-                            <div class="text-color-1 font-size-230 font-size-sm-260 font-size-md-200 font-size-lg-250 font-size-xl-250 font-size-xxl-270 line-height-100 text-center position-absolute idea-number-right">01</div>
+                            <div class="code-pro-bold-lc text-color-1 font-size-230 font-size-sm-260 font-size-md-200 font-size-lg-250 font-size-xl-250 font-size-xxl-270 line-height-100 text-center position-absolute idea-number-right">01</div>
 
                             <div class="d-flex justify-content-start justify-content-md-end">
                                 <div class="ps-5 ps-md-0 pe-md-3 ps-lg-0 pe-lg-4 px-xl-4 px-xxl-5 text-start text-md-end line-height-130 font-size-110 font-size-sm-130 font-size-md-100 font-size-lg-140 font-size-lg-140 font-size-xl-160">
@@ -136,7 +111,7 @@
                 <div data-aos="fade-down" data-aos-delay="200" class="aos-init aos-animate">
                     <div class="card bg-color-2 border-0 mb-4 mb-md-5 d-block d-md-none">
                         <div class="card-body px-4 ps-sm-5 ps-md-5 pe-md-4 pe-lg-0 px-xl-5 py-4 py-lg-5 position-relative">
-                            <div class="text-color-1 font-size-230 font-size-sm-260 font-size-md-200 font-size-lg-250 font-size-xl-250 font-size-xxl-270 line-height-100 text-center position-absolute idea-number-left">02</div>
+                            <div class="code-pro-bold-lc text-color-1 font-size-230 font-size-sm-260 font-size-md-200 font-size-lg-250 font-size-xl-250 font-size-xxl-270 line-height-100 text-center position-absolute idea-number-left">02</div>
 
                             <div class="d-flex justify-content-start">
                                 <div class="ps-5 ps-md-3 pe-0 ps-lg-4 px-xl-4 px-xxl-5 text-start line-height-130 font-size-110 font-size-sm-130 font-size-md-100 font-size-lg-140 font-size-xl-160">
@@ -151,7 +126,7 @@
                 <div data-aos="fade-down" data-aos-delay="300" class="aos-init aos-animate">
                     <div class="card bg-color-2 border-0 mb-4 mb-md-5">
                         <div class="card-body px-4 ps-sm-5 ps-md-4 pe-md-5 px-xl-5 py-4 py-lg-5 position-relative">
-                            <div class="text-color-1 font-size-230 font-size-sm-260 font-size-md-200 font-size-lg-250 font-size-xl-250 font-size-xxl-270 line-height-100 text-center position-absolute idea-number-right">03</div>
+                            <div class="code-pro-bold-lc text-color-1 font-size-230 font-size-sm-260 font-size-md-200 font-size-lg-250 font-size-xl-250 font-size-xxl-270 line-height-100 text-center position-absolute idea-number-right">03</div>
 
                             <div class="d-flex justify-content-start justify-content-md-end">
                                 <div class="ps-5 ps-md-0 pe-md-3 ps-lg-0 pe-lg-4 px-xl-4 px-xxl-5 text-start text-md-end line-height-130 font-size-110 font-size-sm-130 font-size-md-100 font-size-lg-140 font-size-lg-140 font-size-xl-160">
@@ -166,7 +141,7 @@
                 <div data-aos="fade-down" data-aos-delay="400" class="aos-init">
                     <div class="card bg-color-2 border-0 mb-0 d-block d-md-none">
                         <div class="card-body px-4 ps-sm-5 ps-md-5 pe-md-4 pe-lg-0 px-xl-5 py-4 py-lg-5 position-relative">
-                            <div class="text-color-1 font-size-230 font-size-sm-260 font-size-md-200 font-size-lg-250 font-size-xl-250 font-size-xxl-270 line-height-100 text-center position-absolute idea-number-left">04</div>
+                            <div class="code-pro-bold-lc text-color-1 font-size-230 font-size-sm-260 font-size-md-200 font-size-lg-250 font-size-xl-250 font-size-xxl-270 line-height-100 text-center position-absolute idea-number-left">04</div>
 
                             <div class="d-flex justify-content-start">
                                 <div class="ps-5 ps-md-3 pe-0 ps-lg-4 px-xl-4 px-xxl-5 text-start line-height-130 font-size-110 font-size-sm-130 font-size-md-100 font-size-lg-140 font-size-xl-160">
@@ -183,7 +158,7 @@
                 <div data-aos="fade-down" data-aos-delay="200" class="aos-init aos-animate">
                     <div class="card bg-color-2 border-0 mb-4 mb-md-5 ideas-top-right-card">
                         <div class="card-body px-4 ps-sm-5 ps-md-5 pe-md-4 px-xl-5 py-4 py-lg-5 position-relative">
-                            <div class="text-color-1 font-size-230 font-size-sm-260 font-size-md-200 font-size-lg-250 font-size-xl-250 font-size-xxl-270 line-height-100 text-center position-absolute idea-number-left">02</div>
+                            <div class="code-pro-bold-lc text-color-1 font-size-230 font-size-sm-260 font-size-md-200 font-size-lg-250 font-size-xl-250 font-size-xxl-270 line-height-100 text-center position-absolute idea-number-left">02</div>
 
                             <div class="d-flex justify-content-start">
                                 <div class="ps-5 ps-md-3 pe-0 ps-lg-4 px-xl-4 px-xxl-5 text-start line-height-130 font-size-110 font-size-sm-130 font-size-md-100 font-size-lg-140 font-size-xl-160">
@@ -198,7 +173,7 @@
                 <div data-aos="fade-down" data-aos-delay="400" class="aos-init">
                     <div class="card bg-color-2 border-0 mb-0">
                         <div class="card-body px-4 ps-sm-5 ps-md-5 pe-md-4 px-xl-5 py-4 py-lg-5 position-relative">
-                            <div class="text-color-1 font-size-230 font-size-sm-260 font-size-md-200 font-size-lg-250 font-size-xl-250 font-size-xxl-270 line-height-100 text-center position-absolute idea-number-left">04</div>
+                            <div class="code-pro-bold-lc text-color-1 font-size-230 font-size-sm-260 font-size-md-200 font-size-lg-250 font-size-xl-250 font-size-xxl-270 line-height-100 text-center position-absolute idea-number-left">04</div>
 
                             <div class="d-flex justify-content-start">
                                 <div class="ps-5 ps-md-3 pe-0 ps-lg-4 px-xl-4 px-xxl-5 text-start line-height-130 font-size-110 font-size-sm-130 font-size-md-100 font-size-lg-140 font-size-xl-160">
@@ -306,7 +281,7 @@
 
 <div class="background-image-cover py-5" style="background-image:url('{{ asset('img/background/background-4.png') }}')">
     <div class="container py-5">
-        <p class="text-color-2 line-height-110 font-size-200 font-size-sm-230 font-size-md-250 font-size-lg-300 font-size-xl-320 font-size-xxl-320 text-center mb-5 pb-2 pb-md-4">HEAR IT FROM OUR CUSTOMERS</p>
+        <p class="code-pro-bold-lc text-color-2 line-height-110 font-size-200 font-size-sm-230 font-size-md-250 font-size-lg-300 font-size-xl-320 font-size-xxl-320 text-center mb-5 pb-2 pb-md-4">HEAR IT FROM OUR CUSTOMERS</p>
 
         <div class="row justify-content-center">
             <div class="col-md-6 col-xl-5 px-3 px-lg-4 mb-4 mb-sm-5">
@@ -314,7 +289,7 @@
                     <iframe width="560" height="340" src="https://www.youtube.com/embed/E3eJ9Np5XIk" title="Testimonial of fairwin products by Ma&#39;am Precy" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                 </div>
 
-                <p class="text-center text-color-2 font-size-130 font-size-sm-150 font-size-md-120 font-size-lg-150 font-size-xl-160 font-size-xxl-170 mb-0">Ms. Precy</p>
+                <p class="code-pro-bold-lc text-center text-color-2 font-size-130 font-size-sm-150 font-size-md-120 font-size-lg-150 font-size-xl-160 font-size-xxl-170 mb-0">Ms. Precy</p>
             </div>
 
             <div class="col-md-6 col-xl-5 px-3 px-lg-4 mb-4 mb-sm-5">
@@ -322,7 +297,7 @@
                     <iframe width="560" height="340" src="https://www.youtube.com/embed/qKelTFwZHa4" title="Fairwin Product testimonial of ma&#39;am Reina Sarsona" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                 </div>
 
-                <p class="text-center text-color-2 font-size-130 font-size-sm-150 font-size-md-120 font-size-lg-150 font-size-xl-160 font-size-xxl-170 mb-0">Ms. Reina Sarsona</p>
+                <p class="code-pro-bold-lc text-center text-color-2 font-size-130 font-size-sm-150 font-size-md-120 font-size-lg-150 font-size-xl-160 font-size-xxl-170 mb-0">Ms. Reina Sarsona</p>
             </div>
 
             <div class="col-md-6 col-xl-5 px-3 px-lg-4 mb-4 mb-sm-5">
@@ -330,7 +305,7 @@
                     <iframe width="560" height="340" src="https://www.youtube.com/embed/jN1i9TuRaqU" title="Fullwonder Coffee Testimonial" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                 </div>
 
-                <p class="text-center text-color-2 font-size-130 font-size-sm-150 font-size-md-120 font-size-lg-150 font-size-xl-160 font-size-xxl-170 mb-0">Ms. Loremel Andulan</p>
+                <p class="code-pro-bold-lc text-center text-color-2 font-size-130 font-size-sm-150 font-size-md-120 font-size-lg-150 font-size-xl-160 font-size-xxl-170 mb-0">Ms. Loremel Andulan</p>
                 <p class="aileron-regular text-center text-color-2 font-size-sm-120 font-size-md-90 font-size-lg-110">Brgy. Sta Lucia, Dolores, Quezon</p>
             </div>
 
@@ -339,7 +314,7 @@
                     <iframe width="560" height="340" src="https://www.youtube.com/embed/vmS3QSii5ZU" title="Kapeng masarap na, masarap pa sa pakiramdam" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                 </div>
 
-                <p class="text-center text-color-2 font-size-130 font-size-sm-150 font-size-md-120 font-size-lg-150 font-size-xl-160 font-size-xxl-170 mb-0">Ms. Grayda Nino</p>
+                <p class="code-pro-bold-lc text-center text-color-2 font-size-130 font-size-sm-150 font-size-md-120 font-size-lg-150 font-size-xl-160 font-size-xxl-170 mb-0">Ms. Grayda Nino</p>
                 <p class="aileron-regular text-center text-color-2 font-size-sm-120 font-size-md-90 font-size-lg-110">Brgy. Conception, San Pablo City, Laguna</p>
             </div>
 
@@ -348,7 +323,7 @@
                     <iframe width="560" height="340" src="https://www.youtube.com/embed/bUwAc5eTxhk" title="Fullwonder Coffee testimonial nakatulong makabuo?" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                 </div>
 
-                <p class="text-center text-color-2 font-size-130 font-size-sm-150 font-size-md-120 font-size-lg-150 font-size-xl-160 font-size-xxl-170 mb-0">Ms. Rosalie Solano</p>
+                <p class="code-pro-bold-lc text-center text-color-2 font-size-130 font-size-sm-150 font-size-md-120 font-size-lg-150 font-size-xl-160 font-size-xxl-170 mb-0">Ms. Rosalie Solano</p>
                 <p class="aileron-regular text-center text-color-2 font-size-sm-120 font-size-md-90 font-size-lg-110">Brgy. Mojon Liliw, Laguna</p>
             </div>
         </div>
@@ -513,7 +488,7 @@
 
 <div class="bg-color-2 py-5">
     <div class="container py-5">
-        <p class="text-color-1 line-height-110 font-size-200 font-size-sm-230 font-size-md-250 font-size-lg-300 font-size-xl-320 font-size-xxl-320 text-center mb-5 pb-2 pb-md-4">CHECK OUT OUR WAYS TO EARN</p>
+        <p class="code-pro-bold-lc text-color-1 line-height-110 font-size-200 font-size-sm-230 font-size-md-250 font-size-lg-300 font-size-xl-320 font-size-xxl-320 text-center mb-5 pb-2 pb-md-4">CHECK OUT OUR WAYS TO EARN</p>
 
         <div class="row justify-content-center">
             <div class="col-md-6 col-xl-10">
@@ -531,7 +506,7 @@
         <div class="container py-5">
             <div class="row justify-content-center">
                 <div class="col-xl-11 col-xxl-10">
-                    <p class="neuemontreal-bold text-center line-height-100 font-size-180 font-size-sm-300 font-size-md-350 font-size-lg-380 font-size-xl-420 font-size-xxl-450 mb-5 pb-lg-2 letter">Join us and discover the transformative power of health and wellness.</p>
+                    <p class="code-pro-bold-lc  text-center line-height-100 font-size-180 font-size-sm-300 font-size-md-350 font-size-lg-380 font-size-xl-420 font-size-xxl-450 mb-5 pb-lg-2 letter">Join us and discover the transformative power of health and wellness.</p>
                     <p class="aileron-regular text-center line-height-140 font-size-140 font-size-sm-140 font-size-md-150 font-size-lg-160 font-size-xl-170 font-size-xxl-170 px-4 px-sm-0 mb-5 pb-3">Together, we can create a world where everyone has the opportunity to live their best, healthiest life.</p>
 
                     <div class="text-center">
@@ -545,52 +520,5 @@
     </div>
 </div>
 
-<div class="bg-color-2 pt-5 pb-0 pb-lg-5 overflow-hidden" id="footer">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-md-6 col-lg-4 order-0 px-sm-5 px-md-0 mb-5 mb-md-0">
-                <div class="px-4 px-sm-5 pe-md-5 pe-lg-4">
-                    <img src="{{ asset('img/logo/fairwin-white-2.webp') }}" class="w-100" alt="8Fairwin8 Trading Corporation">
-                </div>
-            </div>
-
-            <div class="col-12 col-lg-4 order-2 order-lg-1 pt-4 pt-lg-0 mt-4 mb-5 my-lg-0">
-                <p class="code-pro-bold-lc text-color-1 text-center text-lg-start font-size-sm-140 font-size-md-100 font-size-lg-90 font-size-xl-110 font-size-xxl-130 font-weight-700 mb-2">WHERE TO FIND US</p>
-                <p class="code-pro-lc text-white text-center text-lg-start font-size-sm-140 font-size-md-100 font-size-lg-90 font-size-xl-110 font-size-xxl-130 line-height-110 mb-3">V-A #35 Makokak Street Corner A. Mabini Street, San Pablo City, Laguna, Philippines</p>
-
-                <p class="code-pro-bold-lc text-color-1 text-center text-lg-start font-size-sm-140 font-size-md-100 font-size-lg-90 font-size-xl-110 font-size-xxl-130 font-weight-700 mb-2">CONTACT US</p>
-                <a href="tel:+639752987452" target="_blank" class="d-flex justify-content-center justify-content-lg-start align-items-center link-color-1 text-decoration-none mb-2">
-                    <div>
-                        <i class="fa-solid fa-circle-phone text-color-1 font-size-160"></i>
-                    </div>
-                    <div class="ps-3 ps-sm-4 ps-lg-3 ps-xl-4">
-                        <p class="code-pro-lc font-size-sm-140 font-size-md-100 font-size-lg-90 font-size-xl-110 font-size-xxl-130 line-height-110 mb-0">(+63) 975 298 7452</p>
-                    </div>
-                </a>
-                <a href="mailto:admin@8fairwin8tradingcorp.com" target="_blank" class="d-flex justify-content-center justify-content-lg-start align-items-center link-color-1 text-decoration-none mb-3">
-                    <div>
-                        <i class="fa-solid fa-circle-envelope text-color-1 font-size-160"></i>
-                    </div>
-                    <div class="ps-3 ps-sm-4 ps-lg-3 ps-xl-4">
-                        <p class="code-pro-lc font-size-sm-140 font-size-md-100 font-size-lg-90 font-size-xl-110 font-size-xxl-130 line-height-110 mb-0">admin@8fairwin8tradingcorp.com</p>
-                    </div>
-                </a>
-
-                <p class="code-pro-bold-lc text-color-1 text-center text-lg-start font-size-sm-140 font-size-md-100 font-size-lg-90 font-size-xl-110 font-size-xxl-130 font-weight-700 mb-2">CONNECT WITH US</p>
-                <a href="https://facebook.com/8fairwin8family" target="_blank" class="d-flex justify-content-center justify-content-lg-start align-items-center link-color-1 text-decoration-none mb-2">
-                    <div>
-                        <i class="fa-brands fa-facebook text-color-1 font-size-160"></i>
-                    </div>
-                    <div class="ps-3 ps-sm-4 ps-lg-3 ps-xl-4">
-                        <p class="code-pro-lc font-size-sm-140 font-size-md-100 font-size-lg-90 font-size-xl-110 font-size-xxl-130 line-height-110 mb-0">facebook.com/8fairwin8family</p>
-                    </div>
-                </a>
-            </div>
-
-            <div class="col-12 col-md-6 col-lg-4 order-1 order-lg-2">
-                <div class="pt-5 pb-3 px-lg-4" id="map" style="position: relative; overflow: hidden;"><div style="height: 100%; width: 100%; position: absolute; top: 0px; left: 0px; background-color: rgb(229, 227, 223);"><div class="gm-err-container"><div class="gm-err-content"><div class="gm-err-icon"><img src="https://maps.gstatic.com/mapfiles/api-3/images/icon_error.png" alt="" draggable="false" style="user-select: none;"></div><div class="gm-err-title">Oops! Something went wrong.</div><div class="gm-err-message">This page didn't load Google Maps correctly. See the JavaScript console for technical details.</div></div></div></div></div>
-            </div>
-        </div>
-    </div>
-</div>
+@include('home.includes.footer')
 @endsection

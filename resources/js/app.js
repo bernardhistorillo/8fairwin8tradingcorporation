@@ -275,12 +275,26 @@ $(window).on('scroll', function() {
 
     if($(this).scrollTop() > 0) {
         navbar.addClass("scrolled");
+        navbar.removeClass("navbar-dark");
     } else {
         navbar.removeClass("scrolled");
+        navbar.addClass("navbar-dark");
     }
 
     if($(this).scrollTop() + $(this).height() >= getOffset($("#footer")[0]).top && !mapIsInitialized) {
         initMap();
+    }
+});
+
+$(document).on("click", ".navbar-toggler", function() {
+    let navbar = $(".navbar");
+
+    if($(this).hasClass("collapsed") && $(window).scrollTop() === 0) {
+        navbar.removeClass("scrolled");
+        navbar.addClass("navbar-dark");
+    } else {
+        navbar.addClass("scrolled");
+        navbar.removeClass("navbar-dark");
     }
 });
 

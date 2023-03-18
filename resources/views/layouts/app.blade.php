@@ -17,14 +17,11 @@
     <link rel="icon" href="{{ asset('img/logo/100x100.png') }}">
 
     <link rel="icon" type="image/ico" href="img/logo-image.png" sizes="any" />
-    <link href="{{ asset('lib/coreui/icons/css/coreui-icons.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('lib/flag-icon-css/css/flag-icon.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('lib/font-awesome/css/all.min.css') }}" rel="stylesheet">
     <link href="{{ asset('lib/treantjs/css/Treant.css') }}" rel="stylesheet"/>
     <link href="{{ asset('lib/datatables/datatables.min.css') }}" rel="stylesheet">
-{{--    <link href="{{ asset('css/style.css') }}" rel="stylesheet">--}}
+
+    <link href="{{ asset('lib/sb-admin/css/sb-admin-2.min.css') }}" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-    <link href="{{ asset('lib/pace-progress/css/pace.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.3.0/css/all.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
@@ -95,14 +92,11 @@
     <input type="hidden" name="app_url" value="{{ config('app.url') }}" />
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="{{ asset('lib/sb-admin/js/sb-admin-2.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
-{{--    <script src="{{ asset('lib/jquery/jquery-3.3.1.min.js') }}"></script>--}}
+    {{--    <script src="{{ asset('lib/jquery/jquery-3.3.1.min.js') }}"></script>--}}
 {{--    <script src="{{ asset('lib/popper/js/popper.min.js') }}"></script>--}}
 {{--    <script src="{{ asset('lib/bootstrap/js/bootstrap.min.js') }}"></script>--}}
-    <script src="{{ asset('lib/pace-progress/pace.min.js') }}"></script>
-    <script src="{{ asset('lib/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
-    <script src="{{ asset('lib/coreui/js/coreui.min.js') }}"></script>
-    <script src="{{ asset('lib/coreui/js/custom-tooltips.min.js') }}"></script>
     <script src="{{ asset('lib/datatables/datatables.min.js') }}"></script>
     <script src="{{ asset('lib/treantjs/js/raphael.js') }}"></script>
     <script src="{{ asset('lib/treantjs/js/Treant.js') }}"></script>

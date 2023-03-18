@@ -12,7 +12,7 @@
     font-family: Code-Pro-Bold-LC;
     src: url('../fonts/Code Pro/Code Pro Bold LC.otf');
 }
-*, .code-pro-bold-lc {
+.code-pro-bold-lc {
     font-family: Code-Pro-Bold-LC, serif;
 }
 @font-face {
@@ -54,6 +54,13 @@
 }
 .link-color-1:hover, .link-color-1.active {
     color: #e3b504!important;
+}
+.link-color-2 {
+    color:#e3b504!important;
+    text-decoration: none!important;
+}
+.link-color-2:hover, .link-color-2.active {
+    color: #b08d04 !important;
 }
 .btn-custom-1 {
     border-radius:0;
@@ -105,14 +112,25 @@
 }
 .navbar {
     background-color: rgba(0,0,0,0);
-    transition:0.5s;
+    transition:1s;
     padding-top:8px;
     padding-bottom:8px;
 }
 .navbar.scrolled {
-    background-color: #104d22;
+    background-color: white;
     padding-top:8px;
     padding-bottom:8px;
+    border-bottom:1px solid #104d22;
+}
+.navbar .container {
+    min-height:60px;
+    transition:1s;
+}
+.navbar.scrolled .container {
+    min-height:45px;
+}
+.navbar .navbar-collapse {
+    margin-top:15px;
 }
 .navbar .navbar-brand img {
     height:60px;
@@ -120,6 +138,24 @@
 }
 .navbar.scrolled .navbar-brand img {
     height:45px;
+}
+.navbar:not(.scrolled) .navbar-brand img.fairwin-white {
+    opacity: 0;
+}
+.navbar:not(.scrolled) .navbar-brand img.fairwin-colored {
+    opacity: 1;
+}
+.navbar.scrolled .navbar-brand img.fairwin-white {
+    opacity: 1;
+}
+.navbar.scrolled .navbar-brand img.fairwin-colored {
+    opacity: 0;
+}
+.navbar:not(.scrolled) .nav-link {
+    color:white;
+}
+.navbar.scrolled .nav-link {
+    color:#104d22;
 }
 .video-container {
     position: relative;
@@ -142,6 +178,17 @@
 }
 #accordion-faq .accordion-button:not(.collapsed)::after {
     background-image: var(--bs-accordion-btn-icon);
+}
+.form-control-1 {
+    height:initial;
+}
+.form-control-1 {
+    border:2px solid #104d22;
+    border-radius:0;
+}
+.form-control-1:focus {
+    border:2px solid #104d22;
+    box-shadow: 0 0 0 0.25rem rgba(16,77,34,.25);
 }
 /*!* Start: Scrollbar *!*/
 /**::-webkit-scrollbar {*/
@@ -229,6 +276,9 @@
     }
     #map {
         height:296px;
+    }
+    .navbar .navbar-collapse {
+        margin-top:0;
     }
 }
 
