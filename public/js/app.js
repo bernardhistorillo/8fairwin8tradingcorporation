@@ -1,2 +1,1855 @@
-/*! For license information please see app.js.LICENSE.txt */
-(()=>{function t(e){return t="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(t){return typeof t}:function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol&&t!==Symbol.prototype?"symbol":typeof t},t(e)}function e(){"use strict";e=function(){return a};var a={},o=Object.prototype,n=o.hasOwnProperty,r=Object.defineProperty||function(t,e,a){t[e]=a.value},s="function"==typeof Symbol?Symbol:{},i=s.iterator||"@@iterator",d=s.asyncIterator||"@@asyncIterator",l=s.toStringTag||"@@toStringTag";function c(t,e,a){return Object.defineProperty(t,e,{value:a,enumerable:!0,configurable:!0,writable:!0}),t[e]}try{c({},"")}catch(t){c=function(t,e,a){return t[e]=a}}function m(t,e,a,o){var n=e&&e.prototype instanceof h?e:h,s=Object.create(n.prototype),i=new T(o||[]);return r(s,"_invoke",{value:x(t,a,i)}),s}function p(t,e,a){try{return{type:"normal",arg:t.call(e,a)}}catch(t){return{type:"throw",arg:t}}}a.wrap=m;var u={};function h(){}function f(){}function $(){}var g={};c(g,i,(function(){return this}));var y=Object.getPrototypeOf,b=y&&y(y(O([])));b&&b!==o&&n.call(b,i)&&(g=b);var v=$.prototype=h.prototype=Object.create(g);function w(t){["next","throw","return"].forEach((function(e){c(t,e,(function(t){return this._invoke(e,t)}))}))}function k(e,a){function o(r,s,i,d){var l=p(e[r],e,s);if("throw"!==l.type){var c=l.arg,m=c.value;return m&&"object"==t(m)&&n.call(m,"__await")?a.resolve(m.__await).then((function(t){o("next",t,i,d)}),(function(t){o("throw",t,i,d)})):a.resolve(m).then((function(t){c.value=t,i(c)}),(function(t){return o("throw",t,i,d)}))}d(l.arg)}var s;r(this,"_invoke",{value:function(t,e){function n(){return new a((function(a,n){o(t,e,a,n)}))}return s=s?s.then(n,n):n()}})}function x(t,e,a){var o="suspendedStart";return function(n,r){if("executing"===o)throw new Error("Generator is already running");if("completed"===o){if("throw"===n)throw r;return P()}for(a.method=n,a.arg=r;;){var s=a.delegate;if(s){var i=_(s,a);if(i){if(i===u)continue;return i}}if("next"===a.method)a.sent=a._sent=a.arg;else if("throw"===a.method){if("suspendedStart"===o)throw o="completed",a.arg;a.dispatchException(a.arg)}else"return"===a.method&&a.abrupt("return",a.arg);o="executing";var d=p(t,e,a);if("normal"===d.type){if(o=a.done?"completed":"suspendedYield",d.arg===u)continue;return{value:d.arg,done:a.done}}"throw"===d.type&&(o="completed",a.method="throw",a.arg=d.arg)}}}function _(t,e){var a=e.method,o=t.iterator[a];if(void 0===o)return e.delegate=null,"throw"===a&&t.iterator.return&&(e.method="return",e.arg=void 0,_(t,e),"throw"===e.method)||"return"!==a&&(e.method="throw",e.arg=new TypeError("The iterator does not provide a '"+a+"' method")),u;var n=p(o,t.iterator,e.arg);if("throw"===n.type)return e.method="throw",e.arg=n.arg,e.delegate=null,u;var r=n.arg;return r?r.done?(e[t.resultName]=r.value,e.next=t.nextLoc,"return"!==e.method&&(e.method="next",e.arg=void 0),e.delegate=null,u):r:(e.method="throw",e.arg=new TypeError("iterator result is not an object"),e.delegate=null,u)}function S(t){var e={tryLoc:t[0]};1 in t&&(e.catchLoc=t[1]),2 in t&&(e.finallyLoc=t[2],e.afterLoc=t[3]),this.tryEntries.push(e)}function C(t){var e=t.completion||{};e.type="normal",delete e.arg,t.completion=e}function T(t){this.tryEntries=[{tryLoc:"root"}],t.forEach(S,this),this.reset(!0)}function O(t){if(t){var e=t[i];if(e)return e.call(t);if("function"==typeof t.next)return t;if(!isNaN(t.length)){var a=-1,o=function e(){for(;++a<t.length;)if(n.call(t,a))return e.value=t[a],e.done=!1,e;return e.value=void 0,e.done=!0,e};return o.next=o}}return{next:P}}function P(){return{value:void 0,done:!0}}return f.prototype=$,r(v,"constructor",{value:$,configurable:!0}),r($,"constructor",{value:f,configurable:!0}),f.displayName=c($,l,"GeneratorFunction"),a.isGeneratorFunction=function(t){var e="function"==typeof t&&t.constructor;return!!e&&(e===f||"GeneratorFunction"===(e.displayName||e.name))},a.mark=function(t){return Object.setPrototypeOf?Object.setPrototypeOf(t,$):(t.__proto__=$,c(t,l,"GeneratorFunction")),t.prototype=Object.create(v),t},a.awrap=function(t){return{__await:t}},w(k.prototype),c(k.prototype,d,(function(){return this})),a.AsyncIterator=k,a.async=function(t,e,o,n,r){void 0===r&&(r=Promise);var s=new k(m(t,e,o,n),r);return a.isGeneratorFunction(e)?s:s.next().then((function(t){return t.done?t.value:s.next()}))},w(v),c(v,l,"Generator"),c(v,i,(function(){return this})),c(v,"toString",(function(){return"[object Generator]"})),a.keys=function(t){var e=Object(t),a=[];for(var o in e)a.push(o);return a.reverse(),function t(){for(;a.length;){var o=a.pop();if(o in e)return t.value=o,t.done=!1,t}return t.done=!0,t}},a.values=O,T.prototype={constructor:T,reset:function(t){if(this.prev=0,this.next=0,this.sent=this._sent=void 0,this.done=!1,this.delegate=null,this.method="next",this.arg=void 0,this.tryEntries.forEach(C),!t)for(var e in this)"t"===e.charAt(0)&&n.call(this,e)&&!isNaN(+e.slice(1))&&(this[e]=void 0)},stop:function(){this.done=!0;var t=this.tryEntries[0].completion;if("throw"===t.type)throw t.arg;return this.rval},dispatchException:function(t){if(this.done)throw t;var e=this;function a(a,o){return s.type="throw",s.arg=t,e.next=a,o&&(e.method="next",e.arg=void 0),!!o}for(var o=this.tryEntries.length-1;o>=0;--o){var r=this.tryEntries[o],s=r.completion;if("root"===r.tryLoc)return a("end");if(r.tryLoc<=this.prev){var i=n.call(r,"catchLoc"),d=n.call(r,"finallyLoc");if(i&&d){if(this.prev<r.catchLoc)return a(r.catchLoc,!0);if(this.prev<r.finallyLoc)return a(r.finallyLoc)}else if(i){if(this.prev<r.catchLoc)return a(r.catchLoc,!0)}else{if(!d)throw new Error("try statement without catch or finally");if(this.prev<r.finallyLoc)return a(r.finallyLoc)}}}},abrupt:function(t,e){for(var a=this.tryEntries.length-1;a>=0;--a){var o=this.tryEntries[a];if(o.tryLoc<=this.prev&&n.call(o,"finallyLoc")&&this.prev<o.finallyLoc){var r=o;break}}r&&("break"===t||"continue"===t)&&r.tryLoc<=e&&e<=r.finallyLoc&&(r=null);var s=r?r.completion:{};return s.type=t,s.arg=e,r?(this.method="next",this.next=r.finallyLoc,u):this.complete(s)},complete:function(t,e){if("throw"===t.type)throw t.arg;return"break"===t.type||"continue"===t.type?this.next=t.arg:"return"===t.type?(this.rval=this.arg=t.arg,this.method="return",this.next="end"):"normal"===t.type&&e&&(this.next=e),u},finish:function(t){for(var e=this.tryEntries.length-1;e>=0;--e){var a=this.tryEntries[e];if(a.finallyLoc===t)return this.complete(a.completion,a.afterLoc),C(a),u}},catch:function(t){for(var e=this.tryEntries.length-1;e>=0;--e){var a=this.tryEntries[e];if(a.tryLoc===t){var o=a.completion;if("throw"===o.type){var n=o.arg;C(a)}return n}}throw new Error("illegal catch attempt")},delegateYield:function(t,e,a){return this.delegate={iterator:O(t),resultName:e,nextLoc:a},"next"===this.method&&(this.arg=void 0),u}},a}function a(t,e,a,o,n,r,s){try{var i=t[r](s),d=i.value}catch(t){return void a(t)}i.done?e(d):Promise.resolve(d).then(o,n)}function o(t){return function(){var e=this,o=arguments;return new Promise((function(n,r){var s=t.apply(e,o);function i(t){a(s,n,r,i,d,"next",t)}function d(t){a(s,n,r,i,d,"throw",t)}i(void 0)}))}}var n,r,s,i=!1,d=function(){var t=o(e().mark((function t(){return e().wrap((function(t){for(;;)switch(t.prev=t.next){case 0:n=$("input[name='app_url']").val(),r=$("input[name='route_name']").val(),s=parseFloat($("input[name='winners_gem_value']").val()),$.ajaxSetup({headers:{"X-CSRF-TOKEN":$('meta[name="csrf-token"]').attr("content")}});case 4:case"end":return t.stop()}}),t)})));return function(){return t.apply(this,arguments)}}(),l=function(){var t=o(e().mark((function t(){return e().wrap((function(t){for(;;)switch(t.prev=t.next){case 0:return t.next=2,d();case 2:"home.index"===r?c():"income.index"===r?m():"orders.index"===r?p():"network.index"===r?u():"transfers.index"===r?h():"conversions.index"===r?f():"withdrawals.index"===r&&g();case 3:case"end":return t.stop()}}),t)})));return function(){return t.apply(this,arguments)}}(),c=function(){var t=document.querySelector("#text-1");t.innerHTML=t.textContent.replace(/\S/g,"<span class='letter code-pro-bold-lc'>$&</span>");var e=document.querySelector("#text-2");e.innerHTML=e.textContent.replace(/\S/g,"<span class='letter code-pro-bold-lc text-color-1'>$&</span>");var a=document.querySelector("#text-3");a.innerHTML=a.textContent.replace(/\S/g,"<span class='letter code-pro-bold-lc'>$&</span>");var o=document.querySelector("#text-4");o.innerHTML=o.textContent.replace(/\S/g,"<span class='letter code-pro-bold-lc text-color-1'>$&</span>");var n=document.querySelector("#text-5");n.innerHTML=n.textContent.replace(/\S/g,"<span class='letter code-pro-bold-lc'>$&</span>");var r=document.querySelector("#text-6");r.innerHTML=r.textContent.replace(/\S/g,"<span class='letter aileron-regular'>$&</span>"),anime.timeline({loop:!1}).add({targets:"#text-1 .letter",opacity:[0,1],easing:"easeInOutQuad",duration:150,delay:function(t,e){return 80*(e+1)}}).add({targets:"#text-2 .letter",opacity:[0,1],easing:"easeInOutQuad",duration:150,delay:function(t,e){return 80*(e+1)}}).add({targets:"#text-3 .letter",opacity:[0,1],easing:"easeInOutQuad",duration:150,delay:function(t,e){return 80*(e+1)}}).add({targets:"#text-4 .letter",opacity:[0,1],easing:"easeInOutQuad",duration:150,delay:function(t,e){return 80*(e+1)}}).add({targets:"#text-5 .letter",opacity:[0,1],easing:"easeInOutQuad",duration:150,delay:function(t,e){return 80*(e+1)}}).add({targets:"#text-6 .letter",opacity:[0,1],easing:"easeInOutQuad",duration:40,delay:function(t,e){return 10*(e+1)}}).add({targets:"#text-6 .letter",opacity:[1,1],easing:"easeInOutQuad",duration:50,delay:function(t,e){return 30*(e+1)}}),$(".products-carousel").slick({slidesToShow:3,slidesToScroll:1,autoplay:!0,autoplaySpeed:2e3,centerMode:!0,centerPadding:"150px",responsive:[{breakpoint:1400,settings:{slidesToShow:3,centerPadding:"150px"}},{breakpoint:1200,settings:{slidesToShow:2}},{breakpoint:992,settings:{slidesToShow:2}},{breakpoint:768,settings:{slidesToShow:1}},{breakpoint:576,settings:{slidesToShow:1,centerPadding:"0"}}]}),AOS.init()},m=function(){y()},p=function(){y()},u=function(){O(),y()},h=function(){y()},f=function(){y()},g=function(){y()},y=function(){$(".data-table").DataTable({aaSorting:[]}),$(".loading-text").css("display","none"),$(".data-table").css("display","table")},b=function(t){var e="Something went wrong.";if(t.responseJSON)for(var a in e=t.responseJSON.message,t.responseJSON.errors)Object.prototype.hasOwnProperty.call(t.responseJSON.errors,a)&&(e+=" "+t.responseJSON.errors[a]);$("#modal-error .modal-body").html(e),$("#modal-error").modal("show")};$(document).ready((function(){l()})),$(window).on("scroll",(function(){var t,e,a,o=$(".navbar");$(this).scrollTop()>0?(o.addClass("scrolled"),o.removeClass("navbar-dark")):(o.removeClass("scrolled"),o.addClass("navbar-dark")),$(this).scrollTop()+$(this).height()>=(e=$("#footer")[0],a=e.getBoundingClientRect(),{left:a.left+window.scrollX,top:a.top+window.scrollY}).top&&!i&&(t=new google.maps.Map(document.getElementById("map"),{zoom:5.8,disableDefaultUI:!0,center:{lat:14.09782,lng:121.33163},styles:[{featureType:"landscape",elementType:"geometry",stylers:[{color:"#e3b504"}]},{featureType:"landscape.natural.terrain",elementType:"geometry",stylers:[{saturation:-100}]},{featureType:"poi",elementType:"geometry",stylers:[{color:"#e3b504"}]},{featureType:"road",elementType:"geometry",stylers:[{color:"#ffffff"}]},{featureType:"water",elementType:"geometry",stylers:[{color:"#104d22"}]},{featureType:"water",elementType:"labels",stylers:[{color:"#ffffff"}]}]}),new google.maps.Marker({position:{lat:14.09782,lng:121.33163},map:t,icon:{url:n+"/img/contact/map-marker.png",scaledSize:new google.maps.Size(80,80)}}),t&&(i=!0))})),$(document).on("click",".navbar-toggler",(function(){var t=$(".navbar");$(this).hasClass("collapsed")&&0===$(window).scrollTop()?(t.removeClass("scrolled"),t.addClass("navbar-dark")):(t.addClass("scrolled"),t.removeClass("navbar-dark"))}));var v,w,k;$(document).on("change","#register-sponsors-code",(function(){!function(){$("#register-sponsor-blank").css("display","none"),$("#register-sponsor-no-match").css("display","none"),$("#register-sponsor-has-match").css("display","none"),$("#register-sponsor-loading").css("display","inline-block");var t=$("#register-sponsors-code").val();""===t?($("#register-sponsor-blank").css("display","inline-block"),$("#register-sponsor-no-match").css("display","none"),$("#register-sponsor-has-match").css("display","none"),$("#register-sponsor-loading").css("display","none")):$.ajax({method:"POST",url:$("#register-sponsors-code").attr("data-action"),timeout:3e4,data:{referral_code:t}}).done((function(t){t.sponsor?($("#register-sponsor-has-match").html(t.sponsor),$("#register-sponsor-blank").css("display","none"),$("#register-sponsor-no-match").css("display","none"),$("#register-sponsor-has-match").css("display","inline-block"),$("#register-sponsor-loading").css("display","none")):($("#register-sponsor-blank").css("display","none"),$("#register-sponsor-no-match").css("display","inline-block"),$("#register-sponsor-has-match").css("display","none"),$("#register-sponsor-loading").css("display","none"))})).fail((function(t){b(t)}))}()})),$(document).on("click","#register-show-confirmation",(function(){$("#modal-warning .modal-body").html("Your registration information will now be submitted."),$("#modal-warning .proceed").html("Confirm"),$("#modal-warning .proceed").attr("id","register"),$("#modal-warning").modal("show")})),$(document).on("click","#register",(function(){$("#modal-warning .cancel").css("display","none"),$("#modal-warning .proceed").prop("disabled",!0),$("#modal-warning .proceed").html("Processing...");var t=$("#register-firstname").val(),e=$("#register-lastname").val(),a=$("#register-contact-number").val(),o=$("#register-email-address").val(),n=$("#register-username").val(),r=$("#register-password").val(),s=$("#register-confirm-password").val(),i=$("#register-pin-code").val(),d=$("#register-confirm-pin-code").val(),l=$("#register-sponsors-code").val();$.ajax({method:"POST",url:$("#register-show-confirmation").attr("data-action"),timeout:3e4,data:{firstname:t,lastname:e,contact_number:a,email_address:o,username:n,password:r,confirm_password:s,pin_code:i,confirm_pin_code:d,sponsors_code:l}}).done((function(t){$("#modal-success button[data-dismiss='modal']").removeAttr("data-dismiss"),$("#modal-success .proceed").attr("onclick","window.location = '/dashboard'; $('#modal-success .proceed').prop('disabled',true); $('#modal-success .proceed').html('Redirecting...')"),$("#modal-success .modal-body").html("Congratulations! You have successfully created your account."),$("#modal-success").modal("show")})).fail((function(t){b(t)})).always((function(){$("#modal-warning").modal("hide"),$("#modal-warning .proceed").html("Confirm"),$("#modal-warning .proceed").prop("disabled",!1),$("#modal-warning .cancel").css("display","block")}))})),$(document).on("submit","#login-form",(function(t){t.preventDefault(),$("#login").prop("disabled",!0),$("#login").html("Logging In...");var e=$("#login-username").val(),a=$("#login-password").val();$.ajax({method:"POST",url:$("#login-form").attr("action"),timeout:3e4,data:{username:e,password:a}}).done((function(t){$("#login").html("Redirecting..."),window.location="/dashboard"})).fail((function(t){b(t)}))}));var x=0,_=$('<input type="file" accept="image/*" />'),S=$('<input type="file" accept="image/*" />'),C=["","DBP - ","DSP - ","FDP - ","DMP - "],T=["Free Account","Dealer","Explorer","Pathfinder","Navigator","Master Guide","Fair Winner","Grand Fair Winner","Royal Fair Winner","Crown Fair Winner"],O=function t(){$.ajax({method:"POST",url:$("input[name='get-genealogy-route']").val(),timeout:3e4,data:{type:2}}).done((function(t){v=t.genealogy,w=t.root,k=t.root,P()})).fail((function(){setTimeout((function(){t()}),1e3)}))},P=function(){var t=[];t.push(k);for(var e=k;e>1&&e!=w;)for(var a=0;a<v.length;a++)if(v[a].downline==e){t.push(v[a].upline),e=v[a].upline;break}for(var o="",n=t.length-1;n>=0;n--)for(a=0;a<v.length;a++)t[n]==v[a].downline&&(0==n?o+='<li class="breadcrumb-item active">'+v[a].firstname+" "+v[a].lastname+"</li>":(o+='<li class="breadcrumb-item">',o+='\t\t<a href="javascript:void(0)" class="uplines" node-id="'+v[a].downline+'">'+v[a].firstname+" "+v[a].lastname+"</a>",o+="</li>"));$(".uplines-container").html(o),$("#chart").css("height",$(window).height()-100+"px");var r=[],s=[],i=[k];r.push({container:"#chart",nodeAlign:"BOTTOM",connectors:{type:"step"}});for(a=0;a<v.length;a++)if(v[a].downline==k){s[v[a].downline]={HTMLclass:"root",text:{name:v[a].firstname+" "+v[a].lastname,id:v[a].downline,rank:C[v[a].package_id]+T[v[a].rank],username:"Username: "+v[a].username,referral_code:"Referral Code: "+v[a].referral_code}},r.push(s[v[a].downline]);break}var d=$("#number-of-levels-to-be-shown").val();for(n=0;n<d;n++){for(var l=[],c=0;c<i.length;c++)for(a=0;a<v.length;a++)if(v[a].upline==i[c]){console.log(v[a].upline);var m=' <p class="node-name">'+v[a].firstname+" "+v[a].lastname+"</p>";m+='    <p class="node-id">'+v[a].downline+"</p>",m+='    <p class="node-rank">'+C[v[a].package_id]+T[v[a].rank]+"</p>",m+='    <p class="node-username">Username: '+v[a].username+"</p>",m+='    <p class="node-referral_code">Referral Code: '+v[a].referral_code+" </p>",m+='    <p class="node-referral_code">Referral Code: '+v[a].referral_code+" </p>",m+='    <p class="node-button"><button class="btn btn-success btn-sm node-expand" value="'+v[a].downline+'" style="background-color:#0e4d22">Expand</button></p>',s[v[a].downline]={parent:s[v[a].upline],innerHTML:m},r.push(s[v[a].downline]),l.push(v[a].downline)}i=l}if(0==x){i=[k];var p='<table class="table table-bordered data-table" style="display:none">';for(p+="\t\t<thead>",p+="\t\t\t<tr>",p+="\t\t\t\t<th>Name</th>",p+="\t\t\t\t<th>Username</th>",p+="\t\t\t\t<th>Referral Code</th>",p+="\t\t\t\t<th>Sponsor Name</th>",p+="\t\t\t</tr>",p+="\t\t</thead>",p+="\t\t<tbody>",console.log(v);i.length>0;){for(l=[],c=0;c<i.length;c++)for(a=0;a<v.length;a++)v[a].upline==i[c]&&(p+="\t<tr>",p+="\t\t<td>"+v[a].firstname+" "+v[a].lastname+"</td>",p+="\t\t<td>"+v[a].username+"</td>",p+="\t\t<td>"+v[a].referral_code+"</td>",p+="\t\t<td>"+v[a].upline_firstname+" "+v[a].upline_lastname+"</td>",p+="\t</tr>",l.push(v[a].downline));i=l}p+="\t\t</tbody>",p+="\t</table>",$(".genealogy-table-container").html(p),$(".data-table").DataTable(),$(".data-table").css("display","table"),x=1}$("#chart").html('<h5 class="text-center my-5 py-5">Loading...</h5>'),1==$("#has-network").attr("data-value")?setTimeout((function(){new Treant(r),$("#chart").animate({scrollLeft:parseFloat($(".root").css("left"))-$("#chart").width()/2+$(".node").width()/2},500)}),500):$("#chart").html('<h5 class="text-center my-5 py-5">No Network</h5>')},L=function(t){t&&N(0);var e=0,a=0,o=0,n='\t<table class="table table-bordered">';$(".cart").each((function(){1==$(this).attr("data-added-to-cart")&&(e+=parseInt($(".product-container[data-id='"+$(this).val()+"']").attr("data-quantity")),a+=$(".product-container[data-id='"+$(this).val()+"']").attr("data-price")*$(".product-container[data-id='"+$(this).val()+"']").attr("data-quantity"),o+=$(".product-container[data-id='"+$(this).val()+"']").attr("data-points")*$(".product-container[data-id='"+$(this).val()+"']").attr("data-quantity"),n+="<tr>",n+='\t<td style="width:50px">'+$(".product-container[data-id='"+$(this).val()+"']").find(".image-container").html()+"</td>",n+='\t<td style="text-align:left; position:relative">',n+='\t\t<h6 style="font-size:0.9em">'+$(".product-container[data-id='"+$(this).val()+"']").attr("data-name")+"</h6>",(2==$(this).attr("data-type")||$("input[name='stockist-purchase']:checked").val()>0)&&(n+='\t<p class="mb-0" style="font-size:0.9em">'+F($(".product-container[data-id='"+$(this).val()+"']").attr("data-price"),!0)+" Gems &times; "+$(".product-container[data-id='"+$(this).val()+"']").attr("data-quantity")+" = "+F($(".product-container[data-id='"+$(this).val()+"']").attr("data-price")*$(".product-container[data-id='"+$(this).val()+"']").attr("data-quantity"),!0)+" Gems</p>",n+='\t<p class="mb-0" style="font-size:0.9em">'+F($(".product-container[data-id='"+$(this).val()+"']").attr("data-points"),!0)+" PV &times; "+$(".product-container[data-id='"+$(this).val()+"']").attr("data-quantity")+" = "+F($(".product-container[data-id='"+$(this).val()+"']").attr("data-points")*$(".product-container[data-id='"+$(this).val()+"']").attr("data-quantity"),!0)+" PV</p>",n+='\t<div class="btn-group mt-1" role="group">',n+='\t\t<button class="btn btn-sm change-quantity" value="'+$(this).val()+'" data-change="-1" style="background-color:#0e4d22; color:#ffffff; width:50px; border-right:1px solid #ffffff"><i class="fas fa-minus"></i></button>',n+='\t\t<button class="btn btn-sm change-quantity" value="'+$(this).val()+'" data-change="1" style="background-color:#0e4d22; color:#ffffff; width:50px; border-left:1px solid #ffffff""><i class="fas fa-plus"></i></button>',n+="\t</div>",n+="\t<br>"),n+='\t\t<button class="btn btn-sm mt-1 remove-from-cart" value="'+$(this).val()+'" style="background-color:#ad1d45; color:#ffffff">Remove From Cart</button>',n+="\t</td>",n+="</tr>")})),n+="\t</table>",0==e&&(n+="\t<tr>",n+="\t\t<td>No Items Added Yet</td>",n+="\t</tr>"),$("#cart-container").html(n),$("#total-quantity").html(F(e,!1)),$("#total-price").html(F(a,!0)),$("#total-points").html(F(o,!0))},N=function(t){0==t?($(".cart").attr("data-added-to-cart",-1),$(".cart").css("background-color","#0e4d22"),$(".cart").html('<div><i class="fas fa-shopping-cart" style="color:#ffffff; font-size:1.4em"></i></div><div style="margin-top:2px">Add To Cart</div>'),$(".product-container").attr("data-quantity",1)):($(".cart[value='"+t+"']").attr("data-added-to-cart",-1),$(".cart[value='"+t+"']").css("background-color","#0e4d22"),$(".cart[value='"+t+"']").html('<div><i class="fas fa-shopping-cart" style="color:#ffffff; font-size:1.4em"></i></div><div style="margin-top:2px">Add To Cart</div>'),$(".product-container[data-id='"+t+"']").attr("data-quantity",1))},F=function(t,e){var a=(t=parseFloat(t)).toFixed(2).toString().split(".");return a[0]=a[0].replace(/\B(?=(\d{3})+(?!\d))/g,","),e?a.join("."):a[0]};_.on("change",(function(){var t=new FileReader;t.onload=function(t){var e=new Image;e.onload=function(){var t=e.height,a=e.width;$("#proof-of-payment-container .proof-of-payment:last").attr("data-image",e.src),$("#proof-of-payment-container .proof-of-payment:last").attr("data-has-image",1),$("#proof-of-payment-container .proof-of-payment:last").attr("data-extension",_[0].files[0].name.split(".").pop().toLowerCase());var o=' <div style="position:relative; width:100%; height:100%; padding-top:175px; overflow:hidden">';o+='         <img src="'+e.src+'" style="'+(a>=t?"height:auto; width:100%;":"height:100%; width:auto;")+' margin:0; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%)" />',o+="    </div>",$("#proof-of-payment-container .proof-of-payment:last").html(o),$("#proof-of-payment-container").append($("#proof-of-payment-content").html())},e.src=t.target.result},t.readAsDataURL(_[0].files[0])})),S.on("change",(function(){$(".profile-picture-loading").removeClass("d-none");var t=$(".change-profile-picture-container").css("background-image");$(".change-profile-picture-container").css("background-image","none");var e=new FileReader;e.onload=function(e){var a=new Image;a.onload=function(){var e={image:a.src,extension:S[0].files[0].name.split(".").pop().toLowerCase()};$.ajax({method:"POST",url:"api/change-profile-picture.php",data:{photo:JSON.stringify(e)},timeout:3e4}).done((function(e){""==(e=JSON.parse(e)).error?$(".change-profile-picture-container").css("background-image","url('"+a.src+"')"):($(".change-profile-picture-container").css("background",t),$("#modal-error .modal-body").html(e.error),$("#modal-error").modal("show"))})).fail((function(){$(".change-profile-picture-container").css("background",t),$("#modal-error .modal-body").html("Unable to connect to server."),$("#modal-error").modal("show")})).always((function(){$(".profile-picture-loading").addClass("d-none")}))},a.src=e.target.result},e.readAsDataURL(S[0].files[0])})),$(document).ready((function(){var t=location.href.split("/").slice(-1);"terminal"==(t=t[0].split("."))[0]&&($(".data-table").DataTable({aaSorting:[],pageLength:5}),$("#items-table").DataTable({aaSorting:[],pageLength:5,order:[[2,"desc"]]}),$(".loading-text").css("display","none"),$(".data-table, #items-table").css("display","table"))})),$(document).on("click",".products-tab",(function(){L(!0),$(".products-tab").removeClass("active"),$(this).addClass("active"),$(".products-section").addClass("d-none"),1==$(this).data("type")?0==$(this).data("package-id")?$(".products-section[data-type='1']").removeClass("d-none"):4==$(this).data("package-id")?($(".products-section[data-type='1'][data-package-id='1']").removeClass("d-none"),$(".products-section[data-type='1'][data-package-id='2']").removeClass("d-none"),$(".products-section[data-type='1'][data-package-id='3']").removeClass("d-none")):2==$(this).data("package-id")?($(".products-section[data-type='1'][data-package-id='1']").removeClass("d-none"),$(".products-section[data-type='1'][data-package-id='3']").removeClass("d-none")):1==$(this).data("package-id")&&$(".products-section[data-type='1'][data-package-id='3']").removeClass("d-none"):$(".products-section[data-type='"+$(this).data("type")+"']").removeClass("d-none")})),$(document).on("change","input[name='stockist-purchase']",(function(){var t,e=$("input[name='stockist-purchase']:checked").val();0==e?(t="distributors-price",$(".crossed-price").removeClass("d-none")):1==e?(t="mobile-price",$(".crossed-price").addClass("d-none")):2==e&&(t="center-price",$(".crossed-price").addClass("d-none")),$("#place-order-confirm").attr("data-stockist",e),$(".product-container").each((function(){$(this).attr("data-price",$(this).data(t)),$(this).find(".price").html(F($(this).attr("data-price"),!0))})),0!=e?($(".products-section").removeClass("d-none"),$("#products-tab-container").addClass("d-none"),$(".products-tab").removeClass("active"),$(".products-tab[data-type='2']").addClass("active")):(1==$("#products-tab-container").data("hidden")?$("#products-tab-container").addClass("d-none"):$("#products-tab-container").removeClass("d-none"),$(".products-tab[data-type='2']").trigger("click")),L(!0)})),$(document).on("click",".cart",(function(){$(".cart").prop("disabled",!0),$(".change-quantity").prop("disabled",!0),$(".remove-from-cart").prop("disabled",!0),1==$(this).attr("data-type")&&$(".products-tab[data-type='1']").hasClass("active")&&N(0),-1==$(this).attr("data-added-to-cart")?($(this).attr("data-added-to-cart",1),$(this).css("background-color","#ad1d45"),$(this).html('<div><i class="fas fa-shopping-cart" style="color:#ffffff; font-size:1.4em"></i></div><div style="margin-top:2px">Remove From Cart</div>')):($(this).attr("data-added-to-cart",-1),$(this).css("background-color","#0e4d22"),$(this).html('<div><i class="fas fa-shopping-cart" style="color:#ffffff; font-size:1.4em"></i></div><div style="margin-top:2px">Add To Cart</div>')),L(!1),$(".cart").prop("disabled",!1),$(".change-quantity").prop("disabled",!1),$(".remove-from-cart").prop("disabled",!1)})),$(document).on("click",".change-quantity",(function(){$(".cart").prop("disabled",!0),$(".change-quantity").prop("disabled",!0),$(".remove-from-cart").prop("disabled",!0);var t=parseFloat($(".product-container[data-id='"+$(this).val()+"']").attr("data-quantity"));1==$(this).attr("data-change")?t++:t=0==--t?1:t,$(".product-container[data-id='"+$(this).val()+"']").attr("data-quantity",t),L(!1),$(".cart").prop("disabled",!1),$(".change-quantity").prop("disabled",!1),$(".remove-from-cart").prop("disabled",!1)})),$(document).on("click",".remove-from-cart",(function(){$(".cart").prop("disabled",!0),$(".change-quantity").prop("disabled",!0),$(".remove-from-cart").prop("disabled",!0),N($(this).val()),L(!1),$(".cart").prop("disabled",!1),$(".change-quantity").prop("disabled",!1),$(".remove-from-cart").prop("disabled",!1)})),$(document).on("click","#place-order-confirm",(function(){if(0==$("#place-order-confirm").data("terminal-account"))$("#modal-warning .modal-body").html("Your order will now be placed.");else{var t=0,e='\t<div class="table-responsive">';e+='\t\t<table class="table table-bordered">',e+='\t\t\t<tr style="background-color:#f0f3f5">',e+="\t\t\t\t<th>Item</th>",e+="\t\t\t\t<th>In Stock</th>",e+="\t\t\t\t<th>To Be Ordered</th>",e+="\t\t\t</tr>",$(".cart").each((function(){1==$(this).attr("data-added-to-cart")&&(parseInt($(".product-container[data-id='"+$(this).val()+"'] .stock").html())<parseInt($(".product-container[data-id='"+$(this).val()+"']").attr("data-quantity"))&&t++,e+="\t<tr>",e+="\t\t<td>"+$(".product-container[data-id='"+$(this).val()+"'] .name").html()+"</td>",e+="\t\t<td>"+F($(".product-container[data-id='"+$(this).val()+"'] .stock").html(),!1)+"</td>",e+="\t\t<td>"+F($(".product-container[data-id='"+$(this).val()+"']").attr("data-quantity"),!1)+"</td>",e+="\t</tr>")})),e+="\t\t</table>",e+="\t</div>",t>0?(e+='<div class="alert alert-danger text-center mb-1">',e+=t+" of the items to be ordered "+(t>1?"are":"is")+" less in stock.",e+="</div>"):(e+='<div class="alert alert-success text-center mb-1">',e+="\tThis order will now be placed.",e+="</div>"),$("#modal-warning .modal-body").html(e)}$("#modal-warning .proceed").attr("id","place-order"),$("#modal-warning").modal("show")})),$(document).on("click","#place-order",(function(){$("#modal-warning .proceed").prop("disabled",!0),$("#modal-warning .proceed").html("Processing..."),$("#modal-warning button[data-dismiss='modal']").css("display","none");var t=[];$(".cart").each((function(){1==$(this).attr("data-added-to-cart")&&t.push({id:$(this).val(),quantity:$(".product-container[data-id='"+$(this).val()+"']").attr("data-quantity")})})),$.ajax({method:"POST",url:$("input[name='place-order-route']").val(),data:{terminal_account:$("#place-order-confirm").data("terminal-account"),items:JSON.stringify(t),full_name:$("#full-name").val(),contact_number:$("#contact-number").val(),barangay:$("#barangay").val(),city:$("#city").val(),province:$("#province").val(),zip_code:$("#zip-code").val(),stockist:$("#place-order-confirm").attr("data-stockist")},timeout:3e4}).done((function(t){if(""==(t=JSON.parse(t)).error){var e="0"==$("#place-order-confirm").data("terminal-account")?"orders.php":"terminal.php?view=orders";$("#modal-success .proceed").removeAttr("data-dismiss"),$("#modal-success .proceed").attr("onclick","window.location = '"+e+"'; $('#modal-success .proceed').prop('disabled',true); $('#modal-success .proceed').html('Redirecting...')"),$("#modal-success .modal-body").html("You have successfully submitted your order request."),$("#modal-success").modal("show")}else $("#modal-error .modal-body").html(t.error),$("#modal-error").modal("show")})).fail((function(){$("#modal-error .modal-body").html("Unable to connect to server."),$("#modal-error").modal("show")})).always((function(){$("#modal-warning").modal("hide"),$("#modal-warning .proceed").html("Confirm"),$("#modal-warning .proceed").prop("disabled",!1),$("#modal-warning button[data-dismiss='modal']").css("display","block")}))})),$(document).on("input","#purchase-winners-gem-amount",(function(){$("#purchase-winners-gem-price").val(parseFloat($(this).val()*s).toFixed(2))})),$(document).on("input","#purchase-winners-gem-price",(function(){$("#purchase-winners-gem-amount").val(parseFloat($(this).val()/s).toFixed(2))})),$(document).on("click","#purchase-winners-gem-show-modal",(function(){$("#modal-warning .modal-body").html("Your Winners Gem purchase request will now be submitted"),$("#modal-warning .proceed").attr("id","purchase-winners-gem"),$("#modal-gem-purchase").modal("hide"),$("#modal-warning").modal("show")})),$(document).on("click","#proof-of-payment-container .proof-of-payment[data-has-image='0']",(function(t){t.preventDefault(),_.click()})),$(document).on("click","#purchase-winners-gem",(function(){$("#modal-warning .proceed").prop("disabled",!0),$("#modal-warning .proceed").html("Processing..."),$("#modal-warning button[data-dismiss='modal']").css("display","none");var t=$("#purchase-winners-gem-price").val(),e=[];$("#proof-of-payment-container .proof-of-payment[data-has-image='1']").each((function(){e.push({image:$(this).attr("data-image"),extension:$(this).attr("data-extension")})})),$.ajax({method:"POST",url:$("input[name='purchase-winners-gem-route']").val(),data:{price:t,winners_gem_value:s,proof_of_payments:JSON.stringify(e)},timeout:3e4}).done((function(t){t.type&&"winners-gem-update"==t.type?(s=parseFloat(t.winners_gem_value),$("#purchase-winners-gem-amount").val(parseFloat($(this).val()/s).toFixed(2)),$("#modal-error .modal-body").html("Winners Gem value has just changed. Winners Gem to be purchased was updated."),$("#modal-error").modal("show")):($("#purchase-winners-gem-amount").val(0),$("#modal-success .proceed").removeAttr("data-dismiss"),$("#modal-success .proceed").attr("onclick","window.location = 'orders/winnersgem'; $('#modal-success .proceed').prop('disabled',true); $('#modal-success .proceed').html('Redirecting...')"),$("#modal-success .modal-body").html("You have successfully submitted your Winners Gem purchase request."),$("#modal-success").modal("show"))})).fail((function(t){b(t)})).always((function(){$("#modal-warning").modal("hide"),$("#modal-warning .proceed").html("Confirm"),$("#modal-warning .proceed").prop("disabled",!1),$("#modal-warning button[data-dismiss='modal']").css("display","block")}))})),$(document).on("click",".view-items",(function(){$("#order-reference").html($(this).attr("data-reference")),$("#ordered-items-container").html('<h6 class="text-center">Loading...</h6>'),$("#modal-view-order-items").modal("show");var t=$(this).val();$.ajax({method:"POST",url:"api/view-items.php",data:{order_id:t},timeout:3e4}).done((function(t){if(""==(t=JSON.parse(t)).error){var e='\t<table class="table table-bordered mb-0">';e+="\t\t<thead>",e+="\t\t\t<tr>",e+="\t\t\t\t<th></th>",e+="\t\t\t\t<th>Item</th>",e+="\t\t\t\t<th>Quantity</th>",e+="\t\t\t\t<th>Amount</th>",e+="\t\t\t</tr>",e+="\t\t</thead>",e+="\t\t<tbody>";for(var a=0;a<t.items.length;a++)e+="\t\t<tr>",e+='\t\t\t<td style="width:80px">',e+='\t\t\t\t<div style="position:relative; width:100%; padding-top:100%; overflow:hidden; border:1px solid #eeeeee">',e+='\t\t\t\t\t<img src="'+t.items[a].photo+"?v="+t.items[a].version+'" style="'+("width"==t.items[a].longest_dimension?"width:100%; height:auto;":"width:auto; height:100%;")+'max-height:100%; max-width:100%; margin:0; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%)" alt="'+t.items[a].name+'">',e+="\t\t\t\t</div>",e+="\t\t\t</td>",e+="\t\t\t<td>"+t.items[a].name+"</td>",e+="\t\t\t<td>"+t.items[a].quantity+"</td>",e+="\t\t\t<td>"+F(t.items[a].quantity*t.items[a].price,!0)+' <i class="fas fa-gem" style="font-size:0.8em"></i></td>',e+="\t\t</tr>";e+="\t\t</tbody>",e+="\t</table>",$("#ordered-items-container").html(e)}else $("#modal-error .modal-body").html(t.error),$("#modal-error").modal("show")})).fail((function(){$("#modal-error .modal-body").html("Unable to connect to server."),$("#modal-error").modal("show")})).always((function(){$("#modal-warning").modal("hide"),$("#modal-warning .proceed").html("Confirm"),$("#modal-warning .proceed").prop("disabled",!1),$("#modal-warning button[data-dismiss='modal']").css("display","block")}))})),$(document).on("change","#transfer-receiver-username",(function(){$("#transfer-receiver-blank").css("display","none"),$("#transfer-receiver-no-match").css("display","none"),$("#transfer-receiver-has-match").css("display","none"),$("#transfer-receiver-has-match").html(""),$("#transfer-receiver-loading").css("display","inline-block");var t=$("#transfer-receiver-username").val();""==t?($("#register-sponsor-blank").css("display","inline-block"),$("#register-sponsor-no-match").css("display","none"),$("#register-sponsor-has-match").css("display","none"),$("#transfer-receiver-has-match").html(""),$("#register-sponsor-loading").css("display","none")):function e(){$.ajax({method:"POST",url:"api/check_receiver.php",timeout:3e4,data:{username:t}}).done((function(t){""==(t=JSON.parse(t)).receiver?($("#transfer-receiver-blank").css("display","none"),$("#transfer-receiver-no-match").css("display","inline-block"),$("#transfer-receiver-has-match").css("display","none"),$("#transfer-receiver-has-match").html(""),$("#transfer-receiver-loading").css("display","none")):($("#transfer-receiver-has-match").html(t.receiver),$("#transfer-receiver-blank").css("display","none"),$("#transfer-receiver-no-match").css("display","none"),$("#transfer-receiver-has-match").css("display","inline-block"),$("#transfer-receiver-loading").css("display","none"))})).fail((function(){setTimeout((function(){e()}),1e3)}))}()})),$(document).on("click","#transfer-winners-gem-confirm",(function(){var t=$("#transfer-receiver-has-match").html(),e=F($("#transfer-winners-gem-amount").val(),!0);""!=t&&($("#modal-warning .modal-body").html("Are you sure you want to transfer "+e+" <i class='fas fa-gem' style='font-size:0.8em'></i> to "+t+"?"),$("#modal-warning .proceed").attr("id","transfer-winners-gem"),$("#modal-transfer").modal("hide"),$("#modal-warning").modal("show"))})),$(document).on("click","#transfer-winners-gem",(function(){$("#modal-warning .proceed").prop("disabled",!0),$("#modal-warning .proceed").html("Processing..."),$("#modal-warning button[data-dismiss='modal']").css("display","none");var t=$("#transfer-receiver-username").val(),e=parseFloat($("#transfer-winners-gem-amount").val()),a=$("#transfer-pin-code").val();$.ajax({method:"POST",url:"api/transfer.php",data:{username:t,amount:e,pin_code:a},timeout:3e4}).done((function(t){if(""==(t=JSON.parse(t)).error){var a=$("#transfer-receiver-has-match").html();$("#winners-gem-balance").html(F(t.gem_balance,!0)),$("#winners-gem-balance-in-pesos").html(F(t.gem_balance*s,!0)),$("#winners-gem-sent").html(F(t.gems_sent,!0)),$("#modal-success .modal-body").html("You have successfully sent "+F(e,!0)+" <i class='fas fa-gem' style='font-size:0.8em'></i> to "+a+"."),$("#modal-success").modal("show")}else $("#modal-error .modal-body").html(t.error),$("#modal-error").modal("show")})).fail((function(){$("#modal-error .modal-body").html("Unable to connect to server."),$("#modal-error").modal("show")})).always((function(){$("#modal-warning").modal("hide"),$("#modal-warning .proceed").html("Confirm"),$("#modal-warning .proceed").prop("disabled",!1),$("#modal-warning button[data-dismiss='modal']").css("display","block")}))})),$(document).on("change","#convert-peso-to-gem-amount",(function(){$("#convert-total-winners-gem").html(F($(this).val()/s,!0))})),$(document).on("change","#convert-gem-to-peso-amount",(function(){var t=parseFloat($("#convert-gem-to-peso-amount").val());$("#convert-total-peso").html(F(t*s,!0)),$("#convert-gem-to-peso-fee-peso").html(F(t*s*.02,!0)),$("#convert-gem-to-peso-fee-gem").html(F(.02*t,!0)),$("#convert-gem-to-peso-total-gems").html(F(1.02*t,!0))})),$(document).on("click","#convert-confirm",(function(){var t=$(".convert-tab.active").data("type"),e=parseFloat($("#convert-"+t+"-amount").val());"peso-to-gem"==t?$("#modal-warning .modal-body").html("Are you sure you want to convert &#x20B1;&nbsp;"+F(e,!0)+" to Winners Gem?"):$("#modal-warning .modal-body").html("Are you sure you want to convert "+F(e,!0)+" Winners Gem to Peso?<br>This will cost a total of "+F(1.02*e,!0)+" Winners Gem."),$("#modal-warning .proceed").attr("id","convert"),$("#modal-convert").modal("hide"),$("#modal-warning").modal("show")})),$(document).on("click","#convert",(function(){$("#modal-warning .proceed").prop("disabled",!0),$("#modal-warning .proceed").html("Processing..."),$("#modal-warning button[data-dismiss='modal']").css("display","none");var t=$(".convert-tab.active").data("type"),e=parseFloat($("#convert-"+t+"-amount").val());$.ajax({method:"POST",url:"api/convert.php",data:{type:t,amount:e,winners_gem_value:s},timeout:3e4}).done((function(t){t.type&&"winners-gem-update"==t.type?(s=parseFloat(t.winners_gem_value),$("#purchase-winners-gem-amount").val(parseFloat($(this).val()/s).toFixed(2)),$("#modal-error .modal-body").html("Winners Gem value has just changed. Winners Gem to be purchased was updated."),$("#modal-error").modal("show")):($("#winners-gem-balance").html(F(t.gem_balance,!0)),$("#winners-gem-balance-in-pesos").html(F(t.gem_balance*s,!0)),$("#peso-balance").html(F(t.peso_balance,!0)),$("#modal-success .modal-body").html("You have successfully converted &#x20B1;&nbsp;"+F(e,!0)+" to Winners Gem."),$("#modal-success").modal("show"))})).fail((function(){b(error)})).always((function(){$("#modal-warning").modal("hide"),$("#modal-warning .proceed").html("Confirm"),$("#modal-warning .proceed").prop("disabled",!1),$("#modal-warning button[data-dismiss='modal']").css("display","block")}))})),$(document).on("change","#withdraw-amount",(function(){var t=parseFloat($("#withdraw-amount").val());$("#withdraw-transaction-fee").html("&#x20B1;&nbsp;"+F(.01*t,!0)),$("#withdraw-total").html("&#x20B1;&nbsp;"+F(1.01*t,!0))})),$(document).on("click","#withdraw-confirm",(function(){var t=parseFloat($("#withdraw-amount").val());$("#modal-warning .modal-body").html("Are you sure you want to withdraw &#x20B1;&nbsp;"+F(t,!0)+"?<br>Transaction fee costs &#x20B1;&nbsp;"+F(.01*t,!0)+"."),$("#modal-warning .proceed").attr("id","withdraw"),$("#modal-withdraw").modal("hide"),$("#modal-warning").modal("show")})),$(document).on("click","#withdraw",(function(){$("#modal-warning .proceed").prop("disabled",!0),$("#modal-warning .proceed").html("Processing..."),$("#modal-warning button[data-dismiss='modal']").css("display","none"),$.ajax({method:"POST",url:"api/withdraw.php",data:{amount:parseFloat($("#withdraw-amount").val())},timeout:3e4}).done((function(t){""==(t=JSON.parse(t)).error?($("#modal-success .proceed").removeAttr("data-dismiss"),$("#modal-success .proceed").attr("onclick","window.location = 'withdrawals.php'; $('#modal-success .proceed').prop('disabled',true); $('#modal-success .proceed').html('Redirecting...')"),$("#modal-success .modal-body").html("Withdrawal request has been successfully submitted"),$("#modal-success").modal("show")):($("#modal-error .modal-body").html(t.error),$("#modal-error").modal("show"))})).fail((function(){$("#modal-error .modal-body").html("Unable to connect to server."),$("#modal-error").modal("show")})).always((function(){$("#modal-warning").modal("hide"),$("#modal-warning .proceed").html("Confirm"),$("#modal-warning .proceed").prop("disabled",!1),$("#modal-warning button[data-dismiss='modal']").css("display","block")}))})),$(document).on("click","#contribute-to-pool-share-confirm",(function(){var t=parseFloat($("#pool-share-contribution-amount").val());$("#modal-warning .modal-body").html("Are you sure you want to contribute &#x20B1;&nbsp;"+F(t,!0)+" to Pool Share?"),$("#modal-warning .proceed").attr("id","contribute-to-pool-share"),$("#modal-pool-share-contribute").modal("hide"),$("#modal-warning").modal("show")})),$(document).on("click","#contribute-to-pool-share",(function(){$("#modal-warning .proceed").prop("disabled",!0),$("#modal-warning .proceed").html("Processing..."),$("#modal-warning button[data-dismiss='modal']").css("display","none");var t=parseFloat($("#pool-share-contribution-amount").val());$.ajax({method:"POST",url:"api/contribute-to-pool-share.php",data:{amount:t},timeout:3e4}).done((function(t){""==(t=JSON.parse(t)).error?($("#peso-balance").html(F(t.peso_balance,!0)),$("#pool-share-amount").html(F(t.pool_share,!0)),$("#modal-success .modal-body").html("You have successfully contributed to pool share. Thank you!"),$("#modal-success").modal("show")):($("#modal-error .modal-body").html(t.error),$("#modal-error").modal("show"))})).fail((function(){$("#modal-error .modal-body").html("Unable to connect to server."),$("#modal-error").modal("show")})).always((function(){$("#modal-warning").modal("hide"),$("#modal-warning .proceed").html("Confirm"),$("#modal-warning .proceed").prop("disabled",!1),$("#modal-warning button[data-dismiss='modal']").css("display","block")}))})),$(document).on("click",".node-expand",(function(){k=$(this).val(),P()})),$(document).on("click",".uplines",(function(){k=$(this).attr("node-id"),P()})),$(document).on("change","#number-of-levels-to-be-shown",(function(){$("#number-of-levels-to-be-shown").val()>=1?P():($("#modal-error .modal-body").html("Invalid Input"),$("#modal-error").modal("show"))})),$(document).on("click","#change-profile-picture",(function(t){t.preventDefault(),S.click()})),$(document).on("click","#edit-personal-info-show-fields",(function(){$("#edit-firstname").prop("disabled",!1),$("#edit-lastname").prop("disabled",!1),$("#edit-username").prop("disabled",!1),$("#edit-email-address").prop("disabled",!1),$("#edit-contact-number").prop("disabled",!1),$("#edit-address").prop("disabled",!1),$("input[name='payout-method']").prop("disabled",!1),$(".payout-field input").prop("disabled",!1),$("#edit-personal-info-show-fields").css("display","none"),$("#change-password-show-fields").css("display","none"),$("#change-pin-code-show-fields").css("display","none"),$("#cancel").css("display","inline-block"),$("#edit-personal-info").css("display","inline-block")})),$(document).on("change","input[name='payout-method']",(function(){var t=$("input[name='payout-method']:checked").val();$(".payout-field").css("display","none"),"BDO"==t?$(".payout-method-bdo").css("display","block"):"Palawan Express"==t?$(".payout-method-palawan-express").css("display","block"):"GCash"==t?$(".payout-method-gcash").css("display","block"):"Coins.ph"==t&&$(".payout-method-coinsph").css("display","block")})),$(document).on("click","#change-password-show-fields",(function(){$("#password-fields").css("display","flex"),$("#password-fields input").val(""),$("#edit-personal-info-show-fields").css("display","none"),$("#change-password-show-fields").css("display","none"),$("#change-pin-code-show-fields").css("display","none"),$("#cancel").css("display","inline-block"),$("#change-password").css("display","inline-block")})),$(document).on("click","#change-pin-code-show-fields",(function(){$("#pin-code-fields").css("display","flex"),$("#pin-code-fields input").val(""),$("#edit-personal-info-show-fields").css("display","none"),$("#change-password-show-fields").css("display","none"),$("#change-pin-code-show-fields").css("display","none"),$("#cancel").css("display","inline-block"),$("#change-pin-code").css("display","inline-block")})),$(document).on("click","#cancel",(function(){$("#edit-firstname").prop("disabled",!0),$("#edit-lastname").prop("disabled",!0),$("#edit-username").prop("disabled",!0),$("#edit-email-address").prop("disabled",!0),$("#edit-contact-number").prop("disabled",!0),$("#edit-address").prop("disabled",!0),$("#edit-firstname").val($("#edit-firstname").attr("prev-value")),$("#edit-lastname").val($("#edit-lastname").attr("prev-value")),$("#edit-username").val($("#edit-username").attr("prev-value")),$("#edit-email-address").val($("#edit-email-address").attr("prev-value")),$("#edit-contact-number").val($("#edit-contact-number").attr("prev-value")),$("#edit-address").val($("#edit-address").attr("prev-value")),$("input[name='payout-method']").prop("disabled",!1),$(".payout-field input").prop("disabled",!0),$("#edit-payout-account-number").val($("#edit-payout-account-number").attr("prev-value")),$("#edit-payout-account-name").val($("#edit-payout-account-name").attr("prev-value")),$("#edit-payout-name").val($("#edit-payout-name").attr("prev-value")),$("#edit-payout-mobile-number").val($("#edit-payout-mobile-number").attr("prev-value")),$("#edit-payout-wallet-address").val($("#edit-payout-wallet-address").attr("prev-value")),$("#password-fields").css("display","none"),$("#pin-code-fields").css("display","none"),$("#edit-personal-info-show-fields").css("display","inline-block"),$("#change-password-show-fields").css("display","inline-block"),$("#change-pin-code-show-fields").css("display","inline-block"),$("#cancel").css("display","none"),$("#edit-personal-info").css("display","none"),$("#change-password").css("display","none")})),$(document).on("click","#edit-personal-info",(function(){$("#edit-personal-info").prop("disabled",!0),$("#edit-personal-info").html("Saving Changes..."),$("#cancel").css("display","none");var t=$("#edit-firstname").val(),e=$("#edit-lastname").val(),a=$("#edit-username").val(),o=$("#edit-email-address").val(),n=$("#edit-contact-number").val(),r=$("#edit-address").val(),s=$("input[name='payout-method']:checked").val(),i=$("#edit-payout-account-number").val(),d=$("#edit-payout-account-name").val(),l=$("#edit-payout-name").val(),c=$("#edit-payout-mobile-number").val(),m=$("#edit-payout-wallet-address").val();$.ajax({method:"POST",url:"api/edit-personal-info.php",data:{firstname:t,lastname:e,username:a,email_address:o,contact_number:n,address:r,payout_method:s,payout_account_number:i,payout_account_name:d,payout_name:l,payout_mobile_number:c,payout_wallet_address:m}}).done((function(t){""==(t=JSON.parse(t)).error?($("#edit-firstname").prop("disabled",!0),$("#edit-lastname").prop("disabled",!0),$("#edit-username").prop("disabled",!0),$("#edit-email-address").prop("disabled",!0),$("#edit-contact-number").prop("disabled",!0),$("#edit-address").prop("disabled",!0),$("#edit-firstname").prop("disabled",!0),$("#edit-lastname").prop("disabled",!0),$("#edit-username").prop("disabled",!0),$("#edit-email-address").attr("prev-value",o),$("#edit-contact-number").attr("prev-value",n),$("#edit-address").attr("prev-value",r),$("input[name='payout-method']").prop("disabled",!1),$(".payout-field input").prop("disabled",!0),$("#edit-payout-account-number").attr("prev-value",i),$("#edit-payout-account-name").attr("prev-value",d),$("#edit-payout-name").attr("prev-value",l),$("#edit-payout-mobile-number").attr("prev-value",c),$("#edit-payout-wallet-address").attr("prev-value",m),$("#cancel").css("display","none"),$("#edit-personal-info").css("display","none"),$("#edit-personal-info-show-fields").css("display","inline-block"),$("#change-password-show-fields").css("display","inline-block"),$("#change-pin-code-show-fields").css("display","inline-block"),$("#modal-success .modal-body").html("Saving Changes Successful"),$("#modal-success").modal("show")):($("#cancel").css("display","inline-block"),$("#modal-error .modal-body").html(t.error),$("#modal-error").modal("show"))})).fail((function(){$("#cancel").css("display","inline-block"),$("#modal-error .modal-body").html("Unable to connect to server."),$("#modal-error").modal("show")})).always((function(){$("#edit-personal-info").html("Save Changes"),$("#edit-personal-info").prop("disabled",!1)}))})),$(document).on("click","#change-password",(function(){$("#change-password").prop("disabled",!0),$("#change-password").html("Saving Changes..."),$("#cancel").css("display","none");var t=$("#edit-current-password").val(),e=$("#edit-new-password").val(),a=$("#edit-confirm-password").val();$.ajax({method:"POST",url:"api/change-password.php",data:{current_password:t,new_password:e,confirm_password:a}}).done((function(t){""==(t=JSON.parse(t)).error?($("#password-fields").css("display","none"),$("#edit-current-password").val(""),$("#edit-new-password").val(""),$("#edit-confirm-password").val(""),$("#cancel").css("display","none"),$("#change-password").css("display","none"),$("#edit-personal-info-show-fields").css("display","inline-block"),$("#change-password-show-fields").css("display","inline-block"),$("#change-pin-code-show-fields").css("display","inline-block"),$("#modal-success .modal-body").html("Saving Changes Successful"),$("#modal-success").modal("show")):($("#cancel").css("display","inline-block"),$("#modal-error .modal-body").html(t.error),$("#modal-error").modal("show"))})).fail((function(){$("#cancel").css("display","inline-block"),$("#modal-error .modal-body").html("Unable to connect to server."),$("#modal-error").modal("show")})).always((function(){$("#change-password").html("Save Changes"),$("#change-password").prop("disabled",!1)}))})),$(document).on("click","#change-pin-code",(function(){$("#change-pin-code").prop("disabled",!0),$("#change-pin-code").html("Saving Changes..."),$("#cancel").css("display","none");var t=$("#edit-current-pin-code").val(),e=$("#edit-new-pin-code").val(),a=$("#edit-confirm-pin-code").val();$.ajax({method:"POST",url:"api/change-pin-code.php",data:{current_pin_code:t,new_pin_code:e,confirm_pin_code:a}}).done((function(t){""==(t=JSON.parse(t)).error?($("#pin-code-fields").css("display","none"),$("#edit-current-pin-code-fields").val(""),$("#edit-new-pin-code-fields").val(""),$("#edit-confirm-pin-code-fields").val(""),$("#cancel").css("display","none"),$("#change-pin-code").css("display","none"),$("#edit-personal-info-show-fields").css("display","inline-block"),$("#change-password-show-fields").css("display","inline-block"),$("#change-pin-code-show-fields").css("display","inline-block"),$("#modal-success .modal-body").html("Saving Changes Successful"),$("#modal-success").modal("show")):($("#cancel").css("display","inline-block"),$("#modal-error .modal-body").html(t.error),$("#modal-error").modal("show"))})).fail((function(){$("#cancel").css("display","inline-block"),$("#modal-error .modal-body").html("Unable to connect to server."),$("#modal-error").modal("show")})).always((function(){$("#change-pin-code").html("Save Changes"),$("#change-pin-code").prop("disabled",!1)}))})),$(document).on("click",".view-payout-information",(function(){var t=JSON.parse($(this).find("span").html()),e='\t<table class="table table-bordered mb-0">';e+="\t\t<tbody>",e+="\t\t\t<tr>",e+='\t\t\t\t<th style="background-color:#fafafa; text-align:right">Method</th>',e+='\t\t\t\t<td style="text-align:left">'+t.method+"</td>",e+="\t\t\t</tr>","BDO"==t.method?(e+="\t\t<tr>",e+='\t\t\t<th style="background-color:#fafafa; text-align:right">Account Number</th>',e+='\t\t\t<td style="text-align:left">'+t.account_number+"</td>",e+="\t\t</tr>",e+="\t\t<tr>",e+='\t\t\t<th style="background-color:#fafafa; text-align:right">Account Name</th>',e+='\t\t\t<td style="text-align:left">'+t.account_name+"</td>",e+="\t\t</tr>"):"Palawan Express"==t.method?(e+="\t\t<tr>",e+='\t\t\t<th style="background-color:#fafafa; text-align:right">Name</th>',e+='\t\t\t<td style="text-align:left">'+t.name+"</td>",e+="\t\t</tr>",e+="\t\t<tr>",e+='\t\t\t<th style="background-color:#fafafa; text-align:right">Mobile Number</th>',e+='\t\t\t<td style="text-align:left">'+t.mobile_number+"</td>",e+="\t\t</tr>"):"GCash"==t.method?(e+="\t\t\t<tr>",e+='\t\t\t\t<th style="background-color:#fafafa; text-align:right">Mobile Number</th>',e+='\t\t\t\t<td style="text-align:left">'+t.mobile_number+"</td>",e+="\t\t\t</tr>"):"Coins.ph"==t.method&&(e+="\t\t<tr>",e+='\t\t\t<th style="background-color:#fafafa; text-align:right">Wallet Address</th>',e+='\t\t\t<td style="text-align:left">'+t.wallet_address+"</td>",e+="\t\t</tr>"),e+="\t\t</tbody>",e+="\t</table>",$("#payout-information-container").html(e),$("#modal-payout-information").modal("show")})),$(document).on("click",".update-proof-of-payment",(function(){$("#modal-proof-of-payment-update").modal("show"),$("#proof-of-payment-container").html('<h6 class="text-center">Loading...</h6>'),$("#update-proof-of-payment-confirm").val($(this).val());var t=JSON.parse($(this).find("span").html()),e="",a=0;t.length>0?function o(){var n=new Image;n.onload=function(){var r=n.height,s=n.width;e+='\t<div class="col-6 px-1" style="margin-bottom:10px">',e+='\t\t<a href="'+n.src+'" data-fancybox="images" data-caption="Proof of Payment">',e+='\t\t\t<div class="proof-of-payment" data-image="'+n.src+'" data-has-image="1" data-extension="'+n.src.split(".").pop().toLowerCase()+'" style="width:100%; height:180px; background-color:#eeeeee; border:2px solid #0e4d22; position:relative; cursor:pointer">',e+='\t\t\t\t<div style="position:relative; width:100%; height:100%; padding-top:175px; overflow:hidden">',e+='\t\t\t\t\t<img src="'+n.src+'" style="'+(s>=r?"height:auto; width:100%;":"height:100%; width:auto;")+' margin:0; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%)" />',e+="\t\t\t\t</div>",e+="\t\t\t</div>",e+="\t\t</a>",e+="\t</div>",a==t.length-1?(e+=$("#proof-of-payment-content").html(),$("#proof-of-payment-container").html(e)):o(t[++a])},n.src=t[a]}(t[a]):$("#proof-of-payment-container").html($("#proof-of-payment-content").html())})),$(document).on("click","#update-proof-of-payment-confirm",(function(){$("#modal-warning .modal-body").html("Are you sure you want to save changes?"),$("#modal-warning .proceed").attr("id","update-proof-of-payment"),$("#modal-warning .proceed").val($(this).val()),$("#modal-proof-of-payment-update").modal("hide"),$("#modal-warning").modal("show")})),$(document).on("click","#update-proof-of-payment",(function(){$("#modal-warning .proceed").prop("disabled",!0),$("#modal-warning .proceed").html("Processing..."),$("#modal-warning button[data-dismiss='modal']").css("display","none");var t=$(this).val(),e=[];$("#proof-of-payment-container .proof-of-payment[data-has-image='1']").each((function(){e.push({image:$(this).attr("data-image"),extension:$(this).attr("data-extension")})})),$.ajax({method:"POST",url:"api/update-proof-of-payment.php",data:{id:t,proof_of_payments:JSON.stringify(e)},timeout:3e4}).done((function(e){""==(e=JSON.parse(e)).error?($(".update-proof-of-payment[value='"+t+"'] span").html(e.proof_of_payment),$("#modal-success .modal-body").html("Saving changes successful."),$("#modal-success").modal("show")):($("#modal-error .modal-body").html(e.error),$("#modal-error").modal("show"))})).fail((function(){$("#modal-error .modal-body").html("Unable to connect to server."),$("#modal-error").modal("show")})).always((function(){$("#modal-warning").modal("hide"),$("#modal-warning .proceed").html("Confirm"),$("#modal-warning .proceed").prop("disabled",!1),$("#modal-warning button[data-dismiss='modal']").css("display","block")}))})),$(document).on("click",".terminal-view-items",(function(){$(".order-reference").html($(this).attr("data-reference")),$("#ordered-items-container").html('<h6 class="text-center">Loading...</h6>'),$("#modal-view-order-items").modal("show");var t=$(this).val();$.ajax({method:"POST",url:"admin/api/view-items.php",data:{order_id:t},timeout:3e4}).done((function(t){if(""==(t=JSON.parse(t)).error){var e='\t<table class="table table-bordered mb-0">';e+="\t\t<thead>",e+="\t\t\t<tr>",e+="\t\t\t\t<th></th>",e+="\t\t\t\t<th>Item</th>",e+="\t\t\t\t<th>Quantity</th>",e+="\t\t\t\t<th>Amount</th>",e+="\t\t\t</tr>",e+="\t\t</thead>",e+="\t\t<tbody>";for(var a=0;a<t.items.length;a++)e+="\t\t<tr>",e+='\t\t\t<td style="width:80px">',e+='\t\t\t\t<div style="position:relative; width:100%; padding-top:100%; overflow:hidden; border:1px solid #eeeeee">',e+='\t\t\t\t\t<img src="'+t.items[a].photo+"?v="+t.items[a].version+'" style="'+("width"==t.items[a].longest_dimension?"width:100%; height:auto;":"width:auto; height:100%;")+'max-height:100%; max-width:100%; margin:0; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%)" alt="'+t.items[a].name+'">',e+="\t\t\t\t</div>",e+="\t\t\t</td>",e+="\t\t\t<td>"+t.items[a].name+"</td>",e+="\t\t\t<td>"+t.items[a].quantity+"</td>",e+="\t\t\t<td>"+F(t.items[a].quantity*t.items[a].price,!0)+' <span style="font-size:0.8em">Gems</span></td>',e+="\t\t</tr>";e+="\t\t</tbody>",e+="\t</table>",$("#ordered-items-container").html(e)}else $("#modal-error .modal-body").html(t.error),$("#modal-error").modal("show")})).fail((function(){$("#modal-error .modal-body").html("Unable to connect to server."),$("#modal-error").modal("show")})).always((function(){$("#modal-warning").modal("hide"),$("#modal-warning .proceed").html("Confirm"),$("#modal-warning .proceed").prop("disabled",!1),$("#modal-warning button[data-dismiss='modal']").css("display","block")}))})),$(document).on("click",".terminal-view-shipment",(function(){$(".order-reference").html($(this).data("reference")),$("#shipment-full-name").html(""!=$(this).data("full-name")?$(this).data("full-name"):'<span style="font-style:italic">Empty</span>'),$("#shipment-contact-number").html(""!=$(this).data("contact-number")?$(this).data("contact-number"):'<span style="font-style:italic">Empty</span>'),$("#shipment-barangay").html(""!=$(this).data("barangay")?$(this).data("barangay"):'<span style="font-style:italic">Empty</span>'),$("#shipment-city").html(""!=$(this).data("city")?$(this).data("city"):'<span style="font-style:italic">Empty</span>'),$("#shipment-province").html(""!=$(this).data("province")?$(this).data("province"):'<span style="font-style:italic">Empty</span>'),$("#shipment-zip-code").html(""!=$(this).data("zip-code")?$(this).data("zip-code"):'<span style="font-style:italic">Empty</span>'),$("#modal-view-shipment").modal("show")})),$(document).on("click",".mark-order-as-complete-confirm",(function(){$("#modal-warning .modal-body").html("Are you sure you want to mark Order "+$(this).data("reference")+" as complete?"),$("#modal-warning .proceed").val($(this).val()),$("#modal-warning .proceed").attr("id","mark-order-as-complete"),$("#modal-warning").modal("show")})),$(document).on("click","#mark-order-as-complete",(function(){$("#modal-warning .proceed").prop("disabled",!0),$("#modal-warning .proceed").html("Processing..."),$("#modal-warning button[data-dismiss='modal']").css("display","none");var t=$(this).val();$.ajax({method:"POST",url:"admin/api/mark-order-as-complete.php",timeout:3e4,data:{id:t,user:2}}).done((function(t){if(""==(t=JSON.parse(t)).error){$("#terminal-winners-gem").html(F(t.terminal_winners_gem.balance,!0));var e='\t<table class="table table-bordered data-table" style="display:none">';e+="\t\t<thead>",e+='\t\t\t<tr style="background-color:#f9f9f9">',e+="\t\t\t\t<th></th>",e+="\t\t\t\t<th>Date&nbsp;&amp; Time Placed</th>",e+="\t\t\t\t<th>Type</th>",e+="\t\t\t\t<th>Reference</th>",e+="\t\t\t\t<th>Account</th>",e+="\t\t\t\t<th>Price</th>",e+="\t\t\t\t<th>Points</th>",e+="\t\t\t</tr>",e+="\t\t</thead>",e+="\t\t<tbody>",t.orders.forEach((function(t){t.date_time_completed||(e+="\t<tr>",e+="\t\t<td>",e+='\t\t\t<button class="btn btn-success btn-sm mt-1 terminal-view-items" value="'+t.id+'" data-reference="'+t.reference+'" style="background-color:#0e4d22; color:#ffffff">Items</button>',e+='\t\t\t<button class="btn btn-success btn-sm mt-1 terminal-view-shipment" data-reference="'+t.reference+'" data-full-name="'+t.full_name+'" data-contact-number="'+t.contact_number+'" data-barangay="'+t.barangay+'" data-city="'+t.city+'" data-province="'+t.province+'" data-zip-code="'+t.zip_code+'" style="background-color:#0e4d22; color:#ffffff">Shipment</button>',e+='\t\t\t<button class="btn btn-success btn-sm mt-1 mark-order-as-complete-confirm" value="'+t.id+'" data-reference="'+t.reference+'" style="background-color:#0e4d22; color:#ffffff">Mark as Complete</button>',e+="\t\t</td>",e+="\t\t<td>"+t.date_time_placed+"</td>",e+="\t\t<td>"+(1==t.type?"Package":"Product")+"</td>",e+="\t\t<td>"+t.reference+"</td>",e+="\t\t<td>"+t.name+"</td>",e+="\t\t<td>"+F(t.price,!0)+' <i class="fas fa-gem" style="font-size:0.8em"></i></td>',e+="\t\t<td>"+F(t.points_value,!0)+" PV</td>",e+="\t</tr>")})),e+="\t\t</tbody>",e+="\t</table>",$("#pending .table-responsive").html(e),e='\t\t<table class="table table-bordered data-table" style="display:none">',e+="\t\t<thead>",e+='\t\t\t<tr style="background-color:#f9f9f9">',e+="\t\t\t\t<th></th>",e+="\t\t\t\t<th>Date&nbsp;&amp; Time Placed</th>",e+="\t\t\t\t<th>Date&nbsp;&amp; Time Completed</th>",e+="\t\t\t\t<th>Type</th>",e+="\t\t\t\t<th>Reference</th>",e+="\t\t\t\t<th>Account</th>",e+="\t\t\t\t<th>Price</th>",e+="\t\t\t\t<th>Points</th>",e+="\t\t\t</tr>",e+="\t\t</thead>",e+="\t\t<tbody>",t.orders.forEach((function(t){t.date_time_completed&&(e+="\t<tr>",e+="\t\t<td>",e+='\t\t\t<button class="btn btn-success btn-sm mt-1 terminal-view-items" value="'+t.id+'" data-reference="'+t.reference+'" style="background-color:#0e4d22; color:#ffffff">Items</button>',e+='\t\t\t<button class="btn btn-success btn-sm mt-1 terminal-view-shipment" data-reference="'+t.reference+'" data-full-name="'+t.full_name+'" data-contact-number="'+t.contact_number+'" data-barangay="'+t.barangay+'" data-city="'+t.city+'" data-province="'+t.province+'" data-zip-code="'+t.zip_code+'" style="background-color:#0e4d22; color:#ffffff">Shipment</button>',e+="\t\t</td>",e+="\t\t<td>"+t.date_time_placed+"</td>",e+="\t\t<td>"+t.date_time_completed+"</td>",e+="\t\t<td>"+(1==t.type?"Package":"Product")+"</td>",e+="\t\t<td>"+t.reference+"</td>",e+="\t\t<td>"+t.name+"</td>",e+="\t\t<td>"+F(t.price,!0)+' <i class="fas fa-gem" style="font-size:0.8em"></i></td>',e+="\t\t<td>"+F(t.points_value,!0)+" PV</td>",e+="\t</tr>")})),e+="\t\t</tbody>",e+="\t</table>",$("#completed .table-responsive").html(e),$(".data-table").DataTable({aaSorting:[]}),$(".data-table").css("display","table"),$("#modal-success .modal-body").html("Order has been successfully completed."),$("#modal-success").modal("show")}else $("#modal-error .modal-body").html(t.error),$("#modal-error").modal("show")})).fail((function(){$("#modal-error .modal-body").html("Unable to connect to server."),$("#modal-error").modal("show")})).always((function(){$("#modal-warning").modal("hide"),$("#modal-warning button[data-dismiss='modal']").css("display","block"),$("#modal-warning .proceed").html("Confirm"),$("#modal-warning .proceed").prop("disabled",!1)}))})),$(document).on("click","#minimize-side-nav",(function(){$(".profile-pic-lg").hasClass("d-none")?($(".profile-pic-lg").removeClass("d-none"),$(".profile-pic-sm").addClass("d-none")):($(".profile-pic-sm").removeClass("d-none"),$(".profile-pic-lg").addClass("d-none"))}))})();
+/******/ (() => { // webpackBootstrap
+var __webpack_exports__ = {};
+/*!*****************************!*\
+  !*** ./resources/js/app.js ***!
+  \*****************************/
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return exports; }; var exports = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, defineProperty = Object.defineProperty || function (obj, key, desc) { obj[key] = desc.value; }, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag"; function define(obj, key, value) { return Object.defineProperty(obj, key, { value: value, enumerable: !0, configurable: !0, writable: !0 }), obj[key]; } try { define({}, ""); } catch (err) { define = function define(obj, key, value) { return obj[key] = value; }; } function wrap(innerFn, outerFn, self, tryLocsList) { var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []); return defineProperty(generator, "_invoke", { value: makeInvokeMethod(innerFn, self, context) }), generator; } function tryCatch(fn, obj, arg) { try { return { type: "normal", arg: fn.call(obj, arg) }; } catch (err) { return { type: "throw", arg: err }; } } exports.wrap = wrap; var ContinueSentinel = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var IteratorPrototype = {}; define(IteratorPrototype, iteratorSymbol, function () { return this; }); var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([]))); NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype); var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype); function defineIteratorMethods(prototype) { ["next", "throw", "return"].forEach(function (method) { define(prototype, method, function (arg) { return this._invoke(method, arg); }); }); } function AsyncIterator(generator, PromiseImpl) { function invoke(method, arg, resolve, reject) { var record = tryCatch(generator[method], generator, arg); if ("throw" !== record.type) { var result = record.arg, value = result.value; return value && "object" == _typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) { invoke("next", value, resolve, reject); }, function (err) { invoke("throw", err, resolve, reject); }) : PromiseImpl.resolve(value).then(function (unwrapped) { result.value = unwrapped, resolve(result); }, function (error) { return invoke("throw", error, resolve, reject); }); } reject(record.arg); } var previousPromise; defineProperty(this, "_invoke", { value: function value(method, arg) { function callInvokeWithMethodAndArg() { return new PromiseImpl(function (resolve, reject) { invoke(method, arg, resolve, reject); }); } return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); } }); } function makeInvokeMethod(innerFn, self, context) { var state = "suspendedStart"; return function (method, arg) { if ("executing" === state) throw new Error("Generator is already running"); if ("completed" === state) { if ("throw" === method) throw arg; return doneResult(); } for (context.method = method, context.arg = arg;;) { var delegate = context.delegate; if (delegate) { var delegateResult = maybeInvokeDelegate(delegate, context); if (delegateResult) { if (delegateResult === ContinueSentinel) continue; return delegateResult; } } if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) { if ("suspendedStart" === state) throw state = "completed", context.arg; context.dispatchException(context.arg); } else "return" === context.method && context.abrupt("return", context.arg); state = "executing"; var record = tryCatch(innerFn, self, context); if ("normal" === record.type) { if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue; return { value: record.arg, done: context.done }; } "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg); } }; } function maybeInvokeDelegate(delegate, context) { var methodName = context.method, method = delegate.iterator[methodName]; if (undefined === method) return context.delegate = null, "throw" === methodName && delegate.iterator["return"] && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method) || "return" !== methodName && (context.method = "throw", context.arg = new TypeError("The iterator does not provide a '" + methodName + "' method")), ContinueSentinel; var record = tryCatch(method, delegate.iterator, context.arg); if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel; var info = record.arg; return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel); } function pushTryEntry(locs) { var entry = { tryLoc: locs[0] }; 1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry); } function resetTryEntry(entry) { var record = entry.completion || {}; record.type = "normal", delete record.arg, entry.completion = record; } function Context(tryLocsList) { this.tryEntries = [{ tryLoc: "root" }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0); } function values(iterable) { if (iterable) { var iteratorMethod = iterable[iteratorSymbol]; if (iteratorMethod) return iteratorMethod.call(iterable); if ("function" == typeof iterable.next) return iterable; if (!isNaN(iterable.length)) { var i = -1, next = function next() { for (; ++i < iterable.length;) if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next; return next.value = undefined, next.done = !0, next; }; return next.next = next; } } return { next: doneResult }; } function doneResult() { return { value: undefined, done: !0 }; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, defineProperty(Gp, "constructor", { value: GeneratorFunctionPrototype, configurable: !0 }), defineProperty(GeneratorFunctionPrototype, "constructor", { value: GeneratorFunction, configurable: !0 }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) { var ctor = "function" == typeof genFun && genFun.constructor; return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name)); }, exports.mark = function (genFun) { return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun; }, exports.awrap = function (arg) { return { __await: arg }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () { return this; }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) { void 0 === PromiseImpl && (PromiseImpl = Promise); var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl); return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) { return result.done ? result.value : iter.next(); }); }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () { return this; }), define(Gp, "toString", function () { return "[object Generator]"; }), exports.keys = function (val) { var object = Object(val), keys = []; for (var key in object) keys.push(key); return keys.reverse(), function next() { for (; keys.length;) { var key = keys.pop(); if (key in object) return next.value = key, next.done = !1, next; } return next.done = !0, next; }; }, exports.values = values, Context.prototype = { constructor: Context, reset: function reset(skipTempReset) { if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined); }, stop: function stop() { this.done = !0; var rootRecord = this.tryEntries[0].completion; if ("throw" === rootRecord.type) throw rootRecord.arg; return this.rval; }, dispatchException: function dispatchException(exception) { if (this.done) throw exception; var context = this; function handle(loc, caught) { return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught; } for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i], record = entry.completion; if ("root" === entry.tryLoc) return handle("end"); if (entry.tryLoc <= this.prev) { var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc"); if (hasCatch && hasFinally) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } else if (hasCatch) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); } else { if (!hasFinally) throw new Error("try statement without catch or finally"); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } } } }, abrupt: function abrupt(type, arg) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) { var finallyEntry = entry; break; } } finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null); var record = finallyEntry ? finallyEntry.completion : {}; return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record); }, complete: function complete(record, afterLoc) { if ("throw" === record.type) throw record.arg; return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel; }, finish: function finish(finallyLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel; } }, "catch": function _catch(tryLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc === tryLoc) { var record = entry.completion; if ("throw" === record.type) { var thrown = record.arg; resetTryEntry(entry); } return thrown; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(iterable, resultName, nextLoc) { return this.delegate = { iterator: values(iterable), resultName: resultName, nextLoc: nextLoc }, "next" === this.method && (this.arg = undefined), ContinueSentinel; } }, exports; }
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+var appUrl;
+var currentRouteName;
+var winnersGemValue;
+var mapIsInitialized = false;
+var allOnload = /*#__PURE__*/function () {
+  var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+    return _regeneratorRuntime().wrap(function _callee$(_context) {
+      while (1) switch (_context.prev = _context.next) {
+        case 0:
+          appUrl = $("input[name='app_url']").val();
+          currentRouteName = $("input[name='route_name']").val();
+          winnersGemValue = parseFloat($("input[name='winners_gem_value']").val());
+          $.ajaxSetup({
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+          });
+          setInterval(function () {
+            $(".gem-change-color").addClass("text-color-2");
+            $(".gem-change-color").removeClass("text-color-1");
+            $(".gem-change-color").css("transform", "rotate(0deg)");
+            setTimeout(function () {
+              $(".gem-change-color").css("transform", "rotate(-15deg)");
+              $(".gem-change-color").removeClass("text-color-2");
+              $(".gem-change-color").addClass("text-color-1");
+            }, 1000);
+            setTimeout(function () {
+              $(".gem-change-color").css("transform", "rotate(15deg)");
+            }, 1500);
+          }, 2000);
+        case 5:
+        case "end":
+          return _context.stop();
+      }
+    }, _callee);
+  }));
+  return function allOnload() {
+    return _ref.apply(this, arguments);
+  };
+}();
+var pageOnload = /*#__PURE__*/function () {
+  var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+    return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+      while (1) switch (_context2.prev = _context2.next) {
+        case 0:
+          _context2.next = 2;
+          return allOnload();
+        case 2:
+          if (currentRouteName === "home.index") {
+            homeOnload();
+          } else if (currentRouteName === "income.index") {
+            incomeOnload();
+          } else if (currentRouteName === "orders.index") {
+            ordersOnload();
+          } else if (currentRouteName === "network.index") {
+            networkOnload();
+          } else if (currentRouteName === "transfers.index") {
+            transfersOnload();
+          } else if (currentRouteName === "conversions.index") {
+            conversionsOnload();
+          } else if (currentRouteName === "withdrawals.index") {
+            withdrawalsOnload();
+          }
+        case 3:
+        case "end":
+          return _context2.stop();
+      }
+    }, _callee2);
+  }));
+  return function pageOnload() {
+    return _ref2.apply(this, arguments);
+  };
+}();
+var homeOnload = function homeOnload() {
+  var textWrapper1 = document.querySelector('#text-1');
+  textWrapper1.innerHTML = textWrapper1.textContent.replace(/\S/g, "<span class='letter code-pro-bold-lc'>$&</span>");
+  var textWrapper2 = document.querySelector('#text-2');
+  textWrapper2.innerHTML = textWrapper2.textContent.replace(/\S/g, "<span class='letter code-pro-bold-lc text-color-1'>$&</span>");
+  var textWrapper3 = document.querySelector('#text-3');
+  textWrapper3.innerHTML = textWrapper3.textContent.replace(/\S/g, "<span class='letter code-pro-bold-lc'>$&</span>");
+  var textWrapper4 = document.querySelector('#text-4');
+  textWrapper4.innerHTML = textWrapper4.textContent.replace(/\S/g, "<span class='letter code-pro-bold-lc text-color-1'>$&</span>");
+  var textWrapper5 = document.querySelector('#text-5');
+  textWrapper5.innerHTML = textWrapper5.textContent.replace(/\S/g, "<span class='letter code-pro-bold-lc'>$&</span>");
+  var textWrapper6 = document.querySelector('#text-6');
+  textWrapper6.innerHTML = textWrapper6.textContent.replace(/\S/g, "<span class='letter aileron-regular'>$&</span>");
+  anime.timeline({
+    loop: false
+  }).add({
+    targets: '#text-1 .letter',
+    opacity: [0, 1],
+    easing: "easeInOutQuad",
+    duration: 150,
+    delay: function delay(el, i) {
+      return 80 * (i + 1);
+    }
+  }).add({
+    targets: '#text-2 .letter',
+    opacity: [0, 1],
+    easing: "easeInOutQuad",
+    duration: 150,
+    delay: function delay(el, i) {
+      return 80 * (i + 1);
+    }
+  }).add({
+    targets: '#text-3 .letter',
+    opacity: [0, 1],
+    easing: "easeInOutQuad",
+    duration: 150,
+    delay: function delay(el, i) {
+      return 80 * (i + 1);
+    }
+  }).add({
+    targets: '#text-4 .letter',
+    opacity: [0, 1],
+    easing: "easeInOutQuad",
+    duration: 150,
+    delay: function delay(el, i) {
+      return 80 * (i + 1);
+    }
+  }).add({
+    targets: '#text-5 .letter',
+    opacity: [0, 1],
+    easing: "easeInOutQuad",
+    duration: 150,
+    delay: function delay(el, i) {
+      return 80 * (i + 1);
+    }
+  }).add({
+    targets: '#text-6 .letter',
+    opacity: [0, 1],
+    easing: "easeInOutQuad",
+    duration: 40,
+    delay: function delay(el, i) {
+      return 10 * (i + 1);
+    }
+  }).add({
+    targets: '#text-6 .letter',
+    opacity: [1, 1],
+    easing: "easeInOutQuad",
+    duration: 50,
+    delay: function delay(el, i) {
+      return 30 * (i + 1);
+    }
+  });
+  $(".products-carousel").slick({
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 2000,
+    centerMode: true,
+    centerPadding: '150px',
+    responsive: [{
+      breakpoint: 1400,
+      settings: {
+        slidesToShow: 3,
+        centerPadding: '150px'
+      }
+    }, {
+      breakpoint: 1200,
+      settings: {
+        slidesToShow: 2
+      }
+    }, {
+      breakpoint: 992,
+      settings: {
+        slidesToShow: 2
+      }
+    }, {
+      breakpoint: 768,
+      settings: {
+        slidesToShow: 1
+      }
+    }, {
+      breakpoint: 576,
+      settings: {
+        slidesToShow: 1,
+        centerPadding: '0'
+      }
+    }]
+  });
+  AOS.init();
+};
+var incomeOnload = function incomeOnload() {
+  initializeDataTables();
+};
+var ordersOnload = function ordersOnload() {
+  initializeDataTables();
+};
+var networkOnload = function networkOnload() {
+  getGenealogy();
+  initializeDataTables();
+};
+var transfersOnload = function transfersOnload() {
+  initializeDataTables();
+};
+var conversionsOnload = function conversionsOnload() {
+  initializeDataTables();
+};
+var withdrawalsOnload = function withdrawalsOnload() {
+  initializeDataTables();
+};
+var initMap = function initMap() {
+  var map = new google.maps.Map(document.getElementById("map"), {
+    zoom: 5.8,
+    disableDefaultUI: true,
+    center: {
+      lat: 14.09782,
+      lng: 121.33163
+    },
+    styles: [{
+      "featureType": "landscape",
+      "elementType": "geometry",
+      "stylers": [{
+        "color": "#e3b504"
+      }]
+    }, {
+      "featureType": "landscape.natural.terrain",
+      "elementType": "geometry",
+      "stylers": [{
+        "saturation": -100
+      }]
+    }, {
+      "featureType": "poi",
+      "elementType": "geometry",
+      "stylers": [{
+        "color": "#e3b504"
+      }]
+    }, {
+      "featureType": "road",
+      "elementType": "geometry",
+      "stylers": [{
+        "color": "#ffffff"
+      }]
+    }, {
+      "featureType": "water",
+      "elementType": "geometry",
+      "stylers": [{
+        "color": "#104d22"
+      }]
+    }, {
+      "featureType": "water",
+      "elementType": "labels",
+      "stylers": [{
+        "color": "#ffffff"
+      }]
+    }]
+  });
+  var marker = new google.maps.Marker({
+    position: {
+      lat: 14.09782,
+      lng: 121.33163
+    },
+    map: map,
+    icon: {
+      url: appUrl + "/img/contact/map-marker.png",
+      scaledSize: new google.maps.Size(80, 80)
+    }
+  });
+  if (map) {
+    mapIsInitialized = true;
+  }
+};
+var initializeDataTables = function initializeDataTables() {
+  $(".data-table").DataTable({
+    "aaSorting": []
+  });
+  $(".loading-text").css("display", "none");
+  $(".data-table").css("display", "table");
+};
+var showErrorFromAjax = function showErrorFromAjax(error) {
+  var content = "Something went wrong.";
+  if (error.responseJSON) {
+    content = error.responseJSON.message;
+    for (var prop in error.responseJSON.errors) {
+      if (Object.prototype.hasOwnProperty.call(error.responseJSON.errors, prop)) {
+        content += ' ' + error.responseJSON.errors[prop];
+      }
+    }
+  }
+  $("#modal-error .modal-body").html(content);
+  $("#modal-error").modal("show");
+};
+function getOffset(el) {
+  var rect = el.getBoundingClientRect();
+  return {
+    left: rect.left + window.scrollX,
+    top: rect.top + window.scrollY
+  };
+}
+$(document).ready(function () {
+  pageOnload();
+});
+$(window).on('scroll', function () {
+  var navbar = $(".navbar");
+  if ($(this).scrollTop() > 0) {
+    navbar.addClass("scrolled");
+    navbar.removeClass("navbar-dark");
+  } else {
+    navbar.removeClass("scrolled");
+    navbar.addClass("navbar-dark");
+  }
+  if ($(this).scrollTop() + $(this).height() >= getOffset($("#footer")[0]).top && !mapIsInitialized) {
+    initMap();
+  }
+});
+$(document).on("click", ".navbar-toggler", function () {
+  var navbar = $(".navbar");
+  if ($(this).hasClass("collapsed") && $(window).scrollTop() === 0) {
+    navbar.removeClass("scrolled");
+    navbar.addClass("navbar-dark");
+  } else {
+    navbar.addClass("scrolled");
+    navbar.removeClass("navbar-dark");
+  }
+});
+
+// Start: Registration
+var referralCodeOnChange = function referralCodeOnChange() {
+  $("#register-sponsor-blank").css("display", "none");
+  $("#register-sponsor-no-match").css("display", "none");
+  $("#register-sponsor-has-match").css("display", "none");
+  $("#register-sponsor-loading").css("display", "inline-block");
+  var referral_code = $("#register-sponsors-code").val();
+  var checkSponsor = function checkSponsor() {
+    $.ajax({
+      method: "POST",
+      url: $("#register-sponsors-code").attr("data-action"),
+      timeout: 30000,
+      data: {
+        referral_code: referral_code
+      }
+    }).done(function (response) {
+      if (!response.sponsor) {
+        $("#register-sponsor-blank").css("display", "none");
+        $("#register-sponsor-no-match").css("display", "inline-block");
+        $("#register-sponsor-has-match").css("display", "none");
+        $("#register-sponsor-loading").css("display", "none");
+      } else {
+        $("#register-sponsor-has-match").html(response.sponsor);
+        $("#register-sponsor-blank").css("display", "none");
+        $("#register-sponsor-no-match").css("display", "none");
+        $("#register-sponsor-has-match").css("display", "inline-block");
+        $("#register-sponsor-loading").css("display", "none");
+      }
+    }).fail(function (error) {
+      showErrorFromAjax(error);
+    });
+  };
+  if (referral_code === "") {
+    $("#register-sponsor-blank").css("display", "inline-block");
+    $("#register-sponsor-no-match").css("display", "none");
+    $("#register-sponsor-has-match").css("display", "none");
+    $("#register-sponsor-loading").css("display", "none");
+  } else {
+    checkSponsor();
+  }
+};
+$(document).on("change", "#register-sponsors-code", function () {
+  referralCodeOnChange();
+});
+$(document).on("click", "#register-show-confirmation", function () {
+  $("#modal-warning .modal-body").html("Your registration information will now be submitted.");
+  $("#modal-warning .proceed").html("Confirm");
+  $("#modal-warning .proceed").attr("id", "register");
+  $("#modal-warning").modal("show");
+});
+$(document).on("click", "#register", function () {
+  $("#modal-warning .cancel").css("display", "none");
+  $("#modal-warning .proceed").prop("disabled", true);
+  $("#modal-warning .proceed").html("Processing...");
+  var firstname = $("#register-firstname").val();
+  var lastname = $("#register-lastname").val();
+  var contact_number = $("#register-contact-number").val();
+  var email_address = $("#register-email-address").val();
+  var username = $("#register-username").val();
+  var password = $("#register-password").val();
+  var confirm_password = $("#register-confirm-password").val();
+  var pin_code = $("#register-pin-code").val();
+  var confirm_pin_code = $("#register-confirm-pin-code").val();
+  var sponsors_code = $("#register-sponsors-code").val();
+  $.ajax({
+    method: "POST",
+    url: $("#register-show-confirmation").attr("data-action"),
+    timeout: 30000,
+    data: {
+      firstname: firstname,
+      lastname: lastname,
+      contact_number: contact_number,
+      email_address: email_address,
+      username: username,
+      password: password,
+      confirm_password: confirm_password,
+      pin_code: pin_code,
+      confirm_pin_code: confirm_pin_code,
+      sponsors_code: sponsors_code
+    }
+  }).done(function (response) {
+    $("#modal-success button[data-dismiss='modal']").removeAttr("data-dismiss");
+    $('#modal-success .proceed').attr("onclick", "window.location = '/dashboard'; $('#modal-success .proceed').prop('disabled',true); $('#modal-success .proceed').html('Redirecting...')");
+    $("#modal-success .modal-body").html("Congratulations! You have successfully created your account.");
+    $("#modal-success").modal("show");
+  }).fail(function (error) {
+    showErrorFromAjax(error);
+  }).always(function () {
+    $("#modal-warning").modal("hide");
+    $("#modal-warning .proceed").html("Confirm");
+    $("#modal-warning .proceed").prop("disabled", false);
+    $("#modal-warning .cancel").css("display", "block");
+  });
+});
+// End: Registration
+
+// Start: Log In
+$(document).on("submit", "#login-form", function (e) {
+  e.preventDefault();
+  $("#login").prop("disabled", true);
+  $("#login").html("Logging In...");
+  var username = $("#login-username").val();
+  var password = $("#login-password").val();
+  $.ajax({
+    method: "POST",
+    url: $("#login-form").attr("action"),
+    timeout: 30000,
+    data: {
+      username: username,
+      password: password
+    }
+  }).done(function (response) {
+    $("#login").html("Redirecting...");
+    window.location = "/dashboard";
+  }).fail(function (error) {
+    showErrorFromAjax(error);
+  });
+});
+// End: Log In
+
+var genealogy;
+var root;
+var selected_node;
+var generate_referral_table_once = 0;
+var proof_of_payment_uploader = $('<input type="file" accept="image/*" />');
+var profile_picture_uploader = $('<input type="file" accept="image/*" />');
+var account_package = ["", "DBP - ", "DSP - ", "FDP - ", "DMP - "];
+var ranks = ["Free Account", "Dealer", "Explorer", "Pathfinder", "Navigator", "Master Guide", "Fair Winner", "Grand Fair Winner", "Royal Fair Winner", "Crown Fair Winner"];
+var getGenealogy = function getGenealogy() {
+  $.ajax({
+    method: "POST",
+    url: $("input[name='get-genealogy-route']").val(),
+    timeout: 30000,
+    data: {
+      type: 2
+    }
+  }).done(function (response) {
+    genealogy = response.genealogy;
+    root = response.root;
+    selected_node = response.root;
+    generateGenealogy();
+  }).fail(function () {
+    setTimeout(function () {
+      getGenealogy();
+    }, 1000);
+  });
+};
+var generateGenealogy = function generateGenealogy() {
+  var uplines = [];
+  uplines.push(selected_node);
+  var parsed_upline = selected_node;
+  while (parsed_upline > 1 && parsed_upline != root) {
+    for (var i = 0; i < genealogy.length; i++) {
+      if (genealogy[i].downline == parsed_upline) {
+        uplines.push(genealogy[i].upline);
+        parsed_upline = genealogy[i].upline;
+        break;
+      }
+    }
+  }
+  var uplines_breadcrumb = '';
+  for (var j = uplines.length - 1; j >= 0; j--) {
+    for (var i = 0; i < genealogy.length; i++) {
+      if (uplines[j] == genealogy[i].downline) {
+        if (j == 0) {
+          uplines_breadcrumb += '<li class="breadcrumb-item active">' + genealogy[i].firstname + " " + genealogy[i].lastname + '</li>';
+        } else {
+          uplines_breadcrumb += '<li class="breadcrumb-item">';
+          uplines_breadcrumb += '		<a href="javascript:void(0)" class="uplines" node-id="' + genealogy[i].downline + '">' + genealogy[i].firstname + " " + genealogy[i].lastname + '</a>';
+          uplines_breadcrumb += '</li>';
+        }
+      }
+    }
+  }
+  $(".uplines-container").html(uplines_breadcrumb);
+  $("#chart").css("height", $(window).height() - 100 + "px");
+  var chart_config = [];
+  var nodes = [];
+  var nodes_to_be_parsed = [selected_node];
+  chart_config.push({
+    container: "#chart",
+    nodeAlign: "BOTTOM",
+    connectors: {
+      type: 'step'
+    }
+  });
+  for (var i = 0; i < genealogy.length; i++) {
+    if (genealogy[i].downline == selected_node) {
+      nodes[genealogy[i].downline] = {
+        HTMLclass: "root",
+        text: {
+          name: genealogy[i].firstname + " " + genealogy[i].lastname,
+          id: genealogy[i].downline,
+          rank: account_package[genealogy[i].package_id] + ranks[genealogy[i].rank],
+          username: "Username: " + genealogy[i].username,
+          referral_code: "Referral Code: " + genealogy[i].referral_code
+        }
+      };
+      chart_config.push(nodes[genealogy[i].downline]);
+      break;
+    }
+  }
+  var number_of_levels_to_be_shown = $("#number-of-levels-to-be-shown").val();
+  for (var j = 0; j < number_of_levels_to_be_shown; j++) {
+    var nodes_to_be_parsed_temp = [];
+    for (var k = 0; k < nodes_to_be_parsed.length; k++) {
+      for (var i = 0; i < genealogy.length; i++) {
+        if (genealogy[i].upline == nodes_to_be_parsed[k]) {
+          var content = ' <p class="node-name">' + genealogy[i].firstname + ' ' + genealogy[i].lastname + '</p>';
+          content += '    <p class="node-id">' + genealogy[i].downline + '</p>';
+          content += '    <p class="node-rank">' + account_package[genealogy[i].package_id] + ranks[genealogy[i].rank] + '</p>';
+          content += '    <p class="node-username">Username: ' + genealogy[i].username + '</p>';
+          content += '    <p class="node-referral_code">Referral Code: ' + genealogy[i].referral_code + ' </p>';
+          content += '    <p class="node-button"><button class="btn btn-custom-2 font-size-90 btn-sm node-expand" value="' + genealogy[i].downline + '">Expand</button></p>';
+          nodes[genealogy[i].downline] = {
+            parent: nodes[genealogy[i].upline],
+            innerHTML: content
+          };
+          chart_config.push(nodes[genealogy[i].downline]);
+          nodes_to_be_parsed_temp.push(genealogy[i].downline);
+        }
+      }
+    }
+    nodes_to_be_parsed = nodes_to_be_parsed_temp;
+  }
+  if (generate_referral_table_once == 0) {
+    nodes_to_be_parsed = [selected_node];
+    var table_content = '<table class="table table-bordered data-table" style="display:none">';
+    table_content += '		<thead>';
+    table_content += '			<tr>';
+    table_content += '				<th>Name</th>';
+    table_content += '				<th>Username</th>';
+    table_content += '				<th>Referral Code</th>';
+    table_content += '				<th>Sponsor Name</th>';
+    table_content += '			</tr>';
+    table_content += '		</thead>';
+    table_content += '		<tbody>';
+    console.log(genealogy);
+    while (nodes_to_be_parsed.length > 0) {
+      var nodes_to_be_parsed_temp = [];
+      for (var k = 0; k < nodes_to_be_parsed.length; k++) {
+        for (var i = 0; i < genealogy.length; i++) {
+          if (genealogy[i].upline == nodes_to_be_parsed[k]) {
+            table_content += '	<tr>';
+            table_content += '		<td>' + genealogy[i].firstname + ' ' + genealogy[i].lastname + '</td>';
+            table_content += '		<td>' + genealogy[i].username + '</td>';
+            table_content += '		<td>' + genealogy[i].referral_code + '</td>';
+            table_content += '		<td>' + genealogy[i].upline_firstname + ' ' + genealogy[i].upline_lastname + '</td>';
+            table_content += '	</tr>';
+            nodes_to_be_parsed_temp.push(genealogy[i].downline);
+          }
+        }
+      }
+      nodes_to_be_parsed = nodes_to_be_parsed_temp;
+    }
+    table_content += '		</tbody>';
+    table_content += '	</table>';
+    $(".genealogy-table-container").html(table_content);
+    $(".data-table").DataTable();
+    $(".data-table").css("display", "table");
+    generate_referral_table_once = 1;
+  }
+  $("#chart").html('<h5 class="text-center my-5 py-5">Loading...</h5>');
+  if ($("#has-network").attr("data-value") == 1) {
+    setTimeout(function () {
+      new Treant(chart_config);
+      $('#chart').animate({
+        scrollLeft: parseFloat($('.root').css("left")) - $('#chart').width() / 2 + $('.node').width() / 2
+      }, 500);
+    }, 500);
+  } else {
+    $("#chart").html('<h5 class="text-center my-5 py-5">No Network</h5>');
+  }
+};
+var load_cart = function load_cart(empty_cart) {
+  if (empty_cart) {
+    remove_from_cart(0);
+  }
+  var total_quantity = 0;
+  var total_price = 0;
+  var total_points = 0;
+  var content = '	<table class="table table-bordered">';
+  $(".cart").each(function () {
+    if ($(this).attr("data-added-to-cart") == 1) {
+      total_quantity += parseInt($(".product-container[data-id='" + $(this).val() + "']").attr("data-quantity"));
+      total_price += $(".product-container[data-id='" + $(this).val() + "']").attr("data-price") * $(".product-container[data-id='" + $(this).val() + "']").attr("data-quantity");
+      total_points += $(".product-container[data-id='" + $(this).val() + "']").attr("data-points") * $(".product-container[data-id='" + $(this).val() + "']").attr("data-quantity");
+      content += '<tr>';
+      content += '	<td style="width:50px">' + $(".product-container[data-id='" + $(this).val() + "']").find(".image-container").html() + '</td>';
+      content += '	<td style="text-align:left; position:relative">';
+      content += '		<h6 style="font-size:0.9em">' + $(".product-container[data-id='" + $(this).val() + "']").attr("data-name") + '</h6>';
+      if ($(this).attr("data-type") == 2 || $("input[name='stockist-purchase']:checked").val() > 0) {
+        content += '	<p class="mb-0" style="font-size:0.9em">' + numberFormat($(".product-container[data-id='" + $(this).val() + "']").attr("data-price"), true) + ' Gems &times; ' + $(".product-container[data-id='" + $(this).val() + "']").attr("data-quantity") + ' = ' + numberFormat($(".product-container[data-id='" + $(this).val() + "']").attr("data-price") * $(".product-container[data-id='" + $(this).val() + "']").attr("data-quantity"), true) + ' Gems</p>';
+        content += '	<p class="mb-0" style="font-size:0.9em">' + numberFormat($(".product-container[data-id='" + $(this).val() + "']").attr("data-points"), true) + ' PV &times; ' + $(".product-container[data-id='" + $(this).val() + "']").attr("data-quantity") + ' = ' + numberFormat($(".product-container[data-id='" + $(this).val() + "']").attr("data-points") * $(".product-container[data-id='" + $(this).val() + "']").attr("data-quantity"), true) + ' PV</p>';
+        content += '	<div class="btn-group mt-1" role="group">';
+        content += '		<button class="btn btn-sm change-quantity" value="' + $(this).val() + '" data-change="-1" style="background-color:#0e4d22; color:#ffffff; width:50px; border-right:1px solid #ffffff"><i class="fas fa-minus"></i></button>';
+        content += '		<button class="btn btn-sm change-quantity" value="' + $(this).val() + '" data-change="1" style="background-color:#0e4d22; color:#ffffff; width:50px; border-left:1px solid #ffffff""><i class="fas fa-plus"></i></button>';
+        content += '	</div>';
+        content += '	<br>';
+      }
+      content += '		<button class="btn btn-custom-4 btn-sm mt-1 remove-from-cart" value="' + $(this).val() + '">Remove From Cart</button>';
+      content += '	</td>';
+      content += '</tr>';
+    }
+  });
+  content += '	</table>';
+  if (total_quantity == 0) {
+    content += '	<tr>';
+    content += '		<td>No Items Added Yet</td>';
+    content += '	</tr>';
+  }
+  $("#cart-container").html(content);
+  $("#total-quantity").html(numberFormat(total_quantity, false));
+  $("#total-price").html(numberFormat(total_price, true));
+  $("#total-points").html(numberFormat(total_points, true));
+};
+var remove_from_cart = function remove_from_cart(id) {
+  if (id == 0) {
+    $(".cart").attr("data-added-to-cart", -1);
+    $(".cart").css("background-color", "#0e4d22");
+    $(".cart").html('<div><i class="fas fa-shopping-cart" style="color:#ffffff; font-size:1.4em"></i></div><div style="margin-top:2px">Add To Cart</div>');
+    $(".product-container").attr("data-quantity", 1);
+  } else {
+    $(".cart[value='" + id + "']").attr("data-added-to-cart", -1);
+    $(".cart[value='" + id + "']").css("background-color", "#0e4d22");
+    $(".cart[value='" + id + "']").html('<div><i class="fas fa-shopping-cart" style="color:#ffffff; font-size:1.4em"></i></div><div style="margin-top:2px">Add To Cart</div>');
+    $(".product-container[data-id='" + id + "']").attr("data-quantity", 1);
+  }
+};
+var numberFormat = function numberFormat(x, decimal) {
+  x = parseFloat(x);
+  var parts = x.toFixed(2).toString().split(".");
+  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  if (decimal) {
+    return parts.join(".");
+  } else {
+    return parts[0];
+  }
+};
+proof_of_payment_uploader.on("change", function () {
+  var reader = new FileReader();
+  reader.onload = function (event) {
+    var img = new Image();
+    img.onload = function () {
+      var height = img.height;
+      var width = img.width;
+      $("#proof-of-payment-container .proof-of-payment:last").attr("data-image", img.src);
+      $("#proof-of-payment-container .proof-of-payment:last").attr("data-has-image", 1);
+      $("#proof-of-payment-container .proof-of-payment:last").attr("data-extension", proof_of_payment_uploader[0].files[0].name.split('.').pop().toLowerCase());
+      var content = ' <div style="position:relative; width:100%; height:100%; padding-top:175px; overflow:hidden">';
+      content += '         <img src="' + img.src + '" style="' + (width >= height ? 'height:auto; width:100%;' : 'height:100%; width:auto;') + ' margin:0; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%)" />';
+      content += '    </div>';
+      $("#proof-of-payment-container .proof-of-payment:last").html(content);
+      $("#proof-of-payment-container").append($("#proof-of-payment-content").html());
+    };
+    img.src = event.target.result;
+  };
+  reader.readAsDataURL(proof_of_payment_uploader[0].files[0]);
+});
+profile_picture_uploader.on("change", function () {
+  $(".profile-picture-loading").removeClass("d-none");
+  var previous_photo = $(".change-profile-picture-container").css("background-image");
+  $(".change-profile-picture-container").css("background-image", "none");
+  var reader = new FileReader();
+  reader.onload = function (event) {
+    var img = new Image();
+    img.onload = function () {
+      var photo = {
+        image: img.src,
+        extension: profile_picture_uploader[0].files[0].name.split('.').pop().toLowerCase()
+      };
+      $.ajax({
+        method: "POST",
+        url: "api/change-profile-picture.php",
+        data: {
+          photo: JSON.stringify(photo)
+        },
+        timeout: 30000
+      }).done(function (response) {
+        response = JSON.parse(response);
+        if (response.error == "") {
+          $(".change-profile-picture-container").css("background-image", "url('" + img.src + "')");
+        } else {
+          $(".change-profile-picture-container").css("background", previous_photo);
+          $("#modal-error .modal-body").html(response.error);
+          $("#modal-error").modal('show');
+        }
+      }).fail(function () {
+        $(".change-profile-picture-container").css("background", previous_photo);
+        $("#modal-error .modal-body").html("Unable to connect to server.");
+        $("#modal-error").modal('show');
+      }).always(function () {
+        $(".profile-picture-loading").addClass("d-none");
+      });
+    };
+    img.src = event.target.result;
+  };
+  reader.readAsDataURL(profile_picture_uploader[0].files[0]);
+});
+$(document).ready(function () {
+  var page_name = location.href.split("/").slice(-1);
+  page_name = page_name[0].split(".");
+  if (page_name[0] == "terminal") {
+    $(".data-table").DataTable({
+      "aaSorting": [],
+      "pageLength": 5
+    });
+    $("#items-table").DataTable({
+      "aaSorting": [],
+      "pageLength": 5,
+      "order": [[2, "desc"]]
+    });
+    $(".loading-text").css("display", "none");
+    $(".data-table, #items-table").css("display", "table");
+  }
+});
+$(document).on("click", ".products-tab", function () {
+  load_cart(true);
+  $(".products-tab").removeClass("active");
+  $(this).addClass("active");
+  $(".products-section").addClass("d-none");
+  if ($(this).data("type") == 1) {
+    if ($(this).data("package-id") == 0) {
+      $(".products-section[data-type='1']").removeClass("d-none");
+    } else if ($(this).data("package-id") == 4) {
+      $(".products-section[data-type='1'][data-package-id='1']").removeClass("d-none");
+      $(".products-section[data-type='1'][data-package-id='2']").removeClass("d-none");
+      $(".products-section[data-type='1'][data-package-id='3']").removeClass("d-none");
+    } else if ($(this).data("package-id") == 2) {
+      $(".products-section[data-type='1'][data-package-id='1']").removeClass("d-none");
+      $(".products-section[data-type='1'][data-package-id='3']").removeClass("d-none");
+    } else if ($(this).data("package-id") == 1) {
+      $(".products-section[data-type='1'][data-package-id='3']").removeClass("d-none");
+    }
+  } else {
+    $(".products-section[data-type='" + $(this).data("type") + "']").removeClass("d-none");
+  }
+});
+$(document).on("change", "input[name='stockist-purchase']", function () {
+  var stockist = $("input[name='stockist-purchase']:checked").val();
+  var price;
+  if (stockist == 0) {
+    price = "distributors-price";
+    $(".crossed-price").removeClass("d-none");
+  } else if (stockist == 1) {
+    price = "mobile-price";
+    $(".crossed-price").addClass("d-none");
+  } else if (stockist == 2) {
+    price = "center-price";
+    $(".crossed-price").addClass("d-none");
+  }
+  $("#place-order-confirm").attr("data-stockist", stockist);
+  $(".product-container").each(function () {
+    $(this).attr("data-price", $(this).data(price));
+    $(this).find(".price").html(numberFormat($(this).attr("data-price"), true));
+  });
+  if (stockist != 0) {
+    $(".products-section").removeClass("d-none");
+    $("#products-tab-container").addClass("d-none");
+    $(".products-tab").removeClass("active");
+    $(".products-tab[data-type='2']").addClass("active");
+  } else {
+    if ($("#products-tab-container").data("hidden") == 1) {
+      $("#products-tab-container").addClass("d-none");
+    } else {
+      $("#products-tab-container").removeClass("d-none");
+    }
+    $(".products-tab[data-type='2']").trigger("click");
+  }
+  load_cart(true);
+});
+$(document).on("click", ".cart", function () {
+  $(".cart").prop("disabled", true);
+  $(".change-quantity").prop("disabled", true);
+  $(".remove-from-cart").prop("disabled", true);
+  if ($(this).attr("data-type") == 1 && $(".products-tab[data-type='1']").hasClass("active")) {
+    remove_from_cart(0);
+  }
+  if ($(this).attr("data-added-to-cart") == -1) {
+    $(this).attr("data-added-to-cart", 1);
+    $(this).removeClass("btn-custom-2");
+    $(this).addClass("btn-custom-4");
+    $(this).html('<div><i class="fas fa-shopping-cart" style="color:#ffffff; font-size:1.4em"></i></div><div style="margin-top:2px">Remove From Cart</div>');
+  } else {
+    $(this).attr("data-added-to-cart", -1);
+    $(this).removeClass("btn-custom-4");
+    $(this).addClass("btn-custom-2");
+    $(this).html('<div><i class="fas fa-shopping-cart" style="color:#ffffff; font-size:1.4em"></i></div><div style="margin-top:2px">Add To Cart</div>');
+  }
+  load_cart(false);
+  $(".cart").prop("disabled", false);
+  $(".change-quantity").prop("disabled", false);
+  $(".remove-from-cart").prop("disabled", false);
+});
+$(document).on("click", ".change-quantity", function () {
+  $(".cart").prop("disabled", true);
+  $(".change-quantity").prop("disabled", true);
+  $(".remove-from-cart").prop("disabled", true);
+  var quantity = parseFloat($(".product-container[data-id='" + $(this).val() + "']").attr("data-quantity"));
+  if ($(this).attr("data-change") == 1) {
+    quantity++;
+  } else {
+    quantity--;
+    quantity = quantity == 0 ? 1 : quantity;
+  }
+  $(".product-container[data-id='" + $(this).val() + "']").attr("data-quantity", quantity);
+  load_cart(false);
+  $(".cart").prop("disabled", false);
+  $(".change-quantity").prop("disabled", false);
+  $(".remove-from-cart").prop("disabled", false);
+});
+$(document).on("click", ".remove-from-cart", function () {
+  $(".cart").prop("disabled", true);
+  $(".change-quantity").prop("disabled", true);
+  $(".remove-from-cart").prop("disabled", true);
+  remove_from_cart($(this).val());
+  load_cart(false);
+  $(".cart").prop("disabled", false);
+  $(".change-quantity").prop("disabled", false);
+  $(".remove-from-cart").prop("disabled", false);
+});
+$(document).on("click", "#place-order-confirm", function () {
+  if ($("#place-order-confirm").data("terminal-account") == 0) {
+    $("#modal-warning .modal-body").html("Your order will now be placed.");
+  } else {
+    var less_in_stock = 0;
+    var content = '	<div class="table-responsive">';
+    content += '		<table class="table table-bordered">';
+    content += '			<tr style="background-color:#f0f3f5">';
+    content += '				<th>Item</th>';
+    content += '				<th>In Stock</th>';
+    content += '				<th>To Be Ordered</th>';
+    content += '			</tr>';
+    $(".cart").each(function () {
+      if ($(this).attr("data-added-to-cart") == 1) {
+        if (parseInt($(".product-container[data-id='" + $(this).val() + "'] .stock").html()) < parseInt($(".product-container[data-id='" + $(this).val() + "']").attr("data-quantity"))) {
+          less_in_stock++;
+        }
+        content += '	<tr>';
+        content += '		<td>' + $(".product-container[data-id='" + $(this).val() + "'] .name").html() + '</td>';
+        content += '		<td>' + numberFormat($(".product-container[data-id='" + $(this).val() + "'] .stock").html(), false) + '</td>';
+        content += '		<td>' + numberFormat($(".product-container[data-id='" + $(this).val() + "']").attr("data-quantity"), false) + '</td>';
+        content += '	</tr>';
+      }
+    });
+    content += '		</table>';
+    content += '	</div>';
+    if (less_in_stock > 0) {
+      content += '<div class="alert alert-danger text-center mb-1">';
+      content += less_in_stock + ' of the items to be ordered ' + (less_in_stock > 1 ? 'are' : 'is') + ' less in stock.';
+      content += '</div>';
+    } else {
+      content += '<div class="alert alert-success text-center mb-1">';
+      content += '	This order will now be placed.';
+      content += '</div>';
+    }
+    $("#modal-warning .modal-body").html(content);
+  }
+  $("#modal-warning .proceed").attr("id", "place-order");
+  $("#modal-warning").modal("show");
+});
+$(document).on("click", "#place-order", function () {
+  $("#modal-warning .proceed").prop("disabled", true);
+  $("#modal-warning .proceed").html("Processing...");
+  $("#modal-warning button[data-dismiss='modal']").css("display", "none");
+  var ordered_items = [];
+  $(".cart").each(function () {
+    if ($(this).attr("data-added-to-cart") == 1) {
+      ordered_items.push({
+        id: $(this).val(),
+        quantity: $(".product-container[data-id='" + $(this).val() + "']").attr("data-quantity")
+      });
+    }
+  });
+  $.ajax({
+    method: "POST",
+    url: $("input[name='place-order-route']").val(),
+    data: {
+      terminal_account: $("#place-order-confirm").data("terminal-account"),
+      items: JSON.stringify(ordered_items),
+      full_name: $("#full-name").val(),
+      contact_number: $("#contact-number").val(),
+      barangay: $("#barangay").val(),
+      city: $("#city").val(),
+      province: $("#province").val(),
+      zip_code: $("#zip-code").val(),
+      stockist: $("#place-order-confirm").attr("data-stockist")
+    },
+    timeout: 30000
+  }).done(function (response) {
+    response = JSON.parse(response);
+    if (response.error == "") {
+      var redirect = $("#place-order-confirm").data("terminal-account") == "0" ? "orders.php" : "terminal.php?view=orders";
+      $('#modal-success .proceed').removeAttr("data-dismiss");
+      $('#modal-success .proceed').attr("onclick", "window.location = '" + redirect + "'; $('#modal-success .proceed').prop('disabled',true); $('#modal-success .proceed').html('Redirecting...')");
+      $('#modal-success .modal-body').html("You have successfully submitted your order request.");
+      $('#modal-success').modal('show');
+    } else {
+      $("#modal-error .modal-body").html(response.error);
+      $("#modal-error").modal('show');
+    }
+  }).fail(function () {
+    $("#modal-error .modal-body").html("Unable to connect to server.");
+    $("#modal-error").modal('show');
+  }).always(function () {
+    $("#modal-warning").modal('hide');
+    $("#modal-warning .proceed").html("Confirm");
+    $("#modal-warning .proceed").prop("disabled", false);
+    $("#modal-warning button[data-dismiss='modal']").css("display", "block");
+  });
+});
+$(document).on("input", "#purchase-winners-gem-amount", function () {
+  $("#purchase-winners-gem-price").val(parseFloat($(this).val() * winnersGemValue).toFixed(2));
+});
+$(document).on("input", "#purchase-winners-gem-price", function () {
+  $("#purchase-winners-gem-amount").val(parseFloat($(this).val() / winnersGemValue).toFixed(2));
+});
+$(document).on("click", "#purchase-winners-gem-show-modal", function () {
+  $("#modal-warning .modal-body").html("Your Winners Gem purchase request will now be submitted");
+  $("#modal-warning .proceed").attr("id", "purchase-winners-gem");
+  $("#modal-gem-purchase").modal("hide");
+  $("#modal-warning").modal("show");
+});
+$(document).on("click", "#proof-of-payment-container .proof-of-payment[data-has-image='0']", function (e) {
+  e.preventDefault();
+  proof_of_payment_uploader.click();
+});
+$(document).on("click", "#purchase-winners-gem", function () {
+  $("#modal-warning .proceed").prop("disabled", true);
+  $("#modal-warning .proceed").html("Processing...");
+  $("#modal-warning button[data-dismiss='modal']").css("display", "none");
+  var price = $("#purchase-winners-gem-price").val();
+  var proof_of_payments = [];
+  $("#proof-of-payment-container .proof-of-payment[data-has-image='1']").each(function () {
+    proof_of_payments.push({
+      image: $(this).attr("data-image"),
+      extension: $(this).attr("data-extension")
+    });
+  });
+  $.ajax({
+    method: "POST",
+    url: $("input[name='purchase-winners-gem-route']").val(),
+    data: {
+      price: price,
+      winners_gem_value: winnersGemValue,
+      proof_of_payments: JSON.stringify(proof_of_payments)
+    },
+    timeout: 30000
+  }).done(function (response) {
+    if (response.type && response.type == "winners-gem-update") {
+      winnersGemValue = parseFloat(response.winners_gem_value);
+      $("#purchase-winners-gem-amount").val(parseFloat($(this).val() / winnersGemValue).toFixed(2));
+      $("#modal-error .modal-body").html("Winners Gem value has just changed. Winners Gem to be purchased was updated.");
+      $("#modal-error").modal('show');
+    } else {
+      $("#purchase-winners-gem-amount").val(0);
+      $('#modal-success .proceed').removeAttr("data-dismiss");
+      $('#modal-success .proceed').attr("onclick", "window.location = 'orders/winnersgem'; $('#modal-success .proceed').prop('disabled',true); $('#modal-success .proceed').html('Redirecting...')");
+      $('#modal-success .modal-body').html("You have successfully submitted your Winners Gem purchase request.");
+      $('#modal-success').modal('show');
+    }
+  }).fail(function (error) {
+    showErrorFromAjax(error);
+  }).always(function () {
+    $("#modal-warning").modal('hide');
+    $("#modal-warning .proceed").html("Confirm");
+    $("#modal-warning .proceed").prop("disabled", false);
+    $("#modal-warning button[data-dismiss='modal']").css("display", "block");
+  });
+});
+$(document).on("click", ".view-items", function () {
+  $("#order-reference").html($(this).attr("data-reference"));
+  $("#ordered-items-container").html('<h6 class="text-center">Loading...</h6>');
+  $("#modal-view-order-items").modal('show');
+  var order_id = $(this).val();
+  $.ajax({
+    method: "POST",
+    url: "api/view-items.php",
+    data: {
+      order_id: order_id
+    },
+    timeout: 30000
+  }).done(function (response) {
+    response = JSON.parse(response);
+    if (response.error == "") {
+      var content = '	<table class="table table-bordered mb-0">';
+      content += '		<thead>';
+      content += '			<tr>';
+      content += '				<th></th>';
+      content += '				<th>Item</th>';
+      content += '				<th>Quantity</th>';
+      content += '				<th>Amount</th>';
+      content += '			</tr>';
+      content += '		</thead>';
+      content += '		<tbody>';
+      for (var i = 0; i < response.items.length; i++) {
+        content += '		<tr>';
+        content += '			<td style="width:80px">';
+        content += '				<div style="position:relative; width:100%; padding-top:100%; overflow:hidden; border:1px solid #eeeeee">';
+        content += '					<img src="' + response.items[i].photo + '?v=' + response.items[i].version + '" style="' + (response.items[i].longest_dimension == "width" ? 'width:100%; height:auto;' : 'width:auto; height:100%;') + 'max-height:100%; max-width:100%; margin:0; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%)" alt="' + response.items[i].name + '">';
+        content += '				</div>';
+        content += '			</td>';
+        content += '			<td>' + response.items[i].name + '</td>';
+        content += '			<td>' + response.items[i].quantity + '</td>';
+        content += '			<td>' + numberFormat(response.items[i].quantity * response.items[i].price, true) + ' <i class="fas fa-gem" style="font-size:0.8em"></i></td>';
+        content += '		</tr>';
+      }
+      content += '		</tbody>';
+      content += '	</table>';
+      $("#ordered-items-container").html(content);
+    } else {
+      $("#modal-error .modal-body").html(response.error);
+      $("#modal-error").modal('show');
+    }
+  }).fail(function () {
+    $("#modal-error .modal-body").html("Unable to connect to server.");
+    $("#modal-error").modal('show');
+  }).always(function () {
+    $("#modal-warning").modal('hide');
+    $("#modal-warning .proceed").html("Confirm");
+    $("#modal-warning .proceed").prop("disabled", false);
+    $("#modal-warning button[data-dismiss='modal']").css("display", "block");
+  });
+});
+$(document).on("change", "#transfer-receiver-username", function () {
+  $("#transfer-receiver-blank").css("display", "none");
+  $("#transfer-receiver-no-match").css("display", "none");
+  $("#transfer-receiver-has-match").css("display", "none");
+  $("#transfer-receiver-has-match").html("");
+  $("#transfer-receiver-loading").css("display", "inline-block");
+  var username = $("#transfer-receiver-username").val();
+  var check_receiver = function check_receiver() {
+    $.ajax({
+      method: "POST",
+      url: "api/check_receiver.php",
+      timeout: 30000,
+      data: {
+        username: username
+      }
+    }).done(function (response) {
+      response = JSON.parse(response);
+      if (response.receiver == "") {
+        $("#transfer-receiver-blank").css("display", "none");
+        $("#transfer-receiver-no-match").css("display", "inline-block");
+        $("#transfer-receiver-has-match").css("display", "none");
+        $("#transfer-receiver-has-match").html("");
+        $("#transfer-receiver-loading").css("display", "none");
+      } else {
+        $("#transfer-receiver-has-match").html(response.receiver);
+        $("#transfer-receiver-blank").css("display", "none");
+        $("#transfer-receiver-no-match").css("display", "none");
+        $("#transfer-receiver-has-match").css("display", "inline-block");
+        $("#transfer-receiver-loading").css("display", "none");
+      }
+    }).fail(function () {
+      setTimeout(function () {
+        check_receiver();
+      }, 1000);
+    });
+  };
+  if (username == "") {
+    $("#register-sponsor-blank").css("display", "inline-block");
+    $("#register-sponsor-no-match").css("display", "none");
+    $("#register-sponsor-has-match").css("display", "none");
+    $("#transfer-receiver-has-match").html("");
+    $("#register-sponsor-loading").css("display", "none");
+  } else {
+    check_receiver();
+  }
+});
+$(document).on("click", "#transfer-winners-gem-confirm", function () {
+  var receiver = $("#transfer-receiver-has-match").html();
+  var amount = numberFormat($("#transfer-winners-gem-amount").val(), true);
+  if (receiver != "") {
+    $("#modal-warning .modal-body").html("Are you sure you want to transfer " + amount + " <i class='fas fa-gem' style='font-size:0.8em'></i> to " + receiver + "?");
+    $("#modal-warning .proceed").attr("id", "transfer-winners-gem");
+    $("#modal-transfer").modal("hide");
+    $("#modal-warning").modal("show");
+  }
+});
+$(document).on("click", "#transfer-winners-gem", function () {
+  $("#modal-warning .proceed").prop("disabled", true);
+  $("#modal-warning .proceed").html("Processing...");
+  $("#modal-warning button[data-dismiss='modal']").css("display", "none");
+  var username = $("#transfer-receiver-username").val();
+  var amount = parseFloat($("#transfer-winners-gem-amount").val());
+  var pin_code = $("#transfer-pin-code").val();
+  $.ajax({
+    method: "POST",
+    url: "api/transfer.php",
+    data: {
+      username: username,
+      amount: amount,
+      pin_code: pin_code
+    },
+    timeout: 30000
+  }).done(function (response) {
+    response = JSON.parse(response);
+    if (response.error == "") {
+      var receiver = $("#transfer-receiver-has-match").html();
+      $("#winners-gem-balance").html(numberFormat(response.gem_balance, true));
+      $("#winners-gem-balance-in-pesos").html(numberFormat(response.gem_balance * winnersGemValue, true));
+      $("#winners-gem-sent").html(numberFormat(response.gems_sent, true));
+      $('#modal-success .modal-body').html("You have successfully sent " + numberFormat(amount, true) + " <i class='fas fa-gem' style='font-size:0.8em'></i> to " + receiver + ".");
+      $('#modal-success').modal('show');
+    } else {
+      $("#modal-error .modal-body").html(response.error);
+      $("#modal-error").modal('show');
+    }
+  }).fail(function () {
+    $("#modal-error .modal-body").html("Unable to connect to server.");
+    $("#modal-error").modal('show');
+  }).always(function () {
+    $("#modal-warning").modal('hide');
+    $("#modal-warning .proceed").html("Confirm");
+    $("#modal-warning .proceed").prop("disabled", false);
+    $("#modal-warning button[data-dismiss='modal']").css("display", "block");
+  });
+});
+$(document).on("change", "#convert-peso-to-gem-amount", function () {
+  $("#convert-total-winners-gem").html(numberFormat($(this).val() / winnersGemValue, true));
+});
+$(document).on("change", "#convert-gem-to-peso-amount", function () {
+  var amount = parseFloat($("#convert-gem-to-peso-amount").val());
+  $("#convert-total-peso").html(numberFormat(amount * winnersGemValue, true));
+  $("#convert-gem-to-peso-fee-peso").html(numberFormat(amount * winnersGemValue * 0.02, true));
+  $("#convert-gem-to-peso-fee-gem").html(numberFormat(amount * 0.02, true));
+  $("#convert-gem-to-peso-total-gems").html(numberFormat(amount * 1.02, true));
+});
+$(document).on("click", "#convert-confirm", function () {
+  var type = $(".convert-tab.active").data("type");
+  var amount = parseFloat($("#convert-" + type + "-amount").val());
+  if (type == "peso-to-gem") {
+    $("#modal-warning .modal-body").html("Are you sure you want to convert &#x20B1;&nbsp;" + numberFormat(amount, true) + " to Winners Gem?");
+  } else {
+    $("#modal-warning .modal-body").html("Are you sure you want to convert " + numberFormat(amount, true) + " Winners Gem to Peso?<br>This will cost a total of " + numberFormat(amount * 1.02, true) + " Winners Gem.");
+  }
+  $("#modal-warning .proceed").attr("id", "convert");
+  $("#modal-convert").modal("hide");
+  $("#modal-warning").modal("show");
+});
+$(document).on("click", "#convert", function () {
+  $("#modal-warning .proceed").prop("disabled", true);
+  $("#modal-warning .proceed").html("Processing...");
+  $("#modal-warning button[data-dismiss='modal']").css("display", "none");
+  var type = $(".convert-tab.active").data("type");
+  var amount = parseFloat($("#convert-" + type + "-amount").val());
+  $.ajax({
+    method: "POST",
+    url: "api/convert.php",
+    data: {
+      type: type,
+      amount: amount,
+      winners_gem_value: winnersGemValue
+    },
+    timeout: 30000
+  }).done(function (response) {
+    if (response.type && response.type == "winners-gem-update") {
+      winnersGemValue = parseFloat(response.winners_gem_value);
+      $("#purchase-winners-gem-amount").val(parseFloat($(this).val() / winnersGemValue).toFixed(2));
+      $("#modal-error .modal-body").html("Winners Gem value has just changed. Winners Gem to be purchased was updated.");
+      $("#modal-error").modal('show');
+    } else {
+      $("#winners-gem-balance").html(numberFormat(response.gem_balance, true));
+      $("#winners-gem-balance-in-pesos").html(numberFormat(response.gem_balance * winnersGemValue, true));
+      $("#peso-balance").html(numberFormat(response.peso_balance, true));
+      $('#modal-success .modal-body').html("You have successfully converted &#x20B1;&nbsp;" + numberFormat(amount, true) + " to Winners Gem.");
+      $('#modal-success').modal('show');
+    }
+  }).fail(function () {
+    showErrorFromAjax(error);
+  }).always(function () {
+    $("#modal-warning").modal('hide');
+    $("#modal-warning .proceed").html("Confirm");
+    $("#modal-warning .proceed").prop("disabled", false);
+    $("#modal-warning button[data-dismiss='modal']").css("display", "block");
+  });
+});
+$(document).on("change", "#withdraw-amount", function () {
+  var amount = parseFloat($("#withdraw-amount").val());
+  $("#withdraw-transaction-fee").html("&#x20B1;&nbsp;" + numberFormat(amount * 0.01, true));
+  $("#withdraw-total").html("&#x20B1;&nbsp;" + numberFormat(amount * 1.01, true));
+});
+$(document).on("click", "#withdraw-confirm", function () {
+  var amount = parseFloat($("#withdraw-amount").val());
+  $("#modal-warning .modal-body").html("Are you sure you want to withdraw &#x20B1;&nbsp;" + numberFormat(amount, true) + "?<br>Transaction fee costs &#x20B1;&nbsp;" + numberFormat(amount * 0.01, true) + ".");
+  $("#modal-warning .proceed").attr("id", "withdraw");
+  $("#modal-withdraw").modal("hide");
+  $("#modal-warning").modal("show");
+});
+$(document).on("click", "#withdraw", function () {
+  $("#modal-warning .proceed").prop("disabled", true);
+  $("#modal-warning .proceed").html("Processing...");
+  $("#modal-warning button[data-dismiss='modal']").css("display", "none");
+  $.ajax({
+    method: "POST",
+    url: "api/withdraw.php",
+    data: {
+      amount: parseFloat($("#withdraw-amount").val())
+    },
+    timeout: 30000
+  }).done(function (response) {
+    response = JSON.parse(response);
+    if (response.error == "") {
+      $('#modal-success .proceed').removeAttr("data-dismiss");
+      $('#modal-success .proceed').attr("onclick", "window.location = 'withdrawals.php'; $('#modal-success .proceed').prop('disabled',true); $('#modal-success .proceed').html('Redirecting...')");
+      $('#modal-success .modal-body').html("Withdrawal request has been successfully submitted");
+      $('#modal-success').modal('show');
+    } else {
+      $("#modal-error .modal-body").html(response.error);
+      $("#modal-error").modal('show');
+    }
+  }).fail(function () {
+    $("#modal-error .modal-body").html("Unable to connect to server.");
+    $("#modal-error").modal('show');
+  }).always(function () {
+    $("#modal-warning").modal('hide');
+    $("#modal-warning .proceed").html("Confirm");
+    $("#modal-warning .proceed").prop("disabled", false);
+    $("#modal-warning button[data-dismiss='modal']").css("display", "block");
+  });
+});
+$(document).on("click", "#contribute-to-pool-share-confirm", function () {
+  var amount = parseFloat($("#pool-share-contribution-amount").val());
+  $("#modal-warning .modal-body").html("Are you sure you want to contribute &#x20B1;&nbsp;" + numberFormat(amount, true) + " to Pool Share?");
+  $("#modal-warning .proceed").attr("id", "contribute-to-pool-share");
+  $("#modal-pool-share-contribute").modal("hide");
+  $("#modal-warning").modal("show");
+});
+$(document).on("click", "#contribute-to-pool-share", function () {
+  $("#modal-warning .proceed").prop("disabled", true);
+  $("#modal-warning .proceed").html("Processing...");
+  $("#modal-warning button[data-dismiss='modal']").css("display", "none");
+  var amount = parseFloat($("#pool-share-contribution-amount").val());
+  $.ajax({
+    method: "POST",
+    url: "api/contribute-to-pool-share.php",
+    data: {
+      amount: amount
+    },
+    timeout: 30000
+  }).done(function (response) {
+    response = JSON.parse(response);
+    if (response.error == "") {
+      $("#peso-balance").html(numberFormat(response.peso_balance, true));
+      $("#pool-share-amount").html(numberFormat(response.pool_share, true));
+      $('#modal-success .modal-body').html("You have successfully contributed to pool share. Thank you!");
+      $('#modal-success').modal('show');
+    } else {
+      $("#modal-error .modal-body").html(response.error);
+      $("#modal-error").modal('show');
+    }
+  }).fail(function () {
+    $("#modal-error .modal-body").html("Unable to connect to server.");
+    $("#modal-error").modal('show');
+  }).always(function () {
+    $("#modal-warning").modal('hide');
+    $("#modal-warning .proceed").html("Confirm");
+    $("#modal-warning .proceed").prop("disabled", false);
+    $("#modal-warning button[data-dismiss='modal']").css("display", "block");
+  });
+});
+$(document).on("click", ".node-expand", function () {
+  selected_node = $(this).val();
+  generateGenealogy();
+});
+$(document).on("click", ".uplines", function () {
+  selected_node = $(this).attr("node-id");
+  generateGenealogy();
+});
+$(document).on("change", "#number-of-levels-to-be-shown", function () {
+  if ($("#number-of-levels-to-be-shown").val() >= 1) {
+    generateGenealogy();
+  } else {
+    $("#modal-error .modal-body").html("Invalid Input");
+    $("#modal-error").modal("show");
+  }
+});
+$(document).on("click", "#change-profile-picture", function (e) {
+  e.preventDefault();
+  profile_picture_uploader.click();
+});
+$(document).on("click", "#edit-personal-info-show-fields", function () {
+  $("#edit-firstname").prop("disabled", false);
+  $("#edit-lastname").prop("disabled", false);
+  $("#edit-username").prop("disabled", false);
+  $("#edit-email-address").prop("disabled", false);
+  $("#edit-contact-number").prop("disabled", false);
+  $("#edit-address").prop("disabled", false);
+  $("input[name='payout-method']").prop("disabled", false);
+  $(".payout-field input").prop("disabled", false);
+  $("#edit-personal-info-show-fields").css("display", "none");
+  $("#change-password-show-fields").css("display", "none");
+  $("#change-pin-code-show-fields").css("display", "none");
+  $("#cancel").css("display", "inline-block");
+  $("#edit-personal-info").css("display", "inline-block");
+});
+$(document).on("change", "input[name='payout-method']", function () {
+  var method = $("input[name='payout-method']:checked").val();
+  $(".payout-field").css("display", "none");
+  if (method == "BDO") {
+    $(".payout-method-bdo").css("display", "block");
+  } else if (method == "Palawan Express") {
+    $(".payout-method-palawan-express").css("display", "block");
+  } else if (method == "GCash") {
+    $(".payout-method-gcash").css("display", "block");
+  } else if (method == "Coins.ph") {
+    $(".payout-method-coinsph").css("display", "block");
+  }
+});
+$(document).on("click", "#change-password-show-fields", function () {
+  $("#password-fields").css("display", "flex");
+  $("#password-fields input").val("");
+  $("#edit-personal-info-show-fields").css("display", "none");
+  $("#change-password-show-fields").css("display", "none");
+  $("#change-pin-code-show-fields").css("display", "none");
+  $("#cancel").css("display", "inline-block");
+  $("#change-password").css("display", "inline-block");
+});
+$(document).on("click", "#change-pin-code-show-fields", function () {
+  $("#pin-code-fields").css("display", "flex");
+  $("#pin-code-fields input").val("");
+  $("#edit-personal-info-show-fields").css("display", "none");
+  $("#change-password-show-fields").css("display", "none");
+  $("#change-pin-code-show-fields").css("display", "none");
+  $("#cancel").css("display", "inline-block");
+  $("#change-pin-code").css("display", "inline-block");
+});
+$(document).on("click", "#cancel", function () {
+  $("#edit-firstname").prop("disabled", true);
+  $("#edit-lastname").prop("disabled", true);
+  $("#edit-username").prop("disabled", true);
+  $("#edit-email-address").prop("disabled", true);
+  $("#edit-contact-number").prop("disabled", true);
+  $("#edit-address").prop("disabled", true);
+  $("#edit-firstname").val($("#edit-firstname").attr("prev-value"));
+  $("#edit-lastname").val($("#edit-lastname").attr("prev-value"));
+  $("#edit-username").val($("#edit-username").attr("prev-value"));
+  $("#edit-email-address").val($("#edit-email-address").attr("prev-value"));
+  $("#edit-contact-number").val($("#edit-contact-number").attr("prev-value"));
+  $("#edit-address").val($("#edit-address").attr("prev-value"));
+  $("input[name='payout-method']").prop("disabled", false);
+  $(".payout-field input").prop("disabled", true);
+  $("#edit-payout-account-number").val($("#edit-payout-account-number").attr("prev-value"));
+  $("#edit-payout-account-name").val($("#edit-payout-account-name").attr("prev-value"));
+  $("#edit-payout-name").val($("#edit-payout-name").attr("prev-value"));
+  $("#edit-payout-mobile-number").val($("#edit-payout-mobile-number").attr("prev-value"));
+  $("#edit-payout-wallet-address").val($("#edit-payout-wallet-address").attr("prev-value"));
+  $("#password-fields").css("display", "none");
+  $("#pin-code-fields").css("display", "none");
+  $("#edit-personal-info-show-fields").css("display", "inline-block");
+  $("#change-password-show-fields").css("display", "inline-block");
+  $("#change-pin-code-show-fields").css("display", "inline-block");
+  $("#cancel").css("display", "none");
+  $("#edit-personal-info").css("display", "none");
+  $("#change-password").css("display", "none");
+});
+$(document).on("click", "#edit-personal-info", function () {
+  $("#edit-personal-info").prop("disabled", true);
+  $("#edit-personal-info").html("Saving Changes...");
+  $("#cancel").css("display", "none");
+  var firstname = $("#edit-firstname").val();
+  var lastname = $("#edit-lastname").val();
+  var username = $("#edit-username").val();
+  var email_address = $("#edit-email-address").val();
+  var contact_number = $("#edit-contact-number").val();
+  var address = $("#edit-address").val();
+  var payout_method = $("input[name='payout-method']:checked").val();
+  var payout_account_number = $("#edit-payout-account-number").val();
+  var payout_account_name = $("#edit-payout-account-name").val();
+  var payout_name = $("#edit-payout-name").val();
+  var payout_mobile_number = $("#edit-payout-mobile-number").val();
+  var payout_wallet_address = $("#edit-payout-wallet-address").val();
+  $.ajax({
+    method: "POST",
+    url: "api/edit-personal-info.php",
+    data: {
+      firstname: firstname,
+      lastname: lastname,
+      username: username,
+      email_address: email_address,
+      contact_number: contact_number,
+      address: address,
+      payout_method: payout_method,
+      payout_account_number: payout_account_number,
+      payout_account_name: payout_account_name,
+      payout_name: payout_name,
+      payout_mobile_number: payout_mobile_number,
+      payout_wallet_address: payout_wallet_address
+    }
+  }).done(function (response) {
+    response = JSON.parse(response);
+    if (response.error == "") {
+      $("#edit-firstname").prop("disabled", true);
+      $("#edit-lastname").prop("disabled", true);
+      $("#edit-username").prop("disabled", true);
+      $("#edit-email-address").prop("disabled", true);
+      $("#edit-contact-number").prop("disabled", true);
+      $("#edit-address").prop("disabled", true);
+      $("#edit-firstname").prop("disabled", true);
+      $("#edit-lastname").prop("disabled", true);
+      $("#edit-username").prop("disabled", true);
+      $("#edit-email-address").attr("prev-value", email_address);
+      $("#edit-contact-number").attr("prev-value", contact_number);
+      $("#edit-address").attr("prev-value", address);
+      $("input[name='payout-method']").prop("disabled", false);
+      $(".payout-field input").prop("disabled", true);
+      $("#edit-payout-account-number").attr("prev-value", payout_account_number);
+      $("#edit-payout-account-name").attr("prev-value", payout_account_name);
+      $("#edit-payout-name").attr("prev-value", payout_name);
+      $("#edit-payout-mobile-number").attr("prev-value", payout_mobile_number);
+      $("#edit-payout-wallet-address").attr("prev-value", payout_wallet_address);
+      $("#cancel").css("display", "none");
+      $("#edit-personal-info").css("display", "none");
+      $("#edit-personal-info-show-fields").css("display", "inline-block");
+      $("#change-password-show-fields").css("display", "inline-block");
+      $("#change-pin-code-show-fields").css("display", "inline-block");
+      $('#modal-success .modal-body').html("Saving Changes Successful");
+      $("#modal-success").modal("show");
+    } else {
+      $("#cancel").css("display", "inline-block");
+      $('#modal-error .modal-body').html(response.error);
+      $("#modal-error").modal("show");
+    }
+  }).fail(function () {
+    $("#cancel").css("display", "inline-block");
+    $('#modal-error .modal-body').html("Unable to connect to server.");
+    $('#modal-error').modal('show');
+  }).always(function () {
+    $("#edit-personal-info").html("Save Changes");
+    $("#edit-personal-info").prop("disabled", false);
+  });
+});
+$(document).on("click", "#change-password", function () {
+  $("#change-password").prop("disabled", true);
+  $("#change-password").html("Saving Changes...");
+  $("#cancel").css("display", "none");
+  var current_password = $("#edit-current-password").val();
+  var new_password = $("#edit-new-password").val();
+  var confirm_password = $("#edit-confirm-password").val();
+  $.ajax({
+    method: "POST",
+    url: "api/change-password.php",
+    data: {
+      current_password: current_password,
+      new_password: new_password,
+      confirm_password: confirm_password
+    }
+  }).done(function (response) {
+    response = JSON.parse(response);
+    if (response.error == "") {
+      $("#password-fields").css("display", "none");
+      $("#edit-current-password").val("");
+      $("#edit-new-password").val("");
+      $("#edit-confirm-password").val("");
+      $("#cancel").css("display", "none");
+      $("#change-password").css("display", "none");
+      $("#edit-personal-info-show-fields").css("display", "inline-block");
+      $("#change-password-show-fields").css("display", "inline-block");
+      $("#change-pin-code-show-fields").css("display", "inline-block");
+      $('#modal-success .modal-body').html("Saving Changes Successful");
+      $("#modal-success").modal("show");
+    } else {
+      $("#cancel").css("display", "inline-block");
+      $('#modal-error .modal-body').html(response.error);
+      $("#modal-error").modal("show");
+    }
+  }).fail(function () {
+    $("#cancel").css("display", "inline-block");
+    $('#modal-error .modal-body').html("Unable to connect to server.");
+    $('#modal-error').modal('show');
+  }).always(function () {
+    $("#change-password").html("Save Changes");
+    $("#change-password").prop("disabled", false);
+  });
+});
+$(document).on("click", "#change-pin-code", function () {
+  $("#change-pin-code").prop("disabled", true);
+  $("#change-pin-code").html("Saving Changes...");
+  $("#cancel").css("display", "none");
+  var current_pin_code = $("#edit-current-pin-code").val();
+  var new_pin_code = $("#edit-new-pin-code").val();
+  var confirm_pin_code = $("#edit-confirm-pin-code").val();
+  $.ajax({
+    method: "POST",
+    url: "api/change-pin-code.php",
+    data: {
+      current_pin_code: current_pin_code,
+      new_pin_code: new_pin_code,
+      confirm_pin_code: confirm_pin_code
+    }
+  }).done(function (response) {
+    response = JSON.parse(response);
+    if (response.error == "") {
+      $("#pin-code-fields").css("display", "none");
+      $("#edit-current-pin-code-fields").val("");
+      $("#edit-new-pin-code-fields").val("");
+      $("#edit-confirm-pin-code-fields").val("");
+      $("#cancel").css("display", "none");
+      $("#change-pin-code").css("display", "none");
+      $("#edit-personal-info-show-fields").css("display", "inline-block");
+      $("#change-password-show-fields").css("display", "inline-block");
+      $("#change-pin-code-show-fields").css("display", "inline-block");
+      $('#modal-success .modal-body').html("Saving Changes Successful");
+      $("#modal-success").modal("show");
+    } else {
+      $("#cancel").css("display", "inline-block");
+      $('#modal-error .modal-body').html(response.error);
+      $("#modal-error").modal("show");
+    }
+  }).fail(function () {
+    $("#cancel").css("display", "inline-block");
+    $('#modal-error .modal-body').html("Unable to connect to server.");
+    $('#modal-error').modal('show');
+  }).always(function () {
+    $("#change-pin-code").html("Save Changes");
+    $("#change-pin-code").prop("disabled", false);
+  });
+});
+$(document).on("click", ".view-payout-information", function () {
+  var payout_information = JSON.parse($(this).find("span").html());
+  var content = '	<table class="table table-bordered mb-0">';
+  content += '		<tbody>';
+  content += '			<tr>';
+  content += '				<th style="background-color:#fafafa; text-align:right">Method</th>';
+  content += '				<td style="text-align:left">' + payout_information.method + '</td>';
+  content += '			</tr>';
+  if (payout_information.method == "BDO") {
+    content += '		<tr>';
+    content += '			<th style="background-color:#fafafa; text-align:right">Account Number</th>';
+    content += '			<td style="text-align:left">' + payout_information.account_number + '</td>';
+    content += '		</tr>';
+    content += '		<tr>';
+    content += '			<th style="background-color:#fafafa; text-align:right">Account Name</th>';
+    content += '			<td style="text-align:left">' + payout_information.account_name + '</td>';
+    content += '		</tr>';
+  } else if (payout_information.method == "Palawan Express") {
+    content += '		<tr>';
+    content += '			<th style="background-color:#fafafa; text-align:right">Name</th>';
+    content += '			<td style="text-align:left">' + payout_information.name + '</td>';
+    content += '		</tr>';
+    content += '		<tr>';
+    content += '			<th style="background-color:#fafafa; text-align:right">Mobile Number</th>';
+    content += '			<td style="text-align:left">' + payout_information.mobile_number + '</td>';
+    content += '		</tr>';
+  } else if (payout_information.method == "GCash") {
+    content += '			<tr>';
+    content += '				<th style="background-color:#fafafa; text-align:right">Mobile Number</th>';
+    content += '				<td style="text-align:left">' + payout_information.mobile_number + '</td>';
+    content += '			</tr>';
+  } else if (payout_information.method == "Coins.ph") {
+    content += '		<tr>';
+    content += '			<th style="background-color:#fafafa; text-align:right">Wallet Address</th>';
+    content += '			<td style="text-align:left">' + payout_information.wallet_address + '</td>';
+    content += '		</tr>';
+  }
+  content += '		</tbody>';
+  content += '	</table>';
+  $("#payout-information-container").html(content);
+  $("#modal-payout-information").modal("show");
+});
+$(document).on("click", ".update-proof-of-payment", function () {
+  $("#modal-proof-of-payment-update").modal("show");
+  $("#proof-of-payment-container").html('<h6 class="text-center">Loading...</h6>');
+  $("#update-proof-of-payment-confirm").val($(this).val());
+  var proof_of_payments = JSON.parse($(this).find("span").html());
+  var content = '';
+  var i = 0;
+  var load_image = function load_image() {
+    var img = new Image();
+    img.onload = function () {
+      var height = img.height;
+      var width = img.width;
+      content += '	<div class="col-6 px-1" style="margin-bottom:10px">';
+      content += '		<a href="' + img.src + '" data-fancybox="images" data-caption="Proof of Payment">';
+      content += '			<div class="proof-of-payment" data-image="' + img.src + '" data-has-image="1" data-extension="' + img.src.split('.').pop().toLowerCase() + '" style="width:100%; height:180px; background-color:#eeeeee; border:2px solid #0e4d22; position:relative; cursor:pointer">';
+      content += '				<div style="position:relative; width:100%; height:100%; padding-top:175px; overflow:hidden">';
+      content += '					<img src="' + img.src + '" style="' + (width >= height ? 'height:auto; width:100%;' : 'height:100%; width:auto;') + ' margin:0; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%)" />';
+      content += '				</div>';
+      content += '			</div>';
+      content += '		</a>';
+      content += '	</div>';
+      if (i == proof_of_payments.length - 1) {
+        content += $("#proof-of-payment-content").html();
+        $("#proof-of-payment-container").html(content);
+      } else {
+        load_image(proof_of_payments[++i]);
+      }
+    };
+    img.src = proof_of_payments[i];
+  };
+  if (proof_of_payments.length > 0) {
+    load_image(proof_of_payments[i]);
+  } else {
+    $("#proof-of-payment-container").html($("#proof-of-payment-content").html());
+  }
+});
+$(document).on("click", "#update-proof-of-payment-confirm", function () {
+  $("#modal-warning .modal-body").html("Are you sure you want to save changes?");
+  $("#modal-warning .proceed").attr("id", "update-proof-of-payment");
+  $("#modal-warning .proceed").val($(this).val());
+  $("#modal-proof-of-payment-update").modal("hide");
+  $("#modal-warning").modal("show");
+});
+$(document).on("click", "#update-proof-of-payment", function () {
+  $("#modal-warning .proceed").prop("disabled", true);
+  $("#modal-warning .proceed").html("Processing...");
+  $("#modal-warning button[data-dismiss='modal']").css("display", "none");
+  var id = $(this).val();
+  var proof_of_payments = [];
+  $("#proof-of-payment-container .proof-of-payment[data-has-image='1']").each(function () {
+    proof_of_payments.push({
+      image: $(this).attr("data-image"),
+      extension: $(this).attr("data-extension")
+    });
+  });
+  $.ajax({
+    method: "POST",
+    url: "api/update-proof-of-payment.php",
+    data: {
+      id: id,
+      proof_of_payments: JSON.stringify(proof_of_payments)
+    },
+    timeout: 30000
+  }).done(function (response) {
+    response = JSON.parse(response);
+    if (response.error == "") {
+      $(".update-proof-of-payment[value='" + id + "'] span").html(response.proof_of_payment);
+      $('#modal-success .modal-body').html("Saving changes successful.");
+      $('#modal-success').modal('show');
+    } else {
+      $("#modal-error .modal-body").html(response.error);
+      $("#modal-error").modal('show');
+    }
+  }).fail(function () {
+    $("#modal-error .modal-body").html("Unable to connect to server.");
+    $("#modal-error").modal('show');
+  }).always(function () {
+    $("#modal-warning").modal('hide');
+    $("#modal-warning .proceed").html("Confirm");
+    $("#modal-warning .proceed").prop("disabled", false);
+    $("#modal-warning button[data-dismiss='modal']").css("display", "block");
+  });
+});
+$(document).on("click", ".terminal-view-items", function () {
+  $(".order-reference").html($(this).attr("data-reference"));
+  $("#ordered-items-container").html('<h6 class="text-center">Loading...</h6>');
+  $("#modal-view-order-items").modal('show');
+  var order_id = $(this).val();
+  $.ajax({
+    method: "POST",
+    url: "admin/api/view-items.php",
+    data: {
+      order_id: order_id
+    },
+    timeout: 30000
+  }).done(function (response) {
+    response = JSON.parse(response);
+    if (response.error == "") {
+      var content = '	<table class="table table-bordered mb-0">';
+      content += '		<thead>';
+      content += '			<tr>';
+      content += '				<th></th>';
+      content += '				<th>Item</th>';
+      content += '				<th>Quantity</th>';
+      content += '				<th>Amount</th>';
+      content += '			</tr>';
+      content += '		</thead>';
+      content += '		<tbody>';
+      for (var i = 0; i < response.items.length; i++) {
+        content += '		<tr>';
+        content += '			<td style="width:80px">';
+        content += '				<div style="position:relative; width:100%; padding-top:100%; overflow:hidden; border:1px solid #eeeeee">';
+        content += '					<img src="' + response.items[i].photo + '?v=' + response.items[i].version + '" style="' + (response.items[i].longest_dimension == "width" ? 'width:100%; height:auto;' : 'width:auto; height:100%;') + 'max-height:100%; max-width:100%; margin:0; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%)" alt="' + response.items[i].name + '">';
+        content += '				</div>';
+        content += '			</td>';
+        content += '			<td>' + response.items[i].name + '</td>';
+        content += '			<td>' + response.items[i].quantity + '</td>';
+        content += '			<td>' + numberFormat(response.items[i].quantity * response.items[i].price, true) + ' <span style="font-size:0.8em">Gems</span></td>';
+        content += '		</tr>';
+      }
+      content += '		</tbody>';
+      content += '	</table>';
+      $("#ordered-items-container").html(content);
+    } else {
+      $("#modal-error .modal-body").html(response.error);
+      $("#modal-error").modal('show');
+    }
+  }).fail(function () {
+    $("#modal-error .modal-body").html("Unable to connect to server.");
+    $("#modal-error").modal('show');
+  }).always(function () {
+    $("#modal-warning").modal('hide');
+    $("#modal-warning .proceed").html("Confirm");
+    $("#modal-warning .proceed").prop("disabled", false);
+    $("#modal-warning button[data-dismiss='modal']").css("display", "block");
+  });
+});
+$(document).on("click", ".terminal-view-shipment", function () {
+  $(".order-reference").html($(this).data("reference"));
+  $("#shipment-full-name").html($(this).data("full-name") != "" ? $(this).data("full-name") : '<span style="font-style:italic">Empty</span>');
+  $("#shipment-contact-number").html($(this).data("contact-number") != "" ? $(this).data("contact-number") : '<span style="font-style:italic">Empty</span>');
+  $("#shipment-barangay").html($(this).data("barangay") != "" ? $(this).data("barangay") : '<span style="font-style:italic">Empty</span>');
+  $("#shipment-city").html($(this).data("city") != "" ? $(this).data("city") : '<span style="font-style:italic">Empty</span>');
+  $("#shipment-province").html($(this).data("province") != "" ? $(this).data("province") : '<span style="font-style:italic">Empty</span>');
+  $("#shipment-zip-code").html($(this).data("zip-code") != "" ? $(this).data("zip-code") : '<span style="font-style:italic">Empty</span>');
+  $("#modal-view-shipment").modal('show');
+});
+$(document).on("click", ".mark-order-as-complete-confirm", function () {
+  $("#modal-warning .modal-body").html("Are you sure you want to mark Order " + $(this).data("reference") + " as complete?");
+  $("#modal-warning .proceed").val($(this).val());
+  $("#modal-warning .proceed").attr("id", "mark-order-as-complete");
+  $('#modal-warning').modal('show');
+});
+$(document).on("click", "#mark-order-as-complete", function () {
+  $("#modal-warning .proceed").prop("disabled", true);
+  $("#modal-warning .proceed").html("Processing...");
+  $("#modal-warning button[data-dismiss='modal']").css("display", "none");
+  var id = $(this).val();
+  $.ajax({
+    method: "POST",
+    url: "admin/api/mark-order-as-complete.php",
+    timeout: 30000,
+    data: {
+      id: id,
+      user: 2
+    }
+  }).done(function (response) {
+    response = JSON.parse(response);
+    if (response.error == "") {
+      $("#terminal-winners-gem").html(numberFormat(response.terminal_winners_gem.balance, true));
+      var content = '	<table class="table table-bordered data-table" style="display:none">';
+      content += '		<thead>';
+      content += '			<tr style="background-color:#f9f9f9">';
+      content += '				<th></th>';
+      content += '				<th>Date&nbsp;&amp; Time Placed</th>';
+      content += '				<th>Type</th>';
+      content += '				<th>Reference</th>';
+      content += '				<th>Account</th>';
+      content += '				<th>Price</th>';
+      content += '				<th>Points</th>';
+      content += '			</tr>';
+      content += '		</thead>';
+      content += '		<tbody>';
+      response.orders.forEach(function (order) {
+        if (!order.date_time_completed) {
+          content += '	<tr>';
+          content += '		<td>';
+          content += '			<button class="btn btn-success btn-sm mt-1 terminal-view-items" value="' + order.id + '" data-reference="' + order.reference + '" style="background-color:#0e4d22; color:#ffffff">Items</button>';
+          content += '			<button class="btn btn-success btn-sm mt-1 terminal-view-shipment" data-reference="' + order.reference + '" data-full-name="' + order.full_name + '" data-contact-number="' + order.contact_number + '" data-barangay="' + order.barangay + '" data-city="' + order.city + '" data-province="' + order.province + '" data-zip-code="' + order.zip_code + '" style="background-color:#0e4d22; color:#ffffff">Shipment</button>';
+          content += '			<button class="btn btn-success btn-sm mt-1 mark-order-as-complete-confirm" value="' + order.id + '" data-reference="' + order.reference + '" style="background-color:#0e4d22; color:#ffffff">Mark as Complete</button>';
+          content += '		</td>';
+          content += '		<td>' + order.date_time_placed + '</td>';
+          content += '		<td>' + (order.type == 1 ? "Package" : "Product") + '</td>';
+          content += '		<td>' + order.reference + '</td>';
+          content += '		<td>' + order.name + '</td>';
+          content += '		<td>' + numberFormat(order.price, true) + ' <i class="fas fa-gem" style="font-size:0.8em"></i></td>';
+          content += '		<td>' + numberFormat(order.points_value, true) + ' PV</td>';
+          content += '	</tr>';
+        }
+      });
+      content += '		</tbody>';
+      content += '	</table>';
+      $("#pending .table-responsive").html(content);
+      content = '		<table class="table table-bordered data-table" style="display:none">';
+      content += '		<thead>';
+      content += '			<tr style="background-color:#f9f9f9">';
+      content += '				<th></th>';
+      content += '				<th>Date&nbsp;&amp; Time Placed</th>';
+      content += '				<th>Date&nbsp;&amp; Time Completed</th>';
+      content += '				<th>Type</th>';
+      content += '				<th>Reference</th>';
+      content += '				<th>Account</th>';
+      content += '				<th>Price</th>';
+      content += '				<th>Points</th>';
+      content += '			</tr>';
+      content += '		</thead>';
+      content += '		<tbody>';
+      response.orders.forEach(function (order) {
+        if (order.date_time_completed) {
+          content += '	<tr>';
+          content += '		<td>';
+          content += '			<button class="btn btn-success btn-sm mt-1 terminal-view-items" value="' + order.id + '" data-reference="' + order.reference + '" style="background-color:#0e4d22; color:#ffffff">Items</button>';
+          content += '			<button class="btn btn-success btn-sm mt-1 terminal-view-shipment" data-reference="' + order.reference + '" data-full-name="' + order.full_name + '" data-contact-number="' + order.contact_number + '" data-barangay="' + order.barangay + '" data-city="' + order.city + '" data-province="' + order.province + '" data-zip-code="' + order.zip_code + '" style="background-color:#0e4d22; color:#ffffff">Shipment</button>';
+          content += '		</td>';
+          content += '		<td>' + order.date_time_placed + '</td>';
+          content += '		<td>' + order.date_time_completed + '</td>';
+          content += '		<td>' + (order.type == 1 ? "Package" : "Product") + '</td>';
+          content += '		<td>' + order.reference + '</td>';
+          content += '		<td>' + order.name + '</td>';
+          content += '		<td>' + numberFormat(order.price, true) + ' <i class="fas fa-gem" style="font-size:0.8em"></i></td>';
+          content += '		<td>' + numberFormat(order.points_value, true) + ' PV</td>';
+          content += '	</tr>';
+        }
+      });
+      content += '		</tbody>';
+      content += '	</table>';
+      $("#completed .table-responsive").html(content);
+      $(".data-table").DataTable({
+        "aaSorting": []
+      });
+      $(".data-table").css("display", "table");
+      $('#modal-success .modal-body').html("Order has been successfully completed.");
+      $('#modal-success').modal('show');
+    } else {
+      $('#modal-error .modal-body').html(response.error);
+      $('#modal-error').modal("show");
+    }
+  }).fail(function () {
+    $('#modal-error .modal-body').html("Unable to connect to server.");
+    $('#modal-error').modal('show');
+  }).always(function () {
+    $('#modal-warning').modal('hide');
+    $("#modal-warning button[data-dismiss='modal']").css("display", "block");
+    $("#modal-warning .proceed").html("Confirm");
+    $("#modal-warning .proceed").prop("disabled", false);
+  });
+});
+$(document).on("click", "#minimize-side-nav", function () {
+  if ($(".profile-pic-lg").hasClass("d-none")) {
+    $(".profile-pic-lg").removeClass("d-none");
+    $(".profile-pic-sm").addClass("d-none");
+  } else {
+    $(".profile-pic-sm").removeClass("d-none");
+    $(".profile-pic-lg").addClass("d-none");
+  }
+});
+/******/ })()
+;

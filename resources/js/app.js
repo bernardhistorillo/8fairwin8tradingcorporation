@@ -13,6 +13,23 @@ let allOnload = async function() {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+
+    setInterval(function() {
+        $(".gem-change-color").addClass("text-color-2");
+        $(".gem-change-color").removeClass("text-color-1");
+        $(".gem-change-color").css("transform", "rotate(0deg)");
+
+        setTimeout(function() {
+            $(".gem-change-color").css("transform", "rotate(-15deg)");
+            $(".gem-change-color").removeClass("text-color-2");
+            $(".gem-change-color").addClass("text-color-1");
+        }, 1000);
+
+        setTimeout(function() {
+            $(".gem-change-color").css("transform", "rotate(15deg)");
+        }, 1500);
+    }, 2000);
+
 };
 
 let pageOnload = async function() {
@@ -530,15 +547,12 @@ let generateGenealogy = function() {
         for(var k = 0; k < nodes_to_be_parsed.length; k++) {
             for(var i = 0; i < genealogy.length; i++) {
                 if(genealogy[i].upline == nodes_to_be_parsed[k]) {
-                    console.log(genealogy[i].upline);
-
                     let content = ' <p class="node-name">' + genealogy[i].firstname + ' ' + genealogy[i].lastname + '</p>';
                     content += '    <p class="node-id">' + genealogy[i].downline + '</p>';
                     content += '    <p class="node-rank">' + account_package[genealogy[i].package_id] + ranks[genealogy[i].rank] + '</p>';
                     content += '    <p class="node-username">Username: ' + genealogy[i].username + '</p>';
                     content += '    <p class="node-referral_code">Referral Code: ' + genealogy[i].referral_code + ' </p>';
-                    content += '    <p class="node-referral_code">Referral Code: ' + genealogy[i].referral_code + ' </p>';
-                    content += '    <p class="node-button"><button class="btn btn-success btn-sm node-expand" value="' + genealogy[i].downline + '" style="background-color:#0e4d22">Expand</button></p>';
+                    content += '    <p class="node-button"><button class="btn btn-custom-2 font-size-90 btn-sm node-expand" value="' + genealogy[i].downline + '">Expand</button></p>';
 
                     nodes[genealogy[i].downline] = {
                         parent: nodes[genealogy[i].upline],
@@ -638,7 +652,7 @@ let load_cart = function(empty_cart) {
                 content += '	</div>';
                 content += '	<br>';
             }
-            content += '		<button class="btn btn-sm mt-1 remove-from-cart" value="' + $(this).val() + '" style="background-color:#ad1d45; color:#ffffff">Remove From Cart</button>';
+            content += '		<button class="btn btn-custom-4 btn-sm mt-1 remove-from-cart" value="' + $(this).val() + '">Remove From Cart</button>';
             content += '	</td>';
             content += '</tr>';
         }
@@ -859,11 +873,13 @@ $(document).on("click", ".cart", function() {
 
     if($(this).attr("data-added-to-cart") == -1) {
         $(this).attr("data-added-to-cart", 1);
-        $(this).css("background-color", "#ad1d45");
+        $(this).removeClass("btn-custom-2");
+        $(this).addClass("btn-custom-4");
         $(this).html('<div><i class="fas fa-shopping-cart" style="color:#ffffff; font-size:1.4em"></i></div><div style="margin-top:2px">Remove From Cart</div>');
     } else {
         $(this).attr("data-added-to-cart", -1);
-        $(this).css("background-color", "#0e4d22");
+        $(this).removeClass("btn-custom-4");
+        $(this).addClass("btn-custom-2");
         $(this).html('<div><i class="fas fa-shopping-cart" style="color:#ffffff; font-size:1.4em"></i></div><div style="margin-top:2px">Add To Cart</div>');
     }
 
