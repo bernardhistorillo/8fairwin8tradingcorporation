@@ -624,7 +624,7 @@ var load_cart = function load_cart(empty_cart) {
         content += '	</div>';
         content += '	<br>';
       }
-      content += '		<button class="btn btn-custom-4 btn-sm mt-1 remove-from-cart" value="' + $(this).val() + '">Remove From Cart</button>';
+      content += '		<button class="btn btn-custom-4 btn-sm mt-1 font-size-80 remove-from-cart px-3" value="' + $(this).val() + '">REMOVE FROM CART</button>';
       content += '	</td>';
       content += '</tr>';
     }
@@ -806,12 +806,12 @@ $(document).on("click", ".cart", function () {
     $(this).attr("data-added-to-cart", 1);
     $(this).removeClass("btn-custom-2");
     $(this).addClass("btn-custom-4");
-    $(this).html('<div><i class="fas fa-shopping-cart" style="color:#ffffff; font-size:1.4em"></i></div><div style="margin-top:2px">Remove From Cart</div>');
+    $(this).html('<div class="py-1">REMOVE FROM CART</div>');
   } else {
     $(this).attr("data-added-to-cart", -1);
     $(this).removeClass("btn-custom-4");
     $(this).addClass("btn-custom-2");
-    $(this).html('<div><i class="fas fa-shopping-cart" style="color:#ffffff; font-size:1.4em"></i></div><div style="margin-top:2px">Add To Cart</div>');
+    $(this).html('<div class="py-1">ADD TO CART</div>');
   }
   load_cart(false);
   $(".cart").prop("disabled", false);

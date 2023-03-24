@@ -39,14 +39,17 @@ Route::middleware(['auth'])->group(function() {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
     Route::get('/earnings/{type?}', [IncomeController::class, 'index'])->name('income.index');
-    Route::get('/orders/{type?}', [OrderController::class, 'index'])->name('orders.index');
 
     Route::get('/network', [NetworkController::class, 'index'])->name('network.index');
     Route::post('/network/getGenealogy', [NetworkController::class, 'getGenealogy'])->name('network.getGenealogy');
 
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-    Route::post('/products/purchaseWinnersGem', [ProductController::class, 'purchaseWinnersGem'])->name('products.purchaseWinnersGem');
-    Route::post('/products/placeOrder', [ProductController::class, 'placeOrder'])->name('products.placeOrder');
+
+    Route::prefix('orders')->group(function () {
+        Route::get('/{type?}', [OrderController::class, 'index'])->name('orders.index');
+        Route::post('/products/purchaseWinnersGem', [OrderController::class, 'purchaseWinnersGem'])->name('orders.purchaseWinnersGem');
+        Route::post('/products/placeOrder', [OrderController::class, 'placeOrder'])->name('orders.placeOrder');
+    });
 
     Route::get('/account', [DashboardController::class, 'index'])->name('account.index');
     Route::get('/transfers', [DashboardController::class, 'index'])->name('transfers.index');

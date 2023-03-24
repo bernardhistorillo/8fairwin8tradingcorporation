@@ -6,7 +6,7 @@
 				<button class="close" data-dismiss="modal">&times;</button>
 			</div>
 			<div class="modal-body">
-                <input type="hidden" name="purchase-winners-gem-route" value="{{ route('products.purchaseWinnersGem') }}" />
+                <input type="hidden" name="purchase-winners-gem-route" value="{{ route('orders.purchaseWinnersGem') }}" />
 
 				<div class="row">
 					<div class="col-sm-6 mb-3">
