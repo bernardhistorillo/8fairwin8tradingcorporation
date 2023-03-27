@@ -48,6 +48,9 @@
 .text-color-3 {
     color:#000000!important;
 }
+.text-color-4 {
+    color:#5a2328!important;
+}
 .text-shadow-1 {
     text-shadow: 4px 4px 0 rgba(199, 152, 111, 0.5);
 }
@@ -69,41 +72,78 @@
     border-radius:0;
     background-color:#e3b504;
     color:#ffffff;
-    border:0;
+    border:2px solid #e3b504;
 }
 .btn-custom-1:hover, .btn-custom-1:active, .btn-custom-1:focus, .btn-custom-1:disabled {
     background-color: #b08d04 !important;
     color:#ffffff!important;
+    border:2px solid #b08d04;
 }
 .btn-custom-2 {
     border-radius:0;
     background-color:#104d22;
     color:#ffffff;
-    border:0;
+    border:2px solid #104d22;
 }
 .btn-custom-2:hover, .btn-custom-2:active, .btn-custom-2:focus, .btn-custom-2:disabled {
     background-color: #0b3317 !important;
     color:#ffffff!important;
+    border:2px solid #0b3317;
 }
 .btn-custom-3 {
     border-radius:0;
     background-color:#104d22!important;
     color:#ffffff!important;
-    border:0;
+    border:2px solid #104d22;
 }
 .btn-custom-3:hover, .btn-custom-3:active, .btn-custom-3:focus, .btn-custom-3:disabled {
     background-color: #e3b504 !important;
     color:#ffffff;
+    border:2px solid #e3b504;
 }
 .btn-custom-4 {
     border-radius:0;
     background-color:#5a2328!important;
     color:#ffffff!important;
-    border:0;
+    border:2px solid #5a2328;
 }
 .btn-custom-4:hover, .btn-custom-4:active, .btn-custom-4:focus, .btn-custom-4:disabled {
     background-color: #260f11 !important;
     color:#ffffff;
+    border:2px solid #260f11;
+}
+.btn-custom-5 {
+    border-radius:0;
+    background-color:#ffffff;
+    color:#104d22;
+    border:2px solid #104d22;
+}
+.btn-custom-5:hover, .btn-custom-5:active, .btn-custom-5:focus, .btn-custom-5:disabled {
+    background-color: #0b3317 !important;
+    color:#ffffff!important;
+    border:2px solid #0b3317;
+}
+.btn-custom-6 {
+    border-radius:0;
+    background-color:#ffffff;
+    color:#e3b504;
+    border:2px solid #e3b504;
+}
+.btn-custom-6:hover, .btn-custom-6:active, .btn-custom-6:focus, .btn-custom-6:disabled {
+    background-color: #b08d04 !important;
+    color:#ffffff!important;
+    border:2px solid #b08d04;
+}
+.btn-custom-7 {
+    border-radius:0;
+    background-color:#ffffff;
+    color:#5a2328;
+    border:2px solid #5a2328;
+}
+.btn-custom-7:hover, .btn-custom-7:active, .btn-custom-7:focus, .btn-custom-7:disabled {
+    background-color: #260f11 !important;
+    color:#ffffff!important;
+    border:2px solid #260f11;
 }
 .bg-color-1 {
     background-color:#e3b504!important;

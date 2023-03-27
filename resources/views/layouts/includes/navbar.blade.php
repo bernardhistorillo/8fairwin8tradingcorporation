@@ -1,5 +1,5 @@
 <header class="app-header navbar">
-    <button class="navbar-toggler sidebar-toggler d-lg-none mr-auto" type="button" data-toggle="sidebar-show">
+    <button class="navbar-toggler sidebar-toggler d-lg-none mr-auto" type="button" data-bs-toggle="sidebar-show">
         <span class="navbar-toggler-icon" style="color:#134c21"></span>
     </button>
     <a class="navbar-brand" href="{{ route('home.index') }}" style="padding-left:10px">
@@ -8,12 +8,12 @@
     </a>
 
     @if(Auth::check())
-    <button class="navbar-toggler sidebar-toggler d-md-down-none" type="button" data-toggle="sidebar-lg-show" style="color:#134c21">
+    <button class="navbar-toggler sidebar-toggler d-md-down-none" type="button" data-bs-toggle="sidebar-lg-show" style="color:#134c21">
         <span class="navbar-toggler-icon" style="color:#134c21"></span>
     </button>
     <ul class="nav navbar-nav ml-auto">
         <li class="nav-item dropdown">
-            <a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+            <a class="nav-link" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-user"></i> <span class="d-none d-sm-inline" style="margin-left:5px; margin-right:20px">{{ Auth::user()->fullName() }}</span>
             </a>
             <div class="dropdown-menu dropdown-menu-right">

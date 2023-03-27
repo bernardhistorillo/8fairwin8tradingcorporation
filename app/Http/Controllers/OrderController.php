@@ -11,6 +11,7 @@ use App\Models\Order;
 use App\Models\OrderedItem;
 use App\Models\PersonalRebateIncome;
 use App\Models\RankIncentiveIncome;
+use App\Models\RankPoint;
 use App\Models\ReferralIncome;
 use App\Models\StairstepIncome;
 use App\Models\UnilevelIncome;
@@ -84,7 +85,6 @@ class OrderController extends Controller
         $request->validate([
             'items' => 'required',
             'stockist' => 'required|numeric', // 0 => is not a stockist, 1 => is a mobile stockist, 2 => is a center stockist
-            'terminal_account' => 'required',
             'full_name' => 'required',
             'contact_number' => 'required',
             'barangay' => 'required',
@@ -92,162 +92,190 @@ class OrderController extends Controller
             'zip_code' => 'required',
         ]);
 
-        $items = $request->items;
-        if(count($request->items) == 0) {
+        $items = json_decode($request->items, true);
+        if(count($items) == 0) {
             abort(422, "You haven't added any items to your cart.");
         }
 
-        if(count($items) > 0) {
+        $terminalUser = null;
+
+        if($request->terminal_account == 0) {
+            $purchaser = Auth::user();
+
+            if(!(($purchaser["stockist"] == 2 && $request->stockist == 2) || ($purchaser["stockist"] == 2 && $request->stockist == 0) || ($purchaser["stockist"] == 1 && $request->stockist == 1) || ($purchaser["stockist"] == 1 && $request->stockist == 0) || $purchaser["stockist"] == 0)) {
+                abort(422, "Your account has no privilege for this purchase.");
+            }
+        } else {
+            if(Auth::user()->stockist > 0) {
+                $terminalUser = User::find(base64_decode($request->terminal_account));
+                if($terminalUser) {
+                    $purchaser = $terminalUser;
+                } else {
+                    abort(422, "Invalid Purchaser");
+                }
+            } else {
+                abort(422, "You have no privilege to access the terminal.");
+            }
+        }
+
+        if($request->stockist == 1) {
+            $terminalUser = $purchaser->stockistAssignment->stockistUser;
+        } else if($request->stockist == 2) {
             $terminalUser = null;
+        }
 
-            if($request->terminal_account == 0) {
-                $purchaser = Auth::user();
+        $totalPrice = 0;
+        $totalPointsValue = 0;
+        $lessInStock = 0;
 
-                if(!(($purchaser["stockist"] == 2 && $request->stockist == 2) || ($purchaser["stockist"] == 2 && $request->stockist == 0) || ($purchaser["stockist"] == 1 && $request->stockist == 1) || ($purchaser["stockist"] == 1 && $request->stockist == 0) || $purchaser["stockist"] == 0)) {
-                    abort(422, "Your account has no privilege for this purchase.");
-                }
-            } else {
-                if(Auth::user()->stockist > 0) {
-                    $terminalUser = User::find(base64_decode($request->terminal_account));
-                    if($terminalUser) {
-                        $purchaser = $terminalUser;
-                    } else {
-                        abort(422, "Invalid Purchaser");
-                    }
-                } else {
-                    abort(422, "You have no privilege to access the terminal.");
-                }
-            }
+        $winnersGemValue = winnersGemValue();
 
+        for($i = 0; $i < count($items); $i++) {
             if($request->stockist == 1) {
-                $terminalUser = $purchaser->stockistAssignment->stockistUser;
+                $price = "mobile_price";
             } else if($request->stockist == 2) {
-                $terminalUser = null;
-            }
-
-            $totalPrice = 0;
-            $totalPointsValue = 0;
-            $lessInStock = 0;
-
-            $winnersGemValue = winnersGemValue();
-
-            for($i = 0; $i < count($items); $i++) {
-                if($request->stockist == 1) {
-                    $price = "mobile_price";
-                } else if($request->stockist == 2) {
-                    $price = "center_price";
-                } else {
-                    $price = ($purchaser['rank'] > 0) ? "distributors_price" : "suggested_retail_price";
-                }
-
-                $itemDetails = Item::find($items[$i]->id);
-
-                // 1 => package, 2 => product
-                $type = $itemDetails["type"];
-
-                $items[$i]->price = $itemDetails[$price] / $winnersGemValue;
-                $items[$i]->points_value = $itemDetails["points_value"];
-
-                $totalPrice += $items[$i]->quantity * $items[$i]->price;
-                $totalPointsValue += $items[$i]->quantity * $items[$i]->points_value;
-
-                // If purchased by a stockist but not a center stockist, stock is checked
-                if($terminalUser && $request->stockist != 2) {
-                    $itemStock = $itemDetails->terminalItemStock($terminalUser['id'], $terminalUser['stockist']);
-
-                    if($itemStock["in_stock"] < $items[$i]->quantity) {
-                        $lessInStock++;
-                    }
-                }
-            }
-
-            abort_if($lessInStock > 0, 422, $lessInStock . " of the items to be ordered " . (($lessInStock > 1) ? "are" : "is") . " less in stock.");
-
-            if($request->stockist) {
-                $type = 2;
-            }
-
-            if($terminalUser) {
-                $terminalWinnersGem = $terminalUser->terminalWinnersGem();
-                abort_if($terminalWinnersGem["balance"] < $totalPointsValue, 422, "Insufficient Winners Gem");
+                $price = "center_price";
             } else {
-                $income = $purchaser->income();
-                abort_if($income["gemBalance"] < $totalPrice, 422, "Insufficient Winners Gem");
+                $price = ($purchaser['rank'] > 0) ? "distributors_price" : "suggested_retail_price";
             }
 
-            do {
-                $referenceCode = generateCode(8);
-                $codeExists = Order::where('reference', 'LIKE', $referenceCode)
+            $itemDetails = Item::find($items[$i]['id']);
+
+            // 1 => package, 2 => product
+            $type = $itemDetails["type"];
+
+            $items[$i]['price'] = $itemDetails[$price] / $winnersGemValue;
+            $items[$i]['points_value'] = $itemDetails["points_value"];
+
+            $totalPrice += $items[$i]['quantity'] * $items[$i]['price'];
+            $totalPointsValue += $items[$i]['quantity'] * $items[$i]['points_value'];
+
+            // If purchased by a stockist but not a center stockist, stock is checked
+            if($terminalUser && $request->stockist != 2) {
+                $itemStock = $itemDetails->terminalItemStock($terminalUser['id'], $terminalUser['stockist']);
+
+                if($itemStock["in_stock"] < $items[$i]['quantity']) {
+                    $lessInStock++;
+                }
+            }
+        }
+
+        abort_if($lessInStock > 0, 422, $lessInStock . " of the items to be ordered " . (($lessInStock > 1) ? "are" : "is") . " less in stock.");
+
+        if($request->stockist) {
+            $type = 2;
+        }
+
+        if($terminalUser) {
+            $terminalWinnersGem = $terminalUser->terminalWinnersGem();
+            abort_if($terminalWinnersGem["balance"] < $totalPointsValue, 422, "Insufficient Winners Gem");
+        } else {
+            $income = $purchaser->income();
+            abort_if($income["gemBalance"] < $totalPrice, 422, "Insufficient Winners Gem");
+        }
+
+        do {
+            $referenceCode = generateCode(8);
+            $codeExists = Order::where('reference', 'LIKE', $referenceCode)
+                ->first();
+        } while ($codeExists);
+
+        // If purchaser is not a stockist
+        if($request->stockist == 0) {
+            // If the item is a package, pool share is the total points value, else, just 10%
+            $poolShare = ($type == 1) ? $totalPointsValue : $totalPointsValue * 0.1;
+        } else {
+            $poolShare = 0;
+        }
+
+        $order = new Order();
+        $order->type = $type;
+        $order->stockist = $request->stockist;
+        $order->reference = $referenceCode;
+        $order->user_id = $purchaser['id'];
+        $order->price = $totalPrice;
+        $order->points_value = $totalPointsValue;
+        $order->pool_share = $poolShare;
+        $order->full_name = $request->full_name;
+        $order->contact_number = $request->contact_number;
+        $order->barangay = $request->barangay;
+        $order->city = $request->city;
+        $order->province = $request->province;
+        $order->zip_code = $request->zip_code;
+        $order->terminal_user_id = ($terminalUser) ? $terminalUser['id'] : 0;
+        $order->save();
+
+        for($i = 0; $i < count($items); $i++) {
+            $orderedItem = new OrderedItem();
+            $orderedItem->order_id = $order['id'];
+            $orderedItem->item_id = $items[$i]['id'];
+            $orderedItem->quantity = $items[$i]['quantity'];
+            $orderedItem->price = $items[$i]['price'];
+            $orderedItem->points_value = $items[$i]['points_value'];
+            $orderedItem->save();
+        }
+
+        if($request->stockist == 0) {
+            if($type == 1 && $purchaser['id'] > 1) { // Package Purchase
+                if($purchaser['rank'] == 0) {
+                    $purchaser['rank'] = 1;
+                    $purchaser->update();
+                }
+
+                $itemId = $orderedItem['item_id'];
+                $packageId = $purchaser["package_id"];
+
+                $purchasedPackage = ($itemId == 21) ? 1 : (($itemId == 28) ? 4 : 2);
+
+                // Packages Order: 0 -> 4 -> 2 -> 1
+                $isFromFreeAccountUpgrade = $packageId == 0;
+                $isFromDreamMakerUpgrade = $packageId == 4 && ($purchasedPackage == 2 || $purchasedPackage == 1);
+                $isFromDreamStarterUpgrade = $packageId == 2 && ($purchasedPackage == 1);
+
+                if ($isFromFreeAccountUpgrade || $isFromDreamMakerUpgrade || $isFromDreamStarterUpgrade) {
+                    $packageId = $purchasedPackage;
+
+                    $purchaser->package_id = $purchasedPackage;
+                    $purchaser->update();
+                }
+
+                $downline = Downline::where('level', 1)
+                    ->where('upline', $purchaser["sponsor"])
+                    ->where('downline', $purchaser['id'])
                     ->first();
-            } while ($codeExists);
 
-            // If purchaser is not a stockist
-            if($request->stockist == 0) {
-                // If the item is a package, pool share is the total points value, else, just 10%
-                $poolShare = ($type == 1) ? $totalPointsValue : $totalPointsValue * 0.1;
-            } else {
-                $poolShare = 0;
-            }
+                if (!$downline) {
+                    // Downline Ranks
+                    $upline = $purchaser["sponsor"];
+                    $downline = $purchaser['id'];
+                    $level = 1;
 
-            $order = new Order();
-            $order->type = $type;
-            $order->stockist = $request->stockist;
-            $order->reference = $referenceCode;
-            $order->user_id = $purchaser['id'];
-            $order->price = $totalPrice;
-            $order->points_value = $totalPointsValue;
-            $order->pool_share = $poolShare;
-            $order->full_name = $request->full_name;
-            $order->contact_number = $request->contact_number;
-            $order->barangay = $request->barangay;
-            $order->city = $request->city;
-            $order->province = $request->province;
-            $order->zip_code = $request->zip_code;
-            $order->terminal_user_id = $terminalUser['id'];
-            $order->save();
+                    $directs = Downline::where('level', 1)
+                        ->where('upline', $upline)
+                        ->get();
 
-            for($i = 0; $i < count($items); $i++) {
-                $orderedItem = new OrderedItem();
-                $orderedItem->order_id = $order['id'];
-                $orderedItem->item_id = $items[$i]->id;
-                $orderedItem->quantity = $items[$i]->quantity;
-                $orderedItem->price = $items[$i]->price;
-                $orderedItem->points_value = $items[$i]->points_value;
-                $orderedItem->save();
-            }
-
-            if($request->stockist == 0) {
-                if($type == 1 && $purchaser['id'] > 1) { // Package Purchase
-                    $itemId = $orderedItem['item_id'];
-                    $packageId = $purchaser["package_id"];
-
-                    $purchasedPackage = ($itemId == 21) ? 1 : (($itemId == 28) ? 4 : 2);
-
-                    // Packages Order: 0 -> 4 -> 2 -> 1
-                    $isFromFreeAccountUpgrade = $packageId == 0;
-                    $isFromDreamMakerUpgrade = $packageId == 4 && ($purchasedPackage == 2 || $purchasedPackage == 1);
-                    $isFromDreamStarterUpgrade = $packageId == 2 && ($purchasedPackage == 1);
-
-                    if ($isFromFreeAccountUpgrade || $isFromDreamMakerUpgrade || $isFromDreamStarterUpgrade) {
-                        $packageId = $purchasedPackage;
-
-                        $purchaser->package_id = $purchasedPackage;
-                        $purchaser->update();
+                    foreach ($directs as $i => $direct) {
+                        if ($direct["downline"] == $downline) {
+                            break;
+                        }
                     }
 
-                    $downline = Downline::where('level', 1)
-                        ->where('upline', $purchaser["sponsor"])
-                        ->where('downline', $purchaser['id'])
+                    $newDownline = new Downline();
+                    $newDownline->upline = $upline;
+                    $newDownline->downline = $purchaser['id'];
+                    $newDownline->leg = $i + 1;
+                    $newDownline->level = $level++;
+                    $newDownline->save();
+
+                    $downline = $upline;
+
+                    $upline = Downline::where('level', 1)
+                        ->where('downline', $downline)
                         ->first();
 
-                    if (!$downline) {
-                        // Downline Ranks
-                        $upline = $purchaser["sponsor"];
-                        $downline = $purchaser['id'];
-                        $level = 1;
-
+                    while($upline) {
                         $directs = Downline::where('level', 1)
-                            ->where('upline', $upline)
+                            ->where('upline', $upline["upline"])
                             ->get();
 
                         foreach ($directs as $i => $direct) {
@@ -257,162 +285,74 @@ class OrderController extends Controller
                         }
 
                         $newDownline = new Downline();
-                        $newDownline->upline = $upline;
+                        $newDownline->upline = $upline["upline"];
                         $newDownline->downline = $purchaser['id'];
                         $newDownline->leg = $i + 1;
                         $newDownline->level = $level++;
                         $newDownline->save();
 
-                        $downline = $upline;
+                        $downline = $upline["upline"];
 
                         $upline = Downline::where('level', 1)
                             ->where('downline', $downline)
                             ->first();
-
-                        while($upline) {
-                            $directs = Downline::where('level', 1)
-                                ->where('upline', $upline["upline"])
-                                ->get();
-
-                            foreach ($directs as $i => $direct) {
-                                if ($direct["downline"] == $downline) {
-                                    break;
-                                }
-                            }
-
-                            $newDownline = new Downline();
-                            $newDownline->upline = $upline["upline"];
-                            $newDownline->downline = $purchaser['id'];
-                            $newDownline->leg = $i + 1;
-                            $newDownline->level = $level++;
-                            $newDownline->save();
-
-                            $downline = $upline["upline"];
-
-                            $upline = Downline::where('level', 1)
-                                ->where('downline', $downline)
-                                ->first();
-                        }
-                    }
-
-                    $this->processReferralIncome($purchaser, $order, $packageId);
-                    $this->processInfinityPlusIncome($purchaser, $order, $packageId);
-                } else if($type == 2) { // Product Purchase
-                    $this->processPersonalRebateIncome($purchaser, $order);
-
-                    if($purchaser['id'] > 1) {
-                        $this->processIncomeDueToMonthlyPVChange($purchaser);
-                        $this->processUnilevelIncome($purchaser, $order);
-
-                        // stairstep
-                        if($purchaser["rank"] <= 6) {
-                            $sql = $db->prepare("SELECT `upline`, `rank`, `level` FROM ( (SELECT `upline`, `rank`, `level` FROM `fw_downlines`, `fw_accounts` WHERE `downline` = ? AND `upline` = `fw_accounts`.`id` AND `rank` = 2 ORDER BY `level` ASC LIMIT 2) UNION ALL (SELECT `upline`, `rank`, `level` FROM `fw_downlines`, `fw_accounts` WHERE `downline` = ? AND `upline` = `fw_accounts`.`id` AND `rank` = 3 ORDER BY `level` ASC LIMIT 2) UNION ALL (SELECT `upline`, `rank`, `level` FROM `fw_downlines`, `fw_accounts` WHERE `downline` = ? AND `upline` = `fw_accounts`.`id` AND `rank` = 4 ORDER BY `level` ASC LIMIT 2) UNION ALL (SELECT `upline`, `rank`, `level` FROM `fw_downlines`, `fw_accounts` WHERE `downline` = ? AND `upline` = `fw_accounts`.`id` AND `rank` = 5 ORDER BY `level` ASC LIMIT 2) UNION ALL (SELECT `upline`, `rank`, `level` FROM `fw_downlines`, `fw_accounts` WHERE `downline` = ? AND `upline` = `fw_accounts`.`id` AND `rank` = 6 ORDER BY `level` ASC LIMIT 1) UNION ALL (SELECT `upline`, `rank`, `level` FROM `fw_downlines`, `fw_accounts` WHERE `downline` = ? AND `upline` = `fw_accounts`.`id` AND `rank` = 7 ORDER BY `level` ASC LIMIT 1) UNION ALL (SELECT `upline`, `rank`, `level` FROM `fw_downlines`, `fw_accounts` WHERE `downline` = ? AND `upline` = `fw_accounts`.`id` AND `rank` = 8 ORDER BY `level` ASC LIMIT 1) UNION ALL (SELECT `upline`, `rank`, `level` FROM `fw_downlines`, `fw_accounts` WHERE `downline` = ? AND `upline` = `fw_accounts`.`id` AND `rank` = 9 ORDER BY `level` ASC LIMIT 1) ) AS `table` WHERE `rank` >= ? ORDER BY `level` ASC");
-                            if (!$sql->execute(array($purchaser['id'], $purchaser['id'], $purchaser['id'], $purchaser['id'], $purchaser['id'], $purchaser['id'], $purchaser['id'], $purchaser['id'], $purchaser["rank"]))) { error(""); }
-                            $uplines = $sql->fetchAll(PDO::FETCH_ASSOC);
-
-                            for($i = 0; $i < count($uplines); $i++) {
-                                if($i == 0) {
-                                    $current_rank = $uplines[$i]["rank"];
-                                    $i++;
-                                }
-
-                                if($i < count($uplines)) {
-                                    if($uplines[$i]["rank"] < $current_rank) {
-                                        array_splice($uplines, $i, 1);
-                                        $i = -1;
-                                    } else {
-                                        $current_rank = $uplines[$i]["rank"];
-                                    }
-                                } else {
-                                    break;
-                                }
-                            }
-
-                            if(count($uplines) >= 2 && $purchaser["rank"] == $uplines[0]["rank"] && $uplines[0]["rank"] == $uplines[1]["rank"]) {
-                                array_splice($uplines, 1, 1);
-                            }
-
-                            $unset_uplines = false;
-                            for($i = 0; $i < count($uplines); $i++) {
-                                if($unset_uplines) {
-                                    array_splice($uplines, $i--, 1);
-                                }
-
-                                if(!$unset_uplines && $uplines[$i]["rank"] >= 6) {
-                                    $uplines[$i]["rank"] = 6;
-                                    $unset_uplines = true;
-                                }
-                            }
-
-                            if (count($uplines) > 0) {
-                                $stairstep_income = array(0, 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.55, 0.60, 0.65);
-                                $minus_lower = $stairstep_income[$purchaser["rank"]];
-                                for ($i = 0; $i < count($stairstep_income); $i++) {
-                                    $stairstep_income[$i] -= $minus_lower;
-                                }
-
-                                $statement = '';
-                                $values = array();
-
-                                foreach ($uplines as $key => $upline) {
-                                    if (($upline["rank"] == $purchaser["rank"] || ($key >= 1 && $upline['rank'] == $uplines[$key - 1]["rank"])) && $upline['rank'] < 6) {
-                                        $amount = ($totalPointsValue * $stairstep_income[$upline['rank'] + 1]) * 0.5;
-                                        $minus_lower = $stairstep_income[$upline['rank'] + 1] * 0.5;
-                                    } else {
-                                        $amount = $totalPointsValue * $stairstep_income[$upline['rank']];
-                                        $minus_lower = $stairstep_income[$upline['rank']];
-                                    }
-
-                                    $monthly_pv_maintenance = monthly_pv_maintenance($upline['upline'], $start_of_month, $end_of_month);
-
-                                    $received = (($upline['rank'] >= 2 && $upline['rank'] <= 5 && $monthly_pv_maintenance["points"] >= 200) || ($upline['rank'] == 6 && $monthly_pv_maintenance["points"] >= 300) || ($upline['rank'] >= 7 && $upline['rank'] <= 9 && $monthly_pv_maintenance["points"] >= 500) || in_array($upline['upline'], $this->exemptedAccounts())) ? 1 : 0;
-
-                                    $statement .= "INSERT INTO `fw_income_stairstep`(`order_id`, `upline`, `downline`, `level`, `amount`, `received`, `date_time`) VALUES (?, ?, ?, ?, ?, ?, ?);";
-                                    $values = array_merge($values, array($order['id'], $upline['upline'], $purchaser['id'], $upline['level'], $amount, $received, $date_time));
-
-                                    for ($i = $upline['rank'] + 1; $i < count($stairstep_income); $i++) {
-                                        $stairstep_income[$i] = $stairstep_income[$i] - $minus_lower;
-                                    }
-                                }
-
-                                if ($statement != "") {
-                                    $sql = $db->prepare($statement);
-                                    if (!$sql->execute($values)) { error(""); }
-                                }
-                            }
-                        }
                     }
                 }
 
-                $sql = $db->prepare("INSERT INTO `fw_rank_points`(`account_id`, `order_id`, `points_value`, `date_time`) VALUES (?, ?, ?, ?)");
-                if (!$sql->execute(array($purchaser['id'], $order['id'], $totalPointsValue, $date_time))) { error(""); }
+                $this->processReferralIncome($purchaser, $order, $packageId);
+                $this->processInfinityPlusIncome($purchaser, $order, $packageId);
+            } else if($type == 2) { // Product Purchase
+                $this->processPersonalRebateIncome($purchaser, $order);
 
-                update_rank_points($purchaser['id'], $purchaser['id']);
-
-                $sql = $db->prepare("SELECT `upline`, `package_id` FROM `fw_genealogy`, `fw_accounts` WHERE `downline` = ? AND `upline` = `fw_accounts`.`id`");
-                if (!$sql->execute(array($purchaser['id']))) { error(""); }
-
-                while ($sql->rowCount() == 1) {
-                    $upline = $sql->fetch(PDO::FETCH_ASSOC);
-
-                    if ($type == 1 && $upline["package_id"] == 2 && isset($packageId) && $packageId == 1) {
-                        $rank_points = 25;
-                    } else {
-                        $rank_points = $totalPointsValue;
-                    }
-
-                    $sql = $db->prepare("INSERT INTO `fw_rank_points`(`account_id`, `order_id`, `points_value`, `date_time`) VALUES (?, ?, ?, ?);");
-                    if (!$sql->execute(array($upline["upline"], $order['id'], $rank_points, $date_time))) { error(""); }
-
-                    update_rank_points($purchaser['id'], $upline["upline"]);
-
-                    $sql = $db->prepare("SELECT `upline`, `package_id` FROM `fw_genealogy`, `fw_accounts` WHERE `downline` = ? AND `upline` = `fw_accounts`.`id`");
-                    if (!$sql->execute(array($upline["upline"]))) { error(""); }
+                if($purchaser['id'] > 1) {
+                    $this->processIncomeDueToMonthlyPVChange($purchaser);
+                    $this->processUnilevelIncome($purchaser, $order);
+                    $this->processStairstepIncome($purchaser, $order);
                 }
             }
-        } else {
-            $response["error"] = "You haven't added any item to your cart.";
+
+            $rankPoints = new RankPoint();
+            $rankPoints->user_id = $purchaser['id'];
+            $rankPoints->order_id = $order['id'];
+            $rankPoints->points_value = $totalPointsValue;
+            $rankPoints->save();
+
+            $this->checkForRankPromotion($purchaser);
+
+            $upline = User::select('users.*')
+                ->join('downlines', function($join) use ($purchaser) {
+                    $join->on('users.id', 'upline');
+                    $join->where('downline', $purchaser['id']);
+                    $join->where('level', 1);
+                })
+                ->first();
+
+            while($upline) {
+                if ($type == 1 && $upline["package_id"] == 2 && isset($packageId) && $packageId == 1) {
+                    $rankPoints = 25;
+                } else {
+                    $rankPoints = $totalPointsValue;
+                }
+
+                $newRankPoints = new RankPoint();
+                $newRankPoints->user_id = $upline["id"];
+                $newRankPoints->order_id = $order['id'];
+                $newRankPoints->points_value = $rankPoints;
+                $newRankPoints->save();
+
+                $this->checkForRankPromotion($purchaser);
+
+                $upline = User::select('users.*')
+                    ->join('downlines', function($join) use ($upline) {
+                        $join->on('users.id', 'upline');
+                        $join->where('downline', $upline['id']);
+                        $join->where('level', 1);
+                    })
+                    ->first();
+            }
         }
+
+        return response()->json();
     }
 
     public function processReferralIncome(User $purchaser, Order $order, $packageId) {
@@ -586,7 +526,8 @@ class OrderController extends Controller
             ->unionAll($uplinesRank8)
             ->unionAll($uplinesRank9)
             ->orderBy('level')
-            ->get();
+            ->get()
+            ->toArray();
 
         for($i = 0; $i < count($uplines); $i++) {
             if($i == 0) {
@@ -707,12 +648,11 @@ class OrderController extends Controller
             if($upline) {
                 $referralUplines[] = $upline;
                 $uplinePackageId = $upline['package_id'];
+                $monthlyPVMaintenance = $upline->monthlyPVMaintenance();
                 $upline = $upline['id'];
             } else {
                 break;
             }
-
-            $monthlyPVMaintenance = $upline->monthlyPVMaintenance();
 
             if($uplinePackageId == 4) {
                 $received = ($monthlyPVMaintenance["points"] >= 50 || in_array($upline, $this->exemptedAccounts())) ? 1 : 0;
@@ -760,8 +700,17 @@ class OrderController extends Controller
                     ];
                 }
             } else {
-                $statement .= "INSERT INTO `fw_income_unilevel`(`order_id`, `upline`, `downline`, `level`, `amount`, `received`, `dream_maker_percentage`, `date_time`) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
-                $values = array_merge($values, array($order['id'], $upline, $purchaser['id'], $i, $amount, $received, 0, $date_time));
+                $unilevelIncomes[] = [
+                    'order_id' => $order['id'],
+                    'upline' => $upline,
+                    'downline' => $purchaser['id'],
+                    'level' => $i,
+                    'amount' => $amount,
+                    'received' => $received,
+                    'dream_maker_percentage' => 0,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
+                ];
             }
 
             $downline = $upline;
@@ -773,6 +722,162 @@ class OrderController extends Controller
 
         foreach($referralUplines as $referralUpline) {
             $this->automaticFdpUpgrade($referralUpline);
+        }
+    }
+
+    public function processStairstepIncome(User $purchaser, Order $order) {
+        if($purchaser["rank"] <= 6) {
+            $uplinesRank2 = User::select('upline', 'rank', 'level')
+                ->join('downlines', function($query) use ($purchaser) {
+                    $query->on('users.id', 'upline');
+                    $query->where('downline', $purchaser['id']);
+                })
+                ->where('rank', 2)
+                ->limit(2);
+
+            $uplinesRank3 = User::select('upline', 'rank', 'level')
+                ->join('downlines', function($query) use ($purchaser) {
+                    $query->on('users.id', 'upline');
+                    $query->where('downline', $purchaser['id']);
+                })
+                ->where('rank', 3)
+                ->limit(2);
+
+            $uplinesRank4 = User::select('upline', 'rank', 'level')
+                ->join('downlines', function($query) use ($purchaser) {
+                    $query->on('users.id', 'upline');
+                    $query->where('downline', $purchaser['id']);
+                })
+                ->where('rank', 4)
+                ->limit(2);
+
+            $uplinesRank5 = User::select('upline', 'rank', 'level')
+                ->join('downlines', function($query) use ($purchaser) {
+                    $query->on('users.id', 'upline');
+                    $query->where('downline', $purchaser['id']);
+                })
+                ->where('rank', 5)
+                ->limit(2);
+
+            $uplinesRank6 = User::select('upline', 'rank', 'level')
+                ->join('downlines', function($query) use ($purchaser) {
+                    $query->on('users.id', 'upline');
+                    $query->where('downline', $purchaser['id']);
+                })
+                ->where('rank', 6)
+                ->limit(2);
+
+            $uplinesRank7 = User::select('upline', 'rank', 'level')
+                ->join('downlines', function($query) use ($purchaser) {
+                    $query->on('users.id', 'upline');
+                    $query->where('downline', $purchaser['id']);
+                })
+                ->where('rank', 7)
+                ->limit(2);
+
+            $uplinesRank8 = User::select('upline', 'rank', 'level')
+                ->join('downlines', function($query) use ($purchaser) {
+                    $query->on('users.id', 'upline');
+                    $query->where('downline', $purchaser['id']);
+                })
+                ->where('rank', 8)
+                ->limit(2);
+
+            $uplinesRank9 = User::select('upline', 'rank', 'level')
+                ->join('downlines', function($query) use ($purchaser) {
+                    $query->on('users.id', 'upline');
+                    $query->where('downline', $purchaser['id']);
+                })
+                ->where('rank', 9)
+                ->limit(1);
+
+            $uplines = $uplinesRank2->unionAll($uplinesRank3)
+                ->unionAll($uplinesRank4)
+                ->unionAll($uplinesRank5)
+                ->unionAll($uplinesRank6)
+                ->unionAll($uplinesRank7)
+                ->unionAll($uplinesRank8)
+                ->unionAll($uplinesRank9)
+                ->where('rank', '>=', $purchaser["rank"])
+                ->orderBy('level')
+                ->get()
+                ->toArray();
+
+            for($i = 0; $i < count($uplines); $i++) {
+                if($i == 0) {
+                    $currentRank = $uplines[$i]["rank"];
+                    $i++;
+                }
+
+                if($i < count($uplines)) {
+                    if($uplines[$i]["rank"] < $currentRank) {
+                        array_splice($uplines, $i, 1);
+                        $i = -1;
+                    } else {
+                        $currentRank = $uplines[$i]["rank"];
+                    }
+                } else {
+                    break;
+                }
+            }
+
+            if(count($uplines) >= 2 && $purchaser["rank"] == $uplines[0]["rank"] && $uplines[0]["rank"] == $uplines[1]["rank"]) {
+                array_splice($uplines, 1, 1);
+            }
+
+            $unsetUplines = false;
+            for($i = 0; $i < count($uplines); $i++) {
+                if($unsetUplines) {
+                    array_splice($uplines, $i--, 1);
+                }
+
+                if(!$unsetUplines && $uplines[$i]["rank"] >= 6) {
+                    $uplines[$i]["rank"] = 6;
+                    $unsetUplines = true;
+                }
+            }
+
+            if (count($uplines) > 0) {
+                $stairstepIncome = array(0, 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.55, 0.60, 0.65);
+                $minusLower = $stairstepIncome[$purchaser["rank"]];
+                for ($i = 0; $i < count($stairstepIncome); $i++) {
+                    $stairstepIncome[$i] -= $minusLower;
+                }
+
+                $stairstepIncomes = [];
+
+                foreach ($uplines as $key => $upline) {
+                    if (($upline["rank"] == $purchaser["rank"] || ($key >= 1 && $upline['rank'] == $uplines[$key - 1]["rank"])) && $upline['rank'] < 6) {
+                        $amount = ($order['points_value'] * $stairstepIncome[$upline['rank'] + 1]) * 0.5;
+                        $minusLower = $stairstepIncome[$upline['rank'] + 1] * 0.5;
+                    } else {
+                        $amount = $order['points_value'] * $stairstepIncome[$upline['rank']];
+                        $minusLower = $stairstepIncome[$upline['rank']];
+                    }
+
+                    $monthlyPVMaintenance = User::find($upline['upline'])->monthlyPVMaintenance();
+                    $received = (($upline['rank'] >= 2 && $upline['rank'] <= 5 && $monthlyPVMaintenance["points"] >= 200) || ($upline['rank'] == 6 && $monthlyPVMaintenance["points"] >= 300) || ($upline['rank'] >= 7 && $upline['rank'] <= 9 && $monthlyPVMaintenance["points"] >= 500) || in_array($upline['upline'], $this->exemptedAccounts())) ? 1 : 0;
+
+                    $stairstepIncomes[] = [
+                        'order_id' => $order['id'],
+                        'upline' => $upline['upline'],
+                        'downline' => $purchaser['id'],
+                        'level' => $upline['level'],
+                        'amount' => $amount,
+                        'received' => $received,
+                        'created_at' => Carbon::now(),
+                        'updated_at' => Carbon::now(),
+                    ];
+
+                    for ($i = $upline['rank'] + 1; $i < count($stairstepIncome); $i++) {
+                        $stairstepIncome[$i] = $stairstepIncome[$i] - $minusLower;
+                    }
+                }
+
+                if(count($stairstepIncomes) > 0) {
+                    StairstepIncome::insert($stairstepIncomes);
+                }
+            }
         }
     }
 
@@ -835,11 +940,6 @@ class OrderController extends Controller
         $directCount = $user->directCount();
 
         $isPromoted = false;
-
-//        Execute upon purchase of a package
-//        if($type == 1 && ($package_id == 1 || $package_id == 2 || $package_id == 3 || $package_id == 4) && $account_id == $purchaser && $current_rank == 0) {
-//            $new_rank = 1;
-//        }
 
         if ($totalRankPoints >= 10000 && $totalRankPoints < 50000 && $user['rank'] == 1 && $user["package_id"] == 1) {
             $isPromoted = ($directCount >= 5);

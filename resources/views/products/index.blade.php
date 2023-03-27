@@ -10,7 +10,7 @@
 
     <div class="animated fadeIn pt-2 pb-5">
         @if(Auth::user()->stockist > 0)
-        <div class="card">
+        <div class="card mb-4">
             <div class="card-header"><i class="fas fa-user me-2"></i> Purchase as:</div>
             <div class="card-body px-4">
                 <div class="custom-control custom-radio custom-control-inline mb-1 mb-sm-0 d-block d-sm-inline-block">

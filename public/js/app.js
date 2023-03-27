@@ -287,7 +287,7 @@ var showErrorFromAjax = function showErrorFromAjax(error) {
       }
     }
   }
-  $("#modal-error .modal-body").html(content);
+  $("#modal-error .message").html(content);
   $("#modal-error").modal("show");
 };
 function getOffset(el) {
@@ -309,8 +309,10 @@ $(window).on('scroll', function () {
     navbar.removeClass("scrolled");
     navbar.addClass("navbar-dark");
   }
-  if ($(this).scrollTop() + $(this).height() >= getOffset($("#footer")[0]).top && !mapIsInitialized) {
-    initMap();
+  if ($("#map").length) {
+    if ($(this).scrollTop() + $(this).height() >= getOffset($("#footer")[0]).top && !mapIsInitialized) {
+      initMap();
+    }
   }
 });
 $(document).on("click", ".navbar-toggler", function () {
@@ -369,7 +371,7 @@ $(document).on("change", "#register-sponsors-code", function () {
   referralCodeOnChange();
 });
 $(document).on("click", "#register-show-confirmation", function () {
-  $("#modal-warning .modal-body").html("Your registration information will now be submitted.");
+  $("#modal-warning .message").html("Your registration information will now be submitted.");
   $("#modal-warning .proceed").html("Confirm");
   $("#modal-warning .proceed").attr("id", "register");
   $("#modal-warning").modal("show");
@@ -405,9 +407,9 @@ $(document).on("click", "#register", function () {
       sponsors_code: sponsors_code
     }
   }).done(function (response) {
-    $("#modal-success button[data-dismiss='modal']").removeAttr("data-dismiss");
+    $("#modal-success button[data-bs-dismiss='modal']").removeAttr("data-bs-dismiss");
     $('#modal-success .proceed').attr("onclick", "window.location = '/dashboard'; $('#modal-success .proceed').prop('disabled',true); $('#modal-success .proceed').html('Redirecting...')");
-    $("#modal-success .modal-body").html("Congratulations! You have successfully created your account.");
+    $("#modal-success .message").html("Congratulations! You have successfully created your account.");
     $("#modal-success").modal("show");
   }).fail(function (error) {
     showErrorFromAjax(error);
@@ -641,15 +643,18 @@ var load_cart = function load_cart(empty_cart) {
   $("#total-points").html(numberFormat(total_points, true));
 };
 var remove_from_cart = function remove_from_cart(id) {
-  if (id == 0) {
+  id = parseInt(id);
+  if (id === 0) {
     $(".cart").attr("data-added-to-cart", -1);
-    $(".cart").css("background-color", "#0e4d22");
-    $(".cart").html('<div><i class="fas fa-shopping-cart" style="color:#ffffff; font-size:1.4em"></i></div><div style="margin-top:2px">Add To Cart</div>');
+    $(".cart").removeClass("btn-custom-4");
+    $(".cart").addClass("btn-custom-2");
+    $(".cart").html('<div class="py-1">ADD TO CART</div>');
     $(".product-container").attr("data-quantity", 1);
   } else {
     $(".cart[value='" + id + "']").attr("data-added-to-cart", -1);
-    $(".cart[value='" + id + "']").css("background-color", "#0e4d22");
-    $(".cart[value='" + id + "']").html('<div><i class="fas fa-shopping-cart" style="color:#ffffff; font-size:1.4em"></i></div><div style="margin-top:2px">Add To Cart</div>');
+    $(".cart[value='" + id + "']").removeClass("btn-custom-4");
+    $(".cart[value='" + id + "']").addClass("btn-custom-2");
+    $(".cart[value='" + id + "']").html('<div class="py-1">ADD TO CART</div>');
     $(".product-container[data-id='" + id + "']").attr("data-quantity", 1);
   }
 };
@@ -673,7 +678,7 @@ proof_of_payment_uploader.on("change", function () {
       $("#proof-of-payment-container .proof-of-payment:last").attr("data-image", img.src);
       $("#proof-of-payment-container .proof-of-payment:last").attr("data-has-image", 1);
       $("#proof-of-payment-container .proof-of-payment:last").attr("data-extension", proof_of_payment_uploader[0].files[0].name.split('.').pop().toLowerCase());
-      var content = ' <div style="position:relative; width:100%; height:100%; padding-top:175px; overflow:hidden">';
+      var content = ' <div style="position:relative; width:100%; height:100%; padding-top:150px; overflow:hidden">';
       content += '         <img src="' + img.src + '" style="' + (width >= height ? 'height:auto; width:100%;' : 'height:100%; width:auto;') + ' margin:0; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%)" />';
       content += '    </div>';
       $("#proof-of-payment-container .proof-of-payment:last").html(content);
@@ -703,18 +708,10 @@ profile_picture_uploader.on("change", function () {
         },
         timeout: 30000
       }).done(function (response) {
-        response = JSON.parse(response);
-        if (response.error == "") {
-          $(".change-profile-picture-container").css("background-image", "url('" + img.src + "')");
-        } else {
-          $(".change-profile-picture-container").css("background", previous_photo);
-          $("#modal-error .modal-body").html(response.error);
-          $("#modal-error").modal('show');
-        }
-      }).fail(function () {
+        $(".change-profile-picture-container").css("background-image", "url('" + img.src + "')");
+      }).fail(function (error) {
         $(".change-profile-picture-container").css("background", previous_photo);
-        $("#modal-error .modal-body").html("Unable to connect to server.");
-        $("#modal-error").modal('show');
+        showErrorFromAjax(error);
       }).always(function () {
         $(".profile-picture-loading").addClass("d-none");
       });
@@ -799,10 +796,10 @@ $(document).on("click", ".cart", function () {
   $(".cart").prop("disabled", true);
   $(".change-quantity").prop("disabled", true);
   $(".remove-from-cart").prop("disabled", true);
-  if ($(this).attr("data-type") == 1 && $(".products-tab[data-type='1']").hasClass("active")) {
+  if ($(this).attr("data-type") == 1 && $(".products-tab[data-type='1']").hasClass("active") && parseInt($(this).attr("data-added-to-cart")) === -1) {
     remove_from_cart(0);
   }
-  if ($(this).attr("data-added-to-cart") == -1) {
+  if (parseInt($(this).attr("data-added-to-cart")) === -1) {
     $(this).attr("data-added-to-cart", 1);
     $(this).removeClass("btn-custom-2");
     $(this).addClass("btn-custom-4");
@@ -847,7 +844,7 @@ $(document).on("click", ".remove-from-cart", function () {
 });
 $(document).on("click", "#place-order-confirm", function () {
   if ($("#place-order-confirm").data("terminal-account") == 0) {
-    $("#modal-warning .modal-body").html("Your order will now be placed.");
+    $("#modal-warning .message").html("Your order will now be placed.");
   } else {
     var less_in_stock = 0;
     var content = '	<div class="table-responsive">';
@@ -880,7 +877,7 @@ $(document).on("click", "#place-order-confirm", function () {
       content += '	This order will now be placed.';
       content += '</div>';
     }
-    $("#modal-warning .modal-body").html(content);
+    $("#modal-warning .message").html(content);
   }
   $("#modal-warning .proceed").attr("id", "place-order");
   $("#modal-warning").modal("show");
@@ -888,7 +885,7 @@ $(document).on("click", "#place-order-confirm", function () {
 $(document).on("click", "#place-order", function () {
   $("#modal-warning .proceed").prop("disabled", true);
   $("#modal-warning .proceed").html("Processing...");
-  $("#modal-warning button[data-dismiss='modal']").css("display", "none");
+  $("#modal-warning button[data-bs-dismiss='modal']").css("display", "none");
   var ordered_items = [];
   $(".cart").each(function () {
     if ($(this).attr("data-added-to-cart") == 1) {
@@ -914,25 +911,20 @@ $(document).on("click", "#place-order", function () {
     },
     timeout: 30000
   }).done(function (response) {
-    response = JSON.parse(response);
-    if (response.error == "") {
-      var redirect = $("#place-order-confirm").data("terminal-account") == "0" ? "orders.php" : "terminal.php?view=orders";
-      $('#modal-success .proceed').removeAttr("data-dismiss");
-      $('#modal-success .proceed').attr("onclick", "window.location = '" + redirect + "'; $('#modal-success .proceed').prop('disabled',true); $('#modal-success .proceed').html('Redirecting...')");
-      $('#modal-success .modal-body').html("You have successfully submitted your order request.");
-      $('#modal-success').modal('show');
-    } else {
-      $("#modal-error .modal-body").html(response.error);
-      $("#modal-error").modal('show');
-    }
-  }).fail(function () {
-    $("#modal-error .modal-body").html("Unable to connect to server.");
-    $("#modal-error").modal('show');
+    var redirect = parseInt($("#place-order-confirm").data("terminal-account")) === 0 ? "orders" : "terminal?view=orders";
+    $('#modal-success').attr("data-bs-backdrop", "static");
+    $('#modal-success').attr("data-bs-keyboard", "false");
+    $('#modal-success .proceed').removeAttr("data-bs-dismiss");
+    $('#modal-success .proceed').attr("onclick", "window.location = '" + redirect + "'; $('#modal-success .proceed').prop('disabled',true); $('#modal-success .proceed').html('Redirecting...')");
+    $('#modal-success .message').html("You have successfully submitted your order request.");
+    $('#modal-success').modal('show');
+  }).fail(function (error) {
+    showErrorFromAjax(error);
   }).always(function () {
     $("#modal-warning").modal('hide');
     $("#modal-warning .proceed").html("Confirm");
     $("#modal-warning .proceed").prop("disabled", false);
-    $("#modal-warning button[data-dismiss='modal']").css("display", "block");
+    $("#modal-warning button[data-bs-dismiss='modal']").css("display", "block");
   });
 });
 $(document).on("input", "#purchase-winners-gem-amount", function () {
@@ -942,7 +934,7 @@ $(document).on("input", "#purchase-winners-gem-price", function () {
   $("#purchase-winners-gem-amount").val(parseFloat($(this).val() / winnersGemValue).toFixed(2));
 });
 $(document).on("click", "#purchase-winners-gem-show-modal", function () {
-  $("#modal-warning .modal-body").html("Your Winners Gem purchase request will now be submitted");
+  $("#modal-warning .message").html("Your Winners Gem purchase request will now be submitted");
   $("#modal-warning .proceed").attr("id", "purchase-winners-gem");
   $("#modal-gem-purchase").modal("hide");
   $("#modal-warning").modal("show");
@@ -954,7 +946,7 @@ $(document).on("click", "#proof-of-payment-container .proof-of-payment[data-has-
 $(document).on("click", "#purchase-winners-gem", function () {
   $("#modal-warning .proceed").prop("disabled", true);
   $("#modal-warning .proceed").html("Processing...");
-  $("#modal-warning button[data-dismiss='modal']").css("display", "none");
+  $("#modal-warning button[data-bs-dismiss='modal']").css("display", "none");
   var price = $("#purchase-winners-gem-price").val();
   var proof_of_payments = [];
   $("#proof-of-payment-container .proof-of-payment[data-has-image='1']").each(function () {
@@ -976,13 +968,15 @@ $(document).on("click", "#purchase-winners-gem", function () {
     if (response.type && response.type == "winners-gem-update") {
       winnersGemValue = parseFloat(response.winners_gem_value);
       $("#purchase-winners-gem-amount").val(parseFloat($(this).val() / winnersGemValue).toFixed(2));
-      $("#modal-error .modal-body").html("Winners Gem value has just changed. Winners Gem to be purchased was updated.");
+      $("#modal-error .message").html("Winners Gem value has just changed. Winners Gem to be purchased was updated.");
       $("#modal-error").modal('show');
     } else {
       $("#purchase-winners-gem-amount").val(0);
-      $('#modal-success .proceed').removeAttr("data-dismiss");
+      $('#modal-success').attr("data-bs-backdrop", "static");
+      $('#modal-success').attr("data-bs-keyboard", "false");
+      $('#modal-success .proceed').removeAttr("data-bs-dismiss");
       $('#modal-success .proceed').attr("onclick", "window.location = 'orders/winnersgem'; $('#modal-success .proceed').prop('disabled',true); $('#modal-success .proceed').html('Redirecting...')");
-      $('#modal-success .modal-body').html("You have successfully submitted your Winners Gem purchase request.");
+      $('#modal-success .message').html("You have successfully submitted your Winners Gem purchase request.");
       $('#modal-success').modal('show');
     }
   }).fail(function (error) {
@@ -991,7 +985,7 @@ $(document).on("click", "#purchase-winners-gem", function () {
     $("#modal-warning").modal('hide');
     $("#modal-warning .proceed").html("Confirm");
     $("#modal-warning .proceed").prop("disabled", false);
-    $("#modal-warning button[data-dismiss='modal']").css("display", "block");
+    $("#modal-warning button[data-bs-dismiss='modal']").css("display", "block");
   });
 });
 $(document).on("click", ".view-items", function () {
@@ -1007,45 +1001,38 @@ $(document).on("click", ".view-items", function () {
     },
     timeout: 30000
   }).done(function (response) {
-    response = JSON.parse(response);
-    if (response.error == "") {
-      var content = '	<table class="table table-bordered mb-0">';
-      content += '		<thead>';
-      content += '			<tr>';
-      content += '				<th></th>';
-      content += '				<th>Item</th>';
-      content += '				<th>Quantity</th>';
-      content += '				<th>Amount</th>';
-      content += '			</tr>';
-      content += '		</thead>';
-      content += '		<tbody>';
-      for (var i = 0; i < response.items.length; i++) {
-        content += '		<tr>';
-        content += '			<td style="width:80px">';
-        content += '				<div style="position:relative; width:100%; padding-top:100%; overflow:hidden; border:1px solid #eeeeee">';
-        content += '					<img src="' + response.items[i].photo + '?v=' + response.items[i].version + '" style="' + (response.items[i].longest_dimension == "width" ? 'width:100%; height:auto;' : 'width:auto; height:100%;') + 'max-height:100%; max-width:100%; margin:0; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%)" alt="' + response.items[i].name + '">';
-        content += '				</div>';
-        content += '			</td>';
-        content += '			<td>' + response.items[i].name + '</td>';
-        content += '			<td>' + response.items[i].quantity + '</td>';
-        content += '			<td>' + numberFormat(response.items[i].quantity * response.items[i].price, true) + ' <i class="fas fa-gem" style="font-size:0.8em"></i></td>';
-        content += '		</tr>';
-      }
-      content += '		</tbody>';
-      content += '	</table>';
-      $("#ordered-items-container").html(content);
-    } else {
-      $("#modal-error .modal-body").html(response.error);
-      $("#modal-error").modal('show');
+    var content = '	<table class="table table-bordered mb-0">';
+    content += '		<thead>';
+    content += '			<tr>';
+    content += '				<th></th>';
+    content += '				<th>Item</th>';
+    content += '				<th>Quantity</th>';
+    content += '				<th>Amount</th>';
+    content += '			</tr>';
+    content += '		</thead>';
+    content += '		<tbody>';
+    for (var i = 0; i < response.items.length; i++) {
+      content += '		<tr>';
+      content += '			<td style="width:80px">';
+      content += '				<div style="position:relative; width:100%; padding-top:100%; overflow:hidden; border:1px solid #eeeeee">';
+      content += '					<img src="' + response.items[i].photo + '?v=' + response.items[i].version + '" style="' + (response.items[i].longest_dimension == "width" ? 'width:100%; height:auto;' : 'width:auto; height:100%;') + 'max-height:100%; max-width:100%; margin:0; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%)" alt="' + response.items[i].name + '">';
+      content += '				</div>';
+      content += '			</td>';
+      content += '			<td>' + response.items[i].name + '</td>';
+      content += '			<td>' + response.items[i].quantity + '</td>';
+      content += '			<td>' + numberFormat(response.items[i].quantity * response.items[i].price, true) + ' <i class="fas fa-gem" style="font-size:0.8em"></i></td>';
+      content += '		</tr>';
     }
-  }).fail(function () {
-    $("#modal-error .modal-body").html("Unable to connect to server.");
-    $("#modal-error").modal('show');
+    content += '		</tbody>';
+    content += '	</table>';
+    $("#ordered-items-container").html(content);
+  }).fail(function (error) {
+    showErrorFromAjax(error);
   }).always(function () {
     $("#modal-warning").modal('hide');
     $("#modal-warning .proceed").html("Confirm");
     $("#modal-warning .proceed").prop("disabled", false);
-    $("#modal-warning button[data-dismiss='modal']").css("display", "block");
+    $("#modal-warning button[data-bs-dismiss='modal']").css("display", "block");
   });
 });
 $(document).on("change", "#transfer-receiver-username", function () {
@@ -1064,7 +1051,6 @@ $(document).on("change", "#transfer-receiver-username", function () {
         username: username
       }
     }).done(function (response) {
-      response = JSON.parse(response);
       if (response.receiver == "") {
         $("#transfer-receiver-blank").css("display", "none");
         $("#transfer-receiver-no-match").css("display", "inline-block");
@@ -1098,7 +1084,7 @@ $(document).on("click", "#transfer-winners-gem-confirm", function () {
   var receiver = $("#transfer-receiver-has-match").html();
   var amount = numberFormat($("#transfer-winners-gem-amount").val(), true);
   if (receiver != "") {
-    $("#modal-warning .modal-body").html("Are you sure you want to transfer " + amount + " <i class='fas fa-gem' style='font-size:0.8em'></i> to " + receiver + "?");
+    $("#modal-warning .message").html("Are you sure you want to transfer " + amount + " <i class='fas fa-gem' style='font-size:0.8em'></i> to " + receiver + "?");
     $("#modal-warning .proceed").attr("id", "transfer-winners-gem");
     $("#modal-transfer").modal("hide");
     $("#modal-warning").modal("show");
@@ -1107,7 +1093,7 @@ $(document).on("click", "#transfer-winners-gem-confirm", function () {
 $(document).on("click", "#transfer-winners-gem", function () {
   $("#modal-warning .proceed").prop("disabled", true);
   $("#modal-warning .proceed").html("Processing...");
-  $("#modal-warning button[data-dismiss='modal']").css("display", "none");
+  $("#modal-warning button[data-bs-dismiss='modal']").css("display", "none");
   var username = $("#transfer-receiver-username").val();
   var amount = parseFloat($("#transfer-winners-gem-amount").val());
   var pin_code = $("#transfer-pin-code").val();
@@ -1121,26 +1107,19 @@ $(document).on("click", "#transfer-winners-gem", function () {
     },
     timeout: 30000
   }).done(function (response) {
-    response = JSON.parse(response);
-    if (response.error == "") {
-      var receiver = $("#transfer-receiver-has-match").html();
-      $("#winners-gem-balance").html(numberFormat(response.gem_balance, true));
-      $("#winners-gem-balance-in-pesos").html(numberFormat(response.gem_balance * winnersGemValue, true));
-      $("#winners-gem-sent").html(numberFormat(response.gems_sent, true));
-      $('#modal-success .modal-body').html("You have successfully sent " + numberFormat(amount, true) + " <i class='fas fa-gem' style='font-size:0.8em'></i> to " + receiver + ".");
-      $('#modal-success').modal('show');
-    } else {
-      $("#modal-error .modal-body").html(response.error);
-      $("#modal-error").modal('show');
-    }
-  }).fail(function () {
-    $("#modal-error .modal-body").html("Unable to connect to server.");
-    $("#modal-error").modal('show');
+    var receiver = $("#transfer-receiver-has-match").html();
+    $("#winners-gem-balance").html(numberFormat(response.gem_balance, true));
+    $("#winners-gem-balance-in-pesos").html(numberFormat(response.gem_balance * winnersGemValue, true));
+    $("#winners-gem-sent").html(numberFormat(response.gems_sent, true));
+    $('#modal-success .message').html("You have successfully sent " + numberFormat(amount, true) + " <i class='fas fa-gem' style='font-size:0.8em'></i> to " + receiver + ".");
+    $('#modal-success').modal('show');
+  }).fail(function (error) {
+    showErrorFromAjax(error);
   }).always(function () {
     $("#modal-warning").modal('hide');
     $("#modal-warning .proceed").html("Confirm");
     $("#modal-warning .proceed").prop("disabled", false);
-    $("#modal-warning button[data-dismiss='modal']").css("display", "block");
+    $("#modal-warning button[data-bs-dismiss='modal']").css("display", "block");
   });
 });
 $(document).on("change", "#convert-peso-to-gem-amount", function () {
@@ -1157,9 +1136,9 @@ $(document).on("click", "#convert-confirm", function () {
   var type = $(".convert-tab.active").data("type");
   var amount = parseFloat($("#convert-" + type + "-amount").val());
   if (type == "peso-to-gem") {
-    $("#modal-warning .modal-body").html("Are you sure you want to convert &#x20B1;&nbsp;" + numberFormat(amount, true) + " to Winners Gem?");
+    $("#modal-warning .message").html("Are you sure you want to convert &#x20B1;&nbsp;" + numberFormat(amount, true) + " to Winners Gem?");
   } else {
-    $("#modal-warning .modal-body").html("Are you sure you want to convert " + numberFormat(amount, true) + " Winners Gem to Peso?<br>This will cost a total of " + numberFormat(amount * 1.02, true) + " Winners Gem.");
+    $("#modal-warning .message").html("Are you sure you want to convert " + numberFormat(amount, true) + " Winners Gem to Peso?<br>This will cost a total of " + numberFormat(amount * 1.02, true) + " Winners Gem.");
   }
   $("#modal-warning .proceed").attr("id", "convert");
   $("#modal-convert").modal("hide");
@@ -1168,7 +1147,7 @@ $(document).on("click", "#convert-confirm", function () {
 $(document).on("click", "#convert", function () {
   $("#modal-warning .proceed").prop("disabled", true);
   $("#modal-warning .proceed").html("Processing...");
-  $("#modal-warning button[data-dismiss='modal']").css("display", "none");
+  $("#modal-warning button[data-bs-dismiss='modal']").css("display", "none");
   var type = $(".convert-tab.active").data("type");
   var amount = parseFloat($("#convert-" + type + "-amount").val());
   $.ajax({
@@ -1184,13 +1163,13 @@ $(document).on("click", "#convert", function () {
     if (response.type && response.type == "winners-gem-update") {
       winnersGemValue = parseFloat(response.winners_gem_value);
       $("#purchase-winners-gem-amount").val(parseFloat($(this).val() / winnersGemValue).toFixed(2));
-      $("#modal-error .modal-body").html("Winners Gem value has just changed. Winners Gem to be purchased was updated.");
+      $("#modal-error .message").html("Winners Gem value has just changed. Winners Gem to be purchased was updated.");
       $("#modal-error").modal('show');
     } else {
       $("#winners-gem-balance").html(numberFormat(response.gem_balance, true));
       $("#winners-gem-balance-in-pesos").html(numberFormat(response.gem_balance * winnersGemValue, true));
       $("#peso-balance").html(numberFormat(response.peso_balance, true));
-      $('#modal-success .modal-body').html("You have successfully converted &#x20B1;&nbsp;" + numberFormat(amount, true) + " to Winners Gem.");
+      $('#modal-success .message').html("You have successfully converted &#x20B1;&nbsp;" + numberFormat(amount, true) + " to Winners Gem.");
       $('#modal-success').modal('show');
     }
   }).fail(function () {
@@ -1199,7 +1178,7 @@ $(document).on("click", "#convert", function () {
     $("#modal-warning").modal('hide');
     $("#modal-warning .proceed").html("Confirm");
     $("#modal-warning .proceed").prop("disabled", false);
-    $("#modal-warning button[data-dismiss='modal']").css("display", "block");
+    $("#modal-warning button[data-bs-dismiss='modal']").css("display", "block");
   });
 });
 $(document).on("change", "#withdraw-amount", function () {
@@ -1209,7 +1188,7 @@ $(document).on("change", "#withdraw-amount", function () {
 });
 $(document).on("click", "#withdraw-confirm", function () {
   var amount = parseFloat($("#withdraw-amount").val());
-  $("#modal-warning .modal-body").html("Are you sure you want to withdraw &#x20B1;&nbsp;" + numberFormat(amount, true) + "?<br>Transaction fee costs &#x20B1;&nbsp;" + numberFormat(amount * 0.01, true) + ".");
+  $("#modal-warning .message").html("Are you sure you want to withdraw &#x20B1;&nbsp;" + numberFormat(amount, true) + "?<br>Transaction fee costs &#x20B1;&nbsp;" + numberFormat(amount * 0.01, true) + ".");
   $("#modal-warning .proceed").attr("id", "withdraw");
   $("#modal-withdraw").modal("hide");
   $("#modal-warning").modal("show");
@@ -1217,7 +1196,7 @@ $(document).on("click", "#withdraw-confirm", function () {
 $(document).on("click", "#withdraw", function () {
   $("#modal-warning .proceed").prop("disabled", true);
   $("#modal-warning .proceed").html("Processing...");
-  $("#modal-warning button[data-dismiss='modal']").css("display", "none");
+  $("#modal-warning button[data-bs-dismiss='modal']").css("display", "none");
   $.ajax({
     method: "POST",
     url: "api/withdraw.php",
@@ -1226,29 +1205,24 @@ $(document).on("click", "#withdraw", function () {
     },
     timeout: 30000
   }).done(function (response) {
-    response = JSON.parse(response);
-    if (response.error == "") {
-      $('#modal-success .proceed').removeAttr("data-dismiss");
-      $('#modal-success .proceed').attr("onclick", "window.location = 'withdrawals.php'; $('#modal-success .proceed').prop('disabled',true); $('#modal-success .proceed').html('Redirecting...')");
-      $('#modal-success .modal-body').html("Withdrawal request has been successfully submitted");
-      $('#modal-success').modal('show');
-    } else {
-      $("#modal-error .modal-body").html(response.error);
-      $("#modal-error").modal('show');
-    }
-  }).fail(function () {
-    $("#modal-error .modal-body").html("Unable to connect to server.");
-    $("#modal-error").modal('show');
+    $('#modal-success').attr("data-bs-backdrop", "static");
+    $('#modal-success').attr("data-bs-keyboard", "false");
+    $('#modal-success .proceed').removeAttr("data-bs-dismiss");
+    $('#modal-success .proceed').attr("onclick", "window.location = 'withdrawals'; $('#modal-success .proceed').prop('disabled',true); $('#modal-success .proceed').html('Redirecting...')");
+    $('#modal-success .message').html("Withdrawal request has been successfully submitted");
+    $('#modal-success').modal('show');
+  }).fail(function (error) {
+    showErrorFromAjax(error);
   }).always(function () {
     $("#modal-warning").modal('hide');
     $("#modal-warning .proceed").html("Confirm");
     $("#modal-warning .proceed").prop("disabled", false);
-    $("#modal-warning button[data-dismiss='modal']").css("display", "block");
+    $("#modal-warning button[data-bs-dismiss='modal']").css("display", "block");
   });
 });
 $(document).on("click", "#contribute-to-pool-share-confirm", function () {
   var amount = parseFloat($("#pool-share-contribution-amount").val());
-  $("#modal-warning .modal-body").html("Are you sure you want to contribute &#x20B1;&nbsp;" + numberFormat(amount, true) + " to Pool Share?");
+  $("#modal-warning .message").html("Are you sure you want to contribute &#x20B1;&nbsp;" + numberFormat(amount, true) + " to Pool Share?");
   $("#modal-warning .proceed").attr("id", "contribute-to-pool-share");
   $("#modal-pool-share-contribute").modal("hide");
   $("#modal-warning").modal("show");
@@ -1256,7 +1230,7 @@ $(document).on("click", "#contribute-to-pool-share-confirm", function () {
 $(document).on("click", "#contribute-to-pool-share", function () {
   $("#modal-warning .proceed").prop("disabled", true);
   $("#modal-warning .proceed").html("Processing...");
-  $("#modal-warning button[data-dismiss='modal']").css("display", "none");
+  $("#modal-warning button[data-bs-dismiss='modal']").css("display", "none");
   var amount = parseFloat($("#pool-share-contribution-amount").val());
   $.ajax({
     method: "POST",
@@ -1266,24 +1240,17 @@ $(document).on("click", "#contribute-to-pool-share", function () {
     },
     timeout: 30000
   }).done(function (response) {
-    response = JSON.parse(response);
-    if (response.error == "") {
-      $("#peso-balance").html(numberFormat(response.peso_balance, true));
-      $("#pool-share-amount").html(numberFormat(response.pool_share, true));
-      $('#modal-success .modal-body').html("You have successfully contributed to pool share. Thank you!");
-      $('#modal-success').modal('show');
-    } else {
-      $("#modal-error .modal-body").html(response.error);
-      $("#modal-error").modal('show');
-    }
-  }).fail(function () {
-    $("#modal-error .modal-body").html("Unable to connect to server.");
-    $("#modal-error").modal('show');
+    $("#peso-balance").html(numberFormat(response.peso_balance, true));
+    $("#pool-share-amount").html(numberFormat(response.pool_share, true));
+    $('#modal-success .message').html("You have successfully contributed to pool share. Thank you!");
+    $('#modal-success').modal('show');
+  }).fail(function (error) {
+    showErrorFromAjax(error);
   }).always(function () {
     $("#modal-warning").modal('hide');
     $("#modal-warning .proceed").html("Confirm");
     $("#modal-warning .proceed").prop("disabled", false);
-    $("#modal-warning button[data-dismiss='modal']").css("display", "block");
+    $("#modal-warning button[data-bs-dismiss='modal']").css("display", "block");
   });
 });
 $(document).on("click", ".node-expand", function () {
@@ -1298,7 +1265,7 @@ $(document).on("change", "#number-of-levels-to-be-shown", function () {
   if ($("#number-of-levels-to-be-shown").val() >= 1) {
     generateGenealogy();
   } else {
-    $("#modal-error .modal-body").html("Invalid Input");
+    $("#modal-error .message").html("Invalid Input");
     $("#modal-error").modal("show");
   }
 });
@@ -1415,43 +1382,35 @@ $(document).on("click", "#edit-personal-info", function () {
       payout_wallet_address: payout_wallet_address
     }
   }).done(function (response) {
-    response = JSON.parse(response);
-    if (response.error == "") {
-      $("#edit-firstname").prop("disabled", true);
-      $("#edit-lastname").prop("disabled", true);
-      $("#edit-username").prop("disabled", true);
-      $("#edit-email-address").prop("disabled", true);
-      $("#edit-contact-number").prop("disabled", true);
-      $("#edit-address").prop("disabled", true);
-      $("#edit-firstname").prop("disabled", true);
-      $("#edit-lastname").prop("disabled", true);
-      $("#edit-username").prop("disabled", true);
-      $("#edit-email-address").attr("prev-value", email_address);
-      $("#edit-contact-number").attr("prev-value", contact_number);
-      $("#edit-address").attr("prev-value", address);
-      $("input[name='payout-method']").prop("disabled", false);
-      $(".payout-field input").prop("disabled", true);
-      $("#edit-payout-account-number").attr("prev-value", payout_account_number);
-      $("#edit-payout-account-name").attr("prev-value", payout_account_name);
-      $("#edit-payout-name").attr("prev-value", payout_name);
-      $("#edit-payout-mobile-number").attr("prev-value", payout_mobile_number);
-      $("#edit-payout-wallet-address").attr("prev-value", payout_wallet_address);
-      $("#cancel").css("display", "none");
-      $("#edit-personal-info").css("display", "none");
-      $("#edit-personal-info-show-fields").css("display", "inline-block");
-      $("#change-password-show-fields").css("display", "inline-block");
-      $("#change-pin-code-show-fields").css("display", "inline-block");
-      $('#modal-success .modal-body').html("Saving Changes Successful");
-      $("#modal-success").modal("show");
-    } else {
-      $("#cancel").css("display", "inline-block");
-      $('#modal-error .modal-body').html(response.error);
-      $("#modal-error").modal("show");
-    }
-  }).fail(function () {
+    $("#edit-firstname").prop("disabled", true);
+    $("#edit-lastname").prop("disabled", true);
+    $("#edit-username").prop("disabled", true);
+    $("#edit-email-address").prop("disabled", true);
+    $("#edit-contact-number").prop("disabled", true);
+    $("#edit-address").prop("disabled", true);
+    $("#edit-firstname").prop("disabled", true);
+    $("#edit-lastname").prop("disabled", true);
+    $("#edit-username").prop("disabled", true);
+    $("#edit-email-address").attr("prev-value", email_address);
+    $("#edit-contact-number").attr("prev-value", contact_number);
+    $("#edit-address").attr("prev-value", address);
+    $("input[name='payout-method']").prop("disabled", false);
+    $(".payout-field input").prop("disabled", true);
+    $("#edit-payout-account-number").attr("prev-value", payout_account_number);
+    $("#edit-payout-account-name").attr("prev-value", payout_account_name);
+    $("#edit-payout-name").attr("prev-value", payout_name);
+    $("#edit-payout-mobile-number").attr("prev-value", payout_mobile_number);
+    $("#edit-payout-wallet-address").attr("prev-value", payout_wallet_address);
+    $("#cancel").css("display", "none");
+    $("#edit-personal-info").css("display", "none");
+    $("#edit-personal-info-show-fields").css("display", "inline-block");
+    $("#change-password-show-fields").css("display", "inline-block");
+    $("#change-pin-code-show-fields").css("display", "inline-block");
+    $('#modal-success .message').html("Saving Changes Successful");
+    $("#modal-success").modal("show");
+  }).fail(function (error) {
     $("#cancel").css("display", "inline-block");
-    $('#modal-error .modal-body').html("Unable to connect to server.");
-    $('#modal-error').modal('show');
+    showErrorFromAjax(error);
   }).always(function () {
     $("#edit-personal-info").html("Save Changes");
     $("#edit-personal-info").prop("disabled", false);
@@ -1473,28 +1432,20 @@ $(document).on("click", "#change-password", function () {
       confirm_password: confirm_password
     }
   }).done(function (response) {
-    response = JSON.parse(response);
-    if (response.error == "") {
-      $("#password-fields").css("display", "none");
-      $("#edit-current-password").val("");
-      $("#edit-new-password").val("");
-      $("#edit-confirm-password").val("");
-      $("#cancel").css("display", "none");
-      $("#change-password").css("display", "none");
-      $("#edit-personal-info-show-fields").css("display", "inline-block");
-      $("#change-password-show-fields").css("display", "inline-block");
-      $("#change-pin-code-show-fields").css("display", "inline-block");
-      $('#modal-success .modal-body').html("Saving Changes Successful");
-      $("#modal-success").modal("show");
-    } else {
-      $("#cancel").css("display", "inline-block");
-      $('#modal-error .modal-body').html(response.error);
-      $("#modal-error").modal("show");
-    }
-  }).fail(function () {
+    $("#password-fields").css("display", "none");
+    $("#edit-current-password").val("");
+    $("#edit-new-password").val("");
+    $("#edit-confirm-password").val("");
+    $("#cancel").css("display", "none");
+    $("#change-password").css("display", "none");
+    $("#edit-personal-info-show-fields").css("display", "inline-block");
+    $("#change-password-show-fields").css("display", "inline-block");
+    $("#change-pin-code-show-fields").css("display", "inline-block");
+    $('#modal-success .message').html("Saving Changes Successful");
+    $("#modal-success").modal("show");
+  }).fail(function (error) {
     $("#cancel").css("display", "inline-block");
-    $('#modal-error .modal-body').html("Unable to connect to server.");
-    $('#modal-error').modal('show');
+    showErrorFromAjax(error);
   }).always(function () {
     $("#change-password").html("Save Changes");
     $("#change-password").prop("disabled", false);
@@ -1516,28 +1467,20 @@ $(document).on("click", "#change-pin-code", function () {
       confirm_pin_code: confirm_pin_code
     }
   }).done(function (response) {
-    response = JSON.parse(response);
-    if (response.error == "") {
-      $("#pin-code-fields").css("display", "none");
-      $("#edit-current-pin-code-fields").val("");
-      $("#edit-new-pin-code-fields").val("");
-      $("#edit-confirm-pin-code-fields").val("");
-      $("#cancel").css("display", "none");
-      $("#change-pin-code").css("display", "none");
-      $("#edit-personal-info-show-fields").css("display", "inline-block");
-      $("#change-password-show-fields").css("display", "inline-block");
-      $("#change-pin-code-show-fields").css("display", "inline-block");
-      $('#modal-success .modal-body').html("Saving Changes Successful");
-      $("#modal-success").modal("show");
-    } else {
-      $("#cancel").css("display", "inline-block");
-      $('#modal-error .modal-body').html(response.error);
-      $("#modal-error").modal("show");
-    }
-  }).fail(function () {
+    $("#pin-code-fields").css("display", "none");
+    $("#edit-current-pin-code-fields").val("");
+    $("#edit-new-pin-code-fields").val("");
+    $("#edit-confirm-pin-code-fields").val("");
+    $("#cancel").css("display", "none");
+    $("#change-pin-code").css("display", "none");
+    $("#edit-personal-info-show-fields").css("display", "inline-block");
+    $("#change-password-show-fields").css("display", "inline-block");
+    $("#change-pin-code-show-fields").css("display", "inline-block");
+    $('#modal-success .message').html("Saving Changes Successful");
+    $("#modal-success").modal("show");
+  }).fail(function (error) {
     $("#cancel").css("display", "inline-block");
-    $('#modal-error .modal-body').html("Unable to connect to server.");
-    $('#modal-error').modal('show');
+    showErrorFromAjax(error);
   }).always(function () {
     $("#change-pin-code").html("Save Changes");
     $("#change-pin-code").prop("disabled", false);
@@ -1599,7 +1542,7 @@ $(document).on("click", ".update-proof-of-payment", function () {
       var width = img.width;
       content += '	<div class="col-6 px-1" style="margin-bottom:10px">';
       content += '		<a href="' + img.src + '" data-fancybox="images" data-caption="Proof of Payment">';
-      content += '			<div class="proof-of-payment" data-image="' + img.src + '" data-has-image="1" data-extension="' + img.src.split('.').pop().toLowerCase() + '" style="width:100%; height:180px; background-color:#eeeeee; border:2px solid #0e4d22; position:relative; cursor:pointer">';
+      content += '			<div class="proof-of-payment" data-image="' + img.src + '" data-has-image="1" data-extension="' + img.src.split('.').pop().toLowerCase() + '" style="width:100%; height:150px; background-color:#eeeeee; border:2px solid #0e4d22; position:relative; cursor:pointer">';
       content += '				<div style="position:relative; width:100%; height:100%; padding-top:175px; overflow:hidden">';
       content += '					<img src="' + img.src + '" style="' + (width >= height ? 'height:auto; width:100%;' : 'height:100%; width:auto;') + ' margin:0; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%)" />';
       content += '				</div>';
@@ -1622,7 +1565,7 @@ $(document).on("click", ".update-proof-of-payment", function () {
   }
 });
 $(document).on("click", "#update-proof-of-payment-confirm", function () {
-  $("#modal-warning .modal-body").html("Are you sure you want to save changes?");
+  $("#modal-warning .message").html("Are you sure you want to save changes?");
   $("#modal-warning .proceed").attr("id", "update-proof-of-payment");
   $("#modal-warning .proceed").val($(this).val());
   $("#modal-proof-of-payment-update").modal("hide");
@@ -1631,7 +1574,7 @@ $(document).on("click", "#update-proof-of-payment-confirm", function () {
 $(document).on("click", "#update-proof-of-payment", function () {
   $("#modal-warning .proceed").prop("disabled", true);
   $("#modal-warning .proceed").html("Processing...");
-  $("#modal-warning button[data-dismiss='modal']").css("display", "none");
+  $("#modal-warning button[data-bs-dismiss='modal']").css("display", "none");
   var id = $(this).val();
   var proof_of_payments = [];
   $("#proof-of-payment-container .proof-of-payment[data-has-image='1']").each(function () {
@@ -1649,23 +1592,16 @@ $(document).on("click", "#update-proof-of-payment", function () {
     },
     timeout: 30000
   }).done(function (response) {
-    response = JSON.parse(response);
-    if (response.error == "") {
-      $(".update-proof-of-payment[value='" + id + "'] span").html(response.proof_of_payment);
-      $('#modal-success .modal-body').html("Saving changes successful.");
-      $('#modal-success').modal('show');
-    } else {
-      $("#modal-error .modal-body").html(response.error);
-      $("#modal-error").modal('show');
-    }
-  }).fail(function () {
-    $("#modal-error .modal-body").html("Unable to connect to server.");
-    $("#modal-error").modal('show');
+    $(".update-proof-of-payment[value='" + id + "'] span").html(response.proof_of_payment);
+    $('#modal-success .message').html("Saving changes successful.");
+    $('#modal-success').modal('show');
+  }).fail(function (error) {
+    showErrorFromAjax(error);
   }).always(function () {
     $("#modal-warning").modal('hide');
     $("#modal-warning .proceed").html("Confirm");
     $("#modal-warning .proceed").prop("disabled", false);
-    $("#modal-warning button[data-dismiss='modal']").css("display", "block");
+    $("#modal-warning button[data-bs-dismiss='modal']").css("display", "block");
   });
 });
 $(document).on("click", ".terminal-view-items", function () {
@@ -1681,45 +1617,38 @@ $(document).on("click", ".terminal-view-items", function () {
     },
     timeout: 30000
   }).done(function (response) {
-    response = JSON.parse(response);
-    if (response.error == "") {
-      var content = '	<table class="table table-bordered mb-0">';
-      content += '		<thead>';
-      content += '			<tr>';
-      content += '				<th></th>';
-      content += '				<th>Item</th>';
-      content += '				<th>Quantity</th>';
-      content += '				<th>Amount</th>';
-      content += '			</tr>';
-      content += '		</thead>';
-      content += '		<tbody>';
-      for (var i = 0; i < response.items.length; i++) {
-        content += '		<tr>';
-        content += '			<td style="width:80px">';
-        content += '				<div style="position:relative; width:100%; padding-top:100%; overflow:hidden; border:1px solid #eeeeee">';
-        content += '					<img src="' + response.items[i].photo + '?v=' + response.items[i].version + '" style="' + (response.items[i].longest_dimension == "width" ? 'width:100%; height:auto;' : 'width:auto; height:100%;') + 'max-height:100%; max-width:100%; margin:0; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%)" alt="' + response.items[i].name + '">';
-        content += '				</div>';
-        content += '			</td>';
-        content += '			<td>' + response.items[i].name + '</td>';
-        content += '			<td>' + response.items[i].quantity + '</td>';
-        content += '			<td>' + numberFormat(response.items[i].quantity * response.items[i].price, true) + ' <span style="font-size:0.8em">Gems</span></td>';
-        content += '		</tr>';
-      }
-      content += '		</tbody>';
-      content += '	</table>';
-      $("#ordered-items-container").html(content);
-    } else {
-      $("#modal-error .modal-body").html(response.error);
-      $("#modal-error").modal('show');
+    var content = '	<table class="table table-bordered mb-0">';
+    content += '		<thead>';
+    content += '			<tr>';
+    content += '				<th></th>';
+    content += '				<th>Item</th>';
+    content += '				<th>Quantity</th>';
+    content += '				<th>Amount</th>';
+    content += '			</tr>';
+    content += '		</thead>';
+    content += '		<tbody>';
+    for (var i = 0; i < response.items.length; i++) {
+      content += '		<tr>';
+      content += '			<td style="width:80px">';
+      content += '				<div style="position:relative; width:100%; padding-top:100%; overflow:hidden; border:1px solid #eeeeee">';
+      content += '					<img src="' + response.items[i].photo + '?v=' + response.items[i].version + '" style="' + (response.items[i].longest_dimension == "width" ? 'width:100%; height:auto;' : 'width:auto; height:100%;') + 'max-height:100%; max-width:100%; margin:0; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%)" alt="' + response.items[i].name + '">';
+      content += '				</div>';
+      content += '			</td>';
+      content += '			<td>' + response.items[i].name + '</td>';
+      content += '			<td>' + response.items[i].quantity + '</td>';
+      content += '			<td>' + numberFormat(response.items[i].quantity * response.items[i].price, true) + ' <span style="font-size:0.8em">Gems</span></td>';
+      content += '		</tr>';
     }
-  }).fail(function () {
-    $("#modal-error .modal-body").html("Unable to connect to server.");
-    $("#modal-error").modal('show');
+    content += '		</tbody>';
+    content += '	</table>';
+    $("#ordered-items-container").html(content);
+  }).fail(function (error) {
+    showErrorFromAjax(error);
   }).always(function () {
     $("#modal-warning").modal('hide');
     $("#modal-warning .proceed").html("Confirm");
     $("#modal-warning .proceed").prop("disabled", false);
-    $("#modal-warning button[data-dismiss='modal']").css("display", "block");
+    $("#modal-warning button[data-bs-dismiss='modal']").css("display", "block");
   });
 });
 $(document).on("click", ".terminal-view-shipment", function () {
@@ -1733,7 +1662,7 @@ $(document).on("click", ".terminal-view-shipment", function () {
   $("#modal-view-shipment").modal('show');
 });
 $(document).on("click", ".mark-order-as-complete-confirm", function () {
-  $("#modal-warning .modal-body").html("Are you sure you want to mark Order " + $(this).data("reference") + " as complete?");
+  $("#modal-warning .message").html("Are you sure you want to mark Order " + $(this).data("reference") + " as complete?");
   $("#modal-warning .proceed").val($(this).val());
   $("#modal-warning .proceed").attr("id", "mark-order-as-complete");
   $('#modal-warning').modal('show');
@@ -1741,7 +1670,7 @@ $(document).on("click", ".mark-order-as-complete-confirm", function () {
 $(document).on("click", "#mark-order-as-complete", function () {
   $("#modal-warning .proceed").prop("disabled", true);
   $("#modal-warning .proceed").html("Processing...");
-  $("#modal-warning button[data-dismiss='modal']").css("display", "none");
+  $("#modal-warning button[data-bs-dismiss='modal']").css("display", "none");
   var id = $(this).val();
   $.ajax({
     method: "POST",
@@ -1752,92 +1681,85 @@ $(document).on("click", "#mark-order-as-complete", function () {
       user: 2
     }
   }).done(function (response) {
-    response = JSON.parse(response);
-    if (response.error == "") {
-      $("#terminal-winners-gem").html(numberFormat(response.terminal_winners_gem.balance, true));
-      var content = '	<table class="table table-bordered data-table" style="display:none">';
-      content += '		<thead>';
-      content += '			<tr style="background-color:#f9f9f9">';
-      content += '				<th></th>';
-      content += '				<th>Date&nbsp;&amp; Time Placed</th>';
-      content += '				<th>Type</th>';
-      content += '				<th>Reference</th>';
-      content += '				<th>Account</th>';
-      content += '				<th>Price</th>';
-      content += '				<th>Points</th>';
-      content += '			</tr>';
-      content += '		</thead>';
-      content += '		<tbody>';
-      response.orders.forEach(function (order) {
-        if (!order.date_time_completed) {
-          content += '	<tr>';
-          content += '		<td>';
-          content += '			<button class="btn btn-success btn-sm mt-1 terminal-view-items" value="' + order.id + '" data-reference="' + order.reference + '" style="background-color:#0e4d22; color:#ffffff">Items</button>';
-          content += '			<button class="btn btn-success btn-sm mt-1 terminal-view-shipment" data-reference="' + order.reference + '" data-full-name="' + order.full_name + '" data-contact-number="' + order.contact_number + '" data-barangay="' + order.barangay + '" data-city="' + order.city + '" data-province="' + order.province + '" data-zip-code="' + order.zip_code + '" style="background-color:#0e4d22; color:#ffffff">Shipment</button>';
-          content += '			<button class="btn btn-success btn-sm mt-1 mark-order-as-complete-confirm" value="' + order.id + '" data-reference="' + order.reference + '" style="background-color:#0e4d22; color:#ffffff">Mark as Complete</button>';
-          content += '		</td>';
-          content += '		<td>' + order.date_time_placed + '</td>';
-          content += '		<td>' + (order.type == 1 ? "Package" : "Product") + '</td>';
-          content += '		<td>' + order.reference + '</td>';
-          content += '		<td>' + order.name + '</td>';
-          content += '		<td>' + numberFormat(order.price, true) + ' <i class="fas fa-gem" style="font-size:0.8em"></i></td>';
-          content += '		<td>' + numberFormat(order.points_value, true) + ' PV</td>';
-          content += '	</tr>';
-        }
-      });
-      content += '		</tbody>';
-      content += '	</table>';
-      $("#pending .table-responsive").html(content);
-      content = '		<table class="table table-bordered data-table" style="display:none">';
-      content += '		<thead>';
-      content += '			<tr style="background-color:#f9f9f9">';
-      content += '				<th></th>';
-      content += '				<th>Date&nbsp;&amp; Time Placed</th>';
-      content += '				<th>Date&nbsp;&amp; Time Completed</th>';
-      content += '				<th>Type</th>';
-      content += '				<th>Reference</th>';
-      content += '				<th>Account</th>';
-      content += '				<th>Price</th>';
-      content += '				<th>Points</th>';
-      content += '			</tr>';
-      content += '		</thead>';
-      content += '		<tbody>';
-      response.orders.forEach(function (order) {
-        if (order.date_time_completed) {
-          content += '	<tr>';
-          content += '		<td>';
-          content += '			<button class="btn btn-success btn-sm mt-1 terminal-view-items" value="' + order.id + '" data-reference="' + order.reference + '" style="background-color:#0e4d22; color:#ffffff">Items</button>';
-          content += '			<button class="btn btn-success btn-sm mt-1 terminal-view-shipment" data-reference="' + order.reference + '" data-full-name="' + order.full_name + '" data-contact-number="' + order.contact_number + '" data-barangay="' + order.barangay + '" data-city="' + order.city + '" data-province="' + order.province + '" data-zip-code="' + order.zip_code + '" style="background-color:#0e4d22; color:#ffffff">Shipment</button>';
-          content += '		</td>';
-          content += '		<td>' + order.date_time_placed + '</td>';
-          content += '		<td>' + order.date_time_completed + '</td>';
-          content += '		<td>' + (order.type == 1 ? "Package" : "Product") + '</td>';
-          content += '		<td>' + order.reference + '</td>';
-          content += '		<td>' + order.name + '</td>';
-          content += '		<td>' + numberFormat(order.price, true) + ' <i class="fas fa-gem" style="font-size:0.8em"></i></td>';
-          content += '		<td>' + numberFormat(order.points_value, true) + ' PV</td>';
-          content += '	</tr>';
-        }
-      });
-      content += '		</tbody>';
-      content += '	</table>';
-      $("#completed .table-responsive").html(content);
-      $(".data-table").DataTable({
-        "aaSorting": []
-      });
-      $(".data-table").css("display", "table");
-      $('#modal-success .modal-body').html("Order has been successfully completed.");
-      $('#modal-success').modal('show');
-    } else {
-      $('#modal-error .modal-body').html(response.error);
-      $('#modal-error').modal("show");
-    }
-  }).fail(function () {
-    $('#modal-error .modal-body').html("Unable to connect to server.");
-    $('#modal-error').modal('show');
+    $("#terminal-winners-gem").html(numberFormat(response.terminal_winners_gem.balance, true));
+    var content = '	<table class="table table-bordered data-table" style="display:none">';
+    content += '		<thead>';
+    content += '			<tr style="background-color:#f9f9f9">';
+    content += '				<th></th>';
+    content += '				<th>Date&nbsp;&amp; Time Placed</th>';
+    content += '				<th>Type</th>';
+    content += '				<th>Reference</th>';
+    content += '				<th>Account</th>';
+    content += '				<th>Price</th>';
+    content += '				<th>Points</th>';
+    content += '			</tr>';
+    content += '		</thead>';
+    content += '		<tbody>';
+    response.orders.forEach(function (order) {
+      if (!order.date_time_completed) {
+        content += '	<tr>';
+        content += '		<td>';
+        content += '			<button class="btn btn-success btn-sm mt-1 terminal-view-items" value="' + order.id + '" data-reference="' + order.reference + '" style="background-color:#0e4d22; color:#ffffff">Items</button>';
+        content += '			<button class="btn btn-success btn-sm mt-1 terminal-view-shipment" data-reference="' + order.reference + '" data-full-name="' + order.full_name + '" data-contact-number="' + order.contact_number + '" data-barangay="' + order.barangay + '" data-city="' + order.city + '" data-province="' + order.province + '" data-zip-code="' + order.zip_code + '" style="background-color:#0e4d22; color:#ffffff">Shipment</button>';
+        content += '			<button class="btn btn-success btn-sm mt-1 mark-order-as-complete-confirm" value="' + order.id + '" data-reference="' + order.reference + '" style="background-color:#0e4d22; color:#ffffff">Mark as Complete</button>';
+        content += '		</td>';
+        content += '		<td>' + order.date_time_placed + '</td>';
+        content += '		<td>' + (order.type == 1 ? "Package" : "Product") + '</td>';
+        content += '		<td>' + order.reference + '</td>';
+        content += '		<td>' + order.name + '</td>';
+        content += '		<td>' + numberFormat(order.price, true) + ' <i class="fas fa-gem" style="font-size:0.8em"></i></td>';
+        content += '		<td>' + numberFormat(order.points_value, true) + ' PV</td>';
+        content += '	</tr>';
+      }
+    });
+    content += '		</tbody>';
+    content += '	</table>';
+    $("#pending .table-responsive").html(content);
+    content = '		<table class="table table-bordered data-table" style="display:none">';
+    content += '		<thead>';
+    content += '			<tr style="background-color:#f9f9f9">';
+    content += '				<th></th>';
+    content += '				<th>Date&nbsp;&amp; Time Placed</th>';
+    content += '				<th>Date&nbsp;&amp; Time Completed</th>';
+    content += '				<th>Type</th>';
+    content += '				<th>Reference</th>';
+    content += '				<th>Account</th>';
+    content += '				<th>Price</th>';
+    content += '				<th>Points</th>';
+    content += '			</tr>';
+    content += '		</thead>';
+    content += '		<tbody>';
+    response.orders.forEach(function (order) {
+      if (order.date_time_completed) {
+        content += '	<tr>';
+        content += '		<td>';
+        content += '			<button class="btn btn-success btn-sm mt-1 terminal-view-items" value="' + order.id + '" data-reference="' + order.reference + '" style="background-color:#0e4d22; color:#ffffff">Items</button>';
+        content += '			<button class="btn btn-success btn-sm mt-1 terminal-view-shipment" data-reference="' + order.reference + '" data-full-name="' + order.full_name + '" data-contact-number="' + order.contact_number + '" data-barangay="' + order.barangay + '" data-city="' + order.city + '" data-province="' + order.province + '" data-zip-code="' + order.zip_code + '" style="background-color:#0e4d22; color:#ffffff">Shipment</button>';
+        content += '		</td>';
+        content += '		<td>' + order.date_time_placed + '</td>';
+        content += '		<td>' + order.date_time_completed + '</td>';
+        content += '		<td>' + (order.type == 1 ? "Package" : "Product") + '</td>';
+        content += '		<td>' + order.reference + '</td>';
+        content += '		<td>' + order.name + '</td>';
+        content += '		<td>' + numberFormat(order.price, true) + ' <i class="fas fa-gem" style="font-size:0.8em"></i></td>';
+        content += '		<td>' + numberFormat(order.points_value, true) + ' PV</td>';
+        content += '	</tr>';
+      }
+    });
+    content += '		</tbody>';
+    content += '	</table>';
+    $("#completed .table-responsive").html(content);
+    $(".data-table").DataTable({
+      "aaSorting": []
+    });
+    $(".data-table").css("display", "table");
+    $('#modal-success .message').html("Order has been successfully completed.");
+    $('#modal-success').modal('show');
+  }).fail(function (error) {
+    showErrorFromAjax(error);
   }).always(function () {
     $('#modal-warning').modal('hide');
-    $("#modal-warning button[data-dismiss='modal']").css("display", "block");
+    $("#modal-warning button[data-bs-dismiss='modal']").css("display", "block");
     $("#modal-warning .proceed").html("Confirm");
     $("#modal-warning .proceed").prop("disabled", false);
   });

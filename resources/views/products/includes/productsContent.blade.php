@@ -4,7 +4,7 @@
 </div>
 @endif
 
-<div class="row mt-4">
+<div class="row">
 	<div class="col-lg-6 col-xl-8">
         <nav id="products-tab-container" class="nav nav-pills nav-justified mb-4 {{ (!$showProductsTab) ? 'd-none' : '' }}" data-hidden="{{ (!$showProductsTab) ? '1' : '0' }}">
             <a class="nav-link active products-tab" data-type="2" style="cursor:pointer">Products</a>
@@ -163,6 +163,6 @@
 		</div>
 
         <input type="hidden" name="place-order-route" value="{{ route('orders.placeOrder') }}" />
-        <button class="btn btn-success btn-lg" id="place-order-confirm" data-terminal-account="{{ ($terminalUser) ?? 0 }}" data-stockist="0" style="background-color:#0e4d22; width:100%">Place Order</button>
+        <button class="btn btn-custom-2 btn-lg w-100" id="place-order-confirm" data-terminal-account="{{ $terminalUser ? $terminalUser : '0' }}" data-stockist="0">PLACE ORDER</button>
 	</div>
 </div>

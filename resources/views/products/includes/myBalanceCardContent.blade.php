@@ -23,7 +23,7 @@
 </div>
 <div class="card-footer px-3 py-2">
     <input type="hidden" name="purchase-winners-gem-route" value="{{ route('orders.purchaseWinnersGem') }}" />
-	<a class="btn-block text-color-3 text-decoration-none d-flex justify-content-between align-items-center" href="!#" data-bs-toggle="modal" data-target="#modal-gem-purchase">
+	<a class="btn-block text-color-3 text-decoration-none d-flex justify-content-between align-items-center" href="!#" data-bs-toggle="modal" data-bs-target="#modal-gem-purchase">
 		<span class="small font-weight-bold">Buy Winners Gem</span>
 		<i class="fa fa-angle-right"></i>
 	</a>
