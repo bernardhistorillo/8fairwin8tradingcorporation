@@ -20,8 +20,14 @@ class Item extends Model
     }
 
     public function longestDimension() {
-        list($width, $height) = getimagesize($this->photo);
-        return (($width >= $height) ? "width" : "height");
+//        list($width, $height) = getimagesize(str_replace(' ', '%20', $this->photo));
+//
+//        $this->dimension = json_encode([$width, $height]);
+//        $this->update();
+
+        $dimension = json_decode($this->dimension, true);
+
+        return (($dimension[0] >= $dimension[1]) ? "width" : "height");
     }
 
     public function terminalItemStock($userId, $stockist) {

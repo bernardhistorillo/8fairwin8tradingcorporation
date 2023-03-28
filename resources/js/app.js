@@ -1094,7 +1094,7 @@ $(document).on("click", ".view-items", function() {
 
     $.ajax({
         method: "POST",
-        url: "api/view-items.php",
+        url: $("#view-items-route").val(),
         data: {
             order_id: order_id
         },
@@ -1114,12 +1114,12 @@ $(document).on("click", ".view-items", function() {
             content += '		<tr>';
             content += '			<td style="width:80px">';
             content += '				<div style="position:relative; width:100%; padding-top:100%; overflow:hidden; border:1px solid #eeeeee">';
-            content += '					<img src="' + response.items[i].photo + '?v=' + response.items[i].version + '" style="' + ((response.items[i].longest_dimension == "width") ? 'width:100%; height:auto;' : 'width:auto; height:100%;') + 'max-height:100%; max-width:100%; margin:0; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%)" alt="' + response.items[i].name + '">';
+            content += '					<img src="' + response.items[i].photo + '?v=' + response.items[i].version + '" style="' + ((response.items[i].longestDimension == "width") ? 'width:100%; height:auto;' : 'width:auto; height:100%;') + 'max-height:100%; max-width:100%; margin:0; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%)" alt="' + response.items[i].name + '">';
             content += '				</div>';
             content += '			</td>';
             content += '			<td>' + response.items[i].name + '</td>';
             content += '			<td>' + response.items[i].quantity + '</td>';
-            content += '			<td>' + numberFormat(response.items[i].quantity * response.items[i].price,true) + ' <i class="fas fa-gem" style="font-size:0.8em"></i></td>';
+            content += '			<td>' + numberFormat(response.items[i].quantity * response.items[i].price,true) + ' <i class="fas fa-gem gem-change-color" style="font-size:0.8em"></i></td>';
             content += '		</tr>';
         }
         content	+= '		</tbody>';
@@ -1739,10 +1739,8 @@ $(document).on("click", ".update-proof-of-payment", function() {
 
             content += '	<div class="col-6 px-1" style="margin-bottom:10px">';
             content += '		<a href="' + img.src + '" data-fancybox="images" data-caption="Proof of Payment">';
-            content += '			<div class="proof-of-payment" data-image="' + img.src + '" data-has-image="1" data-extension="' + img.src.split('.').pop().toLowerCase() + '" style="width:100%; height:150px; background-color:#eeeeee; border:2px solid #0e4d22; position:relative; cursor:pointer">';
-            content += '				<div style="position:relative; width:100%; height:100%; padding-top:175px; overflow:hidden">';
-            content += '					<img src="' + img.src + '" style="' + ((width >= height) ? 'height:auto; width:100%;' : 'height:100%; width:auto;') + ' margin:0; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%)" />';
-            content += '				</div>';
+            content += '			<div class="proof-of-payment" data-image="' + img.src + '" data-has-image="1" data-extension="' + img.src.split('.').pop().toLowerCase() + '" style="width:100%; height:154px; background-color:#eeeeee; border:2px solid #0e4d22; position:relative; cursor:pointer">';
+            content += '				<div class="background-image-contain" style="position:relative; width:100%; height:100%; padding-top:150px; overflow:hidden; background-image:url(\'' + img.src + '\')"></div>';
             content += '			</div>';
             content += '		</a>';
             content += '	</div>';
@@ -1790,7 +1788,7 @@ $(document).on("click", "#update-proof-of-payment", function() {
 
     $.ajax({
         method: "POST",
-        url: "api/update-proof-of-payment.php",
+        url: $("#update-proof-of-payment").val(),
         data: {
             id: id,
             proof_of_payments: JSON.stringify(proof_of_payments)
@@ -1840,7 +1838,7 @@ $(document).on("click", ".terminal-view-items", function() {
             content += '		<tr>';
             content += '			<td style="width:80px">';
             content += '				<div style="position:relative; width:100%; padding-top:100%; overflow:hidden; border:1px solid #eeeeee">';
-            content += '					<img src="' + response.items[i].photo + '?v=' + response.items[i].version + '" style="' + ((response.items[i].longest_dimension == "width") ? 'width:100%; height:auto;' : 'width:auto; height:100%;') + 'max-height:100%; max-width:100%; margin:0; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%)" alt="' + response.items[i].name + '">';
+            content += '					<img src="' + response.items[i].photo + '?v=' + response.items[i].version + '" style="' + ((response.items[i].longestDimension == "width") ? 'width:100%; height:auto;' : 'width:auto; height:100%;') + 'max-height:100%; max-width:100%; margin:0; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%)" alt="' + response.items[i].name + '">';
             content += '				</div>';
             content += '			</td>';
             content += '			<td>' + response.items[i].name + '</td>';

@@ -8,6 +8,7 @@ use App\Http\Controllers\NetworkController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TestController;
+use App\Http\Controllers\TransferController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -47,12 +48,15 @@ Route::middleware(['auth'])->group(function() {
 
     Route::prefix('orders')->group(function () {
         Route::get('/{type?}', [OrderController::class, 'index'])->name('orders.index');
-        Route::post('/products/purchaseWinnersGem', [OrderController::class, 'purchaseWinnersGem'])->name('orders.purchaseWinnersGem');
-        Route::post('/products/placeOrder', [OrderController::class, 'placeOrder'])->name('orders.placeOrder');
+        Route::post('/viewItems', [OrderController::class, 'viewItems'])->name('orders.viewItems');
+        Route::post('/updateProofOfPayment', [OrderController::class, 'updateProofOfPayment'])->name('orders.updateProofOfPayment');
+        Route::post('/purchaseWinnersGem', [OrderController::class, 'purchaseWinnersGem'])->name('orders.purchaseWinnersGem');
+        Route::post('/placeOrder', [OrderController::class, 'placeOrder'])->name('orders.placeOrder');
     });
 
+    Route::get('/transfers/{type?}', [TransferController::class, 'index'])->name('transfers.index');
+
     Route::get('/account', [DashboardController::class, 'index'])->name('account.index');
-    Route::get('/transfers', [DashboardController::class, 'index'])->name('transfers.index');
     Route::get('/conversions', [DashboardController::class, 'index'])->name('conversions.index');
     Route::get('/withdrawals', [DashboardController::class, 'index'])->name('withdrawals.index');
     Route::get('/terminal', [DashboardController::class, 'index'])->name('terminal.index');

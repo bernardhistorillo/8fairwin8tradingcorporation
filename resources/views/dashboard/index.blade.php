@@ -43,24 +43,24 @@
 
                             <div>
                                 <div class="text-value-sm font-size-140" style="color:#0e4d22; line-height:0.9em; margin-top:3px">
-                                    <span class="fw-bold" id="winners-gem-balance">{{ number_format($income['gemBalance'], 2) }}</span>
+                                    <span id="winners-gem-balance">{{ number_format($income['gemBalance'], 2) }}</span>
                                     <i class="fas fa-gem gem-change-color" style="font-size:0.8em"></i>
-                                    <span style="font-size:0.7em"> &nbsp;=&nbsp; &#8369;&nbsp;<span id="winners-gem-balance-in-pesos">{{ number_format($income["gemBalance"] * $winnersGemValue, 2) }}</span></span>
+                                    <span style="font-size:0.7em"> &nbsp;=&nbsp; <i class="fa-solid fa-peso-sign"></i>&nbsp;<span id="winners-gem-balance-in-pesos">{{ number_format($income["gemBalance"] * $winnersGemValue, 2) }}</span></span>
                                 </div>
-                                <div class="text-uppercase font-weight-bold small" style="margin-top:4px">Winners Gem</div>
+                                <div class="text-uppercase small" style="margin-top:4px">Winners Gem</div>
                             </div>
                         </div>
                         <div class="card-footer px-3 py-2 bg-color-5">
                             <div class="row">
                                 <div class="col-6" style="border-right:1px solid #dddddd">
                                     <a class="btn-block d-flex justify-content-between align-items-center text-decoration-none text-color-3" href="!#" data-toggle="modal" data-bs-target="#modal-gem-purchase">
-                                        <span class="small font-weight-bold">Buy Winners Gem</span>
+                                        <span class="small">Buy Winners Gem</span>
                                         <i class="fa fa-angle-right"></i>
                                     </a>
                                 </div>
                                 <div class="col-6" style="border-left:1px solid #dddddd">
                                     <a class="btn-block d-flex justify-content-between align-items-center text-decoration-none text-color-3" href="javascript:void(0)" data-toggle="modal" data-bs-target="#modal-convert">
-                                        <span class="small font-weight-bold">Convert</span>
+                                        <span class="small">Convert</span>
                                         <i class="fa fa-angle-right"></i>
                                     </a>
                                 </div>
@@ -79,21 +79,21 @@
                             </div>
 
                             <div>
-                                <div class="text-value-sm font-size-140 fw-bold" style="color:#0e4d22">&#8369; <span id="peso-balance">{{ number_format($income["pesoBalance"], 2) }}</span></div>
-                                <div class="text-uppercase font-weight-bold small">Peso Balance</div>
+                                <div class="text-value-sm font-size-140" style="color:#0e4d22"><i class="fa-solid fa-peso-sign"></i> <span id="peso-balance">{{ number_format($income["pesoBalance"], 2) }}</span></div>
+                                <div class="text-uppercase small">Peso Balance</div>
                             </div>
                         </div>
                         <div class="card-footer px-3 py-2 bg-color-5">
                             <div class="row">
                                 <div class="col-6" style="border-right:1px solid #dddddd">
                                     <a class="btn-block d-flex justify-content-between align-items-center text-decoration-none text-color-3" href="javascript:void(0)" data-toggle="modal" data-bs-target="#modal-withdraw">
-                                        <span class="small font-weight-bold">Withdraw</span>
+                                        <span class="small">Withdraw</span>
                                         <i class="fa fa-angle-right"></i>
                                     </a>
                                 </div>
                                 <div class="col-6" style="border-left:1px solid #dddddd">
                                     <a class="btn-block d-flex justify-content-between align-items-center text-decoration-none text-color-3" href="javascript:void(0)" data-toggle="modal" data-bs-target="#modal-pool-share-contribute">
-                                        <span class="small font-weight-bold">Contribute to Pool Fund</span>
+                                        <span class="small">Contribute to Pool Fund</span>
                                         <i class="fa fa-angle-right"></i>
                                     </a>
                                 </div>
@@ -112,13 +112,13 @@
                             </div>
 
                             <div>
-                                <div class="text-value-sm font-size-140 fw-bold" style="color:#0e4d22">&#8369; {{ number_format($income["totalIncome"], 2) }}</div>
-                                <div class="text-uppercase font-weight-bold small">Total Earnings</div>
+                                <div class="text-value-sm font-size-140" style="color:#0e4d22"><i class="fa-solid fa-peso-sign"></i> {{ number_format($income["totalIncome"], 2) }}</div>
+                                <div class="text-uppercase small">Total Earnings</div>
                             </div>
                         </div>
                         <div class="card-footer px-3 py-2 bg-color-5">
                             <a class="btn-block d-flex justify-content-between align-items-center text-decoration-none text-color-3" href="{{ route('income.index') }}">
-                                <span class="small font-weight-bold">View Earnings</span>
+                                <span class="small">View Earnings</span>
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         </div>
@@ -135,14 +135,14 @@
                             </div>
 
                             <div>
-                                <div class="text-value-sm" style="color:#0e4d22; font-size:1.1em"><span class="fw-bold font-size-80">Sent:</span> <span class="fw-bold" id="winners-gem-sent">{{ number_format($income["totalGemsSent"], 2) }}</span> <i class="fas fa-gem gem-change-color" style="font-size:0.7em"></i></div>
-                                <div class="text-value-sm" style="color:#0e4d22; font-size:1.1em; margin-top:-6px"><span class="fw-bold font-size-80">Received:</span> <span class="fw-bold">{{ number_format($income["totalGemsReceived"], 2) }}</span> <i class="fas fa-gem gem-change-color" style="font-size:0.7em"></i></div>
-                                <div class="text-uppercase font-weight-bold small">Transfers</div>
+                                <div class="text-value-sm" style="color:#0e4d22; font-size:1.1em"><span class="font-size-80">Sent:</span> <span id="winners-gem-sent">{{ number_format($income["totalGemsSent"], 2) }}</span> <i class="fas fa-gem gem-change-color" style="font-size:0.7em"></i></div>
+                                <div class="text-value-sm" style="color:#0e4d22; font-size:1.1em; margin-top:-6px"><span class="font-size-80">Received:</span> <span>{{ number_format($income["totalGemsReceived"], 2) }}</span> <i class="fas fa-gem gem-change-color" style="font-size:0.7em"></i></div>
+                                <div class="text-uppercase small">Transfers</div>
                             </div>
                         </div>
                         <div class="card-footer px-3 py-2 bg-color-5">
                             <a class="btn-block d-flex justify-content-between align-items-center text-decoration-none text-color-3" href="javascript:void(0)" data-toggle="modal" data-bs-target="#modal-transfer">
-                                <span class="small font-weight-bold">Transfer</span>
+                                <span class="small">Transfer</span>
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         </div>
@@ -159,14 +159,14 @@
                             </div>
 
                             <div>
-                                <div class="text-value-sm font-size-140 fw-bold" style="color:#0e4d22">{{ number_format(Auth::user()->monthlyPVMaintenance()) }} / {{ number_format(Auth::user()->requiredPVMaintenance()) }} PV</div>
-                                <div class="text-uppercase font-weight-bold small" style="font-size:0.75em">Monthly PV Maintenance
+                                <div class="text-value-sm font-size-140" style="color:#0e4d22">{{ number_format(Auth::user()->monthlyPVMaintenance()) }} / {{ number_format(Auth::user()->requiredPVMaintenance()) }} PV</div>
+                                <div class="text-uppercase small" style="font-size:0.75em">Monthly PV Maintenance
                                 </div>
                             </div>
                         </div>
                         <div class="card-footer px-3 py-2 bg-color-5">
                             <a class="btn-block d-flex justify-content-between align-items-center text-decoration-none text-color-3" href="javascript:void(0)" data-toggle="modal" data-bs-target="#modal-pv-maintenance-details">
-                                <span class="small font-weight-bold">View</span>
+                                <span class="small">View</span>
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         </div>
@@ -183,14 +183,14 @@
                             </div>
 
                             <div>
-                                <div class="text-value-sm font-size-130 fw-bold" style="color:#0e4d22; line-height:20px">{{ Auth::user()->packageAndRank() }}</div>
-                                <div class="text-uppercase font-weight-bold small" style="line-height:24px">Rank Status</div>
+                                <div class="text-value-sm font-size-130" style="color:#0e4d22; line-height:20px">{{ Auth::user()->packageAndRank() }}</div>
+                                <div class="text-uppercase small" style="line-height:24px">Rank Status</div>
                             </div>
                         </div>
                         <div class="card-footer px-3 py-2 bg-color-5">
                             <div class="btn-block d-flex justify-content-between align-items-center">
                                 <span
-                                    class="small font-weight-bold text-color-3">Rank Points: {{ number_format(Auth::user()->totalRankPoints(), 2) }}</span>
+                                    class="small text-color-3">Rank Points: {{ number_format(Auth::user()->totalRankPoints(), 2) }}</span>
                             </div>
                         </div>
                     </div>
@@ -206,13 +206,13 @@
                             </div>
 
                             <div>
-                                <div class="text-value-sm font-size-140 fw-bold" style="color:#0e4d22">&#8369; <span id="pool-share-amount">{{ number_format(totalPoolShares(), 2) }}</span></div>
-                                <div class="text-uppercase font-weight-bold small">Pool Fund</div>
+                                <div class="text-value-sm font-size-140" style="color:#0e4d22"><i class="fa-solid fa-peso-sign"></i> <span id="pool-share-amount">{{ number_format(totalPoolShares(), 2) }}</span></div>
+                                <div class="text-uppercase small">Pool Fund</div>
                             </div>
                         </div>
                         <div class="card-footer px-3 py-2 bg-color-5">
                             <div class="btn-block d-flex justify-content-between align-items-center">
-                                <span class="small font-weight-bold text-color-3">My Shares: 0</span>
+                                <span class="small text-color-3">My Shares: 0</span>
                             </div>
                         </div>
                     </div>
@@ -228,14 +228,14 @@
                             </div>
 
                             <div>
-                                <div class="text-value-sm" style="color:#0e4d22; font-size:1.1em"><span class="font-size-80 fw-bold">Downlines:</span> <span class="fw-bold">{{ number_format(Auth::user()->downlineCount()) }}</span></div>
-                                <div class="text-value-sm" style="color:#0e4d22; font-size:1.1em; margin-top:-6px"><span class="font-size-80 fw-bold">Referral Code:</span> <span class="fw-bold">{{ Auth::user()->referral_code }}</span></div>
-                                <div class="text-uppercase font-weight-bold small">Network</div>
+                                <div class="text-value-sm" style="color:#0e4d22; font-size:1.1em"><span class="font-size-80">Downlines:</span> <span>{{ number_format(Auth::user()->downlineCount()) }}</span></div>
+                                <div class="text-value-sm" style="color:#0e4d22; font-size:1.1em; margin-top:-6px"><span class="font-size-80">Referral Code:</span> <span>{{ Auth::user()->referral_code }}</span></div>
+                                <div class="text-uppercase small">Network</div>
                             </div>
                         </div>
                         <div class="card-footer px-3 py-2 bg-color-5">
                             <a class="btn-block d-flex justify-content-between align-items-center text-decoration-none text-color-3" href="{{ route('network.index') }}">
-                                <span class="small font-weight-bold">View Network</span>
+                                <span class="small">View Network</span>
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         </div>
@@ -250,9 +250,9 @@
                 <div class="col-sm-6 col-lg-6 col-xl-3 pb-4">
                     <div class="card text-white bg-color-1 h-100">
                         <div class="card-body pt-3">
-                            <div class="text-value fw-bold" style="font-size:1.6em">
-                                &#8369; {{ number_format($income["totalReferralIncome"], 2) }}</div>
-                            <small class="text-uppercase font-weight-bold">Direct / Indirect</small>
+                            <div class="text-value" style="font-size:1.6em">
+                                <i class="fa-solid fa-peso-sign"></i> {{ number_format($income["totalReferralIncome"], 2) }}</div>
+                            <small class="text-uppercase">Direct / Indirect</small>
                             <div class="progress progress-white progress-xs mt-3">
                                 <div class="progress-bar" role="progressbar"
                                      style="width:{{ ($income["totalIncome"] > 0) ? ($income["totalReferralIncome"] / $income["totalIncome"]) * 100 : 0 }}%"></div>
@@ -260,7 +260,7 @@
                         </div>
                         <div class="card-footer bg-color-1 px-3 py-2">
                             <a class="btn-block d-flex justify-content-between align-items-center text-decoration-none text-color-3" href="{{ route('income.index') }}">
-                                <span class="small font-weight-bold">View More</span>
+                                <span class="small">View More</span>
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         </div>
@@ -270,9 +270,9 @@
                 <div class="col-sm-6 col-lg-6 col-xl-3 pb-4">
                     <div class="card text-white bg-color-1 h-100">
                         <div class="card-body pt-3">
-                            <div class="text-value fw-bold" style="font-size:1.6em">
-                                &#8369; {{ number_format($income["totalUnilevelIncome"], 2) }}</div>
-                            <small class="text-uppercase font-weight-bold">Unilevel</small>
+                            <div class="text-value" style="font-size:1.6em">
+                                <i class="fa-solid fa-peso-sign"></i> {{ number_format($income["totalUnilevelIncome"], 2) }}</div>
+                            <small class="text-uppercase">Unilevel</small>
                             <div class="progress progress-white progress-xs mt-3">
                                 <div class="progress-bar" role="progressbar"
                                      style="width:{{ ($income["totalIncome"] > 0) ? ($income["totalUnilevelIncome"] / $income["totalIncome"]) * 100 : 0 }}%"></div>
@@ -280,7 +280,7 @@
                         </div>
                         <div class="card-footer bg-color-1 px-3 py-2">
                             <a class="btn-block d-flex justify-content-between align-items-center text-decoration-none text-color-3" href="{{ route('income.index') }}">
-                                <span class="small font-weight-bold">View More</span>
+                                <span class="small">View More</span>
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         </div>
@@ -290,9 +290,9 @@
                 <div class="col-sm-6 col-lg-4 col-xl-3 pb-4">
                     <div class="card text-white bg-color-1 h-100">
                         <div class="card-body pt-3">
-                            <div class="text-value fw-bold" style="font-size:1.6em">
-                                &#8369; {{ number_format($income["totalStairstepIncome"], 2) }}</div>
-                            <small class="text-uppercase font-weight-bold">Stairstep</small>
+                            <div class="text-value" style="font-size:1.6em">
+                                <i class="fa-solid fa-peso-sign"></i> {{ number_format($income["totalStairstepIncome"], 2) }}</div>
+                            <small class="text-uppercase">Stairstep</small>
                             <div class="progress progress-white progress-xs mt-3">
                                 <div class="progress-bar" role="progressbar"
                                      style="width:{{ ($income["totalIncome"] > 0) ? ($income["totalStairstepIncome"] / $income["totalIncome"]) * 100 : 0 }}%"></div>
@@ -300,7 +300,7 @@
                         </div>
                         <div class="card-footer bg-color-1 px-3 py-2">
                             <a class="btn-block d-flex justify-content-between align-items-center text-decoration-none text-color-3" href="{{ route('income.index') }}">
-                                <span class="small font-weight-bold">View More</span>
+                                <span class="small">View More</span>
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         </div>
@@ -310,9 +310,9 @@
                 <div class="col-sm-6 col-lg-4 col-xl-3 pb-4">
                     <div class="card text-white bg-color-1 h-100">
                         <div class="card-body pt-3">
-                            <div class="text-value fw-bold" style="font-size:1.6em">
-                                &#8369; {{ number_format($income["totalPersonalRebateIncome"], 2) }}</div>
-                            <small class="text-uppercase font-weight-bold">Personal Rebate</small>
+                            <div class="text-value" style="font-size:1.6em">
+                                <i class="fa-solid fa-peso-sign"></i> {{ number_format($income["totalPersonalRebateIncome"], 2) }}</div>
+                            <small class="text-uppercase">Personal Rebate</small>
                             <div class="progress progress-white progress-xs mt-3">
                                 <div class="progress-bar" role="progressbar"
                                      style="width:{{ ($income["totalIncome"] > 0) ? ($income["totalPersonalRebateIncome"] / $income["totalIncome"]) * 100 : 0 }}%"></div>
@@ -320,7 +320,7 @@
                         </div>
                         <div class="card-footer bg-color-1 px-3 py-2">
                             <a class="btn-block d-flex justify-content-between align-items-center text-decoration-none text-color-3" href="{{ route('income.index') }}">
-                                <span class="small font-weight-bold">View More</span>
+                                <span class="small">View More</span>
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         </div>
@@ -330,9 +330,9 @@
                 <div class="col-sm-6 col-lg-4 col-xl-3 pb-4">
                     <div class="card text-white bg-color-1 h-100">
                         <div class="card-body pt-3">
-                            <div class="text-value fw-bold" style="font-size:1.6em">
-                                &#8369; {{ number_format($income["totalInfinityPlusIncome"], 2) }}</div>
-                            <small class="text-uppercase font-weight-bold">Infinity Plus Bonus</small>
+                            <div class="text-value" style="font-size:1.6em">
+                                <i class="fa-solid fa-peso-sign"></i> {{ number_format($income["totalInfinityPlusIncome"], 2) }}</div>
+                            <small class="text-uppercase">Infinity Plus Bonus</small>
                             <div class="progress progress-white progress-xs mt-3">
                                 <div class="progress-bar" role="progressbar"
                                      style="width:{{ ($income["totalIncome"] > 0) ? ($income["totalInfinityPlusIncome"] / $income["totalIncome"]) * 100 : 0 }}%"></div>
@@ -340,7 +340,7 @@
                         </div>
                         <div class="card-footer bg-color-1 px-3 py-2">
                             <a class="btn-block d-flex justify-content-between align-items-center text-decoration-none text-color-3" href="{{ route('income.index') }}">
-                                <span class="small font-weight-bold">View More</span>
+                                <span class="small">View More</span>
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         </div>
@@ -350,9 +350,9 @@
                 <div class="col-sm-6 col-lg-4 col-xl-3 pb-4">
                     <div class="card text-white bg-color-1 h-100">
                         <div class="card-body pt-3">
-                            <div class="text-value fw-bold" style="font-size:1.6em">
-                                &#8369; {{ number_format($income["totalRankIncentiveIncome"], 2) }}</div>
-                            <small class="text-uppercase font-weight-bold">Rank Incentive</small>
+                            <div class="text-value" style="font-size:1.6em">
+                                <i class="fa-solid fa-peso-sign"></i> {{ number_format($income["totalRankIncentiveIncome"], 2) }}</div>
+                            <small class="text-uppercase">Rank Incentive</small>
                             <div class="progress progress-white progress-xs mt-3">
                                 <div class="progress-bar" role="progressbar"
                                      style="width:{{ ($income["totalIncome"] > 0) ? ($income["totalRankIncentiveIncome"] / $income["totalIncome"]) * 100 : 0 }}%"></div>
@@ -360,7 +360,7 @@
                         </div>
                         <div class="card-footer bg-color-1 px-3 py-2">
                             <a class="btn-block d-flex justify-content-between align-items-center text-decoration-none text-color-3" href="{{ route('income.index') }}">
-                                <span class="small font-weight-bold">View More</span>
+                                <span class="small">View More</span>
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         </div>
@@ -369,9 +369,9 @@
                 <div class="col-sm-6 col-lg-4 col-xl-3 pb-4">
                     <div class="card text-white bg-color-1 h-100">
                         <div class="card-body pt-3">
-                            <div class="text-value fw-bold" style="font-size:1.6em">
-                                &#8369; {{ number_format($income["totalPoolShareIncome"], 2) }}</div>
-                            <small class="text-uppercase font-weight-bold">Pool Share Bonus</small>
+                            <div class="text-value" style="font-size:1.6em">
+                                <i class="fa-solid fa-peso-sign"></i> {{ number_format($income["totalPoolShareIncome"], 2) }}</div>
+                            <small class="text-uppercase">Pool Share Bonus</small>
                             <div class="progress progress-white progress-xs mt-3">
                                 <div class="progress-bar" role="progressbar"
                                      style="width:{{ ($income["totalIncome"] > 0) ? ($income["totalPoolShareIncome"] / $income["totalIncome"]) * 100 : 0 }}%"></div>
@@ -379,7 +379,7 @@
                         </div>
                         <div class="card-footer bg-color-1 px-3 py-2">
                             <a class="btn-block d-flex justify-content-between align-items-center text-decoration-none text-color-3" href="{{ route('income.index') }}">
-                                <span class="small font-weight-bold">View More</span>
+                                <span class="small">View More</span>
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         </div>
@@ -389,9 +389,9 @@
                 <div class="col-sm-6 col-lg-4 col-xl-3 pb-4">
                     <div class="card text-white bg-color-1 h-100">
                         <div class="card-body pt-3">
-                            <div class="text-value fw-bold" style="font-size:1.6em">
-                                &#8369; {{ number_format($income["totalRoyaltyBonusIncome"], 2) }}</div>
-                            <small class="text-uppercase font-weight-bold">Binary Program</small>
+                            <div class="text-value" style="font-size:1.6em">
+                                <i class="fa-solid fa-peso-sign"></i> {{ number_format($income["totalRoyaltyBonusIncome"], 2) }}</div>
+                            <small class="text-uppercase">Binary Program</small>
                             <div class="progress progress-white progress-xs mt-3">
                                 <div class="progress-bar" role="progressbar"
                                      style="width:{{ ($income["totalIncome"] > 0) ? ($income["totalRoyaltyBonusIncome"] / $income["totalIncome"]) * 100 : 0 }}%"></div>
@@ -399,7 +399,7 @@
                         </div>
                         <div class="card-footer bg-color-1 px-3 py-2">
                             <a class="btn-block d-flex justify-content-between align-items-center text-decoration-none text-color-3" href="https://8fairwin8tradingcorp.com/login">
-                                <span class="large font-weight-bold">ACCESS</span>
+                                <span class="large">ACCESS</span>
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         </div>

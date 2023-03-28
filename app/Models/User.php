@@ -7,6 +7,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -402,4 +403,21 @@ class User extends Authenticatable
         return $this->withdrawals
             ->sum('fee');
     }
+
+    public function transfersReceived() {
+        return Transfer::select('transfers.*', 'firstname', 'lastname')
+            ->join('users', 'sender', 'users.id')
+            ->where('receiver', $this->id)
+            ->orderBy('transfers.id', 'desc')
+            ->get();
+    }
+
+    public function transfersSent() {
+        return Transfer::select('transfers.*', 'firstname', 'lastname')
+            ->join('users', 'receiver', 'users.id')
+            ->where('sender', $this->id)
+            ->orderBy('transfers.id', 'desc')
+            ->get();
+    }
+
 }

@@ -2,20 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Conversion;
-use App\Models\Downline;
-use App\Models\GemPurchase;
 use App\Models\Item;
-use App\Models\Order;
-use App\Models\OrderedItem;
-use App\Models\RankIncentiveIncome;
-use App\Models\ReferralIncome;
-use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {

@@ -40,6 +40,58 @@ class OrderController extends Controller
         return view('orders.index', compact('orders'));
     }
 
+    public function viewItems(Request $request) {
+        $request->validate([
+            'order_id' => 'required|numeric',
+        ]);
+
+        $items = Item::select('items.*', 'ordered_items.price', 'ordered_items.quantity')
+            ->join('ordered_items', 'items.id', 'ordered_items.item_id')
+            ->join('orders', 'ordered_items.order_id', 'orders.id')
+            ->where('orders.id', $request->order_id)
+            ->where('user_id', Auth::user()->id)
+            ->get();
+
+        foreach($items as $item) {
+            $item['photo'] = $item->photo();
+            $item['longestDimension'] = $item->longestDimension();
+        }
+
+        return response()->json([
+            'items' => $items
+        ]);
+    }
+
+    public function updateProofOfPayment(Request $request) {
+        $request->validate([
+            'id' => 'required|numeric',
+        ]);
+
+        $gemPurchase = GemPurchase::where('id', $request->id)
+            ->where('user_id', Auth::user()->id)
+            ->first();
+
+        abort_if(!$gemPurchase, 422, 'Invalid Gem Purchase');
+
+        $proofOfPaymentsLocations = [];
+        foreach(json_decode($request->proof_of_payments, true) as $proofOfPayment) {
+            $file = file_get_contents($proofOfPayment['image']);
+            $name = Str::random(40) . '.' . $proofOfPayment['extension'];
+
+            $path = config('filesystems.disks.do.folder') . '/gem_purchases/' . Auth::user()->id . '/';
+            Storage::disk('do')->put($path . $name, $file);
+
+            $proofOfPaymentsLocations[] = config('filesystems.disks.do.cdn_endpoint') . $path . $name;
+        }
+
+        $gemPurchase->proof_of_payment = json_encode($proofOfPaymentsLocations);
+        $gemPurchase->update();
+
+        return response()->json([
+            'proof_of_payment' => $gemPurchase['proof_of_payment']
+        ]);
+    }
+
     public function purchaseWinnersGem(Request $request) {
         $request->validate([
             'price' => 'required|numeric',
