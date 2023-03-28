@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'Orders')
+@section('title', 'Transfers')
 
 @section('content')
 <main class="main">
     <div class="d-sm-flex align-items-center justify-content-between mb-3">
-        <h6 class="h6 mb-0 text-gray-800">Orders</h6>
+        <h6 class="h6 mb-0 text-gray-800">Transfers</h6>
     </div>
 
     <div class="animated fadeIn pt-2 pb-5">
@@ -23,13 +23,13 @@
             <table class="table table-bordered data-table" style="display:none">
                 <thead>
                     <tr>
-                        <th>Date &amp; Time</th>
-                        <th>Sender</th>
-                        <th>Amount</th>
+                        <th class="text-center">Date&nbsp;&amp; Time</th>
+                        <th class="text-center">Sender</th>
+                        <th class="text-center">Amount</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach(Auth::user()->transfersReceived() as $transfersReceived)
+                    @foreach($transfers['received'] as $transfersReceived)
                     <tr>
                         <td>{{ \Carbon\Carbon::parse($transfersReceived["date_time"])->isoFormat('llll') }}</td>
                         <td>{{ fullName($transfersReceived) }}</td>
@@ -42,13 +42,13 @@
             <table class="table table-bordered data-table" style="display:none">
                 <thead>
                     <tr>
-                        <th>Date &amp; Time</th>
+                        <th class="text-center">Date&nbsp;&amp; Time</th>
                         <th>Recipient</th>
                         <th>Amount</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach(Auth::user()->transfersSent() as $transfersSent)
+                    @foreach($transfers['sent'] as $transfersSent)
                     <tr>
                         <td>{{ \Carbon\Carbon::parse($transfersSent["date_time"])->isoFormat('llll') }}</td>
                         <td>{{ fullName($transfersSent) }}</td>

@@ -10,16 +10,12 @@ class TransferController extends Controller
     public function index($type = null) {
         $transfers['type'] = ($type) ?? 'received';
 
-        if($transfers['type'] == 'products') {
-            $orders['products'] = Auth::user()->orders()
-                ->latest()
-                ->get();
-        } else if($transfers['type'] == 'winnersgem') {
-            $orders['winnersGem'] = Auth::user()->gemPurchases()
-                ->latest()
-                ->get();
+        if($transfers['type'] == 'received') {
+            $transfers['received'] = Auth::user()->transfersReceived();
+        } else if($transfers['type'] == 'sent') {
+            $transfers['sent'] = Auth::user()->transfersSent();;
         }
 
-        return view('transfers.index');
+        return view('transfers.index', compact('transfers'));
     }
 }
