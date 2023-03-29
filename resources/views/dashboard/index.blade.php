@@ -53,13 +53,13 @@
                         <div class="card-footer px-3 py-2 bg-color-5">
                             <div class="row">
                                 <div class="col-6" style="border-right:1px solid #dddddd">
-                                    <a class="btn-block d-flex justify-content-between align-items-center text-decoration-none text-color-3" href="!#" data-toggle="modal" data-bs-target="#modal-gem-purchase">
+                                    <a class="btn-block d-flex justify-content-between align-items-center text-decoration-none text-color-3" href="!#" data-bs-toggle="modal" data-bs-target="#modal-gem-purchase">
                                         <span class="small">Buy Winners Gem</span>
                                         <i class="fa fa-angle-right"></i>
                                     </a>
                                 </div>
                                 <div class="col-6" style="border-left:1px solid #dddddd">
-                                    <a class="btn-block d-flex justify-content-between align-items-center text-decoration-none text-color-3" href="javascript:void(0)" data-toggle="modal" data-bs-target="#modal-convert">
+                                    <a class="btn-block d-flex justify-content-between align-items-center text-decoration-none text-color-3" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modal-convert">
                                         <span class="small">Convert</span>
                                         <i class="fa fa-angle-right"></i>
                                     </a>
@@ -86,13 +86,13 @@
                         <div class="card-footer px-3 py-2 bg-color-5">
                             <div class="row">
                                 <div class="col-6" style="border-right:1px solid #dddddd">
-                                    <a class="btn-block d-flex justify-content-between align-items-center text-decoration-none text-color-3" href="javascript:void(0)" data-toggle="modal" data-bs-target="#modal-withdraw">
+                                    <a class="btn-block d-flex justify-content-between align-items-center text-decoration-none text-color-3" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modal-withdraw">
                                         <span class="small">Withdraw</span>
                                         <i class="fa fa-angle-right"></i>
                                     </a>
                                 </div>
                                 <div class="col-6" style="border-left:1px solid #dddddd">
-                                    <a class="btn-block d-flex justify-content-between align-items-center text-decoration-none text-color-3" href="javascript:void(0)" data-toggle="modal" data-bs-target="#modal-pool-share-contribute">
+                                    <a class="btn-block d-flex justify-content-between align-items-center text-decoration-none text-color-3" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modal-pool-share-contribute">
                                         <span class="small">Contribute to Pool Fund</span>
                                         <i class="fa fa-angle-right"></i>
                                     </a>
@@ -141,7 +141,7 @@
                             </div>
                         </div>
                         <div class="card-footer px-3 py-2 bg-color-5">
-                            <a class="btn-block d-flex justify-content-between align-items-center text-decoration-none text-color-3" href="javascript:void(0)" data-toggle="modal" data-bs-target="#modal-transfer">
+                            <a class="btn-block d-flex justify-content-between align-items-center text-decoration-none text-color-3" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modal-transfer">
                                 <span class="small">Transfer</span>
                                 <i class="fa fa-angle-right"></i>
                             </a>
@@ -165,7 +165,7 @@
                             </div>
                         </div>
                         <div class="card-footer px-3 py-2 bg-color-5">
-                            <a class="btn-block d-flex justify-content-between align-items-center text-decoration-none text-color-3" href="javascript:void(0)" data-toggle="modal" data-bs-target="#modal-pv-maintenance-details">
+                            <a class="btn-block d-flex justify-content-between align-items-center text-decoration-none text-color-3" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modal-pv-maintenance-details">
                                 <span class="small">View</span>
                                 <i class="fa fa-angle-right"></i>
                             </a>
@@ -410,4 +410,5 @@
     </main>
 
     @include('products.includes.modalGemPurchase')
+    @include('transfers.includes.modalTransfer')
 @endsection

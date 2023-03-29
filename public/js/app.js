@@ -1045,7 +1045,7 @@ $(document).on("change", "#transfer-receiver-username", function () {
   var check_receiver = function check_receiver() {
     $.ajax({
       method: "POST",
-      url: "api/check_receiver.php",
+      url: $("#check-receiver-route").val(),
       timeout: 30000,
       data: {
         username: username

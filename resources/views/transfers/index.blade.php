@@ -6,6 +6,9 @@
 <main class="main">
     <div class="d-sm-flex align-items-center justify-content-between mb-3">
         <h6 class="h6 mb-0 text-gray-800">Transfers</h6>
+        <div>
+            <button class="btn btn-custom-2 btn-sm px-4" data-bs-toggle="modal" data-bs-target="#modal-transfer">Transfer</button>
+        </div>
     </div>
 
     <div class="animated fadeIn pt-2 pb-5">
@@ -61,4 +64,6 @@
         </div>
     </div>
 </main>
+
+@include('transfers.includes.modalTransfer')
 @endsection

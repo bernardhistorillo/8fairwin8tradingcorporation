@@ -54,7 +54,11 @@ Route::middleware(['auth'])->group(function() {
         Route::post('/placeOrder', [OrderController::class, 'placeOrder'])->name('orders.placeOrder');
     });
 
-    Route::get('/transfers/{type?}', [TransferController::class, 'index'])->name('transfers.index');
+    Route::prefix('transfers')->group(function () {
+        Route::get('/{type?}', [TransferController::class, 'index'])->name('transfers.index');
+        Route::post('/checkReceiver', [TransferController::class, 'checkReceiver'])->name('transfers.checkReceiver');
+        Route::post('/submitTransfer', [TransferController::class, 'submitTransfer'])->name('transfers.submitTransfer');
+    });
 
     Route::get('/account', [DashboardController::class, 'index'])->name('account.index');
     Route::get('/conversions', [DashboardController::class, 'index'])->name('conversions.index');
