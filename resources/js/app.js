@@ -1209,7 +1209,7 @@ $(document).on("click", "#transfer-winners-gem", function() {
 
     $.ajax({
         method: "POST",
-        url: "api/transfer.php",
+        url: $("#submit-transfer-route").val(),
         data: {
             username: username,
             amount: amount,
@@ -1222,6 +1222,11 @@ $(document).on("click", "#transfer-winners-gem", function() {
         $("#winners-gem-balance").html(numberFormat(response.gem_balance,true));
         $("#winners-gem-balance-in-pesos").html(numberFormat(response.gem_balance * winnersGemValue,true));
         $("#winners-gem-sent").html(numberFormat(response.gems_sent,true));
+
+        $('#modal-success').attr("data-bs-backdrop", "static");
+        $('#modal-success').attr("data-bs-keyboard", "false");
+        $('#modal-success .proceed').removeAttr("data-bs-dismiss");
+        $('#modal-success .proceed').attr("onclick", "window.location = '/transfers/sent'; $('#modal-success .proceed').prop('disabled',true); $('#modal-success .proceed').html('Redirecting...')");
 
         $('#modal-success .message').html("You have successfully sent " + numberFormat(amount,true) + " <i class='fas fa-gem' style='font-size:0.8em'></i> to " + receiver + ".");
         $('#modal-success').modal('show');

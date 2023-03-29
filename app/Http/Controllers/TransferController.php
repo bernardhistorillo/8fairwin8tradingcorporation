@@ -55,14 +55,17 @@ class TransferController extends Controller
             ->where('id', '!=', Auth::user()->id)
             ->first();
 
-        if($receiver) {
-            $sql = $db->prepare("INSERT INTO `fw_`transfer`s`(`sender`, `receiver`, `amount`, `date_time`) VALUES (?, ?, ?, ?)");
-            if (!$sql->execute(array($_SESSION["fw_account_id"], $receiver['id'], $request->amount, $date_time))) { error(); }
+        abort_if(!$receiver, 422, 'Username didn\'t match any account.');
 
-            $response["gemsSent"] = $income["totalGemsSent"] + $request->amount;
-            $response["gemBalance"] = $income["gemBalance"] - $request->amount;
-        } else {
-            $response["error"] = "Username didn't match any account.";
-        }
+        $transfer = new Transfer();
+        $transfer->sender = Auth::user()->id;
+        $transfer->receiver = $receiver['id'];
+        $transfer->amount = $request->amount;
+        $transfer->save();
+
+        return response()->json([
+            'gemsSent' => $income["totalGemsSent"] + $request->amount,
+            'gemBalance' => $income["gemBalance"] - $request->amount,
+        ]);
     }
 }

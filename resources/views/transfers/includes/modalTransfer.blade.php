@@ -9,6 +9,7 @@
             </div>
             <div class="modal-body">
                 <input type="hidden" id="check-receiver-route" value="{{ route('transfers.checkReceiver') }}" />
+                <input type="hidden" id="submit-transfer-route" value="{{ route('transfers.submitTransfer') }}" />
 
                 <small>Winners Gem Amount (Minimum: 1.00 <i class="fas fa-gem" style="font-size:0.8em"></i>)</small>
                 <div class="position-relative mb-3">
