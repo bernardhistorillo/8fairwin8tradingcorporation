@@ -35,7 +35,4 @@
         @include('products.includes.productsContent')
     </div>
 </main>
-
-@include('products.includes.modalGemPurchase')
-
 @endsection

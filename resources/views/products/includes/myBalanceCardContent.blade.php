@@ -17,7 +17,7 @@
         </div>
     </div>
     <div>
-		<div class="text-value-sm fw-bold" style="color:#0e4d22" id="winners-gem" data-amount="{{ $income["pesoBalance"] }}">&#8369; {{ number_format($income["pesoBalance"], 2) }}</div>
+		<div class="text-value-sm fw-bold" style="color:#0e4d22" id="winners-gem" data-amount="{{ $income["pesoBalance"] }}"><i class="fa-solid fa-peso-sign"></i> {{ number_format($income["pesoBalance"], 2) }}</div>
 		<div class="text-uppercase font-weight-bold small">Peso Balance</div>
 	</div>
 </div>

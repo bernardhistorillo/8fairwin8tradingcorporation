@@ -122,6 +122,20 @@ class User extends Authenticatable
     }
     // End: Relationships
 
+    public function conversionsGemToPeso() {
+        return $this->conversions()
+            ->where('type', 1)
+            ->orderBy('id', 'desc')
+            ->get();
+    }
+
+    public function conversionsPesoToGem() {
+        return $this->conversions()
+            ->where('type', 2)
+            ->orderBy('id', 'desc')
+            ->get();
+    }
+
     public function directCount() {
         return $this->downlines()
             ->where('level', 1)

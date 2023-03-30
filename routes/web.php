@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\ConversionController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\IncomeController;
@@ -60,8 +61,12 @@ Route::middleware(['auth'])->group(function() {
         Route::post('/submitTransfer', [TransferController::class, 'submitTransfer'])->name('transfers.submitTransfer');
     });
 
+    Route::prefix('conversions')->group(function () {
+        Route::get('/{type?}', [ConversionController::class, 'index'])->name('conversions.index');
+        Route::post('/submitConversion', [ConversionController::class, 'submitConversion'])->name('conversions.submitConversion');
+    });
+
     Route::get('/account', [DashboardController::class, 'index'])->name('account.index');
-    Route::get('/conversions', [DashboardController::class, 'index'])->name('conversions.index');
     Route::get('/withdrawals', [DashboardController::class, 'index'])->name('withdrawals.index');
     Route::get('/terminal', [DashboardController::class, 'index'])->name('terminal.index');
 

@@ -54,7 +54,7 @@
                         <td>{{ \Carbon\Carbon::parse($item['created_at'])->isoFormat('llll') }}</td>
                         <td>{{ fullName($item) }}</td>
                         <td>{{ $item['level'] }}</td>
-                        <td>&#8369;&nbsp;{{ number_format($item["amount"], 2) }}</td>
+                        <td><i class="fa-solid fa-peso-sign"></i>&nbsp;{{ number_format($item["amount"], 2) }}</td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -75,7 +75,7 @@
                         <td>{{ \Carbon\Carbon::parse($item['created_at'])->isoFormat('llll') }}</td>
                         <td>{{ fullName($item) }}</td>
                         <td>{{ $item['level'] }}</td>
-                        <td>&#8369;&nbsp;{{ number_format($item["amount"], 2) }}</td>
+                        <td><i class="fa-solid fa-peso-sign"></i>&nbsp;{{ number_format($item["amount"], 2) }}</td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -96,7 +96,7 @@
                     <td>{{ \Carbon\Carbon::parse($item['created_at'])->isoFormat('llll') }}</td>
                     <td>{{ fullName($item) }}</td>
                     <td>{{ $item['level'] }}</td>
-                    <td>&#8369;&nbsp;{{ number_format($item["amount"], 2) }}</td>
+                    <td><i class="fa-solid fa-peso-sign"></i>&nbsp;{{ number_format($item["amount"], 2) }}</td>
                 </tr>
                 @endforeach
                 </tbody>
@@ -115,7 +115,7 @@
                 <tr>
                     <td>{{ \Carbon\Carbon::parse($item['created_at'])->isoFormat('llll') }}</td>
                     <td>{{ $item['reference'] }}</td>
-                    <td>&#8369;&nbsp;{{ number_format($item["amount"], 2) }}</td>
+                    <td><i class="fa-solid fa-peso-sign"></i>&nbsp;{{ number_format($item["amount"], 2) }}</td>
                 </tr>
                 @endforeach
                 </tbody>
@@ -136,7 +136,7 @@
                     <td>{{ \Carbon\Carbon::parse($item['created_at'])->isoFormat('llll') }}</td>
                     <td>{{ fullName($item) }}</td>
                     <td>{{ $item['level'] }}</td>
-                    <td>&#8369;&nbsp;{{ number_format($item["amount"], 2) }}</td>
+                    <td><i class="fa-solid fa-peso-sign"></i>&nbsp;{{ number_format($item["amount"], 2) }}</td>
                 </tr>
                 @endforeach
                 </tbody>
@@ -155,7 +155,7 @@
                 <tr>
                     <td>{{ \Carbon\Carbon::parse($item['created_at'])->isoFormat('llll') }}</td>
                     <td>{{ $ranks[$rank_incentives_income["rank"]] }}</td>
-                    <td>&#8369;&nbsp;{{ number_format($item["amount"], 2) }}</td>
+                    <td><i class="fa-solid fa-peso-sign"></i>&nbsp;{{ number_format($item["amount"], 2) }}</td>
                 </tr>
                 @endforeach
                 </tbody>
@@ -176,7 +176,7 @@
                     <td>{{ \Carbon\Carbon::parse($item['created_at'])->isoFormat('llll') }}</td>
                     <td>{{ fullName($item) }}</td>
                     <td>{{ $item["generation"] . ($item["generation"] == 1) ? "st" : (($item["generation"] == 2) ? "nd" : (($item["generation"] == 3) ? "rd" : "th")) }}</td>
-                    <td>&#8369;&nbsp;{{ number_format($item["amount"], 2) }}</td>
+                    <td><i class="fa-solid fa-peso-sign"></i>&nbsp;{{ number_format($item["amount"], 2) }}</td>
                 </tr>
                 @endforeach
                 </tbody>
@@ -195,7 +195,7 @@
                 <tr>
                     <td>{{ \Carbon\Carbon::parse($item['created_at'])->isoFormat('llll') }}</td>
                     <td>{{ $item['shares'] }}</td>
-                    <td>&#8369;&nbsp;{{ number_format($item["amount"], 2) }}</td>
+                    <td><i class="fa-solid fa-peso-sign"></i>&nbsp;{{ number_format($item["amount"], 2) }}</td>
                 </tr>
                 @endforeach
                 </tbody>

@@ -12,7 +12,7 @@
     </div>
 
     <div class="animated fadeIn pt-2 pb-5">
-        <ul class="nav nav-tabs mb-3" role="tab-list">
+        <ul class="nav nav-tabs mb-4" role="tab-list">
             <li class="nav-item">
                 <a class="nav-link {{ ($transfers['type'] == 'received') ? 'active' : '' }}" href="{{ route('transfers.index', 'received') }}" style="{{ ($transfers['type'] == 'received') ? 'background-color:#0e4d22; color:#ffffff; border-bottom:1px solid #0e4d22' : 'background-color:rgba(0,0,0,0); color:#0e4d22' }}">Received</a>
             </li>

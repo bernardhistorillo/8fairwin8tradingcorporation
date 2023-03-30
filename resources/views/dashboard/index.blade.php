@@ -409,6 +409,5 @@
         </div>
     </main>
 
-    @include('products.includes.modalGemPurchase')
     @include('transfers.includes.modalTransfer')
 @endsection

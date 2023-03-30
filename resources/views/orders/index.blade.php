@@ -62,7 +62,7 @@
                         <td><button class="btn btn-custom-2 btn-sm font-size-90 update-proof-of-payment" value="{{ $item['id'] }}">Update Proof of Payment<span style="display:none">{{ $item['proof_of_payment'] }}</span></button></td>
                         <td>{{ \Carbon\Carbon::parse($item['created_at'])->isoFormat('llll') }}</td>
                         <td>{{ number_format($item['amount'], 2) }} <i class="fas fa-gem gem-change-color" style="font-size:0.8em"></i></td>
-                        <td>&#8369;&nbsp;{{ number_format($item['price'], 2) }}</td>
+                        <td><i class="fa-solid fa-peso-sign"></i>&nbsp;{{ number_format($item['price'], 2) }}</td>
                         <td class="{{ ($item["date_time_approved"]) ? "bg-color-2" : "bg-color-1" }}" style="color:#ffffff">{!! ($item["date_time_approved"]) ? "Completed<br>" . \Carbon\Carbon::parse($item["date_time_approved"])->isoFormat('llll') : "Pending" !!}</td>
                     </tr>
                     @endforeach

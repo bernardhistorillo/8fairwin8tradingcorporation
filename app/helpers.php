@@ -34,10 +34,7 @@ if(!function_exists('totalPoolShares')) {
 
 if(!function_exists('winnersGemValue')) {
     function winnersGemValue() {
-        $winnersGemValue = WinnersGemValue::latest()
-            ->first();
-
-        return $winnersGemValue['percentage'];
+        return session('winnersGemValue');
     }
 }
 
