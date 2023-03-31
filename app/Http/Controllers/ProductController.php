@@ -9,8 +9,6 @@ use Illuminate\Support\Facades\Auth;
 class ProductController extends Controller
 {
     public function index() {
-        $winnersGemValue = winnersGemValue();
-
         $items = Item::where('status', 1)
             ->orderBy('name')
             ->get();
@@ -21,6 +19,6 @@ class ProductController extends Controller
         $showProductsTab = (!$terminalUser && Auth::user()->package_id != 3) || ($terminalUser && $terminalUserDetails["package_id"] != 3);
         $income = Auth::user()->income();
 
-        return view('products.index', compact('winnersGemValue', 'items', 'showProductsTab', 'terminalUser', 'terminalUserDetails', 'income'));
+        return view('products.index', compact('items', 'showProductsTab', 'terminalUser', 'terminalUserDetails', 'income'));
     }
 }

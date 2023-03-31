@@ -8,6 +8,8 @@
                 </div>
             </div>
             <div class="modal-body">
+                <input type="hidden" id="submit-conversion-route" value="{{ route('conversions.submitConversion') }}" />
+
                 <ul class="nav nav-pills nav-justified">
                     <li class="nav-item">
                         <a class="nav-link convert-tab active" data-bs-toggle="tab" data-type="peso-to-gem" href="#peso-to-gem-tab" role="tab" aria-controls="peso-to-gem-tab" aria-selected="true">Peso to Winners Gem</a>
@@ -23,13 +25,13 @@
                         <div class="position-relative mb-3">
                             <input class="form-control form-control-1 px-5 py-2 text-center" id="convert-peso-to-gem-amount" type="number" step="any" min="1" value="1" placeholder="Enter Amount">
                             <div class="position-absolute" style="right:20px; top:9px">
-                                <i class="fas fa-user"></i>
+                                <i class="fa-solid fa-peso-sign"></i>
                             </div>
                         </div>
 
                         <table class="table table-bordered mb-0">
                             <thead>
-                                <tr style="background-color:#eeeeee">
+                                <tr class="bg-color-5">
                                     <th>Winners Gem</th>
                                 </tr>
                             </thead>
@@ -46,22 +48,20 @@
 
                     <div class="tab-pane fade" id="gem-to-peso-tab" role="tabpanel" aria-labelledby="gem-to-peso-tab">
                         <label class="convert-amount-label" for="convert-amount">Enter Amount <small>(Minimum: 500.00 Winners Gem)</small></label>
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text font-weight-bold px-0" style="width:40px; display:block">
-                                    <i class="fas fa-gem gem-change-color"></i>
-                                </span>
+                        <div class="position-relative mb-3">
+                            <input class="form-control form-control-1 px-5 py-2 text-center" id="convert-gem-to-peso-amount" type="number" step="any" min="500" value="500" placeholder="Enter Amount">
+                            <div class="position-absolute" style="right:20px; top:9px">
+                                <i class="fa-solid fa-gem"></i>
                             </div>
-                            <input type="number" class="form-control text-center" id="convert-gem-to-peso-amount" step="any" min="500" value="500">
                         </div>
 
                         <table class="table table-bordered mb-0">
                             <thead>
-                            <tr style="background-color:#eeeeee">
-                                <th>Peso</th>
-                                <th>Fee (2%)</th>
-                                <th>Winners Gem</th>
-                            </tr>
+                                <tr class="bg-color-5">
+                                    <th>Peso</th>
+                                    <th>Fee (2%)</th>
+                                    <th>Winners Gem</th>
+                                </tr>
                             </thead>
                             <tbody>
                             <tr>

@@ -45,7 +45,7 @@
                                 <div class="text-value-sm font-size-140" style="color:#0e4d22; line-height:0.9em; margin-top:3px">
                                     <span id="winners-gem-balance">{{ number_format($income['gemBalance'], 2) }}</span>
                                     <i class="fas fa-gem gem-change-color" style="font-size:0.8em"></i>
-                                    <span style="font-size:0.7em"> &nbsp;=&nbsp; <i class="fa-solid fa-peso-sign"></i>&nbsp;<span id="winners-gem-balance-in-pesos">{{ number_format($income["gemBalance"] * $winnersGemValue, 2) }}</span></span>
+                                    <span style="font-size:0.7em"> &nbsp;=&nbsp; <i class="fa-solid fa-peso-sign"></i>&nbsp;<span id="winners-gem-balance-in-pesos">{{ number_format($income["gemBalance"] * winnersGemValue(), 2) }}</span></span>
                                 </div>
                                 <div class="text-uppercase small" style="margin-top:4px">Winners Gem</div>
                             </div>

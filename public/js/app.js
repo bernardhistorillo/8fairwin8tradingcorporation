@@ -1140,7 +1140,7 @@ $(document).on("click", "#convert-confirm", function () {
   var type = $(".convert-tab.active").data("type");
   var amount = parseFloat($("#convert-" + type + "-amount").val());
   if (type == "peso-to-gem") {
-    $("#modal-warning .message").html("Are you sure you want to convert &#x20B1;&nbsp;" + numberFormat(amount, true) + " to Winners Gem?");
+    $("#modal-warning .message").html("Are you sure you want to convert <i class='fa-solid fa-peso-sign'></i>&nbsp;" + numberFormat(amount, true) + " to Winners Gem?");
   } else {
     $("#modal-warning .message").html("Are you sure you want to convert " + numberFormat(amount, true) + " Winners Gem to Peso?<br>This will cost a total of " + numberFormat(amount * 1.02, true) + " Winners Gem.");
   }
@@ -1156,7 +1156,7 @@ $(document).on("click", "#convert", function () {
   var amount = parseFloat($("#convert-" + type + "-amount").val());
   $.ajax({
     method: "POST",
-    url: "api/convert.php",
+    url: $("#submit-conversion-route").val(),
     data: {
       type: type,
       amount: amount,
@@ -1164,16 +1164,20 @@ $(document).on("click", "#convert", function () {
     },
     timeout: 30000
   }).done(function (response) {
-    if (response.type && response.type == "winners-gem-update") {
+    if (response.type && response.type === "winners-gem-update") {
       winnersGemValue = parseFloat(response.winners_gem_value);
       $("#purchase-winners-gem-amount").val(parseFloat($(this).val() / winnersGemValue).toFixed(2));
       $("#modal-error .message").html("Winners Gem value has just changed. Winners Gem to be purchased was updated.");
       $("#modal-error").modal('show');
     } else {
-      $("#winners-gem-balance").html(numberFormat(response.gem_balance, true));
-      $("#winners-gem-balance-in-pesos").html(numberFormat(response.gem_balance * winnersGemValue, true));
-      $("#peso-balance").html(numberFormat(response.peso_balance, true));
-      $('#modal-success .message').html("You have successfully converted &#x20B1;&nbsp;" + numberFormat(amount, true) + " to Winners Gem.");
+      $("#winners-gem-balance").html(numberFormat(response.gemBalance, true));
+      $("#winners-gem-balance-in-pesos").html(numberFormat(response.gemBalance * winnersGemValue, true));
+      $("#peso-balance").html(numberFormat(response.pesoBalance, true));
+      $('#modal-success').attr("data-bs-backdrop", "static");
+      $('#modal-success').attr("data-bs-keyboard", "false");
+      $('#modal-success .proceed').removeAttr("data-bs-dismiss");
+      $('#modal-success .proceed').attr("onclick", "window.location = '" + (type === "gem-to-peso" ? "/conversions" : "/conversions/peso-to-gem") + "'; $('#modal-success .proceed').prop('disabled',true); $('#modal-success .proceed').html('Redirecting...')");
+      $('#modal-success .message').html("You have successfully converted <i class='fa-solid fa-peso-sign'></i>&nbsp;" + numberFormat(amount, true) + " to Winners Gem.");
       $('#modal-success').modal('show');
     }
   }).fail(function () {
@@ -1187,12 +1191,12 @@ $(document).on("click", "#convert", function () {
 });
 $(document).on("change", "#withdraw-amount", function () {
   var amount = parseFloat($("#withdraw-amount").val());
-  $("#withdraw-transaction-fee").html("&#x20B1;&nbsp;" + numberFormat(amount * 0.01, true));
-  $("#withdraw-total").html("&#x20B1;&nbsp;" + numberFormat(amount * 1.01, true));
+  $("#withdraw-transaction-fee").html("<i class='fa-solid fa-peso-sign'></i>&nbsp;" + numberFormat(amount * 0.01, true));
+  $("#withdraw-total").html("<i class='fa-solid fa-peso-sign'></i>&nbsp;" + numberFormat(amount * 1.01, true));
 });
 $(document).on("click", "#withdraw-confirm", function () {
   var amount = parseFloat($("#withdraw-amount").val());
-  $("#modal-warning .message").html("Are you sure you want to withdraw &#x20B1;&nbsp;" + numberFormat(amount, true) + "?<br>Transaction fee costs &#x20B1;&nbsp;" + numberFormat(amount * 0.01, true) + ".");
+  $("#modal-warning .message").html("Are you sure you want to withdraw <i class='fa-solid fa-peso-sign'></i>&nbsp;" + numberFormat(amount, true) + "?<br>Transaction fee costs <i class='fa-solid fa-peso-sign'></i>&nbsp;" + numberFormat(amount * 0.01, true) + ".");
   $("#modal-warning .proceed").attr("id", "withdraw");
   $("#modal-withdraw").modal("hide");
   $("#modal-warning").modal("show");
@@ -1226,7 +1230,7 @@ $(document).on("click", "#withdraw", function () {
 });
 $(document).on("click", "#contribute-to-pool-share-confirm", function () {
   var amount = parseFloat($("#pool-share-contribution-amount").val());
-  $("#modal-warning .message").html("Are you sure you want to contribute &#x20B1;&nbsp;" + numberFormat(amount, true) + " to Pool Share?");
+  $("#modal-warning .message").html("Are you sure you want to contribute <i class='fa-solid fa-peso-sign'></i>&nbsp;" + numberFormat(amount, true) + " to Pool Share?");
   $("#modal-warning .proceed").attr("id", "contribute-to-pool-share");
   $("#modal-pool-share-contribute").modal("hide");
   $("#modal-warning").modal("show");

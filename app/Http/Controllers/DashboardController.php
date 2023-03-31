@@ -8,8 +8,7 @@ class DashboardController extends Controller
 {
     public function index() {
         $income = Auth::user()->income();
-        $winnersGemValue = winnersGemValue();
 
-        return view('dashboard.index', compact('income', 'winnersGemValue'));
+        return view('dashboard.index', compact('income'));
     }
 }

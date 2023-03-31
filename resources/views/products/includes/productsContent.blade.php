@@ -15,7 +15,7 @@
             @foreach($items as $item)
             <div class="col-md-6 col-lg-12 col-xl-6 px-2 products-section {{ ($item["type"] == 1) ? 'd-none' : '' }}" data-type="{{ $item["type"] }}" data-package-id="{{ $item["package_id"] }}">
                 <div class="h-100 pb-4">
-                    <div class="card border-radius-0 product-container h-100" data-id="{{ $item["id"] }}" data-name="{{ $item["name"] }}" data-price="{{ ((!$terminalUser && Auth::user()->package_id > 0) || ($terminalUser && $terminalUserDetails["package_id"] > 0)) ? $item["distributors_price"] / $winnersGemValue : $item["suggested_retail_price"] / $winnersGemValue }}" data-points="{{ $item["points_value"] }}" data-center-price="{{ $item["center_price"] / $winnersGemValue }}" data-mobile-price="{{ $item["mobile_price"] / $winnersGemValue }}" data-distributors-price="{{ $item["distributors_price"] / $winnersGemValue }}" data-srp="{{ $item["suggested_retail_price"] / $winnersGemValue }}" data-quantity="1">
+                    <div class="card border-radius-0 product-container h-100" data-id="{{ $item["id"] }}" data-name="{{ $item["name"] }}" data-price="{{ ((!$terminalUser && Auth::user()->package_id > 0) || ($terminalUser && $terminalUserDetails["package_id"] > 0)) ? $item["distributors_price"] / winnersGemValue() : $item["suggested_retail_price"] / winnersGemValue() }}" data-points="{{ $item["points_value"] }}" data-center-price="{{ $item["center_price"] / winnersGemValue() }}" data-mobile-price="{{ $item["mobile_price"] / winnersGemValue() }}" data-distributors-price="{{ $item["distributors_price"] / winnersGemValue() }}" data-srp="{{ $item["suggested_retail_price"] / winnersGemValue() }}" data-quantity="1">
                         @if(!$terminalUser)
                         <span class="stock d-none">{{ $item->terminalItemStock(Auth::user()->id, Auth::user()->stockist)['inStock'] }}</span>
                         @endif
@@ -45,9 +45,9 @@
                                 <div class="col-6 px-0">
                                     <div class="d-flex align-items-center justify-content-center h-100 p-2" style="border-right:1px solid #cccccc; border-bottom:1px solid #cccccc">
                                         <div>
-                                            <div class="text-value crossed-price text-center font-size-80" style="line-height:10px"><span style="text-decoration:line-through">&nbsp;{{ number_format($item["suggested_retail_price"] / $winnersGemValue, 2) }} <i class="fas fa-gem gem-change-color" style="font-size:0.8em"></i></span>&nbsp;</div>
+                                            <div class="text-value crossed-price text-center font-size-80" style="line-height:10px"><span style="text-decoration:line-through">&nbsp;{{ number_format($item["suggested_retail_price"] / winnersGemValue(), 2) }} <i class="fas fa-gem gem-change-color" style="font-size:0.8em"></i></span>&nbsp;</div>
                                             <div class="text-value text-center">
-                                                <span class="price">{{ ((!$terminalUser && Auth::user()->package_id > 0) || ($terminalUser && $terminalUserDetails["package_id"] > 0)) ? number_format($item["distributors_price"] / $winnersGemValue, 2) : number_format($item["suggested_retail_price"] / $winnersGemValue, 2) }}</span>&nbsp;<i class="fas fa-gem gem-change-color" style="font-size:0.8em"></i>
+                                                <span class="price">{{ ((!$terminalUser && Auth::user()->package_id > 0) || ($terminalUser && $terminalUserDetails["package_id"] > 0)) ? number_format($item["distributors_price"] / winnersGemValue(), 2) : number_format($item["suggested_retail_price"] / winnersGemValue(), 2) }}</span>&nbsp;<i class="fas fa-gem gem-change-color" style="font-size:0.8em"></i>
                                             </div>
                                         </div>
                                     </div>

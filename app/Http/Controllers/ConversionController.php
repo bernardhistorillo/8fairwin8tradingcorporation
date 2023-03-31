@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Conversion;
 use App\Models\Transfer;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -21,34 +22,73 @@ class ConversionController extends Controller
         return view('conversions.index', compact('conversions'));
     }
 
-    public function submitTransfer(Request $request) {
+    public function submitConversion(Request $request) {
         $request->validate([
-            'username' => 'required|string',
+            'type' => 'required|string',
             'amount' => 'required|integer',
-            'pin_code' => 'required|numeric',
+            'winners_gem_value' => 'required|numeric',
         ]);
 
+        abort_if(Auth::user()->package_id == 4, 422, 'Conversion is restricted for accounts with Dream Maker Package.');
+
+        if(winnersGemValue() != $request->winners_gem_value) {
+            return response()->json([
+                'error' => "Winners Gem value has just changed. Winners Gem to be purchased was updated.",
+                'type' =>"winners-gem-update",
+                'winners_gem_value' => winnersGemValue(),
+            ]);
+        }
+
         $income = Auth::user()->income();
+        $gemBalance = 0;
+        $pesoBalance = 0;
 
-        abort_if($request->amount < 1, 422, 'The minimum amount that can be transferred is 1.00.');
-        abort_if($income["gemBalance"] < $request->amount, 422, 'Insufficient Winners Gem Balance');
-        abort_if(Auth::user()->pin_code != $request->pin_code, 422, 'Invalid Pin Code');
+        if($request->type == "gem-to-peso") {
+            abort_if($request->amount < 100, 422, 'Minimum amount that can be converted is 500 Winners Gems.');
 
-        $receiver = User::where('username', $request->username)
-            ->where('id', '!=', Auth::user()->id)
-            ->first();
+            $feePercentage = 0.02;
 
-        abort_if(!$receiver, 422, 'Username didn\'t match any account.');
+            abort_if($income["gemBalance"] < $request->amount * ($feePercentage + 1), 422, 'Insufficient Winners Gem Balance');
 
-        $transfer = new Transfer();
-        $transfer->sender = Auth::user()->id;
-        $transfer->receiver = $receiver['id'];
-        $transfer->amount = $request->amount;
-        $transfer->save();
+            $feeInGems = $request->amount * $feePercentage;
+            $fee_in_pesos = $feeInGems * winnersGemValue();
+            $pesos = $request->amount * winnersGemValue();
+
+            $conversion = new Conversion();
+            $conversion->user_id = Auth::user()->id;
+            $conversion->type = 1;
+            $conversion->gem = $request->amount;
+            $conversion->peso = $pesos;
+            $conversion->fee_in_gems = $feeInGems;
+            $conversion->fee_in_pesos = $fee_in_pesos;
+            $conversion->save();
+
+            $gemBalance = $income["gemBalance"] - ($request->amount + $feeInGems);
+            $pesoBalance = $income["pesoBalance"] + $pesos;
+        } else if($request->type == "peso-to-gem") {
+            abort_if($request->amount < 1, 422, 'Minimum amount that can be converted is &#x20B1;&nbsp;1.00.');
+            abort_if($income["pesoBalance"] < $request->amount, 422, 'Insufficient Peso Balance');
+
+            $gems = $request->amount / winnersGemValue();
+
+            $conversion = new Conversion();
+            $conversion->user_id = Auth::user()->id;
+            $conversion->type = 2;
+            $conversion->gem = $gems;
+            $conversion->peso = $request->amount;
+            $conversion->fee_in_gems = 0;
+            $conversion->fee_in_pesos = 0;
+            $conversion->save();
+
+            $pesoBalance = $income["pesoBalance"] - $request->amount;
+            $gemBalance = $income["gemBalance"] + $gems;
+        } else {
+            abort(422, 'Invalid Conversion Data');
+        }
 
         return response()->json([
-            'gemsSent' => $income["totalGemsSent"] + $request->amount,
-            'gemBalance' => $income["gemBalance"] - $request->amount,
+            'gemBalance' => $gemBalance,
+            'pesoBalance' => $pesoBalance,
         ]);
     }
 }
