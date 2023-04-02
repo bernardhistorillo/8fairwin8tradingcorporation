@@ -9,6 +9,10 @@ class DashboardController extends Controller
     public function index() {
         $income = Auth::user()->income();
 
-        return view('dashboard.index', compact('income'));
+        $payoutInformation = Auth::user()->payoutInformation();
+        $validPayoutInformation = $payoutInformation['validPayoutInformation'];
+        $payoutInformation = $payoutInformation['payoutInformation'];
+
+        return view('dashboard.index', compact('income', 'validPayoutInformation', 'payoutInformation'));
     }
 }

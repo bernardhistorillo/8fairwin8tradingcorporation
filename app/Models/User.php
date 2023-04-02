@@ -77,6 +77,39 @@ class User extends Authenticatable
         return $this->hasMany(Order::class, 'terminal_user_id');
     }
 
+    public function payoutInformation() {
+        $payoutInformation = $this->hasOne(PayoutInformation::class)
+            ->first();
+
+        if(!$payoutInformation) {
+            $payoutInformation["method"] = "";
+            $payoutInformation["account_number"] = "";
+            $payoutInformation["account_name"] = "";
+            $payoutInformation["name"] = "";
+            $payoutInformation["mobile_number"] = "";
+            $payoutInformation["wallet_address"] = "";
+
+            $validPayoutInformation = false;
+        } else {
+            if($payoutInformation["method"] == "BDO" && $payoutInformation["account_number"] != "" && $payoutInformation["account_name"] != "") {
+                $validPayoutInformation = true;
+            } else if($payoutInformation["method"] == "Palawan Express" && $payoutInformation["name"] != "" && $payoutInformation["mobile_number"] != "") {
+                $validPayoutInformation = true;
+            } else if($payoutInformation["method"] == "GCash" && $payoutInformation["mobile_number"] != "") {
+                $validPayoutInformation = true;
+            } else if($payoutInformation["method"] == "Coins.ph" && $payoutInformation["mobile_number"] != "") {
+                $validPayoutInformation = true;
+            } else {
+                $validPayoutInformation = false;
+            }
+        }
+
+        return [
+            'payoutInformation' => $payoutInformation,
+            'validPayoutInformation' => $validPayoutInformation,
+        ];
+    }
+
     public function personalRebateIncomes() {
         return $this->hasMany(PersonalRebateIncome::class);
     }

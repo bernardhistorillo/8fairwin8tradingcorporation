@@ -1207,7 +1207,7 @@ $(document).on("click", "#withdraw", function () {
   $("#modal-warning button[data-bs-dismiss='modal']").css("display", "none");
   $.ajax({
     method: "POST",
-    url: "api/withdraw.php",
+    url: $("#submit-withdrawal-route").val(),
     data: {
       amount: parseFloat($("#withdraw-amount").val())
     },

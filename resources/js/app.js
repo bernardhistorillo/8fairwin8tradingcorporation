@@ -1340,7 +1340,7 @@ $(document).on("click", "#withdraw", function() {
 
     $.ajax({
         method: "POST",
-        url: "api/withdraw.php",
+        url: $("#submit-withdrawal-route").val(),
         data: {
             amount: parseFloat($("#withdraw-amount").val())
         },

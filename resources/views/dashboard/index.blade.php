@@ -410,4 +410,6 @@
     </main>
 
     @include('transfers.includes.modalTransfer')
+    @include('conversions.includes.modalConvert')
+    @include('withdrawals.includes.modalWithdraw')
 @endsection

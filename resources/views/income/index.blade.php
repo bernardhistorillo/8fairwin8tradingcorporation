@@ -36,7 +36,7 @@
             </li>
         </ul>
 
-        <div class="table-responsive">
+        <div class="table-responsive font-size-90">
             <h6 class="text-center my-5 loading-text">Loading...</h6>
             @if($income['type'] == 'referral')
             <table class="table table-bordered data-table" style="display:none">

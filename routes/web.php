@@ -10,6 +10,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\TransferController;
+use App\Http\Controllers\WithdrawalController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -66,8 +67,12 @@ Route::middleware(['auth'])->group(function() {
         Route::post('/submitConversion', [ConversionController::class, 'submitConversion'])->name('conversions.submitConversion');
     });
 
+    Route::prefix('withdrawals')->group(function () {
+        Route::get('/', [WithdrawalController::class, 'index'])->name('withdrawals.index');
+        Route::post('/submitWithdrawal', [WithdrawalController::class, 'submitWithdrawal'])->name('withdrawals.submitWithdrawal');
+    });
+
     Route::get('/account', [DashboardController::class, 'index'])->name('account.index');
-    Route::get('/withdrawals', [DashboardController::class, 'index'])->name('withdrawals.index');
     Route::get('/terminal', [DashboardController::class, 'index'])->name('terminal.index');
 
     Route::middleware(['admin'])->group(function() {
