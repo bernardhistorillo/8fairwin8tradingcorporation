@@ -8,6 +8,7 @@ use App\Http\Controllers\IncomeController;
 use App\Http\Controllers\NetworkController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\TerminalController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\TransferController;
 use App\Http\Controllers\WithdrawalController;
@@ -72,8 +73,11 @@ Route::middleware(['auth'])->group(function() {
         Route::post('/submitWithdrawal', [WithdrawalController::class, 'submitWithdrawal'])->name('withdrawals.submitWithdrawal');
     });
 
+    Route::prefix('terminal')->group(function () {
+        Route::get('/{view?}', [TerminalController::class, 'index'])->name('terminal.index');
+    });
+
     Route::get('/account', [DashboardController::class, 'index'])->name('account.index');
-    Route::get('/terminal', [DashboardController::class, 'index'])->name('terminal.index');
 
     Route::middleware(['admin'])->group(function() {
         Route::prefix('admin')->group(function () {

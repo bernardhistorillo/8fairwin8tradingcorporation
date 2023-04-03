@@ -27,12 +27,13 @@ class Item extends Model
 
         $dimension = json_decode($this->dimension, true);
 
-        return (($dimension[0] >= $dimension[1]) ? "width" : "height");
+        return ($dimension[0] >= $dimension[1]) ? "width" : "height";
     }
 
     public function terminalItemStock($userId, $stockist) {
         $terminalItemStock['total'] = $this->orderedItems()
             ->join('orders', function($join) use ($userId, $stockist) {
+                $join->on('ordered_items.order_id', 'orders.id');
                 $join->whereNotNull('date_time_completed');
                 $join->where('user_id', $userId);
                 $join->where('stockist', $stockist);
@@ -41,6 +42,7 @@ class Item extends Model
 
         $terminalItemStock['ordered'] = $this->orderedItems()
             ->join('orders', function($join) use ($userId) {
+                $join->on('ordered_items.order_id', 'orders.id');
                 $join->whereNotNull('date_time_completed');
                 $join->where('terminal_user_id', $userId);
             })
@@ -50,6 +52,7 @@ class Item extends Model
 
         $terminalItemStock['pending'] = $this->orderedItems()
             ->join('orders', function($join) use ($userId) {
+                $join->on('ordered_items.order_id', 'orders.id');
                 $join->whereNull('date_time_completed');
                 $join->where('terminal_user_id', $userId);
             })

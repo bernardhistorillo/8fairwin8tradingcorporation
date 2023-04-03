@@ -245,6 +245,18 @@ class User extends Authenticatable
         return $data;
     }
 
+    public function latestShippingInformation() {
+        return $this->orders()
+            ->whereNotNull('full_name')
+            ->whereNotNull('contact_number')
+            ->whereNotNull('barangay')
+            ->whereNotNull('city')
+            ->whereNotNull('province')
+            ->whereNotNull('zip_code')
+            ->latest()
+            ->first();
+    }
+
     public function monthlyPVMaintenance() {
         return $this->orders
             ->where('type', 2)

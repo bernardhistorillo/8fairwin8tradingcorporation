@@ -7,6 +7,7 @@ use App\Models\PoolShareIncome;
 use App\Models\StairstepIncome;
 use App\Models\UnilevelIncome;
 use App\Models\WinnersGemValue;
+use Carbon\Carbon;
 
 if(!function_exists('totalPoolShares')) {
     function totalPoolShares() {
@@ -96,3 +97,8 @@ if(!function_exists('generateCode')) {
     }
 }
 
+if(!function_exists('formatDate')) {
+    function formatDate($date) {
+        return Carbon::parse($date)->isoFormat('llll');
+    }
+}

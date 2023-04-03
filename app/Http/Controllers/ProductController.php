@@ -14,11 +14,12 @@ class ProductController extends Controller
             ->get();
 
         $terminalUser = false;
-        $terminalUserDetails = false;
 
-        $showProductsTab = (!$terminalUser && Auth::user()->package_id != 3) || ($terminalUser && $terminalUserDetails["package_id"] != 3);
+        $showProductsTab = (!$terminalUser && Auth::user()->package_id != 3) || ($terminalUser && $terminalUser["package_id"] != 3);
         $income = Auth::user()->income();
 
-        return view('products.index', compact('items', 'showProductsTab', 'terminalUser', 'terminalUserDetails', 'income'));
+        $latestShippingInformation = Auth::user()->latestShippingInformation();
+
+        return view('products.index', compact('items', 'showProductsTab', 'terminalUser', 'income', 'latestShippingInformation'));
     }
 }

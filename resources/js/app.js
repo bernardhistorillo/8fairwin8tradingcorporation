@@ -49,6 +49,8 @@ let pageOnload = async function() {
         conversionsOnload();
     } else if(currentRouteName === "withdrawals.index") {
         withdrawalsOnload();
+    } else if(currentRouteName === "terminal.index") {
+        terminalOnload();
     }
 };
 let homeOnload = function() {
@@ -174,6 +176,21 @@ let conversionsOnload = function() {
 };
 let withdrawalsOnload = function() {
     initializeDataTables();
+};
+let terminalOnload = function() {
+    $(".data-table").DataTable({
+        "aaSorting": [],
+        "pageLength": 5
+    });
+
+    $("#items-table").DataTable({
+        "aaSorting": [],
+        "pageLength": 5,
+        "order": [[ 2, "desc" ]]
+    });
+
+    $(".loading-text").css("display", "none");
+    $(".data-table, #items-table").css("display", "table");
 };
 let initMap = function() {
     let map = new google.maps.Map(document.getElementById("map"), {
@@ -767,27 +784,6 @@ profile_picture_uploader.on("change", function() {
         img.src = event.target.result;
     };
     reader.readAsDataURL(profile_picture_uploader[0].files[0]);
-});
-
-$(document).ready(function() {
-    var page_name = location.href.split("/").slice(-1);
-    page_name = page_name[0].split(".");
-
-    if (page_name[0] == "terminal") {
-        $(".data-table").DataTable({
-            "aaSorting": [],
-            "pageLength": 5
-        });
-
-        $("#items-table").DataTable({
-            "aaSorting": [],
-            "pageLength": 5,
-            "order": [[ 2, "desc" ]]
-        });
-
-        $(".loading-text").css("display", "none");
-        $(".data-table, #items-table").css("display", "table");
-    }
 });
 
 $(document).on("click", ".products-tab", function() {
