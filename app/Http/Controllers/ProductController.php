@@ -18,7 +18,7 @@ class ProductController extends Controller
         $showProductsTab = (!$terminalUser && Auth::user()->package_id != 3) || ($terminalUser && $terminalUser["package_id"] != 3);
         $income = Auth::user()->income();
 
-        $latestShippingInformation = Auth::user()->latestShippingInformation();
+        $latestShippingInformation =  Auth::user()->latestShippingInformation();
 
         return view('products.index', compact('items', 'showProductsTab', 'terminalUser', 'income', 'latestShippingInformation'));
     }
