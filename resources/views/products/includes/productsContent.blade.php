@@ -29,9 +29,9 @@
                              data-mobile-price="{{ $item["mobile_price"] / winnersGemValue() }}"
                              data-distributors-price="{{ $item["distributors_price"] / winnersGemValue() }}"
                              data-srp="{{ $item["suggested_retail_price"] / winnersGemValue() }}" data-quantity="1">
-                            @if(!$terminalUser)
+                            @if($terminalUser)
                                 <span
-                                    class="stock d-none">{{ $item->terminalItemStock(Auth::user()->id, Auth::user()->stockist)['inStock'] }}</span>
+                                    class="stock d-none">{{ $item->terminalItemStock(Auth::user())['inStock'] }}</span>
                             @endif
                             <a href="{{ $item->photo() }}" class="d-block w-100" data-fancybox="images"
                                data-caption="{{ $item["name"] }}" style="text-align:center">
@@ -214,6 +214,6 @@
         </div>
 
         <input type="hidden" name="place-order-route" value="{{ route('orders.placeOrder') }}"/>
-        <button class="btn btn-custom-2 btn-lg w-100" id="place-order-confirm" data-terminal-account="{{ $terminalUser ?: '0' }}" data-stockist="0">PLACE ORDER</button>
+        <button class="btn btn-custom-2 btn-lg w-100" id="place-order-confirm" data-terminal-user="{{ $terminalUser ? $terminalUser['encodedTerminalUserId'] : '0' }}" data-stockist="0">PLACE ORDER</button>
     </div>
 </div>

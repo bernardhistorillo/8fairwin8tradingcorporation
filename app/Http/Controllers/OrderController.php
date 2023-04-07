@@ -45,12 +45,16 @@ class OrderController extends Controller
             'order_id' => 'required|numeric',
         ]);
 
-        $items = Item::select('items.*', 'ordered_items.price', 'ordered_items.quantity')
-            ->join('ordered_items', 'items.id', 'ordered_items.item_id')
-            ->join('orders', 'ordered_items.order_id', 'orders.id')
-            ->where('orders.id', $request->order_id)
-            ->where('user_id', Auth::user()->id)
-            ->get();
+        $order = Order::where('id', $request->order_id)
+            ->where(function($query) {
+                $query->where('user_id', Auth::user()->id);
+                $query->orWhere('terminal_user_id', Auth::user()->id);
+            })
+            ->first();
+
+        abort_if(!$order, 422, 'Invalid Order');
+
+        $items = $order->items();
 
         foreach($items as $item) {
             $item['photo'] = $item->photo();
@@ -149,9 +153,9 @@ class OrderController extends Controller
             abort(422, "You haven't added any items to your cart.");
         }
 
-        $terminalUser = null;
+        $isTerminalUser = false;
 
-        if($request->terminal_account == 0) {
+        if($request->terminal_user == '0') {
             $purchaser = Auth::user();
 
             if(!(($purchaser["stockist"] == 2 && $request->stockist == 2) || ($purchaser["stockist"] == 2 && $request->stockist == 0) || ($purchaser["stockist"] == 1 && $request->stockist == 1) || ($purchaser["stockist"] == 1 && $request->stockist == 0) || $purchaser["stockist"] == 0)) {
@@ -159,9 +163,11 @@ class OrderController extends Controller
             }
         } else {
             if(Auth::user()->stockist > 0) {
-                $terminalUser = User::find(base64_decode($request->terminal_account));
+                $terminalUser = User::find(base64_decode($request->terminal_user));
+
                 if($terminalUser) {
                     $purchaser = $terminalUser;
+                    $isTerminalUser = true;
                 } else {
                     abort(422, "Invalid Purchaser");
                 }
@@ -169,6 +175,8 @@ class OrderController extends Controller
                 abort(422, "You have no privilege to access the terminal.");
             }
         }
+
+        $terminalUser = ($isTerminalUser) ? Auth::user() : null;
 
         if($request->stockist == 1) {
             $terminalUser = $purchaser->stockistAssignment->stockistUser;
@@ -203,22 +211,24 @@ class OrderController extends Controller
             $totalPointsValue += $items[$i]['quantity'] * $items[$i]['points_value'];
 
             // If purchased by a stockist but not a center stockist, stock is checked
-            if($terminalUser && $request->stockist != 2) {
-                $itemStock = $itemDetails->terminalItemStock($terminalUser['id'], $terminalUser['stockist']);
+            if($isTerminalUser && $request->stockist != 2) {
+                $itemStock = $itemDetails->terminalItemStock($terminalUser);
 
-                if($itemStock["in_stock"] < $items[$i]['quantity']) {
+                if($itemStock["inStock"] < $items[$i]['quantity']) {
                     $lessInStock++;
                 }
             }
         }
 
-        abort_if($lessInStock > 0, 422, $lessInStock . " of the items to be ordered " . (($lessInStock > 1) ? "are" : "is") . " less in stock.");
+        if($isTerminalUser && $request->stockist != 2) { // if purchased by a stockist but not a center stockist, stock is checked
+            abort_if($lessInStock > 0, 422, $lessInStock . " of the items to be ordered " . (($lessInStock > 1) ? "are" : "is") . " less in stock.");
+        }
 
         if($request->stockist) {
             $type = 2;
         }
 
-        if($terminalUser) {
+        if($isTerminalUser) {
             $terminalWinnersGem = $terminalUser->terminalWinnersGem();
             abort_if($terminalWinnersGem["balance"] < $totalPointsValue, 422, "Insufficient Winners Gem");
         } else {
@@ -1041,5 +1051,83 @@ class OrderController extends Controller
                 $rankIncentiveIncome->save();
             }
         }
+    }
+
+    public function markOrderAsComplete(Request $request) {
+        $request->validate([
+            'id' => 'required|numeric',
+            'user' => 'required|numeric',
+        ]);
+
+        $order = Order::where('id', $request->id)
+            ->whereNull('date_time_completed')
+            ->first();
+
+        abort_if(!$order, 422, 'Invalid Order');
+
+        if($request->user == 2) {
+            $items = $order->items();
+
+            $lessInStock = 0;
+            $totalPoints = 0;
+
+            foreach($items as $item) {
+                $itemStock = $item->terminalItemStock(Auth::user());
+
+                if($itemStock["inStock"] < $item["quantity"]) {
+                    $lessInStock++;
+                }
+
+                $totalPoints += $item["quantity"] * $item["points_value"];
+            }
+
+            abort_if($lessInStock > 0, 422, $lessInStock . " of the items ordered " . (($lessInStock > 1) ? "are" : "is") . " less in stock.");
+
+            $terminalWinnersGem = Auth::user()->terminalWinnersGem();
+
+            abort_if($terminalWinnersGem["balance"] < $totalPoints, 422, 'Your Terminal has insufficient Winners Gem.');
+        }
+
+        $order->date_time_completed = Carbon::now();
+        $order->update();
+
+        $stockists = [];
+        $terminalWinnersGem = 0;
+
+        if(Auth::user()->role == 1 && $request->user == 1) {
+            $orders = Order::select('orders.*', 'orders.stockist as order_stockist', 'firstname', 'lastname', 'users.stockist as user_stockist')
+                ->leftJoin('users', 'user_id', 'users.id')
+                ->orderBy('orders.id', 'desc')
+                ->get();
+
+            $stockistsTemp = Order::select('terminal_user_id', 'firstname', 'lastname', 'rank', 'email')
+                ->leftJoin('users', 'terminal_user_id', 'users.id')
+                ->groupBy('terminal_user_id')
+                ->get();
+
+            foreach($stockistsTemp as $stockist) {
+                $stockists[strval($stockist["terminal_user_id"])] = $stockist;
+            }
+        } else {
+            $orders = Order::select('orders.*', 'orders.stockist as order_stockist', 'firstname', 'lastname', 'users.stockist as user_stockist')
+                ->leftJoin('users', 'user_id', 'users.id')
+                ->where('terminal_user_id', Auth::user()->id)
+                ->orderBy('orders.id', 'desc')
+                ->get();
+
+            $terminalWinnersGem = Auth::user()->terminalWinnersGem();
+        }
+
+        foreach($orders as $order) {
+            $order['formatted_created_at'] = formatDate($order['created_at']);
+            $order['formatted_date_time_completed'] = ($order['date_time_completed']) ? formatDate($order['date_time_completed']) : null;
+            $order['name'] = fullName($order);
+        }
+
+        return response()->json([
+            'orders' => $orders,
+            'stockists' => $stockists,
+            'terminalWinnersGem' => $terminalWinnersGem,
+        ]);
     }
 }

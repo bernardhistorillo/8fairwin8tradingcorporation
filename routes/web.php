@@ -55,6 +55,7 @@ Route::middleware(['auth'])->group(function() {
         Route::post('/updateProofOfPayment', [OrderController::class, 'updateProofOfPayment'])->name('orders.updateProofOfPayment');
         Route::post('/purchaseWinnersGem', [OrderController::class, 'purchaseWinnersGem'])->name('orders.purchaseWinnersGem');
         Route::post('/placeOrder', [OrderController::class, 'placeOrder'])->name('orders.placeOrder');
+        Route::post('/markOrderAsComplete', [OrderController::class, 'markOrderAsComplete'])->name('orders.markOrderAsComplete');
     });
 
     Route::prefix('transfers')->group(function () {

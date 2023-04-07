@@ -15,6 +15,8 @@ class TestController extends Controller
     }
 
     public function index(Request $request) {
+        return base64_decode('MTI0Mw==');
+
         $user = User::find(18);
         return $user->terminalWinnersGem();
     }

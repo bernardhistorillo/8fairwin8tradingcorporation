@@ -841,12 +841,22 @@ $(document).on("click", ".remove-from-cart", function () {
   $(".remove-from-cart").prop("disabled", false);
 });
 $(document).on("click", "#place-order-confirm", function () {
-  if ($("#place-order-confirm").data("terminal-account") == 0) {
+  if ($("#place-order-confirm").data("terminal-user") == 0) {
     $("#modal-warning .message").html("Your order will now be placed.");
   } else {
     var less_in_stock = 0;
-    var content = '	<div class="table-responsive">';
-    content += '		<table class="table table-bordered">';
+    var content = '';
+    if (less_in_stock > 0) {
+      content += '<div class="text-center mb-3">';
+      content += less_in_stock + ' of the items to be ordered ' + (less_in_stock > 1 ? 'are' : 'is') + ' less in stock.';
+      content += '</div>';
+    } else {
+      content += '<div class="text-center mb-3">';
+      content += '	This order will now be placed.';
+      content += '</div>';
+    }
+    content += '	<div class="table-responsive">';
+    content += '		<table class="table table-bordered font-size-90 mb-0">';
     content += '			<tr style="background-color:#f0f3f5">';
     content += '				<th>Item</th>';
     content += '				<th>In Stock</th>';
@@ -866,15 +876,6 @@ $(document).on("click", "#place-order-confirm", function () {
     });
     content += '		</table>';
     content += '	</div>';
-    if (less_in_stock > 0) {
-      content += '<div class="alert alert-danger text-center mb-1">';
-      content += less_in_stock + ' of the items to be ordered ' + (less_in_stock > 1 ? 'are' : 'is') + ' less in stock.';
-      content += '</div>';
-    } else {
-      content += '<div class="alert alert-success text-center mb-1">';
-      content += '	This order will now be placed.';
-      content += '</div>';
-    }
     $("#modal-warning .message").html(content);
   }
   $("#modal-warning .proceed").attr("id", "place-order");
@@ -897,7 +898,7 @@ $(document).on("click", "#place-order", function () {
     method: "POST",
     url: $("input[name='place-order-route']").val(),
     data: {
-      terminal_account: $("#place-order-confirm").data("terminal-account"),
+      terminal_user: $("#place-order-confirm").data("terminal-user"),
       items: JSON.stringify(ordered_items),
       full_name: $("#full-name").val(),
       contact_number: $("#contact-number").val(),
@@ -909,7 +910,7 @@ $(document).on("click", "#place-order", function () {
     },
     timeout: 30000
   }).done(function (response) {
-    var redirect = parseInt($("#place-order-confirm").data("terminal-account")) === 0 ? "orders" : "terminal?view=orders";
+    var redirect = parseInt($("#place-order-confirm").data("terminal-user")) === 0 ? "orders" : "terminal?view=orders";
     $('#modal-success').attr("data-bs-backdrop", "static");
     $('#modal-success').attr("data-bs-keyboard", "false");
     $('#modal-success .proceed').removeAttr("data-bs-dismiss");
@@ -1608,53 +1609,6 @@ $(document).on("click", "#update-proof-of-payment", function () {
     $("#modal-warning button[data-bs-dismiss='modal']").css("display", "block");
   });
 });
-$(document).on("click", ".terminal-view-items", function () {
-  $(".order-reference").html($(this).attr("data-reference"));
-  $("#ordered-items-container").html('<h6 class="text-center">Loading...</h6>');
-  $("#modal-view-order-items").modal('show');
-  var order_id = $(this).val();
-  $.ajax({
-    method: "POST",
-    url: "admin/api/view-items.php",
-    data: {
-      order_id: order_id
-    },
-    timeout: 30000
-  }).done(function (response) {
-    var content = '	<table class="table table-bordered mb-0">';
-    content += '		<thead>';
-    content += '			<tr>';
-    content += '				<th></th>';
-    content += '				<th>Item</th>';
-    content += '				<th>Quantity</th>';
-    content += '				<th>Amount</th>';
-    content += '			</tr>';
-    content += '		</thead>';
-    content += '		<tbody>';
-    for (var i = 0; i < response.items.length; i++) {
-      content += '		<tr>';
-      content += '			<td style="width:80px">';
-      content += '				<div style="position:relative; width:100%; padding-top:100%; overflow:hidden; border:1px solid #eeeeee">';
-      content += '					<img src="' + response.items[i].photo + '?v=' + response.items[i].version + '" style="' + (response.items[i].longestDimension == "width" ? 'width:100%; height:auto;' : 'width:auto; height:100%;') + 'max-height:100%; max-width:100%; margin:0; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%)" alt="' + response.items[i].name + '">';
-      content += '				</div>';
-      content += '			</td>';
-      content += '			<td>' + response.items[i].name + '</td>';
-      content += '			<td>' + response.items[i].quantity + '</td>';
-      content += '			<td>' + numberFormat(response.items[i].quantity * response.items[i].price, true) + ' <span style="font-size:0.8em">Gems</span></td>';
-      content += '		</tr>';
-    }
-    content += '		</tbody>';
-    content += '	</table>';
-    $("#ordered-items-container").html(content);
-  }).fail(function (error) {
-    showErrorFromAjax(error);
-  }).always(function () {
-    $("#modal-warning").modal('hide');
-    $("#modal-warning .proceed").html("Confirm");
-    $("#modal-warning .proceed").prop("disabled", false);
-    $("#modal-warning button[data-bs-dismiss='modal']").css("display", "block");
-  });
-});
 $(document).on("click", ".terminal-view-shipment", function () {
   $(".order-reference").html($(this).data("reference"));
   $("#shipment-full-name").html($(this).data("full-name") != "" ? $(this).data("full-name") : '<span style="font-style:italic">Empty</span>');
@@ -1678,24 +1632,24 @@ $(document).on("click", "#mark-order-as-complete", function () {
   var id = $(this).val();
   $.ajax({
     method: "POST",
-    url: "admin/api/mark-order-as-complete.php",
+    url: $("#mark-order-as-complete-route").val(),
     timeout: 30000,
     data: {
       id: id,
       user: 2
     }
   }).done(function (response) {
-    $("#terminal-winners-gem").html(numberFormat(response.terminal_winners_gem.balance, true));
-    var content = '	<table class="table table-bordered data-table" style="display:none">';
+    $("#terminal-winners-gem").html(numberFormat(response.terminalWinnersGem.balance, true));
+    var content = '	<table class="table table-bordered data-table font-size-90" style="display:none">';
     content += '		<thead>';
     content += '			<tr style="background-color:#f9f9f9">';
-    content += '				<th></th>';
-    content += '				<th>Date&nbsp;&amp; Time Placed</th>';
-    content += '				<th>Type</th>';
-    content += '				<th>Reference</th>';
-    content += '				<th>Account</th>';
-    content += '				<th>Price</th>';
-    content += '				<th>Points</th>';
+    content += '				<th class="text-center"></th>';
+    content += '				<th class="text-center">Date&nbsp;&amp; Time Placed</th>';
+    content += '				<th class="text-center">Type</th>';
+    content += '				<th class="text-center">Reference</th>';
+    content += '				<th class="text-center">Account</th>';
+    content += '				<th class="text-center">Price</th>';
+    content += '				<th class="text-center">Points</th>';
     content += '			</tr>';
     content += '		</thead>';
     content += '		<tbody>';
@@ -1703,11 +1657,11 @@ $(document).on("click", "#mark-order-as-complete", function () {
       if (!order.date_time_completed) {
         content += '	<tr>';
         content += '		<td>';
-        content += '			<button class="btn btn-success btn-sm mt-1 terminal-view-items" value="' + order.id + '" data-reference="' + order.reference + '" style="background-color:#0e4d22; color:#ffffff">Items</button>';
-        content += '			<button class="btn btn-success btn-sm mt-1 terminal-view-shipment" data-reference="' + order.reference + '" data-full-name="' + order.full_name + '" data-contact-number="' + order.contact_number + '" data-barangay="' + order.barangay + '" data-city="' + order.city + '" data-province="' + order.province + '" data-zip-code="' + order.zip_code + '" style="background-color:#0e4d22; color:#ffffff">Shipment</button>';
-        content += '			<button class="btn btn-success btn-sm mt-1 mark-order-as-complete-confirm" value="' + order.id + '" data-reference="' + order.reference + '" style="background-color:#0e4d22; color:#ffffff">Mark as Complete</button>';
+        content += '			<button class="btn btn-custom-2 btn-sm mt-1 font-size-90 view-items" value="' + order.id + '" data-reference="' + order.reference + '" style="width:83px">Items</button>';
+        content += '			<button class="btn btn-custom-2 btn-sm mt-1 font-size-90 terminal-view-shipment" data-reference="' + order.reference + '" data-full-name="' + order.full_name + '" data-contact-number="' + order.contact_number + '" data-barangay="' + order.barangay + '" data-city="' + order.city + '" data-province="' + order.province + '" data-zip-code="' + order.zip_code + '" style="width:83px">Shipment</button>';
+        content += '			<button class="btn btn-custom-2 btn-sm mt-1 font-size-90 mark-order-as-complete-confirm" value="' + order.id + '" data-reference="' + order.reference + '" style="width:168px">Mark as Complete</button>';
         content += '		</td>';
-        content += '		<td>' + order.date_time_placed + '</td>';
+        content += '		<td>' + order.formatted_created_at + '</td>';
         content += '		<td>' + (order.type == 1 ? "Package" : "Product") + '</td>';
         content += '		<td>' + order.reference + '</td>';
         content += '		<td>' + order.name + '</td>';
@@ -1719,17 +1673,17 @@ $(document).on("click", "#mark-order-as-complete", function () {
     content += '		</tbody>';
     content += '	</table>';
     $("#pending .table-responsive").html(content);
-    content = '		<table class="table table-bordered data-table" style="display:none">';
+    content = '		<table class="table table-bordered data-table font-size-90" style="display:none">';
     content += '		<thead>';
     content += '			<tr style="background-color:#f9f9f9">';
-    content += '				<th></th>';
-    content += '				<th>Date&nbsp;&amp; Time Placed</th>';
-    content += '				<th>Date&nbsp;&amp; Time Completed</th>';
-    content += '				<th>Type</th>';
-    content += '				<th>Reference</th>';
-    content += '				<th>Account</th>';
-    content += '				<th>Price</th>';
-    content += '				<th>Points</th>';
+    content += '				<th class="text-center"></th>';
+    content += '				<th class="text-center">Date&nbsp;&amp; Time Placed</th>';
+    content += '				<th class="text-center">Date&nbsp;&amp; Time Completed</th>';
+    content += '				<th class="text-center">Type</th>';
+    content += '				<th class="text-center">Reference</th>';
+    content += '				<th class="text-center">Account</th>';
+    content += '				<th class="text-center">Price</th>';
+    content += '				<th class="text-center">Points</th>';
     content += '			</tr>';
     content += '		</thead>';
     content += '		<tbody>';
@@ -1737,11 +1691,11 @@ $(document).on("click", "#mark-order-as-complete", function () {
       if (order.date_time_completed) {
         content += '	<tr>';
         content += '		<td>';
-        content += '			<button class="btn btn-success btn-sm mt-1 terminal-view-items" value="' + order.id + '" data-reference="' + order.reference + '" style="background-color:#0e4d22; color:#ffffff">Items</button>';
-        content += '			<button class="btn btn-success btn-sm mt-1 terminal-view-shipment" data-reference="' + order.reference + '" data-full-name="' + order.full_name + '" data-contact-number="' + order.contact_number + '" data-barangay="' + order.barangay + '" data-city="' + order.city + '" data-province="' + order.province + '" data-zip-code="' + order.zip_code + '" style="background-color:#0e4d22; color:#ffffff">Shipment</button>';
+        content += '			<button class="btn btn-custom-2 btn-sm mt-1 font-size-90 view-items" value="' + order.id + '" data-reference="' + order.reference + '" style="width:82px">Items</button>';
+        content += '			<button class="btn btn-custom-2 btn-sm mt-1 font-size-90 terminal-view-shipment" data-reference="' + order.reference + '" data-full-name="' + order.full_name + '" data-contact-number="' + order.contact_number + '" data-barangay="' + order.barangay + '" data-city="' + order.city + '" data-province="' + order.province + '" data-zip-code="' + order.zip_code + '" style="width:83px">Shipment</button>';
         content += '		</td>';
-        content += '		<td>' + order.date_time_placed + '</td>';
-        content += '		<td>' + order.date_time_completed + '</td>';
+        content += '		<td>' + order.formatted_created_at + '</td>';
+        content += '		<td>' + order.formatted_date_time_completed + '</td>';
         content += '		<td>' + (order.type == 1 ? "Package" : "Product") + '</td>';
         content += '		<td>' + order.reference + '</td>';
         content += '		<td>' + order.name + '</td>';
