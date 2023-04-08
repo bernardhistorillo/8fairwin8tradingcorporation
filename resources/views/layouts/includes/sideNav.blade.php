@@ -77,32 +77,15 @@
 
     <hr class="sidebar-divider d-none d-md-block">
 
-    <div class="text-center d-none d-md-inline">
+    <div class="text-center d-none d-md-inline mb-4">
         <button class="rounded-circle btn-custom-3 border-0" id="sidebarToggle"></button>
     </div>
+
+    @if(!Auth::user()->email_is_verified)
+    <div class="sidebar-card d-none d-lg-flex bg-color-1">
+        <i class="fa-solid fa-envelope sidebar-card-illustration mb-0 font-size-250 text-white"></i>
+        <p class="text-center text-white mb-3">Verify your email now!</p>
+        <button class="btn btn-custom-2 btn-sm font-size-80 verify-email-show-modal" value="{{ route('profile.sendEmailOTP') }}">VERIFY</button>
+    </div>
+    @endif
 </ul>
-
-{{--<div class="sidebar">--}}
-{{--	<nav class="sidebar-nav">--}}
-{{--		<div class="profile-pic-lg" style="text-align:center; padding:15px 0px">--}}
-{{--			<a href="{{ route('account.index') }}" class="text-white">--}}
-{{--				<div style="width:100px; display:inline-block">--}}
-{{--					<div class="text-center change-profile-picture-container" style="background-image:url('{{ Auth::user()->photo() }}'); background-size:cover; background-repeat:no-repeat; background-position:center; width:100%; border-radius:50%; border:3px solid #ffffff; position:relative; padding-top:100%; cursor:pointer">--}}
-{{--						<i class="fas fa-spinner fa-2x fa-spin d-none profile-picture-loading" style="color:#ffffff; position:absolute; top:calc(50% - 14px); left:calc(50% - 14px); "></i>--}}
-{{--					</div>--}}
-{{--				</div>--}}
-{{--			</a>--}}
-{{--		</div>--}}
-
-{{--		<div class="profile-pic-sm d-none" style="text-align:center; padding:15px 0px">--}}
-{{--			<a href="{{ route('account.index') }}" class="text-white">--}}
-{{--				<div style="width:36px; display:inline-block">--}}
-{{--					<div class="text-center change-profile-picture-container" style="background-image:url('{{ Auth::user()->photo() }}'); background-size:cover; background-repeat:no-repeat; background-position:center; width:100%; border-radius:50%; border:0.1em solid #ffffff; position:relative; padding-top:100%; cursor:pointer">--}}
-{{--						<i class="fas fa-spinner fa-2x fa-spin d-none profile-picture-loading" style="color:#ffffff; position:absolute; top:calc(50% - 14px); left:calc(50% - 14px); "></i>--}}
-{{--					</div>--}}
-{{--				</div>--}}
-{{--			</a>--}}
-{{--		</div>--}}
-{{--  	</nav>--}}
-{{--  	<button class="sidebar-minimizer brand-minimizer" id="minimize-side-nav" type="button"></button>--}}
-{{--</div>--}}

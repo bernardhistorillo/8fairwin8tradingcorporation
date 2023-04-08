@@ -6,7 +6,6 @@ use App\Models\PoolShareContribution;
 use App\Models\PoolShareIncome;
 use App\Models\StairstepIncome;
 use App\Models\UnilevelIncome;
-use App\Models\WinnersGemValue;
 use Carbon\Carbon;
 
 if(!function_exists('totalPoolShares')) {
@@ -87,6 +86,19 @@ if(!function_exists('fairwinDreamPackagePrice')) {
 if(!function_exists('generateCode')) {
     function generateCode($length) {
         $characters = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+        $charactersLength = strlen($characters);
+        $generatedCode = "";
+        for ($j = 0; $j < $length; $j++) {
+            $generatedCode = $generatedCode . $characters[rand(0, $charactersLength - 1)];
+        }
+
+        return $generatedCode;
+    }
+}
+
+if(!function_exists('generateOTP')) {
+    function generateOTP($length) {
+        $characters = "0123456789";
         $charactersLength = strlen($characters);
         $generatedCode = "";
         for ($j = 0; $j < $length; $j++) {

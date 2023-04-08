@@ -683,6 +683,13 @@ var numberFormat = function numberFormat(x, decimal) {
     return parts[0];
   }
 };
+$(document).on("keypress", ".numeric-only", function (evt) {
+  var ASCIICode = evt.which ? evt.which : evt.keyCode;
+  if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57)) {
+    evt.preventDefault();
+  }
+  return true;
+});
 proof_of_payment_uploader.on("change", function () {
   var reader = new FileReader();
   reader.onload = function (event) {
@@ -1308,15 +1315,32 @@ $(document).on("change", "input[name='payout-method']", function () {
     $(".payout-method-coinsph").css("display", "block");
   }
 });
-$(document).on("click", "#change-password-show-fields", function () {
-  $("#password-fields").css("display", "flex");
-  $("#password-fields input").val("");
-  $("#edit-personal-info-show-fields").css("display", "none");
-  $("#change-password-show-fields").css("display", "none");
-  $("#change-pin-code-show-fields").css("display", "none");
-  $("#cancel").css("display", "inline-block");
-  $("#change-password").css("display", "inline-block");
+$(document).on("click", ".verify-email-show-modal", function () {
+  $("#modal-verify-email .proceed").prop("disabled", true);
+  $("#modal-verify-email .proceed").html("Sending OTP");
+  $("#modal-verify-email button[data-bs-dismiss='modal']").css("display", "none");
+  $("#sending-pin").removeClass("d-none");
+  $("#pin-sent").addClass("d-none");
+  $("#modal-verify-email").modal("show");
+  var url = $(this).val();
+  $.ajax({
+    method: "POST",
+    url: url,
+    data: []
+  }).done(function (response) {
+    $("#sending-pin").addClass("d-none");
+    $("#pin-sent").removeClass("d-none");
+  }).fail(function (error) {
+    $("#cancel").css("display", "inline-block");
+    $("#modal-verify-email").modal("hide");
+    showErrorFromAjax(error);
+  }).always(function () {
+    $("#modal-verify-email .proceed").prop("disabled", false);
+    $("#modal-verify-email .proceed").html("Submit");
+    $("#modal-verify-email button[data-bs-dismiss='modal']").css("display", "block");
+  });
 });
+$(document).on("click", "#change-password-show-modal", function () {});
 $(document).on("click", "#change-pin-code-show-fields", function () {
   $("#pin-code-fields").css("display", "flex");
   $("#pin-code-fields input").val("");
@@ -1373,7 +1397,7 @@ $(document).on("click", "#edit-personal-info", function () {
   var payout_wallet_address = $("#edit-payout-wallet-address").val();
   $.ajax({
     method: "POST",
-    url: "api/edit-personal-info.php",
+    url: $("#edit-personal-info-route").val(),
     data: {
       firstname: firstname,
       lastname: lastname,
@@ -1401,7 +1425,7 @@ $(document).on("click", "#edit-personal-info", function () {
     $("#edit-email-address").attr("prev-value", email_address);
     $("#edit-contact-number").attr("prev-value", contact_number);
     $("#edit-address").attr("prev-value", address);
-    $("input[name='payout-method']").prop("disabled", false);
+    $("input[name='payout-method']").prop("disabled", true);
     $(".payout-field input").prop("disabled", true);
     $("#edit-payout-account-number").attr("prev-value", payout_account_number);
     $("#edit-payout-account-name").attr("prev-value", payout_account_name);

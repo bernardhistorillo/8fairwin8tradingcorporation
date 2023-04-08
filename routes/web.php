@@ -8,6 +8,7 @@ use App\Http\Controllers\IncomeController;
 use App\Http\Controllers\NetworkController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TerminalController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\TransferController;
@@ -78,7 +79,11 @@ Route::middleware(['auth'])->group(function() {
         Route::get('/{view?}', [TerminalController::class, 'index'])->name('terminal.index');
     });
 
-    Route::get('/account', [DashboardController::class, 'index'])->name('account.index');
+    Route::prefix('profile')->group(function () {
+        Route::get('/', [ProfileController::class, 'index'])->name('profile.index');
+        Route::post('/editPersonalInfo', [ProfileController::class, 'editPersonalInfo'])->name('profile.editPersonalInfo');
+        Route::post('/sendEmailOTP', [ProfileController::class, 'sendEmailOTP'])->name('profile.sendEmailOTP');
+    });
 
     Route::middleware(['admin'])->group(function() {
         Route::prefix('admin')->group(function () {

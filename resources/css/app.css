@@ -309,6 +309,13 @@
     background-color: #104d22!important;
     color: white!important;
 }
+.dropdown-item.active, .dropdown-item:active {
+    background-color: #104d22;
+}
+.form-check-input:checked {
+    background-color: #104d22;
+    border-color: #104d22;
+}
 
 /* ################################################################################################################# */
 /* ################################################################################################################# */
