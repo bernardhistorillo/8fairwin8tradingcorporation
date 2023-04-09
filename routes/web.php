@@ -83,6 +83,7 @@ Route::middleware(['auth'])->group(function() {
         Route::get('/', [ProfileController::class, 'index'])->name('profile.index');
         Route::post('/editPersonalInfo', [ProfileController::class, 'editPersonalInfo'])->name('profile.editPersonalInfo');
         Route::post('/sendEmailOTP', [ProfileController::class, 'sendEmailOTP'])->name('profile.sendEmailOTP');
+        Route::post('/verifyEmail', [ProfileController::class, 'verifyEmail'])->name('profile.verifyEmail');
     });
 
     Route::middleware(['admin'])->group(function() {

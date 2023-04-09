@@ -14,7 +14,7 @@ class AddEmailIsVerifiedColumnToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dateTime('email_is_verified')->nullable()->after('role');
+            $table->dateTime('email_verified_at')->nullable()->after('role');
             $table->string('email_otp')->nullable()->after('role');
         });
     }
@@ -27,7 +27,7 @@ class AddEmailIsVerifiedColumnToUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('email_is_verified');
+            $table->dropColumn('email_verified_at');
             $table->dropColumn('email_otp');
         });
     }

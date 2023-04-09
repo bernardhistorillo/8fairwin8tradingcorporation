@@ -1,5 +1,5 @@
 <ul class="navbar-nav sidebar sidebar-dark accordion bg-color-5" id="accordionSidebar" style="border-right:1px solid rgba(16,77,34,0.2)">
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('home.index') }}">
         <div class="sidebar-brand-icon">
             <img src="{{ asset('img/logo/fairwin-logo.png') }}" alt="8Fairwin8 Trading Corporation" width="40" />
         </div>
@@ -81,7 +81,7 @@
         <button class="rounded-circle btn-custom-3 border-0" id="sidebarToggle"></button>
     </div>
 
-    @if(!Auth::user()->email_is_verified)
+    @if(!Auth::user()->email_verified_at)
     <div class="sidebar-card d-none d-lg-flex bg-color-1">
         <i class="fa-solid fa-envelope sidebar-card-illustration mb-0 font-size-250 text-white"></i>
         <p class="text-center text-white mb-3">Verify your email now!</p>

@@ -6,6 +6,7 @@ use App\Mail\EmailVerification;
 use App\Models\PayoutInformation;
 use App\Models\User;
 use App\Models\Withdrawal;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -66,7 +67,7 @@ class ProfileController extends Controller
     }
 
     public function sendEmailOTP() {
-        abort_if(Auth::user()->email_is_verified, 422, 'Email address is already verified.');
+        abort_if(Auth::user()->email_verified_at, 422, 'Email address is already verified.');
 
         Auth::user()->email_otp = generateOTP(6);
         Auth::user()->update();
@@ -74,7 +75,21 @@ class ProfileController extends Controller
         $data['firstname'] = Auth::user()->firstname;
         $data['otp'] = Auth::user()->email_otp;
 
-        Mail::to('bernardhistorillo1@gmail.com')->send(new EmailVerification($data));
+        Mail::to(Auth::user()->email)->send(new EmailVerification($data));
+
+        return response()->json();
+    }
+
+    public function verifyEmail(Request $request) {
+        $request->validate([
+            'otp' => 'required|numeric'
+        ]);
+
+        abort_if(Auth::user()->email_otp != $request->otp, 422, 'Invalid One-Time Pin');
+
+        Auth::user()->email_otp = null;
+        Auth::user()->email_verified_at = Carbon::now();
+        Auth::user()->update();
 
         return response()->json();
     }

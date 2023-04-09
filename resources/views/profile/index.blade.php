@@ -9,7 +9,7 @@
 
         <div class="text-center">
             <button class="btn btn-custom-2 btn-sm font-size-80 px-3" id="edit-personal-info-show-fields">Edit Account Information</button>
-            <button class="btn btn-custom-2 btn-sm font-size-80 px-3" id="change-password-show-fields">Change Password</button>
+            <button class="btn btn-custom-2 btn-sm font-size-80 px-3" id="reset-password-show-modal" value="{{ Auth::user()->email_verified_at }}">Reset Password</button>
             <button class="btn btn-custom-2 btn-sm font-size-80 px-3" id="change-pin-code-show-fields">Change Pin Code</button>
         </div>
     </div>
@@ -19,7 +19,7 @@
 
         <h6>Personal Information</h6>
         <div class="row align-items-stretch px-2">
-            <div class="col-md-6 px-2">
+            <div class="col-md-6 order-1 order-md-0 px-2">
                 <small>First Name</small>
                 <div class="position-relative mb-2">
                     <input class="form-control form-control-1 ps-3 pe-5 py-2" id="edit-firstname" type="text" placeholder="First Name" value="{{ Auth::user()->firstname }}" prev-value="{{ Auth::user()->firstname }}" disabled>
@@ -44,7 +44,7 @@
                     </div>
                 </div>
 
-                @if(Auth::user()->email_is_verified)
+                @if(Auth::user()->email_verified_at)
                 <small>Email Address <span class="text-color-2 ps-1">(Verified)</span></small>
                 @else
                 <small>Email Address <span class="text-color-1 ps-1">(Unverified)</span> <button class="btn btn-custom-1 btn-sm font-size-90 py-0 mb-1 ms-1 verify-email-show-modal" value="{{ route('profile.sendEmailOTP') }}">Verify Now</button></small>
@@ -65,9 +65,9 @@
                 </div>
             </div>
 
-            <div class="col-md-6 px-2">
-                <div class="d-flex justify-content-center align-items-center h-100 me-4">
-                    <div class="col-md-8" id="change-profile-picture">
+            <div class="col-md-6 order-0 order-md-1 px-2">
+                <div class="d-flex justify-content-center align-items-center h-100 me-xl-4">
+                    <div class="col-11 col-sm-6 col-md-11 col-lg-10 col-xl-9 col-xxl-8 mt-3 mt-md-0 mb-3 mb-md-0" id="change-profile-picture">
                         <div class="text-center change-profile-picture-container" style="background-image:url('{{ Auth::user()->photo() }}'); background-size:cover; background-repeat:no-repeat; background-position:center; width:100%; border-radius:50%; border:2px solid #aaaaaa; position:relative; padding-top:100%; cursor:pointer">
                             <i class="fas fa-spinner fa-2x fa-spin d-none profile-picture-loading" style="color:#ffffff; position:absolute; top:calc(50% - 14px); left:calc(50% - 14px); "></i>
                         </div>
@@ -202,7 +202,7 @@
                 </div>
             </div>
 
-            <form id="email-verification-form" action="{{ route() }}">
+            <form id="email-verification-form" action="{{ route('profile.verifyEmail') }}">
                 <div class="modal-body">
                     <p class="text-center" id="sending-pin">We are sending One-Time Pin to <span class="fw-bold">{{ Auth::user()->email }}</span>.</p>
                     <p class="text-center" id="pin-sent">We just sent a One-Time Pin to <span class="fw-bold">{{ Auth::user()->email }}</span>. Copy and paste the pin below.</p>
@@ -213,12 +213,30 @@
                             <i class="fas fa-lock"></i>
                         </div>
                     </div>
+
+                    <p class="text-center text-color-4 mb-1 d-none font-size-90" id="verify-email-error"></p>
                 </div>
                 <div class="modal-footer justify-content-center">
                     <button type="button" class="btn btn-custom-5 px-4 cancel" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-custom-2 px-4 proceed" id="verify-email">Submit</button>
+                    <button type="submit" class="btn btn-custom-2 px-4 proceed" id="verify-email">Submit</button>
                 </div>
             </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-email-not-verified" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <div class="modal-content border-radius-0">
+            <div class="modal-body text-center py-3">
+                <div class="pt-2">
+                    <i class="fa-regular fa-exclamation-circle font-size-450 text-color-4 mb-3"></i>
+                </div>
+                <p class="mb-0">You're email address must be verified before you can reset your password.</p>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-custom-4 font-size-90 px-4 verify-email-show-modal" data-bs-dismiss="modal" value="{{ route('profile.sendEmailOTP') }}">Verify Email Now</button>
+            </div>
         </div>
     </div>
 </div>

@@ -1482,14 +1482,13 @@ $(document).on("click", ".verify-email-show-modal", function() {
     $.ajax({
         method: "POST",
         url: url,
-        data: []
+        data: [],
+        timeout: 30000
     }).done(function(response) {
         $("#sending-pin").addClass("d-none");
         $("#pin-sent").removeClass("d-none");
     }).fail(function(error) {
-        $("#cancel").css("display","inline-block");
         $("#modal-verify-email").modal("hide");
-
         showErrorFromAjax(error);
     }).always(function() {
         $("#modal-verify-email .proceed").prop("disabled",false);
@@ -1498,8 +1497,62 @@ $(document).on("click", ".verify-email-show-modal", function() {
     });
 });
 
-$(document).on("click", "#change-password-show-modal", function() {
+$(document).on("input", "input[name='otp']", function() {
+    $("#verify-email-error").addClass("d-none");
+});
 
+$(document).on("submit", "#email-verification-form", function(e) {
+    e.preventDefault();
+
+    $("#modal-verify-email .proceed").prop("disabled",true);
+    $("#modal-verify-email .proceed").html("Verifying");
+    $("#modal-verify-email button[data-bs-dismiss='modal']").css("display","none");
+
+    let form = $(this);
+    let formData = new FormData(form[0]);
+
+    $.ajax({
+        method: "POST",
+        url: form.attr('action'),
+        cache: false,
+        contentType: false,
+        processData: false,
+        data: formData,
+        timeout: 30000
+    }).done(function(response) {
+        $("#modal-verify-email").modal("hide");
+
+        $("#modal-success button[data-bs-dismiss='modal']").removeAttr("data-bs-dismiss");
+        $('#modal-success .proceed').attr("onclick", "window.location = '/profile'; $('#modal-success .proceed').prop('disabled',true); $('#modal-success .proceed').html('Reloading...')");
+
+        $("#modal-success .message").html("You have successfully verified your email address.");
+        $("#modal-success").modal("show");
+    }).fail(function(error) {
+        let content = "Something went wrong.";
+
+        if(error.responseJSON) {
+            content = error.responseJSON.message;
+
+            for (let prop in error.responseJSON.errors) {
+                if (Object.prototype.hasOwnProperty.call(error.responseJSON.errors, prop)) {
+                    content += ' ' + error.responseJSON.errors[prop];
+                }
+            }
+        }
+
+        $("#verify-email-error").html(content);
+        $("#verify-email-error").removeClass("d-none");
+    }).always(function() {
+        $("#modal-verify-email .proceed").prop("disabled",false);
+        $("#modal-verify-email .proceed").html("Submit");
+        $("#modal-verify-email button[data-bs-dismiss='modal']").css("display","block");
+    });
+});
+
+$(document).on("click", "#reset-password-show-modal", function() {
+    if(!$(this).val()) {
+        $("#modal-email-not-verified").modal("show");
+    }
 });
 
 $(document).on("click", "#change-pin-code-show-fields", function() {
