@@ -82,8 +82,14 @@ Route::middleware(['auth'])->group(function() {
     Route::prefix('profile')->group(function () {
         Route::get('/', [ProfileController::class, 'index'])->name('profile.index');
         Route::post('/editPersonalInfo', [ProfileController::class, 'editPersonalInfo'])->name('profile.editPersonalInfo');
+
         Route::post('/sendEmailOTP', [ProfileController::class, 'sendEmailOTP'])->name('profile.sendEmailOTP');
         Route::post('/verifyEmail', [ProfileController::class, 'verifyEmail'])->name('profile.verifyEmail');
+
+        Route::post('/sendResetPasswordLink', [ProfileController::class, 'sendResetPasswordLink'])->name('profile.sendResetPasswordLink');
+        Route::get('/reset-password/{uuid}', [ProfileController::class, 'resetPasswordPage'])->name('profile.resetPasswordPage');
+
+        Route::post('/resetPassword/{uuid}', [ProfileController::class, 'resetPassword'])->name('profile.resetPassword');
     });
 
     Route::middleware(['admin'])->group(function() {

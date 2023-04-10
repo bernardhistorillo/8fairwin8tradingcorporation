@@ -241,21 +241,25 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal-change-password" tabindex="-1" role="dialog" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+<div class="modal fade" id="modal-reset-password" tabindex="-1" role="dialog" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
         <div class="modal-content border-radius-0">
             <div class="modal-header justify-content-center position-relative" style="background-color:#ffffff; color:#222222">
-                <h5 class="modal-title text-center">Change Password</h5>
+                <h5 class="modal-title text-center">Reset Password</h5>
                 <div class="position-absolute" style="right:18px; top:18px">
                     <button class="close" data-bs-dismiss="modal">&times;</button>
                 </div>
             </div>
             <div class="modal-body">
+                <input type="hidden" id="send-reset-password-link-route" value="{{ route('profile.sendResetPasswordLink') }}" />
 
-            </div>
-            <div class="modal-footer justify-content-center">
-                <button type="button" class="btn btn-custom-5 px-4 cancel" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-custom-2 px-4 proceed" id="withdraw-confirm">Withdraw</button>
+                <div class="text-center">
+                    <div class="spinner-grow mb-2" style="width: 3rem; height: 3rem;" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+
+                    <p>Sending reset password link to <span class="fw-bold" id="reset-password-link-email">{{ Auth::user()->email }}</span>.</p>
+                </div>
             </div>
         </div>
     </div>

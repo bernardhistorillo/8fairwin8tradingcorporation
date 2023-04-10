@@ -422,6 +422,8 @@ $(document).on("click", "#register", function () {
       sponsors_code: sponsors_code
     }
   }).done(function (response) {
+    $('#modal-success').attr("data-bs-backdrop", "static");
+    $('#modal-success').attr("data-bs-keyboard", "false");
     $("#modal-success button[data-bs-dismiss='modal']").removeAttr("data-bs-dismiss");
     $('#modal-success .proceed').attr("onclick", "window.location = '/dashboard'; $('#modal-success .proceed').prop('disabled',true); $('#modal-success .proceed').html('Redirecting...')");
     $("#modal-success .message").html("Congratulations! You have successfully created your account.");
@@ -1297,8 +1299,6 @@ $(document).on("click", "#edit-personal-info-show-fields", function () {
   $("input[name='payout-method']").prop("disabled", false);
   $(".payout-field input").prop("disabled", false);
   $("#edit-personal-info-show-fields").css("display", "none");
-  $("#change-password-show-fields").css("display", "none");
-  $("#change-pin-code-show-fields").css("display", "none");
   $("#cancel").css("display", "inline-block");
   $("#edit-personal-info").css("display", "inline-block");
 });
@@ -1360,6 +1360,8 @@ $(document).on("submit", "#email-verification-form", function (e) {
     timeout: 30000
   }).done(function (response) {
     $("#modal-verify-email").modal("hide");
+    $('#modal-success').attr("data-bs-backdrop", "static");
+    $('#modal-success').attr("data-bs-keyboard", "false");
     $("#modal-success button[data-bs-dismiss='modal']").removeAttr("data-bs-dismiss");
     $('#modal-success .proceed').attr("onclick", "window.location = '/profile'; $('#modal-success .proceed').prop('disabled',true); $('#modal-success .proceed').html('Reloading...')");
     $("#modal-success .message").html("You have successfully verified your email address.");
@@ -1385,16 +1387,49 @@ $(document).on("submit", "#email-verification-form", function (e) {
 $(document).on("click", "#reset-password-show-modal", function () {
   if (!$(this).val()) {
     $("#modal-email-not-verified").modal("show");
+  } else {
+    $("#modal-reset-password").modal("show");
+    $.ajax({
+      method: "POST",
+      url: $("#send-reset-password-link-route").val(),
+      data: []
+    }).done(function (response) {
+      $('#modal-success .message').html('We sent a reset password link to <span class="fw-bold">' + $("#reset-password-link-email").html() + '</span>');
+      $("#modal-success").modal("show");
+    }).fail(function (error) {
+      showErrorFromAjax(error);
+    }).always(function () {
+      $("#modal-reset-password").modal("hide");
+    });
   }
 });
-$(document).on("click", "#change-pin-code-show-fields", function () {
-  $("#pin-code-fields").css("display", "flex");
-  $("#pin-code-fields input").val("");
-  $("#edit-personal-info-show-fields").css("display", "none");
-  $("#change-password-show-fields").css("display", "none");
-  $("#change-pin-code-show-fields").css("display", "none");
-  $("#cancel").css("display", "inline-block");
-  $("#change-pin-code").css("display", "inline-block");
+$(document).on("submit", "#reset-password-form", function (e) {
+  e.preventDefault();
+  var form = $(this);
+  form.find("button[type='submit']").prop("disabled", true);
+  form.find("button[type='submit']").html("Resetting Password");
+  var formData = new FormData(form[0]);
+  $.ajax({
+    method: "POST",
+    url: form.attr('action'),
+    cache: false,
+    contentType: false,
+    processData: false,
+    data: formData,
+    timeout: 30000
+  }).done(function (response) {
+    $('#modal-success').attr("data-bs-backdrop", "static");
+    $('#modal-success').attr("data-bs-keyboard", "false");
+    $("#modal-success button[data-bs-dismiss='modal']").removeAttr("data-bs-dismiss");
+    $('#modal-success .proceed').attr("onclick", "window.location = '" + response.redirect + "'; $('#modal-success .proceed').prop('disabled',true); $('#modal-success .proceed').html('Reloading...')");
+    $("#modal-success .message").html("You have successfully updated your password.");
+    $("#modal-success").modal("show");
+  }).fail(function (error) {
+    showErrorFromAjax(error);
+  }).always(function () {
+    form.find("button[type='submit']").prop("disabled", false);
+    form.find("button[type='submit']").html("Reset Password");
+  });
 });
 $(document).on("click", "#cancel", function () {
   $("#edit-firstname").prop("disabled", true);
@@ -1416,11 +1451,8 @@ $(document).on("click", "#cancel", function () {
   $("#edit-payout-name").val($("#edit-payout-name").attr("prev-value"));
   $("#edit-payout-mobile-number").val($("#edit-payout-mobile-number").attr("prev-value"));
   $("#edit-payout-wallet-address").val($("#edit-payout-wallet-address").attr("prev-value"));
-  $("#password-fields").css("display", "none");
-  $("#pin-code-fields").css("display", "none");
   $("#edit-personal-info-show-fields").css("display", "inline-block");
   $("#change-password-show-fields").css("display", "inline-block");
-  $("#change-pin-code-show-fields").css("display", "inline-block");
   $("#cancel").css("display", "none");
   $("#edit-personal-info").css("display", "none");
   $("#change-password").css("display", "none");
@@ -1481,8 +1513,6 @@ $(document).on("click", "#edit-personal-info", function () {
     $("#cancel").css("display", "none");
     $("#edit-personal-info").css("display", "none");
     $("#edit-personal-info-show-fields").css("display", "inline-block");
-    $("#change-password-show-fields").css("display", "inline-block");
-    $("#change-pin-code-show-fields").css("display", "inline-block");
     $('#modal-success .message').html("Saving Changes Successful");
     $("#modal-success").modal("show");
   }).fail(function (error) {
@@ -1491,76 +1521,6 @@ $(document).on("click", "#edit-personal-info", function () {
   }).always(function () {
     $("#edit-personal-info").html("Save Changes");
     $("#edit-personal-info").prop("disabled", false);
-  });
-});
-$(document).on("click", "#change-password", function () {
-  $("#change-password").prop("disabled", true);
-  $("#change-password").html("Saving Changes...");
-  $("#cancel").css("display", "none");
-  var current_password = $("#edit-current-password").val();
-  var new_password = $("#edit-new-password").val();
-  var confirm_password = $("#edit-confirm-password").val();
-  $.ajax({
-    method: "POST",
-    url: "api/change-password.php",
-    data: {
-      current_password: current_password,
-      new_password: new_password,
-      confirm_password: confirm_password
-    }
-  }).done(function (response) {
-    $("#password-fields").css("display", "none");
-    $("#edit-current-password").val("");
-    $("#edit-new-password").val("");
-    $("#edit-confirm-password").val("");
-    $("#cancel").css("display", "none");
-    $("#change-password").css("display", "none");
-    $("#edit-personal-info-show-fields").css("display", "inline-block");
-    $("#change-password-show-fields").css("display", "inline-block");
-    $("#change-pin-code-show-fields").css("display", "inline-block");
-    $('#modal-success .message').html("Saving Changes Successful");
-    $("#modal-success").modal("show");
-  }).fail(function (error) {
-    $("#cancel").css("display", "inline-block");
-    showErrorFromAjax(error);
-  }).always(function () {
-    $("#change-password").html("Save Changes");
-    $("#change-password").prop("disabled", false);
-  });
-});
-$(document).on("click", "#change-pin-code", function () {
-  $("#change-pin-code").prop("disabled", true);
-  $("#change-pin-code").html("Saving Changes...");
-  $("#cancel").css("display", "none");
-  var current_pin_code = $("#edit-current-pin-code").val();
-  var new_pin_code = $("#edit-new-pin-code").val();
-  var confirm_pin_code = $("#edit-confirm-pin-code").val();
-  $.ajax({
-    method: "POST",
-    url: "api/change-pin-code.php",
-    data: {
-      current_pin_code: current_pin_code,
-      new_pin_code: new_pin_code,
-      confirm_pin_code: confirm_pin_code
-    }
-  }).done(function (response) {
-    $("#pin-code-fields").css("display", "none");
-    $("#edit-current-pin-code-fields").val("");
-    $("#edit-new-pin-code-fields").val("");
-    $("#edit-confirm-pin-code-fields").val("");
-    $("#cancel").css("display", "none");
-    $("#change-pin-code").css("display", "none");
-    $("#edit-personal-info-show-fields").css("display", "inline-block");
-    $("#change-password-show-fields").css("display", "inline-block");
-    $("#change-pin-code-show-fields").css("display", "inline-block");
-    $('#modal-success .message').html("Saving Changes Successful");
-    $("#modal-success").modal("show");
-  }).fail(function (error) {
-    $("#cancel").css("display", "inline-block");
-    showErrorFromAjax(error);
-  }).always(function () {
-    $("#change-pin-code").html("Save Changes");
-    $("#change-pin-code").prop("disabled", false);
   });
 });
 $(document).on("click", ".view-payout-information", function () {

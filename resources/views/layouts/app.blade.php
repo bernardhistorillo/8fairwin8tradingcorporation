@@ -68,7 +68,7 @@
     </script>
 </head>
 <body>
-    @if(Auth::check() && Route::currentRouteName() != 'home.index')
+    @if(Auth::check() && Route::currentRouteName() != 'home.index' && Route::currentRouteName() != 'profile.resetPasswordPage')
     <div id="wrapper">
         @include('layouts.includes.sideNav')
 
@@ -79,65 +79,7 @@
                         <i class="fa fa-bars"></i>
                     </button>
 
-{{--                    <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">--}}
-{{--                        <div class="input-group">--}}
-{{--                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">--}}
-{{--                            <div class="input-group-append">--}}
-{{--                                <button class="btn btn-primary" type="button">--}}
-{{--                                    <i class="fas fa-search fa-sm"></i>--}}
-{{--                                </button>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </form>--}}
-
                     <ul class="navbar-nav ml-auto">
-{{--                        <li class="nav-item dropdown no-arrow mx-1">--}}
-{{--                            <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">--}}
-{{--                                <i class="fas fa-bell fa-fw"></i>--}}
-{{--                                <span class="badge badge-danger badge-counter" style="right:-2px">3</span>--}}
-{{--                            </a>--}}
-
-{{--                            <div class="dropdown-list dropdown-menu dropdown-menu-end shadow animated--grow-in" aria-labelledby="alertsDropdown">--}}
-{{--                                <h6 class="dropdown-header">--}}
-{{--                                    Alerts Center--}}
-{{--                                </h6>--}}
-{{--                                <a class="dropdown-item d-flex align-items-center" href="#">--}}
-{{--                                    <div class="mr-3">--}}
-{{--                                        <div class="icon-circle bg-primary">--}}
-{{--                                            <i class="fas fa-file-alt text-white"></i>--}}
-{{--                                        </div>--}}
-{{--                                    </div>--}}
-{{--                                    <div>--}}
-{{--                                        <div class="small text-gray-500">December 12, 2019</div>--}}
-{{--                                        <span class="font-weight-bold">A new monthly report is ready to download!</span>--}}
-{{--                                    </div>--}}
-{{--                                </a>--}}
-{{--                                <a class="dropdown-item d-flex align-items-center" href="#">--}}
-{{--                                    <div class="mr-3">--}}
-{{--                                        <div class="icon-circle bg-success">--}}
-{{--                                            <i class="fas fa-donate text-white"></i>--}}
-{{--                                        </div>--}}
-{{--                                    </div>--}}
-{{--                                    <div>--}}
-{{--                                        <div class="small text-gray-500">December 7, 2019</div>--}}
-{{--                                        $290.29 has been deposited into your account!--}}
-{{--                                    </div>--}}
-{{--                                </a>--}}
-{{--                                <a class="dropdown-item d-flex align-items-center" href="#">--}}
-{{--                                    <div class="mr-3">--}}
-{{--                                        <div class="icon-circle bg-warning">--}}
-{{--                                            <i class="fas fa-exclamation-triangle text-white"></i>--}}
-{{--                                        </div>--}}
-{{--                                    </div>--}}
-{{--                                    <div>--}}
-{{--                                        <div class="small text-gray-500">December 2, 2019</div>--}}
-{{--                                        Spending Alert: We've noticed unusually high spending for your account.--}}
-{{--                                    </div>--}}
-{{--                                </a>--}}
-{{--                                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>--}}
-{{--                            </div>--}}
-{{--                        </li>--}}
-
                         <li class="nav-item dropdown no-arrow mx-1">
                             <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="modal" data-bs-target="#modal-gem-purchase" aria-haspopup="true" aria-expanded="false">
                                 <i class="fa-solid fa-gem text-color-2 font-size-130 fa-fw gem-change-color"></i>
