@@ -720,20 +720,19 @@ profile_picture_uploader.on("change", function () {
   reader.onload = function (event) {
     var img = new Image();
     img.onload = function () {
-      var photo = {
-        image: img.src,
-        extension: profile_picture_uploader[0].files[0].name.split('.').pop().toLowerCase()
-      };
+      var formData = new FormData();
+      formData.append('image', profile_picture_uploader[0].files[0]);
+      formData.append('extension', profile_picture_uploader[0].files[0].name.split('.').pop().toLowerCase());
+      $(".change-profile-picture-container").css("background-image", "url('" + img.src + "')");
       $.ajax({
         method: "POST",
-        url: "api/change-profile-picture.php",
-        data: {
-          photo: JSON.stringify(photo)
-        },
+        url: $("#update-profile-picture").val(),
+        cache: false,
+        contentType: false,
+        processData: false,
+        data: formData,
         timeout: 30000
-      }).done(function (response) {
-        $(".change-profile-picture-container").css("background-image", "url('" + img.src + "')");
-      }).fail(function (error) {
+      }).done(function (response) {}).fail(function (error) {
         $(".change-profile-picture-container").css("background", previous_photo);
         showErrorFromAjax(error);
       }).always(function () {

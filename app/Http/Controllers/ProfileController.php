@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class ProfileController extends Controller
@@ -136,5 +137,25 @@ class ProfileController extends Controller
         return response()->json([
             'redirect' => route('login.index')
         ]);
+    }
+
+    public function updateProfilePicture(Request $request) {
+        $request->validate([
+            'image' => 'required|mimes:jpg,jpeg,png,bmp,tiff|max:10240',
+            'extension' => 'required',
+        ]);
+
+        $photo = json_decode($request->photo);
+
+        $file = file_get_contents($request->image);
+        $name = Str::random(40) . '.' . $request->extension;
+
+        $path = config('filesystems.disks.do.folder') . '/profile_pictures/' . Auth::user()->id . '/';
+        Storage::disk('do')->put($path . $name, $file);
+
+        Auth::user()->photo = config('filesystems.disks.do.cdn_endpoint') . $path . $name;
+        Auth::user()->update();
+
+        return response()->json();
     }
 }

@@ -10,7 +10,6 @@
         <div class="text-center">
             <button class="btn btn-custom-2 btn-sm font-size-80 px-3" id="edit-personal-info-show-fields">Edit Account Information</button>
             <button class="btn btn-custom-2 btn-sm font-size-80 px-3" id="reset-password-show-modal" value="{{ Auth::user()->email_verified_at }}">Reset Password</button>
-            <button class="btn btn-custom-2 btn-sm font-size-80 px-3" id="change-pin-code-show-fields">Change Pin Code</button>
         </div>
     </div>
 
@@ -66,6 +65,7 @@
             </div>
 
             <div class="col-md-6 order-0 order-md-1 px-2">
+                <input type="hidden" id="update-profile-picture" value="{{ route('profile.updateProfilePicture') }}" />
                 <div class="d-flex justify-content-center align-items-center h-100 me-xl-4">
                     <div class="col-11 col-sm-6 col-md-11 col-lg-10 col-xl-9 col-xxl-8 mt-3 mt-md-0 mb-3 mb-md-0" id="change-profile-picture">
                         <div class="text-center change-profile-picture-container" style="background-image:url('{{ Auth::user()->photo() }}'); background-size:cover; background-repeat:no-repeat; background-position:center; width:100%; border-radius:50%; border:2px solid #aaaaaa; position:relative; padding-top:100%; cursor:pointer">
