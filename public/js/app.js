@@ -342,49 +342,55 @@ $(document).on("click", ".navbar-toggler", function () {
 });
 
 // Start: Registration
-var referralCodeOnChange = function referralCodeOnChange() {
-  $("#register-sponsor-blank").css("display", "none");
-  $("#register-sponsor-no-match").css("display", "none");
-  $("#register-sponsor-has-match").css("display", "none");
-  $("#register-sponsor-loading").css("display", "inline-block");
-  var referral_code = $("#register-sponsors-code").val();
-  var checkSponsor = function checkSponsor() {
-    $.ajax({
-      method: "POST",
-      url: $("#register-sponsors-code").attr("data-action"),
-      timeout: 30000,
-      data: {
-        referral_code: referral_code
-      }
-    }).done(function (response) {
-      if (!response.sponsor) {
-        $("#register-sponsor-blank").css("display", "none");
-        $("#register-sponsor-no-match").css("display", "inline-block");
-        $("#register-sponsor-has-match").css("display", "none");
-        $("#register-sponsor-loading").css("display", "none");
-      } else {
-        $("#register-sponsor-has-match").html(response.sponsor);
-        $("#register-sponsor-blank").css("display", "none");
-        $("#register-sponsor-no-match").css("display", "none");
-        $("#register-sponsor-has-match").css("display", "inline-block");
-        $("#register-sponsor-loading").css("display", "none");
-      }
-    }).fail(function (error) {
-      showErrorFromAjax(error);
-    });
-  };
-  if (referral_code === "") {
-    $("#register-sponsor-blank").css("display", "inline-block");
-    $("#register-sponsor-no-match").css("display", "none");
-    $("#register-sponsor-has-match").css("display", "none");
-    $("#register-sponsor-loading").css("display", "none");
-  } else {
-    checkSponsor();
-  }
-};
-$(document).on("change", "#register-sponsors-code", function () {
-  referralCodeOnChange();
-});
+// let referralCodeOnChange = function() {
+//     $("#register-sponsor-blank").css("display", "none");
+//     $("#register-sponsor-no-match").css("display", "none");
+//     $("#register-sponsor-has-match").css("display", "none");
+//     $("#register-sponsor-loading").css("display", "inline-block");
+//
+//     let referral_code = $("#register-sponsors-code").val();
+//
+//     let checkSponsor = function() {
+//         $.ajax({
+//             method: "POST",
+//             url: $("#register-sponsors-code").attr("data-action"),
+//             timeout: 30000,
+//             data: {
+//                 referral_code: referral_code
+//             }
+//         }).done(function(response) {
+//             if(!response.sponsor) {
+//                 $("#register-sponsor-blank").css("display", "none");
+//                 $("#register-sponsor-no-match").css("display", "inline-block");
+//                 $("#register-sponsor-has-match").css("display", "none");
+//                 $("#register-sponsor-loading").css("display", "none");
+//             } else {
+//                 $("#register-sponsor-has-match").html(response.sponsor);
+//
+//                 $("#register-sponsor-blank").css("display", "none");
+//                 $("#register-sponsor-no-match").css("display", "none");
+//                 $("#register-sponsor-has-match").css("display", "inline-block");
+//                 $("#register-sponsor-loading").css("display", "none");
+//             }
+//         }).fail(function(error) {
+//             showErrorFromAjax(error);
+//         });
+//     };
+//
+//     if(referral_code === "") {
+//         $("#register-sponsor-blank").css("display", "inline-block");
+//         $("#register-sponsor-no-match").css("display", "none");
+//         $("#register-sponsor-has-match").css("display", "none");
+//         $("#register-sponsor-loading").css("display", "none");
+//     } else {
+//         checkSponsor();
+//     }
+// };
+//
+// $(document).on("change", "#register-sponsors-code", function() {
+//     referralCodeOnChange();
+// });
+
 $(document).on("click", "#register-show-confirmation", function () {
   $("#modal-warning .message").html("Your registration information will now be submitted.");
   $("#modal-warning .proceed").html("Confirm");
@@ -1294,12 +1300,22 @@ $(document).on("click", "#edit-personal-info-show-fields", function () {
   $("#edit-username").prop("disabled", false);
   $("#edit-email-address").prop("disabled", false);
   $("#edit-contact-number").prop("disabled", false);
+  $("#edit-referral-link").prop("disabled", false);
   $("#edit-address").prop("disabled", false);
   $("input[name='payout-method']").prop("disabled", false);
   $(".payout-field input").prop("disabled", false);
   $("#edit-personal-info-show-fields").css("display", "none");
   $("#cancel").css("display", "inline-block");
   $("#edit-personal-info").css("display", "inline-block");
+});
+$(document).on("keyup", "#edit-referral-link", function (evt) {
+  var value = $(this).val();
+  var prefix = $(this).attr('data-prefix');
+  if (value.substring(0, prefix.length) !== prefix) {
+    $(this).val(prefix);
+    evt.preventDefault();
+  }
+  return true;
 });
 $(document).on("change", "input[name='payout-method']", function () {
   var method = $("input[name='payout-method']:checked").val();
@@ -1436,12 +1452,14 @@ $(document).on("click", "#cancel", function () {
   $("#edit-username").prop("disabled", true);
   $("#edit-email-address").prop("disabled", true);
   $("#edit-contact-number").prop("disabled", true);
+  $("#edit-referral-link").prop("disabled", true);
   $("#edit-address").prop("disabled", true);
   $("#edit-firstname").val($("#edit-firstname").attr("prev-value"));
   $("#edit-lastname").val($("#edit-lastname").attr("prev-value"));
   $("#edit-username").val($("#edit-username").attr("prev-value"));
   $("#edit-email-address").val($("#edit-email-address").attr("prev-value"));
   $("#edit-contact-number").val($("#edit-contact-number").attr("prev-value"));
+  $("#edit-referral-link").val($("#edit-referral-link").attr("prev-value"));
   $("#edit-address").val($("#edit-address").attr("prev-value"));
   $("input[name='payout-method']").prop("disabled", false);
   $(".payout-field input").prop("disabled", true);
@@ -1465,6 +1483,7 @@ $(document).on("click", "#edit-personal-info", function () {
   var username = $("#edit-username").val();
   var email_address = $("#edit-email-address").val();
   var contact_number = $("#edit-contact-number").val();
+  var referral_code = $("#edit-referral-link").val();
   var address = $("#edit-address").val();
   var payout_method = $("input[name='payout-method']:checked").val();
   var payout_account_number = $("#edit-payout-account-number").val();
@@ -1481,6 +1500,7 @@ $(document).on("click", "#edit-personal-info", function () {
       username: username,
       email_address: email_address,
       contact_number: contact_number,
+      referral_code: referral_code,
       address: address,
       payout_method: payout_method,
       payout_account_number: payout_account_number,
@@ -1495,12 +1515,14 @@ $(document).on("click", "#edit-personal-info", function () {
     $("#edit-username").prop("disabled", true);
     $("#edit-email-address").prop("disabled", true);
     $("#edit-contact-number").prop("disabled", true);
+    $("#edit-referral-link").prop("disabled", true);
     $("#edit-address").prop("disabled", true);
     $("#edit-firstname").prop("disabled", true);
     $("#edit-lastname").prop("disabled", true);
     $("#edit-username").prop("disabled", true);
     $("#edit-email-address").attr("prev-value", email_address);
     $("#edit-contact-number").attr("prev-value", contact_number);
+    $("#edit-referral-link").attr("prev-value", referral_code);
     $("#edit-address").attr("prev-value", address);
     $("input[name='payout-method']").prop("disabled", true);
     $(".payout-field input").prop("disabled", true);

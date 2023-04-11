@@ -30,6 +30,7 @@ class ProfileController extends Controller
             'email_address' => 'required|email',
             'username' => 'required|string',
             'contact_number' => 'required|numeric',
+            'referral_code' => 'required|string',
         ]);
 
         $usernameExists = User::where('username', $request->username)
@@ -38,11 +39,22 @@ class ProfileController extends Controller
 
         abort_if($usernameExists, 422, 'Username already exists.');
 
+        $referralCode = explode(config('app.url') . '/ref/', $request->referral_code);
+        abort_if(count($referralCode) < 2, 422, 'Invalid Referral Code');
+        abort_if(!$referralCode[1], 422, 'Invalid Referral Code');
+
+        $referralCodeExists = User::where('referral_code', $referralCode[1])
+            ->where('id', '!=', Auth::user()->id)
+            ->first();
+
+        abort_if($referralCodeExists, 422, 'Referral link already exists.');
+
         Auth::user()->firstname = $request->firstname;
         Auth::user()->lastname = $request->lastname;
         Auth::user()->username = $request->username;
         Auth::user()->email = $request->email_address;
         Auth::user()->contact_number = $request->contact_number;
+        Auth::user()->referral_code = $referralCode[1];
         Auth::user()->update();
 
         $payoutInformation = Auth::user()->payoutInformation()['payoutInformation'];

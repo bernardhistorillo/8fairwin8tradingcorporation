@@ -62,12 +62,20 @@
                         <i class="fas fa-phone"></i>
                     </div>
                 </div>
+
+                <small>Referral Link</small>
+                <div class="position-relative mb-2">
+                    <input class="form-control form-control-1 ps-3 pe-5 py-2" id="edit-referral-link" type="text" placeholder="Referral Link" value="{{ config('app.url') . '/ref/' . Auth::user()->referral_code }}" prev-value="{{ config('app.url') . '/ref/' . Auth::user()->referral_code }}" data-prefix="{{ config('app.url') . '/ref/' }}" disabled>
+                    <div class="position-absolute" style="right:20px; top:9px">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                </div>
             </div>
 
             <div class="col-md-6 order-0 order-md-1 px-2">
                 <input type="hidden" id="update-profile-picture" value="{{ route('profile.updateProfilePicture') }}" />
                 <div class="d-flex justify-content-center align-items-center h-100 me-xl-4">
-                    <div class="col-11 col-sm-6 col-md-11 col-lg-10 col-xl-9 col-xxl-8 mt-3 mt-md-0 mb-3 mb-md-0" id="change-profile-picture">
+                    <div class="col-11 col-sm-6 col-md-11 col-lg-10 col-xl-10 col-xxl-9 mt-3 mt-md-0 mb-3 mb-md-0" id="change-profile-picture">
                         <div class="text-center change-profile-picture-container" style="background-image:url('{{ Auth::user()->photo() }}'); background-size:cover; background-repeat:no-repeat; background-position:center; width:100%; border-radius:50%; border:2px solid #aaaaaa; position:relative; padding-top:100%; cursor:pointer">
                             <i class="fas fa-spinner fa-2x fa-spin d-none profile-picture-loading" style="color:#ffffff; position:absolute; top:calc(50% - 14px); left:calc(50% - 14px); "></i>
                         </div>

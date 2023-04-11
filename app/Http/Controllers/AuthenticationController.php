@@ -22,14 +22,8 @@ class AuthenticationController extends Controller
             'username' => 'required|string|unique:users',
             'password' => 'required|string',
             'confirm_password' => 'required|same:password',
-            'pin_code' => 'required|numeric',
-            'confirm_pin_code' => 'required|same:pin_code',
             'sponsors_code' => 'required|exists:users,referral_code',
         ]);
-
-        if(strlen($request->pin_code) != 4) {
-            abort(422, 'Pin Code must have 4 digits.');
-        }
 
         $user = User::where('email', $request->email)
             ->first();
@@ -48,7 +42,6 @@ class AuthenticationController extends Controller
         $user->contact_number = $request->contact_number;
         $user->username = $request->username;
         $user->password = Hash::make($request->password);
-        $user->pin_code = $request->pin_code;
         $user->sponsor = $upline['id'];
 
         $referralCodeExists = true;
@@ -78,6 +71,18 @@ class AuthenticationController extends Controller
         return response()->json([
             'sponsor' => ($user) ? $user->fullName() : null
         ]);
+    }
+
+    public function referral(Request $request, $referralCode) {
+        $user = User::where('referral_code', $referralCode)
+            ->first();
+
+        if($user) {
+            session(['referralCode' => $user['referral_code']]);
+            return redirect()->route('register.index');
+        }
+
+        return redirect()->route('home.index');
     }
 
     public function logout(Request $request) {

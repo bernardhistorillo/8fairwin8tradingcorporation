@@ -37,6 +37,8 @@ Route::middleware(['guest'])->group(function() {
 
     Route::get('/login', [AuthenticationController::class, 'loginPage'])->name('login.index');
     Route::post('/loginSubmit', [AuthenticationController::class, 'login'])->name('login.submit');
+
+    Route::get('/ref/{referralCode}', [AuthenticationController::class, 'referral'])->name('register.referral');
 });
 
 Route::middleware(['auth'])->group(function() {

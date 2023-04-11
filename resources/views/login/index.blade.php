@@ -10,7 +10,7 @@
         <div class="d-flex justify-content-center align-items-center min-vh-100">
             <div class="row justify-content-center py-5">
                 <div class="col-sm-10 col-md-8 pt-5 pb-4">
-                    <p class="text-color-1 code-pro-bold-lc line-height-110 font-size-170 font-size-sm-230 font-size-md-220 font-size-lg-230 font-size-xl-230 font-size-xxl-250 text-center mt-4 mb-4 pb-2">Welcome Back to Your Path to Well&#8209;Being</p>
+                    <p class="text-white code-pro-bold-lc line-height-110 font-size-170 font-size-sm-230 font-size-md-220 font-size-lg-230 font-size-xl-230 font-size-xxl-250 text-center mt-4 mb-4 pb-2">Welcome Back to Your Path to Well&#8209;Being</p>
 
                     <div class="card border-0 mb-4">
                         <div class="card-body p-4 p-sm-5">
