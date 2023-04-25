@@ -464,6 +464,9 @@ $(document).on("submit", "#login-form", function(e) {
         $("#login").html("Redirecting...");
         window.location = "/dashboard";
     }).fail(function(error) {
+        $("#login").prop("disabled",false);
+        $("#login").html("Log In");
+
         showErrorFromAjax(error);
     });
 });

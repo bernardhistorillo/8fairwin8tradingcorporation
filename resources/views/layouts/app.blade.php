@@ -16,7 +16,6 @@
 
     <link rel="icon" href="{{ asset('img/logo/100x100.png') }}">
 
-    <link rel="icon" type="image/ico" href="img/logo-image.png" sizes="any" />
     <link href="{{ asset('lib/treantjs/css/Treant.css') }}" rel="stylesheet"/>
     <link href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet">
 
