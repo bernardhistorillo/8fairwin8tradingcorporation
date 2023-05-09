@@ -117,6 +117,13 @@
         </a>
     </li>
 
+    <li class="nav-item {{ (Route::currentRouteName() == 'admin.genealogy.index') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('admin.genealogy.index') }}">
+            <i class="fa-solid fa-fw fa-user"></i>
+            <span>Genealogy</span>
+        </a>
+    </li>
+
     <hr class="sidebar-divider d-none d-md-block">
 
     <div class="text-center d-none d-md-inline mb-4">

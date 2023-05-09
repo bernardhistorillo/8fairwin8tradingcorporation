@@ -2166,6 +2166,8 @@ var pageOnload = /*#__PURE__*/function () {
             terminalOnload();
           } else if (currentRouteName === "admin.users.index") {
             adminUsersOnload();
+          } else if (currentRouteName === "admin.genealogy.index") {
+            adminGenealogyOnload();
           }
         case 3:
         case "end":
@@ -2294,7 +2296,7 @@ var ordersOnload = function ordersOnload() {
   initializeDataTables();
 };
 var networkOnload = function networkOnload() {
-  getGenealogy();
+  getGenealogy(2);
   initializeDataTables();
 };
 var transfersOnload = function transfersOnload() {
@@ -2321,6 +2323,9 @@ var terminalOnload = function terminalOnload() {
 };
 var adminUsersOnload = function adminUsersOnload() {
   initializeDataTables();
+};
+var adminGenealogyOnload = function adminGenealogyOnload() {
+  getGenealogy(1);
 };
 var initMap = function initMap() {
   var map = new google.maps.Map(document.getElementById("map"), {
@@ -2592,13 +2597,13 @@ var proof_of_payment_uploader = $('<input type="file" accept="image/*" />');
 var profile_picture_uploader = $('<input type="file" accept="image/*" />');
 var account_package = ["", "DBP - ", "DSP - ", "FDP - ", "DMP - "];
 var ranks = ["Free Account", "Dealer", "Explorer", "Pathfinder", "Navigator", "Master Guide", "Fair Winner", "Grand Fair Winner", "Royal Fair Winner", "Crown Fair Winner"];
-var getGenealogy = function getGenealogy() {
+var getGenealogy = function getGenealogy(type) {
   $.ajax({
     method: "POST",
     url: $("input[name='get-genealogy-route']").val(),
     timeout: 30000,
     data: {
-      type: 2
+      type: type
     }
   }).done(function (response) {
     genealogy = response.genealogy;
@@ -2607,7 +2612,7 @@ var getGenealogy = function getGenealogy() {
     generateGenealogy();
   }).fail(function () {
     setTimeout(function () {
-      getGenealogy();
+      getGenealogy(type);
     }, 1000);
   });
 };
@@ -2701,7 +2706,6 @@ var generateGenealogy = function generateGenealogy() {
     table_content += '			</tr>';
     table_content += '		</thead>';
     table_content += '		<tbody>';
-    console.log(genealogy);
     while (nodes_to_be_parsed.length > 0) {
       var nodes_to_be_parsed_temp = [];
       for (var k = 0; k < nodes_to_be_parsed.length; k++) {
@@ -2726,7 +2730,7 @@ var generateGenealogy = function generateGenealogy() {
     $(".data-table").css("display", "table");
     generate_referral_table_once = 1;
   }
-  $("#chart").html('<h5 class="text-center my-5 py-5">Loading...</h5>');
+  $("#chart").html('<p class="text-center my-5 py-5">Loading...</p>');
   if ($("#has-network").attr("data-value") == 1) {
     setTimeout(function () {
       new Treant(chart_config);

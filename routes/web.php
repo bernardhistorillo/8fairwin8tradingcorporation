@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\AdminGenealogyController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\AdminWinnersGemController;
 use App\Http\Controllers\AuthenticationController;
@@ -105,6 +106,10 @@ Route::middleware(['auth'])->group(function() {
                 Route::get('/', [AdminUserController::class, 'index'])->name('admin.users.index');
                 Route::post('/setStockist', [AdminUserController::class, 'setStockist'])->name('admin.users.setStockist');
                 Route::get('/accessUser/{userId}', [AdminUserController::class, 'accessUser'])->name('admin.users.accessUser');
+            });
+
+            Route::prefix('genealogy')->group(function () {
+                Route::get('/', [AdminGenealogyController::class, 'index'])->name('admin.genealogy.index');
             });
 
             Route::prefix('winnersgem')->group(function () {

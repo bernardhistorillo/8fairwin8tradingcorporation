@@ -53,6 +53,8 @@ let pageOnload = async function() {
         terminalOnload();
     } else if(currentRouteName === "admin.users.index") {
         adminUsersOnload();
+    } else if(currentRouteName === "admin.genealogy.index") {
+        adminGenealogyOnload();
     }
 };
 let homeOnload = function() {
@@ -167,7 +169,7 @@ let ordersOnload = function() {
     initializeDataTables();
 };
 let networkOnload = function() {
-    getGenealogy();
+    getGenealogy(2);
     initializeDataTables();
 };
 let transfersOnload = function() {
@@ -196,6 +198,9 @@ let terminalOnload = function() {
 };
 let adminUsersOnload = function() {
     initializeDataTables();
+};
+let adminGenealogyOnload = function() {
+    getGenealogy(1);
 };
 
 let initMap = function() {
@@ -504,13 +509,13 @@ let profile_picture_uploader = $('<input type="file" accept="image/*" />');
 let account_package = ["", "DBP - ", "DSP - ", "FDP - ", "DMP - "];
 let ranks = ["Free Account", "Dealer", "Explorer", "Pathfinder", "Navigator", "Master Guide", "Fair Winner", "Grand Fair Winner", "Royal Fair Winner", "Crown Fair Winner"];
 
-let getGenealogy = function() {
+let getGenealogy = function(type) {
     $.ajax({
         method: "POST",
         url: $("input[name='get-genealogy-route']").val(),
         timeout: 30000,
         data: {
-            type: 2
+            type: type
         }
     }).done(function(response) {
         genealogy = response.genealogy;
@@ -520,7 +525,7 @@ let getGenealogy = function() {
         generateGenealogy();
     }).fail(function() {
         setTimeout(function() {
-            getGenealogy();
+            getGenealogy(type);
         },1000);
     });
 };
@@ -626,7 +631,7 @@ let generateGenealogy = function() {
         table_content += '				<th>Sponsor Name</th>';
         table_content += '			</tr>';
         table_content += '		</thead>';
-        table_content += '		<tbody>';console.log(genealogy);
+        table_content += '		<tbody>';
         while(nodes_to_be_parsed.length > 0) {
             var nodes_to_be_parsed_temp = [];
             for(var k = 0; k < nodes_to_be_parsed.length; k++) {
@@ -656,7 +661,7 @@ let generateGenealogy = function() {
         generate_referral_table_once = 1;
     }
 
-    $("#chart").html('<h5 class="text-center my-5 py-5">Loading...</h5>');
+    $("#chart").html('<p class="text-center my-5 py-5">Loading...</p>');
 
     if($("#has-network").attr("data-value") == 1) {
         setTimeout(function () {
