@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\AdminWinnersGemController;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\ConversionController;
 use App\Http\Controllers\DashboardController;
@@ -96,7 +98,15 @@ Route::middleware(['auth'])->group(function() {
 
     Route::middleware(['admin'])->group(function() {
         Route::prefix('admin')->group(function () {
+            Route::get('/', [AdminDashboardController::class, 'index'])->name('admin.dashboard.index');
 
+            Route::prefix('users')->group(function () {
+                Route::get('/', [AdminWinnersGemController::class, 'updateValue'])->name('admin.winnersgem.updateValue');
+            });
+
+            Route::prefix('winnersgem')->group(function () {
+                Route::post('/updateValue', [AdminWinnersGemController::class, 'updateValue'])->name('admin.winnersgem.updateValue');
+            });
         });
     });
 });

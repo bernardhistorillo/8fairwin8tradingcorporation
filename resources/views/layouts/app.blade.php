@@ -82,7 +82,7 @@
                         <li class="nav-item dropdown no-arrow mx-1">
                             <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="modal" data-bs-target="#modal-gem-purchase" aria-haspopup="true" aria-expanded="false">
                                 <i class="fa-solid fa-gem text-color-2 font-size-130 fa-fw gem-change-color"></i>
-                                <span class="d-none d-md-inline text-gray-600 small ps-2">Winners Gem&nbsp; <i class="fa-solid fa-equals"></i> &nbsp;<i class="fa-solid fa-peso-sign"></i>&nbsp;{{ number_format(winnersGemValue(), 2) }}</span>
+                                <span class="d-none d-md-inline text-gray-600 small ps-2">Winners Gem&nbsp; <i class="fa-solid fa-equals"></i> &nbsp;<i class="fa-solid fa-peso-sign"></i>&nbsp;<span class="winners-gem-value">{{ number_format(winnersGemValue(), 2) }}</span></span>
                             </a>
                         </li>
 
