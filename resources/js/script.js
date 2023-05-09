@@ -51,6 +51,8 @@ let pageOnload = async function() {
         withdrawalsOnload();
     } else if(currentRouteName === "terminal.index") {
         terminalOnload();
+    } else if(currentRouteName === "admin.users.index") {
+        adminUsersOnload();
     }
 };
 let homeOnload = function() {
@@ -192,6 +194,10 @@ let terminalOnload = function() {
     $(".loading-text").css("display", "none");
     $(".data-table, #items-table").css("display", "table");
 };
+let adminUsersOnload = function() {
+    initializeDataTables();
+};
+
 let initMap = function() {
     let map = new google.maps.Map(document.getElementById("map"), {
         zoom: 5.8,
@@ -2052,6 +2058,65 @@ $(document).on("click", "#update-winners-gem-value", function() {
 
             let modalSuccess = $('#modal-success');
             modalSuccess.find(".message").html("Saving changes successful.");
+            modalSuccess.modal('show');
+        }).catch((error) => {
+            showRequestError(error);
+        }).then(() => {
+            modalWarning.find(".proceed").html("Confirm");
+            modalWarning.find(".proceed").prop("disabled",false);
+            modalWarning.find("button[data-dismiss='modal']").css("display","block");
+            modalWarning.modal("hide");
+        });
+});
+
+// Admin Users
+$(document).on("click", ".set-stockist-confirm", function() {
+    if(($(this).data("stockist") == 1 && $("#assignable-accounts").val() != -1 && $("#assignable-center-stockists").val() != -1) || ($(this).data("stockist") == 2 && $("#assignable-accounts").val() != -1) || ($(this).data("stockist") == 0 && $("#removable-accounts").val() != -1)) {
+        let name;
+
+        if($(this).data("stockist") == 0) {
+            name = $("#removable-accounts option[value='" + $("#removable-accounts").val() + "']").html();
+            $("#modal-warning .message").html("Are you sure you want to remove " + name + " as " + (($("#stockist").html() == 1) ? "Mobile" : "Center") + " Stockist?");
+        } else {
+            name = $("#assignable-accounts option[value='" + $("#assignable-accounts").val() + "']").html();
+            $("#modal-warning .message").html("Are you sure you want to make " + name + " a " + (($("#stockist").html() == 1) ? "Mobile" : "Center") + " Stockist?");
+        }
+
+        $("#modal-warning .proceed").attr("id", "set-stockist");
+        $("#modal-warning .proceed").attr("data-stockist", $(this).data("stockist"));
+        $("#modal-warning .proceed").attr("data-name", name);
+        $("#modal-warning").modal("show");
+    }
+});
+
+$(document).on("click", "#set-stockist", function() {
+    let modalWarning = $("#modal-warning");
+    modalWarning.find(".proceed").prop("disabled",true);
+    modalWarning.find(".proceed").html("Processing...");
+    modalWarning.find("button[data-dismiss='modal']").css("display","none");
+
+    let stockist = parseInt($("#set-stockist").attr("data-stockist"));
+    let userId = (stockist === 0) ? $("#removable-accounts").val() : $("#assignable-accounts").val();
+    let name  = $("#set-stockist").attr("data-name");
+    let centerStockist = (stockist === 1) ? $("#assignable-center-stockists").val() : "";
+
+    let data = {
+        userId: userId,
+        stockist: stockist,
+        centerStockist: centerStockist,
+        view: parseInt($("#stockist").html())
+    };
+
+    let url = $("#set-stockist-route").val();
+
+    axios.post(url, data)
+        .then((response) => {
+            $("#users-table-container").html(response.data.content);
+
+            initializeDataTables();
+
+            let modalSuccess = $('#modal-success');
+            modalSuccess.find(".message").html(name + " has been successfully " + ((stockist === 0) ? "removed" : "assigned") + " as " + ((parseInt($("#stockist").html()) === 1) ? "Mobile" : "Center") + " Stockist.");
             modalSuccess.modal('show');
         }).catch((error) => {
             showRequestError(error);

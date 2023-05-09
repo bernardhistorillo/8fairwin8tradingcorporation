@@ -46,7 +46,7 @@ if(!function_exists('fullName')) {
 
 if(!function_exists('ranks')) {
     function ranks() {
-        return $ranks = array("Free Account", "Dealer", "Explorer", "Pathfinder", "Navigator", "Master Guide", "Fair Winner", "Grand Fair Winner", "Royal Fair Winner", "Crown Fair Winner");
+        return array("Free Account", "Dealer", "Explorer", "Pathfinder", "Navigator", "Master Guide", "Fair Winner", "Grand Fair Winner", "Royal Fair Winner", "Crown Fair Winner");
     }
 }
 

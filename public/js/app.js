@@ -2164,6 +2164,8 @@ var pageOnload = /*#__PURE__*/function () {
             withdrawalsOnload();
           } else if (currentRouteName === "terminal.index") {
             terminalOnload();
+          } else if (currentRouteName === "admin.users.index") {
+            adminUsersOnload();
           }
         case 3:
         case "end":
@@ -2316,6 +2318,9 @@ var terminalOnload = function terminalOnload() {
   });
   $(".loading-text").css("display", "none");
   $(".data-table, #items-table").css("display", "table");
+};
+var adminUsersOnload = function adminUsersOnload() {
+  initializeDataTables();
 };
 var initMap = function initMap() {
   var map = new google.maps.Map(document.getElementById("map"), {
@@ -3914,6 +3919,55 @@ $(document).on("click", "#update-winners-gem-value", function () {
     $(".winners-gem-value").html(response.data.winnersGemValue);
     var modalSuccess = $('#modal-success');
     modalSuccess.find(".message").html("Saving changes successful.");
+    modalSuccess.modal('show');
+  })["catch"](function (error) {
+    showRequestError(error);
+  }).then(function () {
+    modalWarning.find(".proceed").html("Confirm");
+    modalWarning.find(".proceed").prop("disabled", false);
+    modalWarning.find("button[data-dismiss='modal']").css("display", "block");
+    modalWarning.modal("hide");
+  });
+});
+
+// Admin Users
+$(document).on("click", ".set-stockist-confirm", function () {
+  if ($(this).data("stockist") == 1 && $("#assignable-accounts").val() != -1 && $("#assignable-center-stockists").val() != -1 || $(this).data("stockist") == 2 && $("#assignable-accounts").val() != -1 || $(this).data("stockist") == 0 && $("#removable-accounts").val() != -1) {
+    var name;
+    if ($(this).data("stockist") == 0) {
+      name = $("#removable-accounts option[value='" + $("#removable-accounts").val() + "']").html();
+      $("#modal-warning .message").html("Are you sure you want to remove " + name + " as " + ($("#stockist").html() == 1 ? "Mobile" : "Center") + " Stockist?");
+    } else {
+      name = $("#assignable-accounts option[value='" + $("#assignable-accounts").val() + "']").html();
+      $("#modal-warning .message").html("Are you sure you want to make " + name + " a " + ($("#stockist").html() == 1 ? "Mobile" : "Center") + " Stockist?");
+    }
+    $("#modal-warning .proceed").attr("id", "set-stockist");
+    $("#modal-warning .proceed").attr("data-stockist", $(this).data("stockist"));
+    $("#modal-warning .proceed").attr("data-name", name);
+    $("#modal-warning").modal("show");
+  }
+});
+$(document).on("click", "#set-stockist", function () {
+  var modalWarning = $("#modal-warning");
+  modalWarning.find(".proceed").prop("disabled", true);
+  modalWarning.find(".proceed").html("Processing...");
+  modalWarning.find("button[data-dismiss='modal']").css("display", "none");
+  var stockist = parseInt($("#set-stockist").attr("data-stockist"));
+  var userId = stockist === 0 ? $("#removable-accounts").val() : $("#assignable-accounts").val();
+  var name = $("#set-stockist").attr("data-name");
+  var centerStockist = stockist === 1 ? $("#assignable-center-stockists").val() : "";
+  var data = {
+    userId: userId,
+    stockist: stockist,
+    centerStockist: centerStockist,
+    view: parseInt($("#stockist").html())
+  };
+  var url = $("#set-stockist-route").val();
+  axios.post(url, data).then(function (response) {
+    $("#users-table-container").html(response.data.content);
+    initializeDataTables();
+    var modalSuccess = $('#modal-success');
+    modalSuccess.find(".message").html(name + " has been successfully " + (stockist === 0 ? "removed" : "assigned") + " as " + (parseInt($("#stockist").html()) === 1 ? "Mobile" : "Center") + " Stockist.");
     modalSuccess.modal('show');
   })["catch"](function (error) {
     showRequestError(error);

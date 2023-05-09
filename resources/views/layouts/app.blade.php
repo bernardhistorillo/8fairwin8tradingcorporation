@@ -95,6 +95,20 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-end shadow animated--grow-in" aria-labelledby="userDropdown">
+                                @if(substr(Route::currentRouteName(), 0, 6) != 'admin.' && Auth::user()->role == 1)
+                                <a class="dropdown-item" href="{{ route('admin.dashboard.index') }}">
+                                    <i class="fas fa-tachometer-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Admin Dashboard
+                                </a>
+                                @endif
+
+                                @if(substr(Route::currentRouteName(), 0, 6) == 'admin.' && Auth::user()->role == 1)
+                                <a class="dropdown-item" href="{{ route('admin.dashboard.index') }}">
+                                    <i class="fas fa-tachometer-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    User Dashboard
+                                </a>
+                                @endif
+
                                 <a class="dropdown-item" href="{{ route('profile.index') }}">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
