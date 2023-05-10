@@ -2168,6 +2168,8 @@ var pageOnload = /*#__PURE__*/function () {
             adminUsersOnload();
           } else if (currentRouteName === "admin.genealogy.index") {
             adminGenealogyOnload();
+          } else if (currentRouteName === "admin.winnersGem.index") {
+            adminWinnersGemOnload();
           }
         case 3:
         case "end":
@@ -2327,6 +2329,9 @@ var adminUsersOnload = function adminUsersOnload() {
 var adminGenealogyOnload = function adminGenealogyOnload() {
   getGenealogy(1);
 };
+var adminWinnersGemOnload = function adminWinnersGemOnload() {
+  initializeDataTables();
+};
 var initMap = function initMap() {
   var map = new google.maps.Map(document.getElementById("map"), {
     zoom: 5.8,
@@ -2394,6 +2399,7 @@ var initializeDataTables = function initializeDataTables() {
   });
   $(".loading-text").css("display", "none");
   $(".data-table").css("display", "table");
+  $(".data-table").removeClass("d-none");
 };
 var showErrorFromAjax = function showErrorFromAjax(error) {
   var content = "Something went wrong.";
@@ -3914,7 +3920,7 @@ $(document).on("click", "#update-winners-gem-value", function () {
   var modalWarning = $("#modal-warning");
   modalWarning.find(".proceed").prop("disabled", true);
   modalWarning.find(".proceed").html("Processing...");
-  modalWarning.find("button[data-dismiss='modal']").css("display", "none");
+  modalWarning.find("button[data-bs-dismiss='modal']").css("display", "none");
   var form = $("#update-winners-gem-value-form");
   var data = new FormData(form[0]);
   var url = form.attr('action');
@@ -3929,7 +3935,7 @@ $(document).on("click", "#update-winners-gem-value", function () {
   }).then(function () {
     modalWarning.find(".proceed").html("Confirm");
     modalWarning.find(".proceed").prop("disabled", false);
-    modalWarning.find("button[data-dismiss='modal']").css("display", "block");
+    modalWarning.find("button[data-bs-dismiss='modal']").css("display", "block");
     modalWarning.modal("hide");
   });
 });
@@ -3955,7 +3961,7 @@ $(document).on("click", "#set-stockist", function () {
   var modalWarning = $("#modal-warning");
   modalWarning.find(".proceed").prop("disabled", true);
   modalWarning.find(".proceed").html("Processing...");
-  modalWarning.find("button[data-dismiss='modal']").css("display", "none");
+  modalWarning.find("button[data-bs-dismiss='modal']").css("display", "none");
   var stockist = parseInt($("#set-stockist").attr("data-stockist"));
   var userId = stockist === 0 ? $("#removable-accounts").val() : $("#assignable-accounts").val();
   var name = $("#set-stockist").attr("data-name");
@@ -3978,9 +3984,102 @@ $(document).on("click", "#set-stockist", function () {
   }).then(function () {
     modalWarning.find(".proceed").html("Confirm");
     modalWarning.find(".proceed").prop("disabled", false);
-    modalWarning.find("button[data-dismiss='modal']").css("display", "block");
+    modalWarning.find("button[data-bs-dismiss='modal']").css("display", "block");
     modalWarning.modal("hide");
   });
+});
+
+// Admin Winners Gem
+$(document).on("click", ".approve-gem-purchase-show-modal", function () {
+  var modalWarning = $("#modal-warning");
+  modalWarning.find(".message").html("Winners Gem purchase request will now be approved.");
+  modalWarning.find(".proceed").val($(this).val());
+  modalWarning.find(".proceed").attr("id", "approve-gem-purchase");
+  modalWarning.modal('show');
+});
+$(document).on("click", "#approve-gem-purchase", function () {
+  var modalWarning = $("#modal-warning");
+  modalWarning.find(".proceed").prop("disabled", true);
+  modalWarning.find(".proceed").html("Processing...");
+  modalWarning.find("button[data-bs-dismiss='modal']").css("display", "none");
+  var url = $("#approve-gem-purchase-route").val();
+  var id = $(this).val();
+  var data = {
+    id: id
+  };
+  axios.post(url, data).then(function (response) {
+    $("#winners-gem-table-container").html(response.data.content);
+    initializeDataTables();
+    var modalSuccess = $('#modal-success');
+    modalSuccess.find(".message").html("Winners Gem purchase request successfully approved.");
+    modalSuccess.modal('show');
+  })["catch"](function (error) {
+    showRequestError(error);
+  }).then(function () {
+    modalWarning.find(".proceed").html("Confirm");
+    modalWarning.find(".proceed").prop("disabled", false);
+    modalWarning.find("button[data-bs-dismiss='modal']").css("display", "block");
+    modalWarning.modal("hide");
+  });
+});
+$(document).on("click", ".remove-gem-purchase-confirm", function () {
+  var modalWarning = $("#modal-warning");
+  modalWarning.find(".message").html("Winners Gem purchase request will now be removed.");
+  modalWarning.find(".proceed").val($(this).val());
+  modalWarning.find(".proceed").attr("id", "remove-gem-purchase");
+  modalWarning.modal('show');
+});
+$(document).on("click", "#remove-gem-purchase", function () {
+  var modalWarning = $("#modal-warning");
+  modalWarning.find(".proceed").prop("disabled", true);
+  modalWarning.find(".proceed").html("Processing...");
+  modalWarning.find("button[data-bs-dismiss='modal']").css("display", "none");
+  var url = $("#remove-gem-purchase-route").val();
+  var id = $(this).val();
+  var data = {
+    id: id
+  };
+  axios.post(url, data).then(function (response) {
+    $("#winners-gem-table-container").html(response.data.content);
+    initializeDataTables();
+    var modalSuccess = $('#modal-success');
+    modalSuccess.find(".message").html("Winners Gem purchase request successfully removed.");
+    modalSuccess.modal('show');
+  })["catch"](function (error) {
+    showRequestError(error);
+  }).then(function () {
+    modalWarning.find(".proceed").html("Confirm");
+    modalWarning.find(".proceed").prop("disabled", false);
+    modalWarning.find("button[data-bs-dismiss='modal']").css("display", "block");
+    modalWarning.modal("hide");
+  });
+});
+$(document).on("click", ".view-proof-of-payment", function () {
+  $("#proof-of-payment-container").html('<p class="text-center" style="width:100%">No Proofs of Payment Added</p>');
+  $("#account-name").html($(this).data("account"));
+  $("#modal-proof-of-payment").modal("show");
+  var proof_of_payments = JSON.parse($(this).find("span").html());
+  var content = '';
+  var i = 0;
+  var load_image = function load_image() {
+    var img = new Image();
+    img.onload = function () {
+      content += '	<div class="col-6 px-1" style="margin-bottom:10px">';
+      content += '		<a href="' + img.src + '" data-fancybox="images" data-caption="Proof of Payment">';
+      content += '			<div class="background-image-contain proof-of-payment" style="width:100%; height:180px; background-color:#eeeeee; border:2px solid #0e4d22; position:relative; cursor:pointer; background-image:url(\'' + img.src + '\')"></div>';
+      content += '		</a>';
+      content += '	</div>';
+      if (i === proof_of_payments.length - 1) {
+        $("#proof-of-payment-container").html(content);
+      } else {
+        load_image(proof_of_payments[++i]);
+      }
+    };
+    img.src = proof_of_payments[i];
+  };
+  if (proof_of_payments.length > 0) {
+    load_image(proof_of_payments[i]);
+  }
 });
 
 /***/ }),

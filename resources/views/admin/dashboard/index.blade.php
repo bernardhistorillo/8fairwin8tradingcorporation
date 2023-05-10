@@ -45,7 +45,7 @@
                     <button class="close" data-bs-dismiss="modal">&times;</button>
                 </div>
             </div>
-            <form id="update-winners-gem-value-form" action="{{ route('admin.winnersgem.updateValue') }}">
+            <form id="update-winners-gem-value-form" action="{{ route('admin.winnersGem.updateValue') }}">
                 <div class="modal-body">
                     <div class="position-relative mb-0">
                         <input class="form-control form-control-1 px-5 py-2 text-center" name="winners_gem_value" type="text" placeholder="Winners Gem Value" min="0" value="{{ number_format(winnersGemValue(), 2, '.', '') }}" />

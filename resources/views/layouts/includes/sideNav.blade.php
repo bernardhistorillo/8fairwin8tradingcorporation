@@ -119,8 +119,15 @@
 
     <li class="nav-item {{ (Route::currentRouteName() == 'admin.genealogy.index') ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('admin.genealogy.index') }}">
-            <i class="fa-solid fa-fw fa-user"></i>
+            <i class="fa-solid fa-fw fa-users"></i>
             <span>Genealogy</span>
+        </a>
+    </li>
+
+    <li class="nav-item {{ (Route::currentRouteName() == 'admin.winnersGem.index') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('admin.winnersGem.index') }}">
+            <i class="fa-solid fa-fw fa-gem"></i>
+            <span>Winners Gem</span>
         </a>
     </li>
 

@@ -103,7 +103,7 @@
                                 @endif
 
                                 @if(substr(Route::currentRouteName(), 0, 6) == 'admin.' && Auth::user()->role == 1)
-                                <a class="dropdown-item" href="{{ route('admin.dashboard.index') }}">
+                                <a class="dropdown-item" href="{{ route('dashboard.index') }}">
                                     <i class="fas fa-tachometer-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     User Dashboard
                                 </a>
@@ -114,7 +114,7 @@
                                     Profile
                                 </a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{{ route('auth.logout') }}" data-toggle="modal" data-bs-target="#logoutModal">
+                                <a class="dropdown-item" href="{{ route('auth.logout') }}">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Logout
                                 </a>

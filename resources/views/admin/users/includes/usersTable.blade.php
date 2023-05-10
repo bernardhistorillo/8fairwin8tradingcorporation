@@ -55,18 +55,18 @@
     <p class="text-center my-5 py-5 loading-text">Loading...</p>
     <table class="table table-bordered data-table" style="display:none; font-size:0.9em">
         <thead>
-        <tr>
-            <th></th>
-            <th>Name</th>
-            <th>Email Address</th>
-            <th>Contact Number</th>
-            <th>Username</th>
-            <th>Rank Status</th>
-            <th>Referral Code</th>
-            @if($stockist == 1)
-            <th>Center Stockist</th>
-            @endif
-        </tr>
+            <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Email Address</th>
+                <th>Contact Number</th>
+                <th>Username</th>
+                <th>Rank Status</th>
+                <th>Referral Code</th>
+                @if($stockist == 1)
+                <th>Center Stockist</th>
+                @endif
+            </tr>
         </thead>
         <tbody>
             @foreach($users as $user)

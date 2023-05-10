@@ -20,7 +20,7 @@
             </li>
         </ul>
 
-        <div class="tab-content pt-2">
+        <div class="tab-content pt-2 mb-5">
             <div class="tab-pane fade in show active" id="graphical" role="tabpanel" aria-labelledby="graphical-tab">
                 <ol class="breadcrumb mt-2 uplines-container"></ol>
 

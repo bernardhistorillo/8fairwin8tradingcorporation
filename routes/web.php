@@ -113,7 +113,10 @@ Route::middleware(['auth'])->group(function() {
             });
 
             Route::prefix('winnersgem')->group(function () {
-                Route::post('/updateValue', [AdminWinnersGemController::class, 'updateValue'])->name('admin.winnersgem.updateValue');
+                Route::get('/', [AdminWinnersGemController::class, 'index'])->name('admin.winnersGem.index');
+                Route::post('/approvePurchase', [AdminWinnersGemController::class, 'approvePurchase'])->name('admin.winnersGem.approvePurchase');
+                Route::post('/removePurchase', [AdminWinnersGemController::class, 'removePurchase'])->name('admin.winnersGem.removePurchase');
+                Route::post('/updateValue', [AdminWinnersGemController::class, 'updateValue'])->name('admin.winnersGem.updateValue');
             });
         });
     });
