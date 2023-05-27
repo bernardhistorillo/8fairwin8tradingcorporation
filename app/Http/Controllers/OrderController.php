@@ -1056,7 +1056,7 @@ class OrderController extends Controller
     public function markOrderAsComplete(Request $request) {
         $request->validate([
             'id' => 'required|numeric',
-            'user' => 'required|numeric',
+            'from' => 'required|in:terminal,admin',
         ]);
 
         $order = Order::where('id', $request->id)
@@ -1065,7 +1065,7 @@ class OrderController extends Controller
 
         abort_if(!$order, 422, 'Invalid Order');
 
-        if($request->user == 2) {
+        if($request->from == 'terminal') {
             $items = $order->items();
 
             $lessInStock = 0;
@@ -1091,43 +1091,20 @@ class OrderController extends Controller
         $order->date_time_completed = Carbon::now();
         $order->update();
 
-        $stockists = [];
-        $terminalWinnersGem = 0;
+        if($request->from == 'admin') {
+            [$orders, $stockists, $stockistLabels] = (new AdminOrderController())->getData();
 
-        if(Auth::user()->role == 1 && $request->user == 1) {
-            $orders = Order::select('orders.*', 'orders.stockist as order_stockist', 'firstname', 'lastname', 'users.stockist as user_stockist')
-                ->leftJoin('users', 'user_id', 'users.id')
-                ->orderBy('orders.id', 'desc')
-                ->get();
-
-            $stockistsTemp = Order::select('terminal_user_id', 'firstname', 'lastname', 'rank', 'email')
-                ->leftJoin('users', 'terminal_user_id', 'users.id')
-                ->groupBy('terminal_user_id')
-                ->get();
-
-            foreach($stockistsTemp as $stockist) {
-                $stockists[strval($stockist["terminal_user_id"])] = $stockist;
-            }
+            return response()->json([
+                'content' => (string)view('admin.orders.includes.ordersTable', compact('orders', 'stockists', 'stockistLabels'))
+            ]);
         } else {
-            $orders = Order::select('orders.*', 'orders.stockist as order_stockist', 'firstname', 'lastname', 'users.stockist as user_stockist')
-                ->leftJoin('users', 'user_id', 'users.id')
-                ->where('terminal_user_id', Auth::user()->id)
-                ->orderBy('orders.id', 'desc')
-                ->get();
-
+            $orders = (new TerminalController())->ordersAsATerminalData();
             $terminalWinnersGem = Auth::user()->terminalWinnersGem();
-        }
 
-        foreach($orders as $order) {
-            $order['formatted_created_at'] = formatDate($order['created_at']);
-            $order['formatted_date_time_completed'] = ($order['date_time_completed']) ? formatDate($order['date_time_completed']) : null;
-            $order['name'] = fullName($order);
+            return response()->json([
+                'content' => (string)view('terminal.includes.ordersTable', compact('orders')),
+                'terminalWinnersGem' => number_format(Auth::user()->terminalWinnersGem()["balance"], 2)
+            ]);
         }
-
-        return response()->json([
-            'orders' => $orders,
-            'stockists' => $stockists,
-            'terminalWinnersGem' => $terminalWinnersGem,
-        ]);
     }
 }

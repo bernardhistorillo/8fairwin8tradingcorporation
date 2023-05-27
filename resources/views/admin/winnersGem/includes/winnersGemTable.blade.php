@@ -62,7 +62,7 @@
                         <td>{{ $gemPurchase["created_at"] }}</td>
                         <td>{{ $gemPurchase["date_time_approved"] }}</td>
                         <td>{{ fullName($gemPurchase) }}</td>
-                        <td class="text-end">{{ number_format($gemPurchase["amount"],2) }} <span style="font-size:0.8em">Gems</span></td>
+                        <td class="text-end">{{ number_format($gemPurchase["amount"],2) }} <i class="fa-solid fa-gem gem-change-color font-size-90"></i></td>
                         <td class="text-end"><i class="fa-solid fa-peso-sign"></i>&nbsp;{{  number_format($gemPurchase["price"],2) }}</td>
                     </tr>
                         @endif

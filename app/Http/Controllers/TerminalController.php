@@ -42,11 +42,7 @@ class TerminalController extends Controller
             $latestShippingInformation = $terminalUser->latestShippingInformation();
         } else {
             if($terminal['type'] == "orders") {
-                $orders = Auth::user()->ordersAsATerminal()
-                    ->select('orders.*', 'users.firstname', 'users.lastname')
-                    ->leftJoin('users', 'orders.user_id', 'users.id')
-                    ->orderBy('orders.id', 'desc')
-                    ->get();
+                $orders = $this->ordersAsATerminalData();
             } else if($terminal['type'] == "inventory") {
                 $items = Item::orderBy('name', 'asc')
                     ->get();
@@ -80,5 +76,13 @@ class TerminalController extends Controller
         $showProductsTab = (!$terminalUser && Auth::user()->package_id != 3) || ($terminalUser && $terminalUser["package_id"] != 3);
 
         return view('terminal.index', compact('terminal', 'terminalUsers', 'terminalUser', 'orders', 'items', 'type', 'showProductsTab', 'latestShippingInformation'));
+    }
+
+    public function ordersAsATerminalData() {
+        return Auth::user()->ordersAsATerminal()
+            ->select('orders.*', 'users.firstname', 'users.lastname')
+            ->leftJoin('users', 'orders.user_id', 'users.id')
+            ->orderBy('orders.id', 'desc')
+            ->get();
     }
 }

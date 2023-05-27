@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AdminGenealogyController;
+use App\Http\Controllers\AdminOrderController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\AdminWinnersGemController;
 use App\Http\Controllers\AuthenticationController;
@@ -117,6 +118,10 @@ Route::middleware(['auth'])->group(function() {
                 Route::post('/approvePurchase', [AdminWinnersGemController::class, 'approvePurchase'])->name('admin.winnersGem.approvePurchase');
                 Route::post('/removePurchase', [AdminWinnersGemController::class, 'removePurchase'])->name('admin.winnersGem.removePurchase');
                 Route::post('/updateValue', [AdminWinnersGemController::class, 'updateValue'])->name('admin.winnersGem.updateValue');
+            });
+
+            Route::prefix('orders')->group(function () {
+                Route::get('/', [AdminOrderController::class, 'index'])->name('admin.orders.index');
             });
         });
     });

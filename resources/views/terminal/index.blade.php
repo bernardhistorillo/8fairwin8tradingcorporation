@@ -44,7 +44,7 @@
                         <tbody>
                             @foreach($terminalUsers as $terminalUser)
                             <tr>
-                                <td><a href="{{ route('terminal.index', ['terminalUser' => base64_encode($terminalUser["id"])]) }}" class="btn btn-custom-2 btn-sm font-size-90 px-3">Select</a></td>
+                                <td class="text-center"><a href="{{ route('terminal.index', ['terminalUser' => base64_encode($terminalUser["id"])]) }}" class="btn btn-custom-2 btn-sm font-size-90 px-3">Select</a></td>
                                 <td>{{ fullName($terminalUser) }}</td>
                                 <td>{{ $terminalUser["email"] }}</td>
                                 <td>{{ $terminalUser["referral_code"] }}</td>
@@ -67,80 +67,8 @@
 
         <input type="hidden" id="mark-order-as-complete-route" value="{{ route('orders.markOrderAsComplete') }}" />
 
-        <div class="tab-content pt-2 mb-5">
-            <div class="tab-pane fade in show active" id="pending" role="tabpanel" aria-labelledby="pending-tab">
-                <div class="table-responsive mt-1">
-                    <h6 class="text-center py-5 my-5 loading-text">Loading...</h6>
-                    <table class="table table-bordered data-table font-size-90" style="display:none">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th class="text-center">Date&nbsp;&amp; Time Placed</th>
-                                <th class="text-center">Type</th>
-                                <th class="text-center">Reference</th>
-                                <th class="text-center">Account</th>
-                                <th class="text-center">Price</th>
-                                <th class="text-center">Points</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($orders as $order)
-                                @if(!$order["date_time_completed"])
-                            <tr>
-                                <td class="pt-2">
-                                    <button class="btn btn-custom-2 btn-sm mt-1 font-size-90 view-items" value="{{ $order["id"] }}" data-reference="{{ $order["reference"] }}" style="width:83px">Items</button>
-                                    <button class="btn btn-custom-2 btn-sm mt-1 font-size-90 terminal-view-shipment" data-reference="{{ $order["reference"] }}" data-full-name="{{ $order["full_name"] }}" data-contact-number="{{ $order["contact_number"] }}" data-barangay="{{ $order["barangay"] }}" data-city="{{ $order["city"] }}" data-province="{{ $order["province"] }}" data-zip-code="{{ $order["zip_code"] }}" style="width:82px">Shipment</button>
-                                    <button class="btn btn-custom-2 btn-sm mt-1 font-size-90 mark-order-as-complete-confirm" value="{{ $order["id"] }}" data-reference="{{ $order["reference"] }}" style="width:168px">Mark as Complete</button>
-                                </td>
-                                <td>{{ formatDate($order["created_at"]) }}</td>
-                                <td>{{ ($order["type"] == 1) ? "Package" : "Product" }}</td>
-                                <td>{{ $order["reference"] }}</td>
-                                <td>{{ fullName($order) }}</td>
-                                <td>{{ number_format($order["price"], 2) }} <i class="fas fa-gem gem-change-color"></i></td>
-                                <td>{{ number_format($order["points_value"], 2) }} PV</td>
-                            </tr>
-                                @endif
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="tab-pane fade" id="completed" role="tabpanel" aria-labelledby="approved-tab">
-                <div class="table-responsive mt-4">
-                    <h6 class="text-center py-5 my-5 loading-text">Loading...</h6>
-                    <table class="table table-bordered data-table font-size-90" style="display:none">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th class="text-center">Date&nbsp;&amp; Time Placed</th>
-                                <th class="text-center">Date&nbsp;&amp; Completed</th>
-                                <th class="text-center">Type</th>
-                                <th class="text-center">Reference</th>
-                                <th class="text-center">Account</th>
-                                <th class="text-center">Price</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($orders as $order)
-                                @if($order["date_time_completed"])
-                            <tr>
-                                <td>
-                                    <button class="btn btn-custom-2 btn-sm font-size-90 mt-1 view-items" value="{{ $order["id"] }}" data-reference="{{ $order["reference"] }}" style="width:82px">Items</button>
-                                    <button class="btn btn-custom-2 btn-sm font-size-90 mt-1 terminal-view-shipment" data-reference="{{ $order["reference"] }}" data-full-name="{{ $order["full_name"] }}" data-contact-number="{{ $order["contact_number"] }}" data-barangay="{{ $order["barangay"] }}" data-city="{{ $order["city"] }}" data-province="{{ $order["province"] }}" data-zip-code="{{ $order["zip_code"] }}" style="width:82px">Shipment</button>
-                                </td>
-                                <td>{{ formatDate($order["created_at"]) }}</td>
-                                <td>{{ formatDate($order["date_time_completed"]) }}</td>
-                                <td>{{ ($order["type"] == 1) ? "Package" : "Product" }}</td>
-                                <td>{{ $order["reference"] }}</td>
-                                <td>{{ fullName($order) }}</td>
-                                <td>{{ number_format($order["price"], 2) }} <i class="fa-solid fa-gem gem-change-color"></i></td>
-                            </tr>
-                                @endif
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+        <div class="tab-content pt-2 mb-5" id="orders-table-container">
+            @include('terminal.includes.ordersTable')
         </div>
             @elseif($terminal['type'] == "inventory")
         <div class="table-responsive mb-5">
@@ -208,52 +136,7 @@
     </div>
 </main>
 
-<div class="modal fade" id="modal-view-shipment" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header justify-content-center position-relative" style="background-color:#ffffff; color:#222222">
-                <h5 class="modal-title text-center">Shipment - Order: <span class="order-reference"></span></h5>
-                <div class="position-absolute" style="right:18px; top:18px">
-                    <button class="close" data-bs-dismiss="modal">&times;</button>
-                </div>
-            </div>
-
-            <div class="modal-body">
-                <div class="table-responsive mt-2">
-                    <table class="table table-bordered mb-1">
-                        <tr>
-                            <th style="width:50%; background-color:#fafafa; text-align:right">Full Name</th>
-                            <td id="shipment-full-name" style="text-align:left"></td>
-                        </tr>
-                        <tr>
-                            <th style="background-color:#fafafa; text-align:right">Contact Number</th>
-                            <td id="shipment-contact-number" style="text-align:left"></td>
-                        </tr>
-                        <tr>
-                            <th style="background-color:#fafafa; text-align:right">Barangay</th>
-                            <td id="shipment-barangay" style="text-align:left"></td>
-                        </tr>
-                        <tr>
-                            <th style="background-color:#fafafa; text-align:right">City</th>
-                            <td id="shipment-city" style="text-align:left"></td>
-                        </tr>
-                        <tr>
-                            <th style="background-color:#fafafa; text-align:right">Province</th>
-                            <td id="shipment-province" style="text-align:left"></td>
-                        </tr>
-                        <tr>
-                            <th style="background-color:#fafafa; text-align:right">Zip Code</th>
-                            <td id="shipment-zip-code" style="text-align:left"></td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-            <div class="modal-footer justify-content-center">
-                <button type="button" class="btn btn-custom-2 px-4 proceed" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-
+@include('orders.includes.modalViewShipment')
 @include('orders.includes.modalViewOrderItems')
+
 @endsection

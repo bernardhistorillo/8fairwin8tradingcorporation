@@ -21,7 +21,7 @@
         <input type="hidden" id="approve-gem-purchase-route" value="{{ route('admin.winnersGem.approvePurchase') }}" />
         <input type="hidden" id="remove-gem-purchase-route" value="{{ route('admin.winnersGem.removePurchase') }}" />
 
-        <div id="winners-gem-table-container mb-5">
+        <div id="winners-gem-table-container" class="mb-5">
             @include('admin.winnersGem.includes.winnersGemTable')
         </div>
     </div>

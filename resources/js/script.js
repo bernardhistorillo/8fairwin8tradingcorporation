@@ -57,6 +57,8 @@ let pageOnload = async function() {
         adminGenealogyOnload();
     } else if(currentRouteName === "admin.winnersGem.index") {
         adminWinnersGemOnload();
+    } else if(currentRouteName === "admin.orders.index") {
+        adminOrdersOnload();
     }
 };
 let homeOnload = function() {
@@ -206,6 +208,9 @@ let adminGenealogyOnload = function() {
     getGenealogy(1);
 };
 let adminWinnersGemOnload = function() {
+    initializeDataTables();
+};
+let adminOrdersOnload = function() {
     initializeDataTables();
 };
 
@@ -1907,7 +1912,7 @@ $(document).on("click", "#update-proof-of-payment", function() {
     });
 });
 
-$(document).on("click", ".terminal-view-shipment", function() {
+$(document).on("click", ".view-shipment", function() {
     $(".order-reference").html($(this).data("reference"));
     $("#shipment-full-name").html(($(this).data("full-name") != "") ? $(this).data("full-name") : '<span style="font-style:italic">Empty</span>');
     $("#shipment-contact-number").html(($(this).data("contact-number") != "") ? $(this).data("contact-number") : '<span style="font-style:italic">Empty</span>');
@@ -1922,6 +1927,7 @@ $(document).on("click", ".terminal-view-shipment", function() {
 $(document).on("click", ".mark-order-as-complete-confirm", function() {
     $("#modal-warning .message").html("Are you sure you want to mark Order " + $(this).data("reference") + " as complete?");
     $("#modal-warning .proceed").val($(this).val());
+    $("#modal-warning .proceed").attr("data-from", $(this).attr("data-from"));
     $("#modal-warning .proceed").attr("id", "mark-order-as-complete");
     $('#modal-warning').modal('show');
 });
@@ -1931,7 +1937,8 @@ $(document).on("click", "#mark-order-as-complete", function() {
     $("#modal-warning .proceed").html("Processing...");
     $("#modal-warning button[data-bs-dismiss='modal']").css("display","none");
 
-    var id = $(this).val();
+    let id = $(this).val();
+    let from = $(this).attr("data-from");
 
     $.ajax({
         method: "POST",
@@ -1939,86 +1946,15 @@ $(document).on("click", "#mark-order-as-complete", function() {
         timeout: 30000,
         data: {
             id: id,
-            user: 2
+            from: from
         }
     }).done(function(response) {
-        $("#terminal-winners-gem").html(numberFormat(response.terminalWinnersGem.balance,true));
+        $("#orders-table-container").html(response.content);
+        initializeDataTables();
 
-        var content = '	<table class="table table-bordered data-table font-size-90" style="display:none">';
-        content += '		<thead>';
-        content += '			<tr style="background-color:#f9f9f9">';
-        content += '				<th class="text-center"></th>';
-        content += '				<th class="text-center">Date&nbsp;&amp; Time Placed</th>';
-        content += '				<th class="text-center">Type</th>';
-        content += '				<th class="text-center">Reference</th>';
-        content += '				<th class="text-center">Account</th>';
-        content += '				<th class="text-center">Price</th>';
-        content += '				<th class="text-center">Points</th>';
-        content += '			</tr>';
-        content += '		</thead>';
-        content += '		<tbody>';
-        response.orders.forEach(function(order) {
-            if(!order.date_time_completed) {
-                content += '	<tr>';
-                content += '		<td>';
-                content += '			<button class="btn btn-custom-2 btn-sm mt-1 font-size-90 view-items" value="' + order.id + '" data-reference="' + order.reference + '" style="width:83px">Items</button>';
-                content += '			<button class="btn btn-custom-2 btn-sm mt-1 font-size-90 terminal-view-shipment" data-reference="' + order.reference + '" data-full-name="' + order.full_name + '" data-contact-number="' + order.contact_number + '" data-barangay="' + order.barangay + '" data-city="' + order.city + '" data-province="' + order.province + '" data-zip-code="' + order.zip_code + '" style="width:83px">Shipment</button>';
-                content += '			<button class="btn btn-custom-2 btn-sm mt-1 font-size-90 mark-order-as-complete-confirm" value="' + order.id + '" data-reference="' + order.reference + '" style="width:168px">Mark as Complete</button>';
-                content += '		</td>';
-                content += '		<td>' + order.formatted_created_at + '</td>';
-                content += '		<td>' + ((order.type == 1) ? "Package" : "Product") + '</td>';
-                content += '		<td>' + order.reference + '</td>';
-                content += '		<td>' + order.name + '</td>';
-                content += '		<td>' + numberFormat(order.price,true) + ' <i class="fas fa-gem" style="font-size:0.8em"></i></td>';
-                content += '		<td>' + numberFormat(order.points_value,true) + ' PV</td>';
-                content += '	</tr>';
-            }
-        });
-        content += '		</tbody>';
-        content += '	</table>';
-
-        $("#pending .table-responsive").html(content);
-
-        content = '		<table class="table table-bordered data-table font-size-90" style="display:none">';
-        content += '		<thead>';
-        content += '			<tr style="background-color:#f9f9f9">';
-        content += '				<th class="text-center"></th>';
-        content += '				<th class="text-center">Date&nbsp;&amp; Time Placed</th>';
-        content += '				<th class="text-center">Date&nbsp;&amp; Time Completed</th>';
-        content += '				<th class="text-center">Type</th>';
-        content += '				<th class="text-center">Reference</th>';
-        content += '				<th class="text-center">Account</th>';
-        content += '				<th class="text-center">Price</th>';
-        content += '				<th class="text-center">Points</th>';
-        content += '			</tr>';
-        content += '		</thead>';
-        content += '		<tbody>';
-        response.orders.forEach(function(order) {
-            if(order.date_time_completed) {
-                content += '	<tr>';
-                content += '		<td>';
-                content += '			<button class="btn btn-custom-2 btn-sm mt-1 font-size-90 view-items" value="' + order.id + '" data-reference="' + order.reference + '" style="width:82px">Items</button>';
-                content += '			<button class="btn btn-custom-2 btn-sm mt-1 font-size-90 terminal-view-shipment" data-reference="' + order.reference + '" data-full-name="' + order.full_name + '" data-contact-number="' + order.contact_number + '" data-barangay="' + order.barangay + '" data-city="' + order.city + '" data-province="' + order.province + '" data-zip-code="' + order.zip_code + '" style="width:83px">Shipment</button>';
-                content += '		</td>';
-                content += '		<td>' + order.formatted_created_at + '</td>';
-                content += '		<td>' + order.formatted_date_time_completed + '</td>';
-                content += '		<td>' + ((order.type == 1) ? "Package" : "Product") + '</td>';
-                content += '		<td>' + order.reference + '</td>';
-                content += '		<td>' + order.name + '</td>';
-                content += '		<td>' + numberFormat(order.price,true) + ' <i class="fas fa-gem" style="font-size:0.8em"></i></td>';
-                content += '		<td>' + numberFormat(order.points_value,true) + ' PV</td>';
-                content += '	</tr>';
-            }
-        });
-        content += '		</tbody>';
-        content += '	</table>';
-
-        $("#completed .table-responsive").html(content);
-
-        $(".data-table").DataTable({
-            "aaSorting": []
-        });
-        $(".data-table").css("display","table");
+        if(from === "terminal") {
+            $("#terminal-winners-gem").html(response.terminalWinnersGem);
+        }
 
         $('#modal-success .message').html("Order has been successfully completed.");
         $('#modal-success').modal('show');
