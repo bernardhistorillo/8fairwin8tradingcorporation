@@ -68,6 +68,13 @@
 .link-color-2:hover, .link-color-2.active {
     color: #b08d04 !important;
 }
+.link-color-3 {
+    color:#104d22!important;
+    text-decoration: none!important;
+}
+.link-color-3:hover, .link-color-3.active {
+    color: #051a0b !important;
+}
 .btn-custom-1 {
     border-radius:0;
     background-color:#e3b504;

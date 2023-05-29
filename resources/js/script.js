@@ -59,6 +59,8 @@ let pageOnload = async function() {
         adminWinnersGemOnload();
     } else if(currentRouteName === "admin.orders.index") {
         adminOrdersOnload();
+    } else if(currentRouteName === "admin.items.index") {
+        adminItemsOnload();
     }
 };
 let homeOnload = function() {
@@ -211,6 +213,9 @@ let adminWinnersGemOnload = function() {
     initializeDataTables();
 };
 let adminOrdersOnload = function() {
+    initializeDataTables();
+};
+let adminItemsOnload = function() {
     initializeDataTables();
 };
 
@@ -564,7 +569,7 @@ let generateGenealogy = function() {
                     uplines_breadcrumb += '<li class="breadcrumb-item active">' + genealogy[i].firstname + " " + genealogy[i].lastname + '</li>';
                 } else {
                     uplines_breadcrumb += '<li class="breadcrumb-item">';
-                    uplines_breadcrumb += '		<a href="javascript:void(0)" class="uplines" node-id="' + genealogy[i].downline + '">' + genealogy[i].firstname + " " + genealogy[i].lastname + '</a>';
+                    uplines_breadcrumb += '		<a href="javascript:void(0)" class="uplines link-color-3" node-id="' + genealogy[i].downline + '">' + genealogy[i].firstname + " " + genealogy[i].lastname + '</a>';
                     uplines_breadcrumb += '</li>';
                 }
             }
@@ -2188,4 +2193,71 @@ $(document).on("click", ".view-proof-of-payment", function() {
     if(proof_of_payments.length > 0) {
         load_image(proof_of_payments[i]);
     }
+});
+
+// Admin Dashboard
+$(document).on("submit", "#add-item-form", function(e) {
+    e.preventDefault();
+
+    let form = $(this);
+
+    let modal = form.closest(".modal");
+    modal.find("[data-bs-dismiss='modal']").addClass("d-none");
+
+    let button = form.find("[type='submit']");
+    button.html("Adding Item");
+    button.prop("disabled", true);
+
+    let url = form.attr("action");
+    let data = new FormData(form[0]);
+
+    axios.post(url, data)
+        .then((response) => {
+            modal.modal("hide")
+
+            let modalSuccess = $('#modal-success');
+
+            modalSuccess.attr("data-bs-backdrop", "static");
+            modalSuccess.attr("data-bs-keyboard", "false");
+            modalSuccess.find("button[data-bs-dismiss='modal']").removeAttr("data-bs-dismiss");
+            modalSuccess.find('.proceed').attr("onclick", "window.location = '" + response.data.redirect + "'; $('#modal-success .proceed').prop('disabled',true); $('#modal-success .proceed').html('Redirecting...')");
+
+            modalSuccess.find(".message").html("Item added successfully.");
+            modalSuccess.modal('show');
+        }).catch((error) => {
+            showRequestError(error);
+        }).then(() => {
+            modal.find("[data-bs-dismiss='modal']").removeClass("d-none");
+
+            button.html("Add Item");
+            button.prop("disabled", false);
+        });
+});
+
+$(document).on("submit", "#edit-item-form", function(e) {
+    e.preventDefault();
+
+    let form = $(this);
+
+    let button = form.find("[type='submit']");
+    button.html("Saving Changes");
+    button.prop("disabled", true);
+
+    let url = form.attr("action");
+    let data = new FormData(form[0]);
+
+    axios.post(url, data)
+        .then((response) => {
+            $("[name='photo']").val('');
+            $("#photo-container").css("background-image", "url('" + response.data.photo + "')")
+
+            let modalSuccess = $('#modal-success');
+            modalSuccess.find(".message").html("Saving changes successful");
+            modalSuccess.modal('show');
+        }).catch((error) => {
+            showRequestError(error);
+        }).then(() => {
+            button.html("Save Changes");
+            button.prop("disabled", false);
+        });
 });

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AdminGenealogyController;
+use App\Http\Controllers\AdminItemController;
 use App\Http\Controllers\AdminOrderController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\AdminWinnersGemController;
@@ -122,6 +123,12 @@ Route::middleware(['auth'])->group(function() {
 
             Route::prefix('orders')->group(function () {
                 Route::get('/', [AdminOrderController::class, 'index'])->name('admin.orders.index');
+            });
+
+            Route::prefix('items')->group(function () {
+                Route::get('/', [AdminItemController::class, 'index'])->name('admin.items.index');
+                Route::post('/addItem', [AdminItemController::class, 'addItem'])->name('admin.items.addItem');
+                Route::post('/editItem', [AdminItemController::class, 'editItem'])->name('admin.items.editItem');
             });
         });
     });
