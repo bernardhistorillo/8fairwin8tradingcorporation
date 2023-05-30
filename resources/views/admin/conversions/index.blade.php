@@ -5,7 +5,7 @@
 @section('content')
 <main class="main">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h6 class="h6 mb-0 text-gray-800">Users</h6>
+        <h6 class="h6 mb-0 text-gray-800">Conversions</h6>
     </div>
 
     <div class="animated fadeIn">

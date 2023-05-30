@@ -152,6 +152,13 @@
         </a>
     </li>
 
+    <li class="nav-item {{ (Route::currentRouteName() == 'admin.transfers.index') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('admin.transfers.index') }}">
+            <i class="fa-solid fa-fw fa-money-bill-transfer"></i>
+            <span>Transfers</span>
+        </a>
+    </li>
+
     <hr class="sidebar-divider d-none d-md-block">
 
     <div class="text-center d-none d-md-inline mb-4">

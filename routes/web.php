@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AdminGenealogyController;
 use App\Http\Controllers\AdminItemController;
 use App\Http\Controllers\AdminOrderController;
+use App\Http\Controllers\AdminTransferController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\AdminWinnersGemController;
 use App\Http\Controllers\AuthenticationController;
@@ -134,6 +135,10 @@ Route::middleware(['auth'])->group(function() {
 
             Route::prefix('conversions')->group(function () {
                 Route::get('/', [AdminConversionController::class, 'index'])->name('admin.conversions.index');
+            });
+
+            Route::prefix('transfers')->group(function () {
+                Route::get('/', [AdminTransferController::class, 'index'])->name('admin.transfers.index');
             });
         });
     });

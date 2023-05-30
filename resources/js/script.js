@@ -63,6 +63,8 @@ let pageOnload = async function() {
         adminItemsOnload();
     } else if(currentRouteName === "admin.conversions.index") {
         adminConversionsOnload();
+    } else if(currentRouteName === "admin.transfers.index") {
+        adminTransfersOnload();
     }
 };
 let homeOnload = function() {
@@ -221,6 +223,9 @@ let adminItemsOnload = function() {
     initializeDataTables();
 };
 let adminConversionsOnload = function() {
+    initializeDataTables();
+};
+let adminTransfersOnload = function() {
     initializeDataTables();
 };
 
