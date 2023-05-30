@@ -87,7 +87,7 @@
                                 </div>
                                 @if($order["terminal_user_id"] != 0)
                                 <div class="me-1 mb-1 mb-xl-0">
-                                    <button class="btn btn-custom-2 btn-sm font-size-90 show-stockist" data-name="{{ $stockists[$order["terminal_user_id"]]["name"] }}" data-rank="{{ $stockists[$order["terminal_user_id"]]["rank"] }}" data-email-address="{{ $stockists[$order["terminal_user_id"]]["email_address"] }}">Stockist</button>
+                                    <button class="btn btn-custom-2 btn-sm font-size-90 show-stockist" data-name="{{ fullName($stockists[$order["terminal_user_id"]]) }}" data-rank="{{ $stockists[$order["terminal_user_id"]]["rank"] }}" data-email-address="{{ $stockists[$order["terminal_user_id"]]["email"] }}">Stockist</button>
                                 </div>
                                 @endif
                             </div>

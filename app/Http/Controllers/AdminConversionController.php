@@ -3,10 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Conversion;
-use App\Models\StockistAssignment;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class AdminConversionController extends Controller
 {

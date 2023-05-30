@@ -24,6 +24,40 @@
     </div>
 </main>
 
+<div class="modal fade" id="modal-stockist" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header justify-content-center position-relative" style="background-color:#ffffff; color:#222222">
+                <h5 class="modal-title text-center">Stockist</h5>
+                <div class="position-absolute" style="right:18px; top:18px">
+                    <button class="close" data-bs-dismiss="modal">&times;</button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered mb-1">
+                        <tr>
+                            <th class="text-end">Name</th>
+                            <td id="stockist-name"></td>
+                        </tr>
+                        <tr>
+                            <th class="text-end">Rank</th>
+                            <td id="stockist-rank"></td>
+                        </tr>
+                        <tr>
+                            <th class="text-end">Email Address</th>
+                            <td id="stockist-email-address"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-custom-2 px-4 proceed" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @include('orders.includes.modalViewOrderItems')
 @include('orders.includes.modalViewShipment')
 

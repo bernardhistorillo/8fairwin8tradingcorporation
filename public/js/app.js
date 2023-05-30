@@ -4032,7 +4032,15 @@ $(document).on("click", ".view-proof-of-payment", function () {
   }
 });
 
-// Admin Dashboard
+// Admin Orders
+$(document).on("click", ".show-stockist", function () {
+  $("#stockist-name").html($(this).data("name"));
+  $("#stockist-rank").html(ranks[$(this).data("rank")]);
+  $("#stockist-email-address").html($(this).data("email-address"));
+  $('#modal-stockist').modal('show');
+});
+
+// Admin Items
 $(document).on("submit", "#add-item-form", function (e) {
   e.preventDefault();
   var form = $(this);
