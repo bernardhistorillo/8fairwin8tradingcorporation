@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminConversionController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AdminGenealogyController;
 use App\Http\Controllers\AdminItemController;
@@ -129,6 +130,10 @@ Route::middleware(['auth'])->group(function() {
                 Route::get('/', [AdminItemController::class, 'index'])->name('admin.items.index');
                 Route::post('/addItem', [AdminItemController::class, 'addItem'])->name('admin.items.addItem');
                 Route::post('/editItem', [AdminItemController::class, 'editItem'])->name('admin.items.editItem');
+            });
+
+            Route::prefix('conversions')->group(function () {
+                Route::get('/', [AdminConversionController::class, 'index'])->name('admin.conversions.index');
             });
         });
     });

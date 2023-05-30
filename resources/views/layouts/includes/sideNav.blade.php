@@ -145,6 +145,13 @@
         </a>
     </li>
 
+    <li class="nav-item {{ (Route::currentRouteName() == 'admin.conversions.index') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('admin.conversions.index') }}">
+            <i class="fa-solid fa-fw fa-sync-alt"></i>
+            <span>Conversions</span>
+        </a>
+    </li>
+
     <hr class="sidebar-divider d-none d-md-block">
 
     <div class="text-center d-none d-md-inline mb-4">

@@ -2174,6 +2174,8 @@ var pageOnload = /*#__PURE__*/function () {
             adminOrdersOnload();
           } else if (currentRouteName === "admin.items.index") {
             adminItemsOnload();
+          } else if (currentRouteName === "admin.conversions.index") {
+            adminConversionsOnload();
           }
         case 3:
         case "end":
@@ -2340,6 +2342,9 @@ var adminOrdersOnload = function adminOrdersOnload() {
   initializeDataTables();
 };
 var adminItemsOnload = function adminItemsOnload() {
+  initializeDataTables();
+};
+var adminConversionsOnload = function adminConversionsOnload() {
   initializeDataTables();
 };
 var initMap = function initMap() {
