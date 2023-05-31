@@ -8,6 +8,7 @@ use App\Http\Controllers\AdminOrderController;
 use App\Http\Controllers\AdminTransferController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\AdminWinnersGemController;
+use App\Http\Controllers\AdminWithdrawalController;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\ConversionController;
 use App\Http\Controllers\DashboardController;
@@ -139,6 +140,11 @@ Route::middleware(['auth'])->group(function() {
 
             Route::prefix('transfers')->group(function () {
                 Route::get('/', [AdminTransferController::class, 'index'])->name('admin.transfers.index');
+            });
+
+            Route::prefix('withdrawals')->group(function () {
+                Route::get('/', [AdminWithdrawalController::class, 'index'])->name('admin.withdrawals.index');
+                Route::post('/setAsComplete', [AdminWithdrawalController::class, 'setAsComplete'])->name('admin.withdrawals.setAsComplete');
             });
         });
     });

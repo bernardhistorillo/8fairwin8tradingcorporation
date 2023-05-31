@@ -65,6 +65,8 @@ let pageOnload = async function() {
         adminConversionsOnload();
     } else if(currentRouteName === "admin.transfers.index") {
         adminTransfersOnload();
+    } else if(currentRouteName === "admin.withdrawals.index") {
+        adminWithdrawalsOnload();
     }
 };
 let homeOnload = function() {
@@ -226,6 +228,9 @@ let adminConversionsOnload = function() {
     initializeDataTables();
 };
 let adminTransfersOnload = function() {
+    initializeDataTables();
+};
+let adminWithdrawalsOnload = function() {
     initializeDataTables();
 };
 
@@ -2278,5 +2283,90 @@ $(document).on("submit", "#edit-item-form", function(e) {
         }).then(() => {
             button.html("Save Changes");
             button.prop("disabled", false);
+        });
+});
+
+// Admin Withdrawals
+$(document).on("click", ".view-payout-information", function() {
+    var payout_information = JSON.parse($(this).find("span").html());
+
+    var content = '	<table class="table table-bordered mb-0">';
+    content += '		<tbody>';
+    content += '			<tr>';
+    content += '				<th style="background-color:#fafafa; text-align:right">Method</th>';
+    content += '				<td style="text-align:left">' + payout_information.method + '</td>';
+    content += '			</tr>';
+    if(payout_information.method === "BDO") {
+        content += '		<tr>';
+        content += '			<th style="background-color:#fafafa; text-align:right">Account Number</th>';
+        content += '			<td style="text-align:left">' + payout_information.account_number + '</td>';
+        content += '		</tr>';
+        content += '		<tr>';
+        content += '			<th style="background-color:#fafafa; text-align:right">Account Name</th>';
+        content += '			<td style="text-align:left">' + payout_information.account_name + '</td>';
+        content += '		</tr>';
+    } else if(payout_information.method === "Palawan Express") {
+        content += '		<tr>';
+        content += '			<th style="background-color:#fafafa; text-align:right">Name</th>';
+        content += '			<td style="text-align:left">' + payout_information.name + '</td>';
+        content += '		</tr>';
+        content += '		<tr>';
+        content += '			<th style="background-color:#fafafa; text-align:right">Mobile Number</th>';
+        content += '			<td style="text-align:left">' + payout_information.mobile_number + '</td>';
+        content += '		</tr>';
+    } else if(payout_information.method === "GCash") {
+        content += '			<tr>';
+        content += '				<th style="background-color:#fafafa; text-align:right">Mobile Number</th>';
+        content += '				<td style="text-align:left">' + payout_information.mobile_number + '</td>';
+        content += '			</tr>';
+    } else if(payout_information.method === "Coins.ph") {
+        content += '		<tr>';
+        content += '			<th style="background-color:#fafafa; text-align:right">Wallet Address</th>';
+        content += '			<td style="text-align:left">' + payout_information.wallet_address + '</td>';
+        content += '		</tr>';
+    }
+    content += '		</tbody>';
+    content += '	</table>';
+
+    $("#payout-information-container").html(content);
+
+    $("#modal-payout-information").modal("show");
+});
+
+$(document).on("click", ".withdrawal-set-as-complete-confirm", function() {
+    $("#modal-warning .message").html("Are you sure you want to set the withdrawal as complete?");
+    $("#modal-warning .proceed").attr("id", "withdrawal-set-as-complete");
+    $("#modal-warning .proceed").val($(this).val());
+    $("#modal-warning").modal("show");
+});
+
+$(document).on("click", "#withdrawal-set-as-complete", function() {
+    let modalWarning = $("#modal-warning");
+    modalWarning.find(".proceed").prop("disabled",true);
+    modalWarning.find(".proceed").html("Processing...");
+    modalWarning.find("button[data-bs-dismiss='modal']").css("display","none");
+
+    let id = $(this).val();
+
+    let data = new FormData();
+    data.append('id', id);
+
+    let url = $("#set-as-complete-route").val();
+
+    axios.post(url, data)
+        .then((response) => {
+            $("#withdrawals-table-container").html(response.data.content);
+            initializeDataTables();
+
+            let modalSuccess = $('#modal-success');
+            modalSuccess.find(".message").html("Withdrawal successfully set as complete.");
+            modalSuccess.modal('show');
+        }).catch((error) => {
+            showRequestError(error);
+        }).then(() => {
+            modalWarning.find(".proceed").html("Confirm");
+            modalWarning.find(".proceed").prop("disabled",false);
+            modalWarning.find("button[data-bs-dismiss='modal']").css("display","block");
+            modalWarning.modal("hide");
         });
 });

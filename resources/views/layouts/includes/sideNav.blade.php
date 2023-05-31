@@ -159,6 +159,13 @@
         </a>
     </li>
 
+    <li class="nav-item {{ (Route::currentRouteName() == 'admin.withdrawals.index') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('admin.withdrawals.index') }}">
+            <i class="fa-solid fa-fw fa-money-from-bracket"></i>
+            <span>Withdrawals</span>
+        </a>
+    </li>
+
     <hr class="sidebar-divider d-none d-md-block">
 
     <div class="text-center d-none d-md-inline mb-4">
