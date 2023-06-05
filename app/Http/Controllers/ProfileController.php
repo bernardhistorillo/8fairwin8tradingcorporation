@@ -33,6 +33,8 @@ class ProfileController extends Controller
             'referral_code' => 'required|string',
         ]);
 
+        abort_if(!$request->payout_method, 422, 'Please add you Payout Method.');
+
         $usernameExists = User::where('username', $request->username)
             ->where('id', '!=', Auth::user()->id)
             ->first();

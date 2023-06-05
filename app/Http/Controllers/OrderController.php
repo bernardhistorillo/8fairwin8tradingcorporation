@@ -145,25 +145,32 @@ class OrderController extends Controller
             'contact_number' => 'required',
             'barangay' => 'required',
             'city' => 'required',
+            'province' => 'required',
             'zip_code' => 'required',
         ]);
 
-        $items = json_decode($request->items, true);
+        $this->processOrder(Auth::user(), $request->items, $request->stockist, $request->full_name, $request->contact_number, $request->barangay, $request->city, $request->province, $request->zip_code, $request->terminal_user);
+
+        return response()->json();
+    }
+
+    public function processOrder($user, $requestItems, $requestStockist, $requestFullName, $requestContactNumber, $requestBarangay, $requestCity, $requestProvince, $requestZipCode, $requestTerminalUser) {
+        $items = json_decode($requestItems, true);
         if(count($items) == 0) {
             abort(422, "You haven't added any items to your cart.");
         }
 
         $isTerminalUser = false;
 
-        if($request->terminal_user == '0') {
-            $purchaser = Auth::user();
+        if($requestTerminalUser == '0') {
+            $purchaser = $user;
 
-            if(!(($purchaser["stockist"] == 2 && $request->stockist == 2) || ($purchaser["stockist"] == 2 && $request->stockist == 0) || ($purchaser["stockist"] == 1 && $request->stockist == 1) || ($purchaser["stockist"] == 1 && $request->stockist == 0) || $purchaser["stockist"] == 0)) {
+            if(!(($purchaser["stockist"] == 2 && $requestStockist == 2) || ($purchaser["stockist"] == 2 && $requestStockist == 0) || ($purchaser["stockist"] == 1 && $requestStockist == 1) || ($purchaser["stockist"] == 1 && $requestStockist == 0) || $purchaser["stockist"] == 0)) {
                 abort(422, "Your account has no privilege for this purchase.");
             }
         } else {
-            if(Auth::user()->stockist > 0) {
-                $terminalUser = User::find(base64_decode($request->terminal_user));
+            if($user->stockist > 0) {
+                $terminalUser = User::find(base64_decode($requestTerminalUser));
 
                 if($terminalUser) {
                     $purchaser = $terminalUser;
@@ -176,11 +183,11 @@ class OrderController extends Controller
             }
         }
 
-        $terminalUser = ($isTerminalUser) ? Auth::user() : null;
+        $terminalUser = ($isTerminalUser) ? $user : null;
 
-        if($request->stockist == 1) {
+        if($requestStockist == 1) {
             $terminalUser = $purchaser->stockistAssignment->stockistUser;
-        } else if($request->stockist == 2) {
+        } else if($requestStockist == 2) {
             $terminalUser = null;
         }
 
@@ -191,9 +198,9 @@ class OrderController extends Controller
         $winnersGemValue = winnersGemValue();
 
         for($i = 0; $i < count($items); $i++) {
-            if($request->stockist == 1) {
+            if($requestStockist == 1) {
                 $price = "mobile_price";
-            } else if($request->stockist == 2) {
+            } else if($requestStockist == 2) {
                 $price = "center_price";
             } else {
                 $price = ($purchaser['rank'] > 0) ? "distributors_price" : "suggested_retail_price";
@@ -211,7 +218,7 @@ class OrderController extends Controller
             $totalPointsValue += $items[$i]['quantity'] * $items[$i]['points_value'];
 
             // If purchased by a stockist but not a center stockist, stock is checked
-            if($isTerminalUser && $request->stockist != 2) {
+            if($isTerminalUser && $requestStockist != 2) {
                 $itemStock = $itemDetails->terminalItemStock($terminalUser);
 
                 if($itemStock["inStock"] < $items[$i]['quantity']) {
@@ -220,11 +227,11 @@ class OrderController extends Controller
             }
         }
 
-        if($isTerminalUser && $request->stockist != 2) { // if purchased by a stockist but not a center stockist, stock is checked
+        if($isTerminalUser && $requestStockist != 2) { // if purchased by a stockist but not a center stockist, stock is checked
             abort_if($lessInStock > 0, 422, $lessInStock . " of the items to be ordered " . (($lessInStock > 1) ? "are" : "is") . " less in stock.");
         }
 
-        if($request->stockist) {
+        if($requestStockist) {
             $type = 2;
         }
 
@@ -243,7 +250,7 @@ class OrderController extends Controller
         } while ($codeExists);
 
         // If purchaser is not a stockist
-        if($request->stockist == 0) {
+        if($requestStockist == 0) {
             // If the item is a package, pool share is the total points value, else, just 10%
             $poolShare = ($type == 1) ? $totalPointsValue : $totalPointsValue * 0.1;
         } else {
@@ -252,18 +259,18 @@ class OrderController extends Controller
 
         $order = new Order();
         $order->type = $type;
-        $order->stockist = $request->stockist;
+        $order->stockist = $requestStockist;
         $order->reference = $referenceCode;
         $order->user_id = $purchaser['id'];
         $order->price = $totalPrice;
         $order->points_value = $totalPointsValue;
         $order->pool_share = $poolShare;
-        $order->full_name = $request->full_name;
-        $order->contact_number = $request->contact_number;
-        $order->barangay = $request->barangay;
-        $order->city = $request->city;
-        $order->province = $request->province;
-        $order->zip_code = $request->zip_code;
+        $order->full_name = $requestFullName;
+        $order->contact_number = $requestContactNumber;
+        $order->barangay = $requestBarangay;
+        $order->city = $requestCity;
+        $order->province = $requestProvince;
+        $order->zip_code = $requestZipCode;
         $order->terminal_user_id = ($terminalUser) ? $terminalUser['id'] : 0;
         $order->save();
 
@@ -277,7 +284,7 @@ class OrderController extends Controller
             $orderedItem->save();
         }
 
-        if($request->stockist == 0) {
+        if($requestStockist == 0) {
             if($type == 1 && $purchaser['id'] > 1) { // Package Purchase
                 if($purchaser['rank'] == 0) {
                     $purchaser['rank'] = 1;
@@ -287,12 +294,12 @@ class OrderController extends Controller
                 $itemId = $orderedItem['item_id'];
                 $packageId = $purchaser["package_id"];
 
-                $purchasedPackage = ($itemId == 21) ? 1 : (($itemId == 28) ? 4 : 2);
+                $purchasedPackage = ($itemId == 21) ? 3 : (($itemId == 28) ? 4 : (($itemId == 33) ? 5 : ($itemId == 34) ? 6 : (($itemId == 1) ? 1 : 2)));
 
-                // Packages Order: 0 -> 4 -> 2 -> 1
+                // Packages Order: 0 -> (4 / 5) -> (2 / 6) -> (1 / 3)
                 $isFromFreeAccountUpgrade = $packageId == 0;
-                $isFromDreamMakerUpgrade = $packageId == 4 && ($purchasedPackage == 2 || $purchasedPackage == 1);
-                $isFromDreamStarterUpgrade = $packageId == 2 && ($purchasedPackage == 1);
+                $isFromDreamMakerUpgrade = ($packageId == 4 || $packageId == 5) && ($purchasedPackage == 2 || $purchasedPackage == 1 || $purchasedPackage == 6 || $purchasedPackage == 3);
+                $isFromDreamStarterUpgrade = ($packageId == 2 || $packageId == 6) && ($purchasedPackage == 1 || $purchasedPackage == 3);
 
                 if ($isFromFreeAccountUpgrade || $isFromDreamMakerUpgrade || $isFromDreamStarterUpgrade) {
                     $packageId = $purchasedPackage;
@@ -413,8 +420,6 @@ class OrderController extends Controller
                     ->first();
             }
         }
-
-        return response()->json();
     }
 
     public function processReferralIncome(User $purchaser, Order $order, $packageId) {
@@ -422,6 +427,8 @@ class OrderController extends Controller
         $dreamStarterIncome = array(150, 40, 40, 40, 40, 25, 25, 25);
         $dreamBuilderIncome = array(300, 75, 75, 75, 75, 25, 25, 25);
         $fairwinDreamIncome = array(500, 20, 20, 20, 20, 10, 10, 10);
+        $fairwinStarterIncome = array(150, 30, 30, 30, 30, 10, 10, 10);
+        $fairwinPowerIncome = array(300, 75, 75, 75, 75, 30, 30, 30);
 
         $downline = $purchaser['id'];
 
@@ -453,9 +460,13 @@ class OrderController extends Controller
                 $amount = $dreamBuilderIncome[$i - 1];
             } else if($packageId == 3) {
                 $amount = $fairwinDreamIncome[$i - 1];
+            } else if($packageId == 5) {
+                $amount = $fairwinStarterIncome[$i - 1];
+            } else if($packageId == 6) {
+                $amount = $fairwinPowerIncome[$i - 1];
             }
 
-            if($uplinePackageId == 4) {
+            if($uplinePackageId == 4 || $uplinePackageId == 5) {
                 $referralIncomes[] = [
                     'order_id' => $order['id'],
                     'upline' => $upline,
@@ -467,21 +478,22 @@ class OrderController extends Controller
                     'updated_at' => Carbon::now(),
                 ];
 
-                $dspDbpFdpUpline = Downline::select('upline')
+                $dspFppDbpFdpUpline = Downline::select('upline')
                     ->join('users', function($join) {
                         $join->on('upline', 'users.id');
                         $join->where('package_id', 1);
                         $join->orWhere('package_id', 2);
                         $join->orWhere('package_id', 3);
+                        $join->orWhere('package_id', 6);
                     })
                     ->where('downline', $upline)
                     ->orderBy('level')
                     ->first();
 
-                if($dspDbpFdpUpline) {
+                if($dspFppDbpFdpUpline) {
                     $referralIncomes[] = [
                         'order_id' => $order['id'],
-                        'upline' => $dspDbpFdpUpline['upline'],
+                        'upline' => $dspFppDbpFdpUpline['upline'],
                         'downline' => $purchaser['id'],
                         'level' => $i,
                         'amount' => $amount * 0.3,
@@ -613,7 +625,11 @@ class OrderController extends Controller
             $infinityPlusIncome = array(0, 0, 60, 120, 180, 240, 300, 330, 360, 390);
         } else if($packageId == 2) { // DSP Entry
             $infinityPlusIncome = array(0, 0, 40, 80, 120, 160, 200, 240, 280, 320);
-        } else { // DMP Entry
+        } else if($packageId == 6) { // FPP Entry
+            $infinityPlusIncome = array(0, 0, 50, 100, 150, 200, 250, 280, 320, 350);
+        } else if($packageId == 4) { // DMP Entry
+            $infinityPlusIncome = array(0, 0, 10, 20, 30, 40, 50, 60, 70, 80);
+        } else { // FSP
             $infinityPlusIncome = array(0, 0, 10, 20, 30, 40, 50, 60, 70, 80);
         }
 
@@ -988,7 +1004,7 @@ class OrderController extends Controller
                     ->where('type', 1)
                     ->first();
 
-                placeOrder($user['id'], array((object) ["id" => 1, "quantity" => 1]), 0, $previousOrder["full_name"], $previousOrder["contact_number"], $previousOrder["barangay"], $previousOrder["city"], $previousOrder["province"], $previousOrder["zip_code"], false);
+                $this->processOrder($user, json_encode(["id" => 21, "quantity" => 1]), 0, $previousOrder["full_name"], $previousOrder["contact_number"], $previousOrder["barangay"], $previousOrder["city"], $previousOrder["province"], $previousOrder["zip_code"], '0');
             }
         }
     }
@@ -1003,7 +1019,7 @@ class OrderController extends Controller
 
         $isPromoted = false;
 
-        if ($totalRankPoints >= 10000 && $totalRankPoints < 50000 && $user['rank'] == 1 && $user["package_id"] == 1) {
+        if ($totalRankPoints >= 10000 && $totalRankPoints < 50000 && $user['rank'] == 1 && ($user["package_id"] == 1 || $user["package_id"] == 3)) {
             $isPromoted = ($directCount >= 5);
         } else if ($totalRankPoints >= 50000 && $totalRankPoints < 200000 && ($user['rank'] >= 1 && $user['rank'] <= 2)) {
             $explorerLegCount = $user->rankLegCount(2);

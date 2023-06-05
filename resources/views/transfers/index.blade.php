@@ -26,9 +26,9 @@
             <table class="table table-bordered data-table" style="display:none">
                 <thead>
                     <tr>
-                        <th class="text-center">Date&nbsp;&amp; Time</th>
-                        <th class="text-center">Sender</th>
-                        <th class="text-center">Amount</th>
+                        <th>Date&nbsp;&amp; Time</th>
+                        <th>Sender</th>
+                        <th>Amount</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -36,7 +36,7 @@
                     <tr>
                         <td>{{ \Carbon\Carbon::parse($transfersReceived["date_time"])->isoFormat('llll') }}</td>
                         <td>{{ fullName($transfersReceived) }}</td>
-                        <td>{{ number_format($transfersReceived["amount"],2) }} <i class="fas fa-gem gem-change-color"></i></td>
+                        <td class="text-end">{{ number_format($transfersReceived["amount"],2) }} <i class="fas fa-gem gem-change-color"></i></td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -45,7 +45,7 @@
             <table class="table table-bordered data-table" style="display:none">
                 <thead>
                     <tr>
-                        <th class="text-center">Date&nbsp;&amp; Time</th>
+                        <th>Date&nbsp;&amp; Time</th>
                         <th>Recipient</th>
                         <th>Amount</th>
                     </tr>
@@ -55,7 +55,7 @@
                     <tr>
                         <td>{{ \Carbon\Carbon::parse($transfersSent["date_time"])->isoFormat('llll') }}</td>
                         <td>{{ fullName($transfersSent) }}</td>
-                        <td>{{ number_format($transfersSent["amount"],2) }} <i class="fas fa-gem gem-change-color"></i></td>
+                        <td class="text-end">{{ number_format($transfersSent["amount"],2) }} <i class="fas fa-gem gem-change-color"></i></td>
                     </tr>
                     @endforeach
                 </tbody>

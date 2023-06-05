@@ -14,7 +14,7 @@
 					<div class="col-sm-6 px-2 mb-3">
 						<small>Winners Gem</small>
                         <div class="position-relative mb-2">
-                            <input class="form-control form-control-1 ps-3 pe-5 py-2 text-center" id="purchase-winners-gem-amount" type="number" placeholder="Winners Gem" value="0" min="0">
+                            <input class="form-control form-control-1 px-5 py-2 text-center" id="purchase-winners-gem-amount" type="number" placeholder="Winners Gem" value="0" min="0">
                             <div class="position-absolute" style="right:20px; top:9px">
                                 <i class="fas fa-gem"></i>
                             </div>
@@ -24,7 +24,7 @@
                     <div class="col-sm-6 px-2 mb-3">
                         <small>Total Price</small>
                         <div class="position-relative mb-2">
-                            <input class="form-control form-control-1 ps-3 pe-5 py-2 text-center" id="purchase-winners-gem-price" type="number" placeholder="Total Price" value="0" min="0">
+                            <input class="form-control form-control-1 px-5 py-2 text-center" id="purchase-winners-gem-price" type="number" placeholder="Total Price" value="0" min="0">
                             <div class="position-absolute" style="right:20px; top:9px">
                                 <i class="fas fa-peso-sign"></i>
                             </div>

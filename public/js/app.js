@@ -2626,7 +2626,7 @@ var selected_node;
 var generate_referral_table_once = 0;
 var proof_of_payment_uploader = $('<input type="file" accept="image/*" />');
 var profile_picture_uploader = $('<input type="file" accept="image/*" />');
-var account_package = ["", "DBP - ", "DSP - ", "FDP - ", "DMP - "];
+var account_package = ["", "DBP - ", "DSP - ", "FDP - ", "DMP - ", "FSP - ", "FPP - "];
 var ranks = ["Free Account", "Dealer", "Explorer", "Pathfinder", "Navigator", "Master Guide", "Fair Winner", "Grand Fair Winner", "Royal Fair Winner", "Crown Fair Winner"];
 var getGenealogy = function getGenealogy(type) {
   $.ajax({
@@ -2907,14 +2907,16 @@ $(document).on("click", ".products-tab", function () {
   if ($(this).data("type") == 1) {
     if ($(this).data("package-id") == 0) {
       $(".products-section[data-type='1']").removeClass("d-none");
-    } else if ($(this).data("package-id") == 4) {
+    } else if ($(this).data("package-id") == 4 || $(this).data("package-id") == 5) {
       $(".products-section[data-type='1'][data-package-id='1']").removeClass("d-none");
       $(".products-section[data-type='1'][data-package-id='2']").removeClass("d-none");
       $(".products-section[data-type='1'][data-package-id='3']").removeClass("d-none");
-    } else if ($(this).data("package-id") == 2) {
+      $(".products-section[data-type='1'][data-package-id='6']").removeClass("d-none");
+    } else if ($(this).data("package-id") == 2 || $(this).data("package-id") == 6) {
       $(".products-section[data-type='1'][data-package-id='1']").removeClass("d-none");
       $(".products-section[data-type='1'][data-package-id='3']").removeClass("d-none");
-    } else if ($(this).data("package-id") == 1) {
+    } else if ($(this).data("package-id") == 1 || $(this).data("package-id") == 3) {
+      $(".products-section[data-type='1'][data-package-id='1']").removeClass("d-none");
       $(".products-section[data-type='1'][data-package-id='3']").removeClass("d-none");
     }
   } else {

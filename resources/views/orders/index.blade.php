@@ -24,22 +24,22 @@
                 <thead>
                 <tr>
                     <th></th>
-                    <th class="text-center">Date&nbsp;&amp; Time Placed</th>
-                    <th class="text-center">Reference</th>
-                    <th class="text-center">Total Amount</th>
-                    <th class="text-center">Total Points Value</th>
-                    <th class="text-center">Status</th>
+                    <th>Date&nbsp;&amp; Time Placed</th>
+                    <th>Reference</th>
+                    <th>Total Amount</th>
+                    <th>Total Points Value</th>
+                    <th>Status</th>
                 </tr>
                 </thead>
                 <tbody>
                     @foreach($orders['products'] as $item)
                     <tr>
-                        <td><button class="btn btn-custom-2 btn-sm font-size-90 view-items" value="{{ $item['id'] }}" data-reference="{{ $item['reference'] }}">View Items</button></td>
+                        <td class="text-center"><button class="btn btn-custom-2 btn-sm font-size-90 view-items" value="{{ $item['id'] }}" data-reference="{{ $item['reference'] }}">View Items</button></td>
                         <td>{{ \Carbon\Carbon::parse($item['created_at'])->isoFormat('llll') }}</td>
                         <td>{{ $item['reference'] }}</td>
-                        <td>{{ number_format($item['price'], 2) }} <i class="fas fa-gem gem-change-color" style="font-size:0.8em"></i></td>
-                        <td>{{ number_format($item['points_value'], 2) }} PV</td>
-                        <td class="{{ ($item["date_time_completed"]) ? "bg-color-2" : "bg-warning" }}" style="color:#ffffff">{!! ($item["date_time_completed"]) ? "Completed<br>" . \Carbon\Carbon::parse($item["date_time_completed"])->isoFormat('llll') : "Pending" !!}</td>
+                        <td class="text-end">{{ number_format($item['price'], 2) }} <i class="fas fa-gem gem-change-color" style="font-size:0.8em"></i></td>
+                        <td class="text-end">{{ number_format($item['points_value'], 2) }} PV</td>
+                        <td class="text-center {{ ($item["date_time_completed"]) ? "bg-color-2" : "bg-warning" }}" style="color:#ffffff">{!! ($item["date_time_completed"]) ? "Completed<br>" . \Carbon\Carbon::parse($item["date_time_completed"])->isoFormat('llll') : "Pending" !!}</td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -49,20 +49,20 @@
                 <thead>
                     <tr>
                         <th></th>
-                        <th class="text-center">Date&nbsp;&amp; Time Requested</th>
-                        <th class="text-center">Amount</th>
-                        <th class="text-center">Price</th>
-                        <th class="text-center">Status</th>
+                        <th>Date&nbsp;&amp; Time Requested</th>
+                        <th>Amount</th>
+                        <th>Price</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($orders['winnersGem'] as $item)
                     <tr>
-                        <td><button class="btn btn-custom-2 btn-sm font-size-90 update-proof-of-payment" value="{{ $item['id'] }}">Update Proof of Payment<span style="display:none">{{ $item['proof_of_payment'] }}</span></button></td>
+                        <td class="text-center"><button class="btn btn-custom-2 btn-sm font-size-90 update-proof-of-payment" value="{{ $item['id'] }}">Update Proof of Payment<span style="display:none">{{ $item['proof_of_payment'] }}</span></button></td>
                         <td>{{ \Carbon\Carbon::parse($item['created_at'])->isoFormat('llll') }}</td>
-                        <td>{{ number_format($item['amount'], 2) }} <i class="fas fa-gem gem-change-color" style="font-size:0.8em"></i></td>
-                        <td><i class="fa-solid fa-peso-sign"></i>&nbsp;{{ number_format($item['price'], 2) }}</td>
-                        <td class="{{ ($item["date_time_approved"]) ? "bg-color-2" : "bg-color-1" }}" style="color:#ffffff">{!! ($item["date_time_approved"]) ? "Completed<br>" . \Carbon\Carbon::parse($item["date_time_approved"])->isoFormat('llll') : "Pending" !!}</td>
+                        <td class="text-end">{{ number_format($item['amount'], 2) }} <i class="fas fa-gem gem-change-color" style="font-size:0.8em"></i></td>
+                        <td class="text-end"><i class="fa-solid fa-peso-sign"></i>&nbsp;{{ number_format($item['price'], 2) }}</td>
+                        <td class="text-center {{ ($item["date_time_approved"]) ? "bg-color-2" : "bg-color-1" }}" style="color:#ffffff">{!! ($item["date_time_approved"]) ? "Completed<br>" . \Carbon\Carbon::parse($item["date_time_approved"])->isoFormat('llll') : "Pending" !!}</td>
                     </tr>
                     @endforeach
                 </tbody>

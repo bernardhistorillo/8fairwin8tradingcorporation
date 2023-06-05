@@ -26,19 +26,19 @@
             <table class="table table-bordered data-table" style="display:none">
                 <thead>
                     <tr>
-                        <th class="text-center">Date&nbsp;&amp; Time</th>
-                        <th class="text-center">Winners Gem</th>
-                        <th class="text-center">Peso</th>
-                        <th class="text-center">Fee</th>
+                        <th>Date&nbsp;&amp; Time</th>
+                        <th>Winners Gem</th>
+                        <th>Peso</th>
+                        <th>Fee</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($conversions['gemToPeso'] as $conversion)
                     <tr>
                         <td>{{ \Carbon\Carbon::parse($conversion["created_at"])->isoFormat('llll') }}</td>
-                        <td>{{ number_format($conversion["gem"],"2") }} <i class="fas fa-gem gem-change-color"></i></td>
-                        <td><i class="fa-solid fa-peso-sign"></i>&nbsp;{{ number_format($conversion["peso"], 2) }} </td>
-                        <td><i class="fa-solid fa-peso-sign"></i>&nbsp;{{ number_format($conversion["fee_in_pesos"], 2) }} </td>
+                        <td class="text-end">{{ number_format($conversion["gem"],"2") }} <i class="fas fa-gem gem-change-color"></i></td>
+                        <td class="text-end"><i class="fa-solid fa-peso-sign"></i>&nbsp;{{ number_format($conversion["peso"], 2) }} </td>
+                        <td class="text-end"><i class="fa-solid fa-peso-sign"></i>&nbsp;{{ number_format($conversion["fee_in_pesos"], 2) }} </td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -47,17 +47,17 @@
             <table class="table table-bordered data-table" style="display:none">
                 <thead>
                     <tr>
-                        <th class="text-center">Date&nbsp;&amp; Time</th>
-                        <th class="text-center">Peso</th>
-                        <th class="text-center">Winners Gem</th>
+                        <th>Date&nbsp;&amp; Time</th>
+                        <th>Peso</th>
+                        <th>Winners Gem</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($conversions['pesoToGem'] as $conversion)
                     <tr>
                         <td>{{ \Carbon\Carbon::parse($conversion["created_at"])->isoFormat('llll') }}</td>
-                        <td><i class="fa-solid fa-peso-sign"></i>&nbsp;{{ number_format($conversion["peso"],"2") }}</td>
-                        <td>{{ number_format($conversion["gem"],"2") }} <i class="fas fa-gem gem-change-color"></i></td>
+                        <td class="text-end"><i class="fa-solid fa-peso-sign"></i>&nbsp;{{ number_format($conversion["peso"],"2") }}</td>
+                        <td class="text-end">{{ number_format($conversion["gem"],"2") }} <i class="fas fa-gem gem-change-color"></i></td>
                     </tr>
                     @endforeach
                 </tbody>

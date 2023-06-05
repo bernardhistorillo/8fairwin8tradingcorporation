@@ -17,11 +17,11 @@
             <table class="table table-bordered data-table" style="display:none">
                 <thead>
                     <tr>
-                        <th class="text-center"></th>
-                        <th class="text-center">Date&nbsp;&amp; Time Requested</th>
-                        <th class="text-center">Amount</th>
-                        <th class="text-center">Fee</th>
-                        <th class="text-center">Status</th>
+                        <th></th>
+                        <th>Date&nbsp;&amp; Time Requested</th>
+                        <th>Amount</th>
+                        <th>Fee</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -29,9 +29,9 @@
                 <tr>
                     <td><button class="btn btn-custom-2 btn-sm font-size-90 view-payout-information">Payout Information<span style="display:none">{{ $withdrawal["payout_information"] }}</span></button></td>
                     <td>{{ \Carbon\Carbon::parse($withdrawal["created_at"])->isoFormat('llll') }}</td>
-                    <td><i class="fa-solid fa-peso-sign"></i>&nbsp;{{ number_format($withdrawal["amount"], 2) }}</td>
-                    <td><i class="fa-solid fa-peso-sign"></i>&nbsp;{{ number_format($withdrawal["fee"], 2) }}</td>
-                    <td style="color:#ffffff" class="{{ ($withdrawal["date_time_completed"]) ? 'bg-color-2' : 'bg-color-1' }}">{!! (!$withdrawal["date_time_completed"]) ? 'Pending' : 'Completed<br>' . $withdrawal["date_time_completed"] !!}</td>
+                    <td class="text-end"><i class="fa-solid fa-peso-sign"></i>&nbsp;{{ number_format($withdrawal["amount"], 2) }}</td>
+                    <td class="text-end"><i class="fa-solid fa-peso-sign"></i>&nbsp;{{ number_format($withdrawal["fee"], 2) }}</td>
+                    <td class="text-center text-white {{ ($withdrawal["date_time_completed"]) ? 'bg-color-2' : 'bg-color-1' }}">{!! (!$withdrawal["date_time_completed"]) ? 'Pending' : 'Completed<br>' . $withdrawal["date_time_completed"] !!}</td>
                 </tr>
                 @endforeach
                 </tbody>
