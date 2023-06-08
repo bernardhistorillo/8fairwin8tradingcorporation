@@ -67,7 +67,7 @@
     </script>
 </head>
 <body>
-    @if(Auth::check() && Route::currentRouteName() != 'home.index' && Route::currentRouteName() != 'profile.resetPasswordPage')
+    @if(Auth::check() && Route::currentRouteName() != 'home.index' && Route::currentRouteName() != 'profile.resetPasswordPage' && Route::currentRouteName() != 'privacyPolicy.index' && Route::currentRouteName() != 'termsOfService.index')
     <div id="wrapper">
         @include('layouts.includes.sideNav')
 

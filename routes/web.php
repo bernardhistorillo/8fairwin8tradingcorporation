@@ -16,13 +16,16 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\IncomeController;
 use App\Http\Controllers\NetworkController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PrivacyPolicyController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TerminalController;
+use App\Http\Controllers\TermsOfServiceController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\TransferController;
 use App\Http\Controllers\WithdrawalController;
 use Illuminate\Support\Facades\Route;
+use Laravel\Socialite\Facades\Socialite;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +39,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
+Route::get('/privacypolicy', [PrivacyPolicyController::class, 'index'])->name('privacyPolicy.index');
+Route::get('/termsofservice', [TermsOfServiceController::class, 'index'])->name('termsOfService.index');
+
 Route::get('/test', [TestController::class, 'index']);
 Route::get('/artisan', [TestController::class, 'artisan']);
 
@@ -48,6 +54,16 @@ Route::middleware(['guest'])->group(function() {
     Route::post('/loginSubmit', [AuthenticationController::class, 'login'])->name('login.submit');
 
     Route::get('/ref/{referralCode}', [AuthenticationController::class, 'referral'])->name('register.referral');
+
+    Route::get('/auth/redirect', function () {
+        return Socialite::driver('facebook')->redirect();
+    });
+
+    Route::get('/auth/callback', function () {
+        $user = Socialite::driver('facebook')->user();
+
+        // $user->token
+    });
 });
 
 Route::middleware(['auth'])->group(function() {

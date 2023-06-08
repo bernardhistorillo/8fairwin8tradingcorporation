@@ -1010,7 +1010,7 @@ class OrderController extends Controller
     }
 
     public function exemptedAccounts() {
-        return array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 119, 25, 22, 24, 15, 14, 88, 222);
+        return array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13);
     }
 
     public function checkForRankPromotion(User $user) {
