@@ -24,6 +24,8 @@ use App\Http\Controllers\TermsOfServiceController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\TransferController;
 use App\Http\Controllers\WithdrawalController;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -60,9 +62,33 @@ Route::middleware(['guest'])->group(function() {
     });
 
     Route::get('/auth/callback', function () {
-        $user = Socialite::driver('facebook')->user();
+        try {
 
-        // $user->token
+            $user = Socialite::driver('facebook')->user();
+
+            $finduser = User::where('facebook_id', $user->id)->first();
+
+            if($finduser){
+
+                Auth::login($finduser);
+
+                return redirect()->intended('dashboard');
+
+            }else{
+                $newUser = User::updateOrCreate(['email' => $user->email],[
+                    'name' => $user->name,
+                    'facebook_id'=> $user->id,
+                    'password' => encrypt('123456dummy')
+                ]);
+
+                Auth::login($newUser);
+
+                return redirect()->intended('dashboard');
+            }
+
+        } catch (Exception $e) {
+            dd($e->getMessage());
+        }
     });
 });
 

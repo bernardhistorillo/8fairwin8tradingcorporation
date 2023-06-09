@@ -521,13 +521,13 @@ $(document).on("submit", "#login-form", function(e) {
             password: password
         }
     }).done(function(response) {
-        $("#login").html("Redirecting...");
-        window.location = "/dashboard";
+        // $("#login").html("Redirecting...");
+        // window.location = "/dashboard";
     }).fail(function(error) {
-        $("#login").prop("disabled",false);
-        $("#login").html("Log In");
-
-        showErrorFromAjax(error);
+        // $("#login").prop("disabled",false);
+        // $("#login").html("Log In");
+        //
+        // showErrorFromAjax(error);
     });
 });
 // End: Log In

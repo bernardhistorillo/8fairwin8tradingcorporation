@@ -24,7 +24,7 @@ class AdminOrderController extends Controller
 
         $stockistsTemp = Order::select('terminal_user_id', 'firstname', 'lastname', 'rank', 'email')
             ->join('users', 'terminal_user_id', 'users.id')
-            ->groupBy('terminal_user_id')
+            ->groupBy('terminal_user_id', 'firstname', 'lastname', 'rank', 'email')
             ->get();
 
         $stockists = [];

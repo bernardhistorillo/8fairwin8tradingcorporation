@@ -36,6 +36,7 @@
 
     <title>{{ config('app.name') }} | @yield('title')</title>
 
+    @if(substr(Route::currentRouteName(), 0, 6) != 'admin.')
     <!-- Messenger Chat Plugin Code -->
     <div id="fb-root"></div>
 
@@ -65,6 +66,7 @@
             fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'facebook-jssdk'));
     </script>
+    @endif
 </head>
 <body>
     @if(Auth::check() && Route::currentRouteName() != 'home.index' && Route::currentRouteName() != 'profile.resetPasswordPage' && Route::currentRouteName() != 'privacyPolicy.index' && Route::currentRouteName() != 'termsOfService.index')

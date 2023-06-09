@@ -294,7 +294,7 @@ class OrderController extends Controller
                 $itemId = $orderedItem['item_id'];
                 $packageId = $purchaser["package_id"];
 
-                $purchasedPackage = ($itemId == 21) ? 3 : (($itemId == 28) ? 4 : (($itemId == 33) ? 5 : ($itemId == 34) ? 6 : (($itemId == 1) ? 1 : 2)));
+                $purchasedPackage = ($itemId == 21) ? 3 : (($itemId == 28) ? 4 : (($itemId == 30) ? 5 : ($itemId == 31 || $itemId == 32) ? 6 : (($itemId == 1) ? 1 : 2)));
 
                 // Packages Order: 0 -> (4 / 5) -> (2 / 6) -> (1 / 3)
                 $isFromFreeAccountUpgrade = $packageId == 0;
