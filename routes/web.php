@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminConversionController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AdminGenealogyController;
+use App\Http\Controllers\AdminIncomeDistributionController;
 use App\Http\Controllers\AdminItemController;
 use App\Http\Controllers\AdminOrderController;
 use App\Http\Controllers\AdminTransferController;
@@ -110,6 +111,10 @@ Route::middleware(['auth'])->group(function() {
         Route::post('/purchaseWinnersGem', [OrderController::class, 'purchaseWinnersGem'])->name('orders.purchaseWinnersGem');
         Route::post('/placeOrder', [OrderController::class, 'placeOrder'])->name('orders.placeOrder');
         Route::post('/markOrderAsComplete', [OrderController::class, 'markOrderAsComplete'])->name('orders.markOrderAsComplete');
+    });
+
+    Route::prefix('incomedistribution')->group(function () {
+        Route::get('/', [AdminIncomeDistributionController::class, 'index'])->name('admin.incomeDistribution.index');
     });
 
     Route::prefix('transfers')->group(function () {

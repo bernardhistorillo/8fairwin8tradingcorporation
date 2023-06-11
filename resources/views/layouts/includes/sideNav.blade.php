@@ -138,6 +138,13 @@
         </a>
     </li>
 
+    <li class="nav-item {{ (Route::currentRouteName() == 'admin.incomeDistribution.index') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('admin.incomeDistribution.index') }}">
+            <i class="fa-solid fa-fw fa-chart-pie"></i>
+            <span>Income Distribution</span>
+        </a>
+    </li>
+
     <li class="nav-item {{ (Route::currentRouteName() == 'admin.items.index') ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('admin.items.index') }}">
             <i class="fa-solid fa-fw fa-gifts"></i>

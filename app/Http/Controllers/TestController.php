@@ -14,6 +14,7 @@ class TestController extends Controller
     public function artisan() {
         Artisan::call('view:clear');
         Artisan::call('config:cache');
+        Artisan::call('migrate');
         return 'Cached';
     }
 

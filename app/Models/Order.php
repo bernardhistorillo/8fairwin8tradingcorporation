@@ -16,4 +16,10 @@ class Order extends Model
             ->where('orders.id', $this->id)
             ->get();
     }
+
+    public function referralIncomes() {
+        return $this->hasMany(ReferralIncome::class)
+            ->leftJoin('users', 'upline', 'users.id')
+            ->get();
+    }
 }

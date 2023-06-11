@@ -6,7 +6,6 @@ use App\Mail\EmailVerification;
 use App\Mail\ResetPasswordLink;
 use App\Models\PayoutInformation;
 use App\Models\User;
-use App\Models\Withdrawal;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

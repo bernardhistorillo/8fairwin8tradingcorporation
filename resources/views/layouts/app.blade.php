@@ -152,6 +152,7 @@
 
     @if(Auth::check())
         @include('products.includes.modalGemPurchase')
+        @include('profile.includes.modalVerifyEmail')
     @endif
 
     <input type="hidden" name="winners_gem_value" value="{{ winnersGemValue() }}" />
