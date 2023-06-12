@@ -104,8 +104,6 @@ class AuthenticationController extends Controller
             abort(422, 'The provided credentials do not match our records.');
         }
 
-        Auth::loginUsingId(1);
-
         return response()->json();
     }
 }

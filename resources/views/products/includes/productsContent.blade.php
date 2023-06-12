@@ -146,7 +146,7 @@
                             @endif
                             <tr>
                                 <th class="text-left">Price</th>
-                                <td class="text-right"><span id="total-price">0</span> <i
+                                <td class="text-right"><span id="total-price">0.00</span> <i
                                         class="fa-solid fa-gem gem-change-color"></i></td>
                             </tr>
                         </table>

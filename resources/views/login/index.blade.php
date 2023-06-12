@@ -30,7 +30,7 @@
                                 </div>
 
                                 <div class="text-center mt-2">
-                                    <button type="submit" class="btn btn-custom-2 px-5 py-3">Log In</button>
+                                    <button type="submit" class="btn btn-custom-2 px-5 py-3" id="login">Log In</button>
                                 </div>
                             </form>
                         </div>

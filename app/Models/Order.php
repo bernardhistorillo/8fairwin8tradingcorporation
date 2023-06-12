@@ -18,8 +18,6 @@ class Order extends Model
     }
 
     public function referralIncomes() {
-        return $this->hasMany(ReferralIncome::class)
-            ->leftJoin('users', 'upline', 'users.id')
-            ->get();
+        return $this->hasMany(ReferralIncome::class);
     }
 }

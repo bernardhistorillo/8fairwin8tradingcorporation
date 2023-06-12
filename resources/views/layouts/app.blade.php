@@ -34,7 +34,7 @@
 
     <link href="{{ asset(mix('css/app.css')) }}" rel="stylesheet">
 
-    <title>{{ config('app.name') }} | @yield('title')</title>
+    <title>@yield('title') | {{ config('app.name') }}</title>
 
     @if(substr(Route::currentRouteName(), 0, 6) != 'admin.')
     <!-- Messenger Chat Plugin Code -->

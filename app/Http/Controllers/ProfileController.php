@@ -158,8 +158,6 @@ class ProfileController extends Controller
             'extension' => 'required',
         ]);
 
-        $photo = json_decode($request->photo);
-
         $file = file_get_contents($request->image);
         $name = Str::random(40) . '.' . $request->extension;
 
