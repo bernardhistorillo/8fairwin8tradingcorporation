@@ -14,7 +14,7 @@
     <meta property="og:description" content="The Smart Market Exchange" />
     <meta property="og:image" content="{{ asset('img/bg/og1.png') }}" />
 
-    <link rel="icon" href="{{ asset('img/logo/100x100.png') }}">
+    <link rel="icon" href="{{ asset('img/logo/fairwin-logo.png') }}">
 
     <link href="{{ asset('lib/treantjs/css/Treant.css') }}" rel="stylesheet"/>
     <link href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet">
