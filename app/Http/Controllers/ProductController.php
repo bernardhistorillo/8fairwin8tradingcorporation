@@ -15,7 +15,7 @@ class ProductController extends Controller
 
         $terminalUser = false;
 
-        $showProductsTab = (!$terminalUser && Auth::user()->package_id != 3) || ($terminalUser && $terminalUser["package_id"] != 3);
+        $showProductsTab = (!$terminalUser && (Auth::user()->package_id != 1 || Auth::user()->package_id != 3)) || ($terminalUser && ($terminalUser["package_id"] != 1 || $terminalUser["package_id"] != 3));
         $income = Auth::user()->income();
 
         $latestShippingInformation =  Auth::user()->latestShippingInformation();

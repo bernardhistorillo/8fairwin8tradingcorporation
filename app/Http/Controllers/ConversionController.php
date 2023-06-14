@@ -29,7 +29,7 @@ class ConversionController extends Controller
             'winners_gem_value' => 'required|numeric',
         ]);
 
-        abort_if(Auth::user()->package_id == 4, 422, 'Conversion is restricted for accounts with Dream Maker Package.');
+        abort_if(Auth::user()->package_id == 4 || Auth::user()->package_id == 5, 422, 'Conversion is restricted for accounts with Dream Maker Package or Fairwin Starter Package.');
 
         if(winnersGemValue() != $request->winners_gem_value) {
             return response()->json([

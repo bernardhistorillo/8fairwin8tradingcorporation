@@ -394,7 +394,7 @@ $(document).on("click", ".navbar-toggler", function() {
     }
 });
 
-// Start: Registration
+// Start:  Registration
 // let referralCodeOnChange = function() {
 //     $("#register-sponsor-blank").css("display", "none");
 //     $("#register-sponsor-no-match").css("display", "none");

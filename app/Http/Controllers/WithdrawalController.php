@@ -25,7 +25,7 @@ class WithdrawalController extends Controller
             'amount' => 'required|integer',
         ]);
 
-        abort_if(Auth::user()->package_id == 4, 422, 'Withdrawal is restricted for accounts with Dream Maker Package.');
+        abort_if((Auth::user()->package_id == 4 || Auth::user()->package_id == 5), 422, 'Withdrawal is restricted for accounts with Dream Maker Package or Fairwin Starter Package.');
 
         $payoutInformation = Auth::user()->payoutInformation();
         $validPayoutInformation = $payoutInformation['validPayoutInformation'];

@@ -34,7 +34,7 @@
                                 </div>
                                 @else
                                 <div class="">
-                                    <button class="btn btn-custom-2 btn-sm font-size-90 show-stockist" data-name="{{ $stockists[$order["terminal_user_id"]]["name"] }}" data-rank="{{ $stockists[$order["terminal_user_id"]]["rank"] }}" data-email-address="{{ $stockists[$order["terminal_user_id"]]["email_address"] }}">Stockist</button>
+                                    <button class="btn btn-custom-2 btn-sm font-size-90 show-stockist" data-name="{{ fullName($stockists[$order["terminal_user_id"]]) }}" data-rank="{{ $stockists[$order["terminal_user_id"]]["rank"] }}" data-email-address="{{ $stockists[$order["terminal_user_id"]]["email"] }}">Stockist</button>
                                 </div>
                                 @endif
                             </div>

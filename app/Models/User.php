@@ -439,6 +439,7 @@ class User extends Authenticatable
 
     public function totalStairstepIncome() {
         return $this->stairstepIncomes
+            ->where('received', 1)
             ->sum('amount');
     }
 
@@ -450,6 +451,7 @@ class User extends Authenticatable
 
     public function totalUnilevelIncome() {
         return $this->unilevelIncomes
+            ->where('received', 1)
             ->sum('amount');
     }
 

@@ -398,7 +398,7 @@ class OrderController extends Controller
                 ->first();
 
             while($upline) {
-                if ($type == 1 && $upline["package_id"] == 2 && isset($packageId) && $packageId == 1) {
+                if ($type == 1 && ($upline["package_id"] == 2 || $upline["package_id"] == 6) && isset($packageId) && ($packageId == 1 || $packageId == 3)) {
                     $rankPoints = 25;
                 } else {
                     $rankPoints = $totalPointsValue;
@@ -622,7 +622,7 @@ class OrderController extends Controller
             }
         }
 
-        if($packageId == 3) { // FDP Entry
+        if($packageId == 3 || $packageId == 1) { // FDP Entry
             $infinityPlusIncome = array(0, 0, 60, 120, 180, 240, 300, 330, 360, 390);
         } else if($packageId == 2) { // DSP Entry
             $infinityPlusIncome = array(0, 0, 40, 80, 120, 160, 200, 240, 280, 320);
@@ -669,7 +669,7 @@ class OrderController extends Controller
         if($purchaser["rank"] >= 1) {
             $personalRebatePercentages = array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.6, 0.6, 0.6);
 
-            if($purchaser['package_id'] == 4) {
+            if($purchaser['package_id'] == 4 || $purchaser['package_id'] == 5) {
                 $personalRebateIncome = new PersonalRebateIncome();
                 $personalRebateIncome->order_id = $order['id'];
                 $personalRebateIncome->user_id = $purchaser['id'];
@@ -684,6 +684,7 @@ class OrderController extends Controller
                         $query->where('package_id', 1);
                         $query->orWhere('package_id', 2);
                         $query->orWhere('package_id', 3);
+                        $query->orWhere('package_id', 6);
                     })
                     ->orderBy('level')
                     ->first();
@@ -733,7 +734,7 @@ class OrderController extends Controller
                 break;
             }
 
-            if($uplinePackageId == 4) {
+            if($uplinePackageId == 4 || $uplinePackageId == 5) {
                 $received = ($monthlyPVMaintenance["points"] >= 50 || in_array($upline, $this->exemptedAccounts())) ? 1 : 0;
             } else {
                 $received = ($monthlyPVMaintenance["points"] >= 100 || in_array($upline, $this->exemptedAccounts())) ? 1 : 0;
@@ -741,7 +742,7 @@ class OrderController extends Controller
 
             $amount = $order['points_value'] * $unilevelIncome[$i - 1];
 
-            if($uplinePackageId == 4) {
+            if($uplinePackageId == 4 || $uplinePackageId == 5) {
                 $unilevelIncomes[] = [
                     'order_id' => $order['id'],
                     'upline' => $upline,
@@ -761,6 +762,7 @@ class OrderController extends Controller
                         $query->where('package_id', 1);
                         $query->orWhere('package_id', 2);
                         $query->orWhere('package_id', 3);
+                        $query->orWhere('package_id', 6);
                     })
                     ->orderBy('level')
                     ->first();
@@ -1120,7 +1122,7 @@ class OrderController extends Controller
 
             return response()->json([
                 'content' => (string)view('terminal.includes.ordersTable', compact('orders')),
-                'terminalWinnersGem' => number_format(Auth::user()->terminalWinnersGem()["balance"], 2)
+                'terminalWinnersGem' => number_format($terminalWinnersGem["balance"], 2)
             ]);
         }
     }

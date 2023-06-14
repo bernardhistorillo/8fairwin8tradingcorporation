@@ -65,7 +65,7 @@ class TerminalController extends Controller
         } else if($request->type == 1) {
             $type = 1;
             if($terminalUser) {
-                if($terminalUser["package_id"] == 3) {
+                if($terminalUser["package_id"] == 3 || $terminalUser["package_id"] == 1) {
                     return redirect()->route('terminal.index');
                 }
             }
@@ -73,7 +73,7 @@ class TerminalController extends Controller
             return redirect()->route('terminal.index');
         }
 
-        $showProductsTab = (!$terminalUser && Auth::user()->package_id != 3) || ($terminalUser && $terminalUser["package_id"] != 3);
+        $showProductsTab = (!$terminalUser && (Auth::user()->package_id != 1 || Auth::user()->package_id != 3)) || ($terminalUser && ($terminalUser["package_id"] != 1 || $terminalUser["package_id"] != 3));
 
         return view('terminal.index', compact('terminal', 'terminalUsers', 'terminalUser', 'orders', 'items', 'type', 'showProductsTab', 'latestShippingInformation'));
     }

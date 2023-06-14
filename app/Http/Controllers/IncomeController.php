@@ -20,6 +20,7 @@ class IncomeController extends Controller
             $income['unilevel'] = Auth::user()->unilevelIncomes()
                 ->select('unilevel_incomes.*', 'users.firstname', 'users.lastname')
                 ->where('amount', '>', 0)
+                ->where('received', 1)
                 ->leftJoin('users', 'downline', 'users.id')
                 ->latest()
                 ->get();
@@ -27,6 +28,7 @@ class IncomeController extends Controller
             $income['stairstep'] = Auth::user()->stairstepIncomes()
                 ->select('stairstep_incomes.*', 'users.firstname', 'users.lastname')
                 ->where('amount', '>', 0)
+                ->where('received', 1)
                 ->leftJoin('orders', 'order_id', 'orders.id')
                 ->leftJoin('users', 'orders.user_id', 'users.id')
                 ->latest()
