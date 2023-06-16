@@ -148,7 +148,7 @@ class MigrateOldDatabase extends Command
                 'price' => $gemPurchase->price,
                 'proof_of_payment' => $gemPurchase->proof_of_payment,
                 'created_at' => $gemPurchase->date_time_requested,
-                'date_time_approved' => ($gemPurchase->date_time_approved != '0000-00-00 00:00:00') ? $gemPurchase->date_time_approved : null,
+                'date_time_approved' => $gemPurchase->date_time_approved,
                 'deleted_at' => ($gemPurchase->is_removed == 1) ? $gemPurchase->date_time_requested : null,
             ];
         }
@@ -398,7 +398,7 @@ class MigrateOldDatabase extends Command
                 'province' => ($item->province == '') ? null : $item->province,
                 'zip_code' => ($item->zip_code == '') ? null : $item->zip_code,
                 'terminal_user_id' => $item->terminal_account_id,
-                'date_time_completed' => ($item->date_time_completed == '0000-00-00 00:00:00') ? null : $item->date_time_completed,
+                'date_time_completed' => $item->date_time_completed,
                 'created_at' => $item->date_time_placed,
             ];
         }
@@ -531,7 +531,7 @@ class MigrateOldDatabase extends Command
                 'amount' => $item->amount,
                 'fee' => $item->fee,
                 'payout_information' => $item->payout_information,
-                'date_time_completed' => ($item->date_time_completed == '0000-00-00 00:00:00') ? null : $item->date_time_completed,
+                'date_time_completed' => $item->date_time_completed,
                 'created_at' => $item->date_time_requested,
             ];
         }

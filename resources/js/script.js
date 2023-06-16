@@ -407,7 +407,6 @@ $(document).on("click", ".navbar-toggler", function() {
 //         $.ajax({
 //             method: "POST",
 //             url: $("#register-sponsors-code").attr("data-action"),
-//             timeout: 30000,
 //             data: {
 //                 referral_code: referral_code
 //             }
@@ -470,7 +469,6 @@ $(document).on("click", "#register", function() {
     $.ajax({
         method: "POST",
         url: $("#register-show-confirmation").attr("data-action"),
-        timeout: 30000,
         data: {
             firstname: firstname,
             lastname: lastname,
@@ -515,7 +513,6 @@ $(document).on("submit", "#login-form", function(e) {
     $.ajax({
         method: "POST",
         url: $("#login-form").attr("action"),
-        timeout: 30000,
         data: {
             username: username,
             password: password
@@ -545,7 +542,6 @@ let getGenealogy = function(type) {
     $.ajax({
         method: "POST",
         url: $("input[name='get-genealogy-route']").val(),
-        timeout: 30000,
         data: {
             type: type
         }
@@ -844,8 +840,7 @@ profile_picture_uploader.on("change", function() {
                 cache: false,
                 contentType: false,
                 processData: false,
-                data: formData,
-                timeout: 30000
+                data: formData
             }).done(function(response) {
 
             }).fail(function(error) {
@@ -1067,8 +1062,7 @@ $(document).on("click", "#place-order", function() {
             province: $("#province").val(),
             zip_code: $("#zip-code").val(),
             stockist: $("#place-order-confirm").attr("data-stockist")
-        },
-        timeout: 30000
+        }
     }).done(function(response) {
         var redirect = (parseInt($("#place-order-confirm").data("terminal-user")) === 0) ? "orders" : "terminal?view=orders";
 
@@ -1130,8 +1124,7 @@ $(document).on("click", "#purchase-winners-gem", function() {
             price: price,
             winners_gem_value: winnersGemValue,
             proof_of_payments: JSON.stringify(proof_of_payments)
-        },
-        timeout: 30000
+        }
     }).done(function(response) {
         if(response.type && response.type == "winners-gem-update") {
             winnersGemValue = parseFloat(response.winners_gem_value);
@@ -1172,8 +1165,7 @@ $(document).on("click", ".view-items", function() {
         url: $("#view-items-route").val(),
         data: {
             order_id: order_id
-        },
-        timeout: 30000
+        }
     }).done(function(response) {
         var content = '	<table class="table table-bordered mb-0">';
         content	+= '		<thead>';
@@ -1224,7 +1216,6 @@ $(document).on("change", "#transfer-receiver-username", function() {
         $.ajax({
             method: "POST",
             url: $("#check-receiver-route").val(),
-            timeout: 30000,
             data: {
                 username: username
             }
@@ -1289,8 +1280,7 @@ $(document).on("click", "#transfer-winners-gem", function() {
             username: username,
             amount: amount,
             pin_code: pin_code
-        },
-        timeout: 30000
+        }
     }).done(function(response) {
         let receiver = $("#transfer-receiver-has-match").html();
 
@@ -1359,8 +1349,7 @@ $(document).on("click", "#convert", function() {
             type: type,
             amount: amount,
             winners_gem_value: winnersGemValue
-        },
-        timeout: 30000
+        }
     }).done(function(response) {
         if(response.type && response.type === "winners-gem-update") {
             winnersGemValue = parseFloat(response.winners_gem_value);
@@ -1418,8 +1407,7 @@ $(document).on("click", "#withdraw", function() {
         url: $("#submit-withdrawal-route").val(),
         data: {
             amount: parseFloat($("#withdraw-amount").val())
-        },
-        timeout: 30000
+        }
     }).done(function(response) {
         $('#modal-success').attr("data-bs-backdrop", "static");
         $('#modal-success').attr("data-bs-keyboard", "false");
@@ -1460,8 +1448,7 @@ $(document).on("click", "#contribute-to-pool-share", function() {
         url: "api/contribute-to-pool-share.php",
         data: {
             amount: amount
-        },
-        timeout: 30000
+        }
     }).done(function(response) {
         $("#peso-balance").html(numberFormat(response.peso_balance,true));
         $("#pool-share-amount").html(numberFormat(response.pool_share,true));
@@ -1561,8 +1548,7 @@ $(document).on("click", ".verify-email-show-modal", function() {
     $.ajax({
         method: "POST",
         url: url,
-        data: [],
-        timeout: 30000
+        data: []
     }).done(function(response) {
         $("#sending-pin").addClass("d-none");
         $("#pin-sent").removeClass("d-none");
@@ -1596,8 +1582,7 @@ $(document).on("submit", "#email-verification-form", function(e) {
         cache: false,
         contentType: false,
         processData: false,
-        data: formData,
-        timeout: 30000
+        data: formData
     }).done(function(response) {
         $("#modal-verify-email").modal("hide");
 
@@ -1667,8 +1652,7 @@ $(document).on("submit", "#reset-password-form", function(e) {
         cache: false,
         contentType: false,
         processData: false,
-        data: formData,
-        timeout: 30000
+        data: formData
     }).done(function(response) {
         $('#modal-success').attr("data-bs-backdrop", "static");
         $('#modal-success').attr("data-bs-keyboard", "false");
@@ -1917,8 +1901,7 @@ $(document).on("click", "#update-proof-of-payment", function() {
         data: {
             id: id,
             proof_of_payments: JSON.stringify(proof_of_payments)
-        },
-        timeout: 30000
+        }
     }).done(function(response) {
         $(".update-proof-of-payment[value='" + id + "'] span").html(response.proof_of_payment);
 
@@ -1965,7 +1948,6 @@ $(document).on("click", "#mark-order-as-complete", function() {
     $.ajax({
         method: "POST",
         url: $("#mark-order-as-complete-route").val(),
-        timeout: 30000,
         data: {
             id: id,
             from: from

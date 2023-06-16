@@ -236,8 +236,8 @@ class User extends Authenticatable
             $data['totalIncome'] +
             $data['totalPesoConvertedFromGem']
         ) - (
+            $data['totalPesoConvertedToGem'] +
             $data['totalWithdrawn'] +
-            $data['totalGemsSent'] +
             $data['totalWithdrawalFee'] +
             $data['totalPoolShareContribution']
         );
@@ -330,24 +330,28 @@ class User extends Authenticatable
     }
 
     public function totalPesoConvertedToGem() {
+        // peso to gem
         return $this->conversions
             ->where('type', 2)
             ->sum('peso');
     }
 
     public function totalGemConvertedFromPeso() {
+        // peso to gem
         return $this->conversions
             ->where('type', 2)
             ->sum('gem');
     }
 
     public function totalGemConvertedToPeso() {
+        // gem to peso
         return $this->conversions
             ->where('type', 1)
             ->sum('gem');
     }
 
     public function totalPesoConvertedFromGem() {
+        // gem to peso
         return $this->conversions
             ->where('type', 1)
             ->sum('peso');
