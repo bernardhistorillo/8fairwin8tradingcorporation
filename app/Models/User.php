@@ -447,12 +447,6 @@ class User extends Authenticatable
             ->sum('amount');
     }
 
-    public function totalTransfers() {
-        return $this->transfers
-            ->where()
-            ->sum('amount');
-    }
-
     public function totalUnilevelIncome() {
         return $this->unilevelIncomes
             ->where('received', 1)

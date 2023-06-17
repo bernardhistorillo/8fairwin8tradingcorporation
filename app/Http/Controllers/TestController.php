@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Mail\EmailVerification;
 use App\Mail\ResetPasswordLink;
+use App\Models\Order;
+use App\Models\StairstepIncome;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Mail;
@@ -38,5 +41,26 @@ class TestController extends Controller
 
         $user = User::find(18);
         return $user->terminalWinnersGem();
+    }
+
+    public function stats($userId) {
+        $user = User::find($userId);
+
+        abort_if(!$user, '402', 'Invalid User');
+
+        $data['fullName'] = $user->fullName();
+        $data['packageAndRank'] = $user->packageAndRank();
+        $data['income'] = $user->income();
+        $data['monthlyPVMaintenance'] = $user->monthlyPVMaintenance();
+        $data['requiredPVMaintenance'] = $user->requiredPVMaintenance();
+        $data['totalRankPoints'] = $user->totalRankPoints();
+        $data['directCount'] = $user->directCount();
+        $data['downlineCount'] = $user->downlineCount();
+
+        return $data;
+    }
+
+    public function try() {
+
     }
 }

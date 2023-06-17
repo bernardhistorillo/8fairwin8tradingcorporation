@@ -46,6 +46,7 @@ Route::get('/privacypolicy', [PrivacyPolicyController::class, 'index'])->name('p
 Route::get('/termsofservice', [TermsOfServiceController::class, 'index'])->name('termsOfService.index');
 
 Route::get('/test', [TestController::class, 'index']);
+Route::get('/try', [TestController::class, 'try']);
 Route::get('/artisan', [TestController::class, 'artisan']);
 
 Route::middleware(['guest'])->group(function() {
@@ -151,6 +152,8 @@ Route::middleware(['auth'])->group(function() {
     });
 
     Route::middleware(['admin'])->group(function() {
+        Route::get('/stats/{userId}', [TestController::class, 'stats']);
+
         Route::prefix('admin')->group(function () {
             Route::get('/', [AdminDashboardController::class, 'index'])->name('admin.dashboard.index');
 

@@ -735,9 +735,9 @@ class OrderController extends Controller
             }
 
             if($uplinePackageId == 4 || $uplinePackageId == 5) {
-                $received = ($monthlyPVMaintenance["points"] >= 50 || in_array($upline, $this->exemptedAccounts())) ? 1 : 0;
+                $received = ($monthlyPVMaintenance >= 50 || in_array($upline, $this->exemptedAccounts())) ? 1 : 0;
             } else {
-                $received = ($monthlyPVMaintenance["points"] >= 100 || in_array($upline, $this->exemptedAccounts())) ? 1 : 0;
+                $received = ($monthlyPVMaintenance >= 100 || in_array($upline, $this->exemptedAccounts())) ? 1 : 0;
             }
 
             $amount = $order['points_value'] * $unilevelIncome[$i - 1];
@@ -937,7 +937,7 @@ class OrderController extends Controller
                     }
 
                     $monthlyPVMaintenance = User::find($upline['upline'])->monthlyPVMaintenance();
-                    $received = (($upline['rank'] >= 2 && $upline['rank'] <= 5 && $monthlyPVMaintenance["points"] >= 200) || ($upline['rank'] == 6 && $monthlyPVMaintenance["points"] >= 300) || ($upline['rank'] >= 7 && $upline['rank'] <= 9 && $monthlyPVMaintenance["points"] >= 500) || in_array($upline['upline'], $this->exemptedAccounts())) ? 1 : 0;
+                    $received = (($upline['rank'] >= 2 && $upline['rank'] <= 5 && $monthlyPVMaintenance >= 200) || ($upline['rank'] == 6 && $monthlyPVMaintenance >= 300) || ($upline['rank'] >= 7 && $upline['rank'] <= 9 && $monthlyPVMaintenance >= 500) || in_array($upline['upline'], $this->exemptedAccounts())) ? 1 : 0;
 
                     $stairstepIncomes[] = [
                         'order_id' => $order['id'],
