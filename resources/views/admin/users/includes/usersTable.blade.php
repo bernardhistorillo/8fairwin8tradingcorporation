@@ -70,7 +70,7 @@
         </thead>
         <tbody>
             @foreach($users as $user)
-                @if($stockist == -1 || ($user["stockist"] == $stockist))
+                @if($stockist == null || ($user["stockist"] == $stockist))
             <tr>
                 <td class="text-center"><a href="{{ route('admin.users.accessUser', $user['id']) }}" class="btn btn-custom-2 btn-sm access-account"><i class="fas fa-sign-in-alt font-size-90"></i></a></td>
                 <td>{{ fullName($user) }}</td>

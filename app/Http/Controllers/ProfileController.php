@@ -121,8 +121,7 @@ class ProfileController extends Controller
         $data['firstname'] = Auth::user()->firstname;
         $data['reset_password_uuid'] = Auth::user()->reset_password_uuid;
 
-        Mail::to('bernardhistorillo1@gmail.com')->send(new ResetPasswordLink($data));
-//        Mail::to(Auth::user()->email)->send(new ResetPasswordLink($data));
+        Mail::to(Auth::user()->email)->send(new ResetPasswordLink($data));
 
         return response()->json();
     }
