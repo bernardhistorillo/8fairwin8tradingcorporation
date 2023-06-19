@@ -154,7 +154,7 @@
                 @foreach($income['rankIncentive'] as $item)
                 <tr>
                     <td>{{ \Carbon\Carbon::parse($item['created_at'])->isoFormat('llll') }}</td>
-                    <td>{{ $ranks[$rank_incentives_income["rank"]] }}</td>
+                    <td>{{ ranks()[$item["rank"]] }}</td>
                     <td class="text-end"><i class="fa-solid fa-peso-sign"></i>&nbsp;{{ number_format($item["amount"], 2) }}</td>
                 </tr>
                 @endforeach
