@@ -13,7 +13,7 @@
                 <h1 class="aileron-regular font-size-120 font-size-sm-130 font-size-md-130 font-size-lg-130 font-size-xl-140 font-size-xxl-160 text-center text-md-start text-white line-height-140 mb-5" id="text-6">8Fairwin8 Trading Corporation is a leading provider of wellness solutions designed to help individuals achieve optimal health and well-being.</h1>
 
                 <div class="text-center text-md-start mb-2">
-                    <a href="https://8fairwin8tradingcorp.com/access/register.php" class="btn btn-custom-1 font-size-110 aileron-bold px-4 px-sm-5 py-3">EXPERIENCE WELLNESS TODAY</a>
+                    <a href="{{ route('register.index') }}" class="btn btn-custom-1 font-size-110 aileron-bold px-4 px-sm-5 py-3">EXPERIENCE WELLNESS TODAY</a>
                 </div>
             </div>
         </div>
@@ -510,7 +510,7 @@
                     <p class="aileron-regular text-center line-height-140 font-size-140 font-size-sm-140 font-size-md-150 font-size-lg-160 font-size-xl-170 font-size-xxl-170 px-4 px-sm-0 mb-5 pb-3">Together, we can create a world where everyone has the opportunity to live their best, healthiest life.</p>
 
                     <div class="text-center">
-                        <a href="https://8fairwin8tradingcorp.com/access/register.php" class="btn btn-custom-2 font-size-xl-120 py-3 px-5">
+                        <a href="{{ route('register.index') }}" class="btn btn-custom-2 font-size-xl-120 py-3 px-5">
                             <span class="aileron-bold px-4 px-sm-5">REGISTER NOW</span>
                         </a>
                     </div>

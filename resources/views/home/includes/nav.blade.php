@@ -16,10 +16,10 @@
                 </li>
                 @else
                 <li class="nav-item mb-2 mb-lg-0">
-                    <a class="nav-link aileron-bold px-md-3 px-xl-4" href="https://8fairwin8tradingcorp.com/access/login.php">LOG IN</a>
+                    <a class="nav-link aileron-bold px-md-3 px-xl-4" href="{{ route('login.index') }}">LOG IN</a>
                 </li>
                 <li class="nav-item ms-md-3 ms-xl-4">
-                    <a class="btn aileron-bold font-weight-500 px-4 py-2 mb-4 mb-lg-0 btn-custom-1" href="https://8fairwin8tradingcorp.com/access/register.php">REGISTER NOW</a>
+                    <a class="btn aileron-bold font-weight-500 px-4 py-2 mb-4 mb-lg-0 btn-custom-1" href="{{ route('register.index') }}">REGISTER NOW</a>
                 </li>
                 @endif
             </ul>

@@ -64,6 +64,6 @@ class TestController extends Controller
     }
 
     public function try() {
-        // test commit
+
     }
 }
