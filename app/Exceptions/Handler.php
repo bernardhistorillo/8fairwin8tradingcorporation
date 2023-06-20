@@ -79,10 +79,15 @@ class Handler extends ExceptionHandler
                 '.yml',
                 'credentials',
                 'phpinfo',
+                'mailto',
+                '/https',
+                'tel',
+                '.php',
             ];
 
             $excludedBodySubstrings = [
                 'androxgh0st',
+                '"0x":["x_X"]'
             ];
 
             $send = true;
