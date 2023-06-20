@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use App\Mail\ExceptionOccured;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Request;
@@ -70,6 +71,11 @@ class Handler extends ExceptionHandler
             $content['url'] = request()->url();
             $content['body'] = request()->all();
             $content['ip'] = request()->ip();
+            $content['user'] = Auth::check() ? Auth::user()->id : 'None';
+
+            $excludedMessageSubstrings = [
+                'Unauthenticated.',
+            ];
 
             $excludedLinkSubstrings = [
                 'wlwmanifest.xml',
@@ -91,6 +97,13 @@ class Handler extends ExceptionHandler
             ];
 
             $send = true;
+
+            foreach($excludedMessageSubstrings as $excludedMessageSubstring) {
+                if(str_contains($content['message'], $excludedMessageSubstring)) {
+                    $send = false;
+                    break;
+                }
+            }
 
             foreach($excludedLinkSubstrings as $excludedLinkSubstring) {
                 if(str_contains($content['url'], $excludedLinkSubstring)) {

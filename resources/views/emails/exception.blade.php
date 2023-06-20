@@ -65,6 +65,7 @@
                     <p class="">Code: {{ $content['code'] ?? '' }}</p>
                     <p class="">Headers: {{ json_encode($content['headers']) ?? '' }}</p>
                     <p class="">Body: {{ json_encode($content['body']) ?? '' }}</p>
+                    <p class="">User: {{ $content['user'] }}</p>
                 </th></tr></thead>
             <tbody>
             <tr>
