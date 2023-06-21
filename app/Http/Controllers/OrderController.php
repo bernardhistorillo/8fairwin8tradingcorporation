@@ -47,8 +47,10 @@ class OrderController extends Controller
 
         $order = Order::where('id', $request->order_id)
             ->where(function($query) {
-                $query->where('user_id', Auth::user()->id);
-                $query->orWhere('terminal_user_id', Auth::user()->id);
+                if(Auth::user()->role != 1) {
+                    $query->where('user_id', Auth::user()->id);
+                    $query->orWhere('terminal_user_id', Auth::user()->id);
+                }
             })
             ->first();
 

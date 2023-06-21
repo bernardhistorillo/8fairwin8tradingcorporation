@@ -89,6 +89,7 @@ class Handler extends ExceptionHandler
                 '/https',
                 'tel',
                 '.php',
+                '.well-known',
             ];
 
             $excludedBodySubstrings = [
