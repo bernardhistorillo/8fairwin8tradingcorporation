@@ -75,6 +75,7 @@ class Handler extends ExceptionHandler
 
             $excludedMessageSubstrings = [
                 'Unauthenticated.',
+                'The provided credentials do not match our records.',
             ];
 
             $excludedLinkSubstrings = [
@@ -91,6 +92,9 @@ class Handler extends ExceptionHandler
                 '.php',
                 '.well-known',
                 'wp-includes',
+                'robots',
+                'alfacgiapi',
+                'uploadify',
             ];
 
             $excludedBodySubstrings = [
