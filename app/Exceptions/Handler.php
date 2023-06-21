@@ -90,6 +90,7 @@ class Handler extends ExceptionHandler
                 'tel',
                 '.php',
                 '.well-known',
+                'wp-includes',
             ];
 
             $excludedBodySubstrings = [

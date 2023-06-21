@@ -16,7 +16,7 @@ class Item extends Model
     // End: Relationships
 
     public function photo() {
-        return ($this->photo) ?? config('app.url') . '/img/items/default-item-image.png';
+        return ($this->photo) ?? asset('img/items/default-item-image.png');
     }
 
     public function longestDimension() {

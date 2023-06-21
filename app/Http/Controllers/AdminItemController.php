@@ -91,7 +91,7 @@ class AdminItemController extends Controller
         $item->update();
 
         return response()->json([
-            'photo' => $item['photo']
+            'photo' => $item->photo()
         ]);
     }
 }

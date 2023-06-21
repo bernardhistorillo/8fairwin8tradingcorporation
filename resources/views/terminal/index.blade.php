@@ -87,7 +87,7 @@
                     <tr>
                         <td class="text-center" style="width:10%">
                             <a href="{{ $item->photo() }}" class="d-inline-block" style="width:60px; height:60px" data-fancybox="images" data-caption="{{ $item["name"] }}">
-                                <div class="background-image-contain" style="width:60px; height:60px; background-image:url('{{ $item["photo"] }}')"></div>
+                                <div class="background-image-contain" style="width:60px; height:60px; background-image:url('{{ $item->photo() }}')"></div>
                             </a>
                         </td>
                         <td>{{ $item["name"] }}</td>

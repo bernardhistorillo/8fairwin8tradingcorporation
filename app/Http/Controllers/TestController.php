@@ -64,6 +64,7 @@ class TestController extends Controller
     }
 
     public function try() {
-
+        Artisan::call('fairwin:add_domain_to_photo_links');
+        return 'Done';
     }
 }
