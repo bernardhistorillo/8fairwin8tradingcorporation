@@ -988,8 +988,12 @@ $(document).on("click", ".remove-from-cart", function() {
     $(".remove-from-cart").prop("disabled", false);
 });
 
-$(document).on("click", "#place-order-confirm", function() {
-    if($("#place-order-confirm").data("terminal-user") == 0) {
+$(document).on("submit", "#place-order-form", function(e) {
+    e.preventDefault();
+
+    let terminalUser = $(this).find("[name='terminal_user']").val();
+
+    if(terminalUser === '0') {
         $("#modal-warning .message").html("Your order will now be placed.");
     } else {
         var less_in_stock = 0;
@@ -1035,51 +1039,57 @@ $(document).on("click", "#place-order-confirm", function() {
 });
 
 $(document).on("click", "#place-order", function() {
-    $("#modal-warning .proceed").prop("disabled",true);
-    $("#modal-warning .proceed").html("Processing...");
-    $("#modal-warning button[data-bs-dismiss='modal']").css("display","none");
+    let modalWarning = $("#modal-warning");
 
-    var ordered_items = [];
+    let orderedItems = [];
     $(".cart").each(function() {
         if($(this).attr("data-added-to-cart") == 1) {
-            ordered_items.push({
+            orderedItems.push({
                 id: $(this).val(),
                 quantity: $(".product-container[data-id='" + $(this).val() + "']").attr("data-quantity")
             });
         }
     });
 
-    $.ajax({
-        method: "POST",
-        url: $("input[name='place-order-route']").val(),
-        data: {
-            terminal_user: $("#place-order-confirm").data("terminal-user"),
-            items: JSON.stringify(ordered_items),
-            full_name: $("#full-name").val(),
-            contact_number: $("#contact-number").val(),
-            barangay: $("#barangay").val(),
-            city: $("#city").val(),
-            province: $("#province").val(),
-            zip_code: $("#zip-code").val(),
-            stockist: $("#place-order-confirm").attr("data-stockist")
-        }
-    }).done(function(response) {
-        var redirect = (parseInt($("#place-order-confirm").data("terminal-user")) === 0) ? "orders" : "terminal?view=orders";
+    if(orderedItems.length === 0) {
+        modalWarning.modal('hide');
 
-        $('#modal-success').attr("data-bs-backdrop", "static");
-        $('#modal-success').attr("data-bs-keyboard", "false");
-        $('#modal-success .proceed').removeAttr("data-bs-dismiss");
-        $('#modal-success .proceed').attr("onclick", "window.location = '" + redirect + "'; $('#modal-success .proceed').prop('disabled',true); $('#modal-success .proceed').html('Redirecting...')");
-        $('#modal-success .message').html("You have successfully submitted your order request.");
-        $('#modal-success').modal('show');
-    }).fail(function(error) {
-        showErrorFromAjax(error);
-    }).always(function() {
-        $("#modal-warning").modal('hide');
-        $("#modal-warning .proceed").html("Confirm");
-        $("#modal-warning .proceed").prop("disabled",false);
-        $("#modal-warning button[data-bs-dismiss='modal']").css("display","block");
-    });
+        $("#modal-error .message").html("You haven't added any items to your cart.");
+        $("#modal-error").modal("show");
+
+        return 0;
+    }
+
+    modalWarning.find(".proceed").prop("disabled",true);
+    modalWarning.find(".proceed").html("Processing...");
+    modalWarning.find("button[data-bs-dismiss='modal']").css("display","none");
+
+    let form = $("#place-order-form");
+
+    let data = new FormData(form[0]);
+    data.append('items', JSON.stringify(orderedItems))
+
+    let url = form.attr("action");
+
+    axios.post(url, data)
+        .then((response) => {
+            let redirect = (parseInt(form.find("[name='terminal_user']").val()) === 0) ? "orders" : "terminal?view=orders";
+
+            let modalSuccess = $('#modal-success');
+            modalSuccess.attr("data-bs-backdrop", "static");
+            modalSuccess.attr("data-bs-keyboard", "false");
+            modalSuccess.find('.proceed').removeAttr("data-bs-dismiss");
+            modalSuccess.find('.proceed').attr("onclick", "window.location = '" + redirect + "'; $('#modal-success .proceed').prop('disabled',true); $('#modal-success .proceed').html('Redirecting...')");
+            modalSuccess.find('.message').html("You have successfully submitted your order request.");
+            modalSuccess.modal('show');
+        }).catch((error) => {
+            showRequestError(error);
+        }).then(() => {
+            modalWarning.modal('hide');
+            modalWarning.find(".proceed").html("Confirm");
+            modalWarning.find(".proceed").prop("disabled",false);
+            modalWarning.find("button[data-bs-dismiss='modal']").css("display","block");
+        });
 });
 
 $(document).on("input", "#purchase-winners-gem-amount", function() {

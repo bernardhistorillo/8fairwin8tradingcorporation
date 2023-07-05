@@ -155,65 +155,58 @@
             </div>
         </div>
 
-        <div class="card mb-4">
-            <div class="card-header"><i class="fas fa-truck me-2"></i> Shipping Details</div>
-            <div class="card-body">
-                <div class="position-relative mb-2">
-                    <input class="form-control form-control-1 ps-3 pe-5 py-2" id="full-name" type="text"
-                           placeholder="Full Name"
-                           value="{{ ($latestShippingInformation) ? $latestShippingInformation['full_name'] : '' }}">
-                    <div class="position-absolute" style="right:20px; top:9px">
-                        <i class="fas fa-user"></i>
-                    </div>
-                </div>
+        <form id="place-order-form" action="{{ route('orders.placeOrder') }}">
+            <input type="hidden" name="terminal_user" value="{{ $terminalUser ? $terminalUser['encodedTerminalUserId'] : '0' }}" />
+            <input type="hidden" name="stockist" value="0" />
 
-                <div class="position-relative mb-2">
-                    <input class="form-control form-control-1 ps-3 pe-5 py-2" id="contact-number" type="text"
-                           placeholder="Contact Number"
-                           value="{{ ($latestShippingInformation) ? $latestShippingInformation['contact_number'] : '' }}">
-                    <div class="position-absolute" style="right:20px; top:9px">
-                        <i class="fas fa-phone"></i>
+            <div class="card mb-4">
+                <div class="card-header"><i class="fas fa-truck me-2"></i> Shipping Details</div>
+                <div class="card-body">
+                    <div class="position-relative mb-2">
+                        <input class="form-control form-control-1 ps-3 pe-5 py-2" name="full_name" type="text" placeholder="Full Name" value="{{ ($latestShippingInformation) ? $latestShippingInformation['full_name'] : '' }}" required />
+                        <div class="position-absolute" style="right:20px; top:9px">
+                            <i class="fas fa-user"></i>
+                        </div>
                     </div>
-                </div>
 
-                <div class="position-relative mb-2">
-                    <input class="form-control form-control-1 ps-3 pe-5 py-2" id="barangay" type="text"
-                           placeholder="Barangay"
-                           value="{{ ($latestShippingInformation) ? $latestShippingInformation['barangay'] : '' }}">
-                    <div class="position-absolute" style="right:20px; top:9px">
-                        <i class="fas fa-map-marker-alt"></i>
+                    <div class="position-relative mb-2">
+                        <input class="form-control form-control-1 ps-3 pe-5 py-2" name="contact_number" type="text" placeholder="Contact Number" value="{{ ($latestShippingInformation) ? $latestShippingInformation['contact_number'] : '' }}" required />
+                        <div class="position-absolute" style="right:20px; top:9px">
+                            <i class="fas fa-phone"></i>
+                        </div>
                     </div>
-                </div>
 
-                <div class="position-relative mb-2">
-                    <input class="form-control form-control-1 ps-3 pe-5 py-2" id="city" type="text" placeholder="City"
-                           value="{{ ($latestShippingInformation) ? $latestShippingInformation['city'] : '' }}">
-                    <div class="position-absolute" style="right:20px; top:9px">
-                        <i class="fas fa-map-marker-alt"></i>
+                    <div class="position-relative mb-2">
+                        <input class="form-control form-control-1 ps-3 pe-5 py-2" name="barangay" type="text" placeholder="Barangay" value="{{ ($latestShippingInformation) ? $latestShippingInformation['barangay'] : '' }}" required />
+                        <div class="position-absolute" style="right:20px; top:9px">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
                     </div>
-                </div>
 
-                <div class="position-relative mb-2">
-                    <input class="form-control form-control-1 ps-3 pe-5 py-2" id="province" type="text"
-                           placeholder="Province"
-                           value="{{ ($latestShippingInformation) ? $latestShippingInformation['province'] : '' }}">
-                    <div class="position-absolute" style="right:20px; top:9px">
-                        <i class="fas fa-map-marker-alt"></i>
+                    <div class="position-relative mb-2">
+                        <input class="form-control form-control-1 ps-3 pe-5 py-2" name="city" type="text" placeholder="City" value="{{ ($latestShippingInformation) ? $latestShippingInformation['city'] : '' }}" required />
+                        <div class="position-absolute" style="right:20px; top:9px">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
                     </div>
-                </div>
 
-                <div class="position-relative mb-2">
-                    <input class="form-control form-control-1 ps-3 pe-5 py-2" id="zip-code" type="text"
-                           placeholder="Zip Code"
-                           value="{{ ($latestShippingInformation) ? $latestShippingInformation['zip_code'] : '' }}">
-                    <div class="position-absolute" style="right:20px; top:9px">
-                        <i class="fas fa-map-marker-alt"></i>
+                    <div class="position-relative mb-2">
+                        <input class="form-control form-control-1 ps-3 pe-5 py-2" name="province" type="text" placeholder="Province" value="{{ ($latestShippingInformation) ? $latestShippingInformation['province'] : '' }}" required />
+                        <div class="position-absolute" style="right:20px; top:9px">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                    </div>
+
+                    <div class="position-relative mb-2">
+                        <input class="form-control form-control-1 ps-3 pe-5 py-2" name="zip_code" type="text" placeholder="Zip Code" value="{{ ($latestShippingInformation) ? $latestShippingInformation['zip_code'] : '' }}" required />
+                        <div class="position-absolute" style="right:20px; top:9px">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <input type="hidden" name="place-order-route" value="{{ route('orders.placeOrder') }}"/>
-        <button class="btn btn-custom-2 btn-lg w-100" id="place-order-confirm" data-terminal-user="{{ $terminalUser ? $terminalUser['encodedTerminalUserId'] : '0' }}" data-stockist="0">PLACE ORDER</button>
+            <button type="submit" class="btn btn-custom-2 btn-lg w-100">PLACE ORDER</button>
+        </form>
     </div>
 </div>
