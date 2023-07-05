@@ -80,7 +80,7 @@ class Handler extends ExceptionHandler
 
             $excludedLinkSubstrings = [
                 'wlwmanifest.xml',
-                '.env',
+                'env',
                 'sitemap',
                 'config',
                 '.yml',
@@ -95,6 +95,23 @@ class Handler extends ExceptionHandler
                 'robots',
                 'alfacgiapi',
                 'uploadify',
+                'ignition',
+                'wordpress',
+                'old',
+                'new',
+                'bk',
+                'bc',
+                'backup',
+                'vendor',
+                'wp-content',
+                'blog',
+                'test',
+                'administrator',
+                '.phP',
+                '.js',
+                '.txt',
+                'wp',
+                'source',
             ];
 
             $excludedBodySubstrings = [
@@ -112,7 +129,7 @@ class Handler extends ExceptionHandler
             }
 
             foreach($excludedLinkSubstrings as $excludedLinkSubstring) {
-                if(str_contains($content['url'], $excludedLinkSubstring)) {
+                if($content['code'] == 404 && str_contains($content['url'], $excludedLinkSubstring)) {
                     $send = false;
                     break;
                 }

@@ -26,6 +26,8 @@ class TestController extends Controller
     }
 
     public function index(Request $request) {
+        return 0;
+
         $data['firstname'] = 'Bernard';
         $data['otp'] = 182821;
 
