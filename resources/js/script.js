@@ -885,38 +885,40 @@ $(document).on("click", ".products-tab", function() {
 });
 
 $(document).on("change", "input[name='stockist-purchase']", function() {
-    var stockist = $("input[name='stockist-purchase']:checked").val();
-    var price;
+    let stockist = parseInt($("input[name='stockist-purchase']:checked").val());
+    let price;
 
-    if(stockist == 0) {
+    if(stockist === 0) {
         price = "distributors-price";
         $(".crossed-price").removeClass("d-none");
-    } else if(stockist == 1) {
+    } else if(stockist === 1) {
         price = "mobile-price";
         $(".crossed-price").addClass("d-none");
-    } else if(stockist == 2) {
+    } else if(stockist === 2) {
         price = "center-price";
         $(".crossed-price").addClass("d-none");
     }
 
-    $("#place-order-confirm").attr("data-stockist", stockist);
+    $("#place-order-form [name='stockist']").val(stockist);
 
     $(".product-container").each(function() {
         $(this).attr("data-price", $(this).data(price));
         $(this).find(".price").html(numberFormat($(this).attr("data-price"), true));
     });
 
-    if(stockist != 0) {
+    let productsTabContainer = $("#products-tab-container");
+
+    if(stockist !== 0) {
         $(".products-section").removeClass("d-none");
-        $("#products-tab-container").addClass("d-none");
+        productsTabContainer.addClass("d-none");
 
         $(".products-tab").removeClass("active");
         $(".products-tab[data-type='2']").addClass("active");
     } else {
-        if($("#products-tab-container").data("hidden") == 1) {
-            $("#products-tab-container").addClass("d-none");
+        if(parseInt(productsTabContainer.data("hidden")) === 1) {
+            productsTabContainer.addClass("d-none");
         } else {
-            $("#products-tab-container").removeClass("d-none");
+            productsTabContainer.removeClass("d-none");
         }
 
         $(".products-tab[data-type='2']").trigger("click");
