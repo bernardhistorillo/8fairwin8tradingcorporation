@@ -11,10 +11,10 @@
     <div class="animated fadeIn" id="terminal-select-account-container">
         <div class="card mb-4">
             <div class="card-body p-3 d-flex align-items-center">
-                <i class="fa fa-gem p-3 font-2xl mr-3" style="background-color:#0e4d22; color:#ffffff"></i>
+                <span class="p-3 mr-3" style="background-color:#0e4d22; color:#ffffff; line-height:19px">PV</span>
                 <div>
                     <div class="text-value-sm" style="color:#0e4d22; font-size:1.5em"><span id="terminal-winners-gem">{{ number_format(Auth::user()->terminalWinnersGem()["balance"], 2) }}</span> <i class="fas fa-gem gem-change-color" style="font-size:0.8em"></i></div>
-                    <div class="text-muted text-uppercase font-weight-bold small">Winners Gem</div>
+                    <div class="text-muted text-uppercase font-weight-bold small">Point Value</div>
                 </div>
             </div>
         </div>

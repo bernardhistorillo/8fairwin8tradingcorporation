@@ -14,7 +14,8 @@
         "laravel/sanctum": "^2.11",
         "laravel/socialite": "^5.6",
         "laravel/tinker": "^2.5",
-        "league/flysystem-aws-s3-v3": "~1.0"
+        "league/flysystem-aws-s3-v3": "~1.0",
+      "ext-intl": "*"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

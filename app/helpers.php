@@ -114,3 +114,10 @@ if(!function_exists('formatDate')) {
         return Carbon::parse($date)->isoFormat('llll');
     }
 }
+
+if(!function_exists('numberToWords')) {
+    function numberToWords($number) {
+        $formatter = new NumberFormatter('en', NumberFormatter::SPELLOUT);
+        return $formatter->format($number);
+    }
+}

@@ -230,7 +230,7 @@ class OrderController extends Controller
         }
 
         if($isTerminalUser && $requestStockist != 2) { // if purchased by a stockist but not a center stockist, stock is checked
-            abort_if($lessInStock > 0, 422, $lessInStock . " of the items to be ordered " . (($lessInStock > 1) ? "are" : "is") . " less in stock.");
+            abort_if($lessInStock > 0, 422, 'There is insufficient stock for ' . numberToWords($lessInStock) .' of the items to be ordered, preventing the order from proceeding.');
         }
 
         if($requestStockist) {
@@ -1102,7 +1102,7 @@ class OrderController extends Controller
                 $totalPoints += $item["quantity"] * $item["points_value"];
             }
 
-            abort_if($lessInStock > 0, 422, $lessInStock . " of the items ordered " . (($lessInStock > 1) ? "are" : "is") . " less in stock.");
+            abort_if($lessInStock > 0, 422, 'There is insufficient stock for ' . numberToWords($lessInStock) .' of the items to be ordered, preventing the order from proceeding.');
 
             $terminalWinnersGem = Auth::user()->terminalWinnersGem();
 

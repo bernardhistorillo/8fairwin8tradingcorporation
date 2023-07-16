@@ -537,7 +537,11 @@ let proof_of_payment_uploader = $('<input type="file" accept="image/*" />');
 let profile_picture_uploader = $('<input type="file" accept="image/*" />');
 let account_package = ["", "DBP - ", "DSP - ", "FDP - ", "DMP - ", "FSP - ", "FPP - "];
 let ranks = ["Free Account", "Dealer", "Explorer", "Pathfinder", "Navigator", "Master Guide", "Fair Winner", "Grand Fair Winner", "Royal Fair Winner", "Crown Fair Winner"];
+let numWords = require('num-words');
 
+let numberToWords = function(number) {
+    return numWords(number);
+}
 let getGenealogy = function(type) {
     $.ajax({
         method: "POST",
@@ -557,7 +561,6 @@ let getGenealogy = function(type) {
         },1000);
     });
 };
-
 let generateGenealogy = function() {
     var uplines = [];
     uplines.push(selected_node);
@@ -703,7 +706,6 @@ let generateGenealogy = function() {
         $("#chart").html('<h5 class="text-center my-5 py-5">No Network</h5>');
     }
 };
-
 let load_cart = function(empty_cart) {
     if(empty_cart) {
         remove_from_cart(0);
@@ -749,7 +751,6 @@ let load_cart = function(empty_cart) {
     $("#total-price").html(numberFormat(total_price, true));
     $("#total-points").html(numberFormat(total_points, true));
 };
-
 let remove_from_cart = function(id) {
     id = parseInt(id);
 
@@ -769,7 +770,6 @@ let remove_from_cart = function(id) {
         $(".product-container[data-id='" + id + "']").attr("data-quantity", 1);
     }
 }
-
 let numberFormat = function(x, decimal) {
     x = parseFloat(x);
     var parts = x.toFixed(2).toString().split(".");
@@ -998,12 +998,20 @@ $(document).on("submit", "#place-order-form", function(e) {
     if(terminalUser === '0') {
         $("#modal-warning .message").html("Your order will now be placed.");
     } else {
-        var less_in_stock = 0;
+        let lessInStock = 0;
+
+        $(".cart").each(function() {
+            if($(this).attr("data-added-to-cart") == 1) {
+                if(parseInt($(".product-container[data-id='" + $(this).val() + "'] .stock").html()) < parseInt($(".product-container[data-id='" + $(this).val() + "']").attr("data-quantity"))) {
+                    lessInStock++;
+                }
+            }
+        });
 
         let content = '';
-        if(less_in_stock > 0) {
+        if(lessInStock > 0) {
             content += '<div class="text-center mb-3">';
-            content += 		less_in_stock + ' of the items to be ordered ' + ((less_in_stock > 1) ? 'are' : 'is') + ' less in stock.';
+            content += '	There is insufficient stock for ' + numberToWords(lessInStock) + ' of the items to be ordered, preventing the order from proceeding.';
             content += '</div>';
         } else {
             content += '<div class="text-center mb-3">';
@@ -1020,9 +1028,6 @@ $(document).on("submit", "#place-order-form", function(e) {
         content += '			</tr>';
         $(".cart").each(function() {
             if($(this).attr("data-added-to-cart") == 1) {
-                if(parseInt($(".product-container[data-id='" + $(this).val() + "'] .stock").html()) < parseInt($(".product-container[data-id='" + $(this).val() + "']").attr("data-quantity"))) {
-                    less_in_stock++;
-                }
                 content += '	<tr>';
                 content += '		<td>' + $(".product-container[data-id='" + $(this).val() + "'] .name").html() + '</td>';
                 content += '		<td>' + numberFormat($(".product-container[data-id='" + $(this).val() + "'] .stock").html(),false) + '</td>';
