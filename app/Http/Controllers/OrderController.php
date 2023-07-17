@@ -102,7 +102,7 @@ class OrderController extends Controller
         $request->validate([
             'price' => 'required|numeric',
             'winners_gem_value' => 'required|numeric',
-            'proof_of_payments.*' => 'required|mimes:jpg,jpeg,png,bmp,tiff|max:10240',
+            'proof_of_payment.*' => 'required|mimes:jpg,jpeg,png,bmp,tiff|max:10240',
         ]);
 
         $currentWinnersGemValue = winnersGemValue();
@@ -116,14 +116,17 @@ class OrderController extends Controller
 
         if($request->price > 0) {
             $proofOfPaymentsLocations = [];
-            foreach(json_decode($request->proof_of_payments, true) as $proofOfPayment) {
-                $file = file_get_contents($proofOfPayment['image']);
-                $name = Str::random(40) . '.' . $proofOfPayment['extension'];
 
-                $path = config('filesystems.disks.do.folder') . '/gem_purchases/' . Auth::user()->id . '/';
-                Storage::disk('do')->put($path . $name, $file);
+            $proofOfPayments = $request->file('proof_of_payment');
 
-                $proofOfPaymentsLocations[] = config('filesystems.disks.do.cdn_endpoint') . $path . $name;
+            foreach($proofOfPayments as $proofOfPayment) {
+                $name = $proofOfPayment->hashName();
+
+                $path = $proofOfPayment->storeAs(
+                    config('filesystems.disks.do.folder') . '/gem_purchases/' . Auth::user()->id, $name, 'do'
+                );
+
+                $proofOfPaymentsLocations[] = config('filesystems.disks.do.cdn_endpoint') . $path;
             }
 
             $gemPurchase = new GemPurchase();
@@ -136,7 +139,9 @@ class OrderController extends Controller
             abort(422, "Enter Winners Gem amount");
         }
 
-        return response()->json([]);
+        return response()->json([
+            'redirect' => route('orders.index', 'winnersgem')
+        ]);
     }
 
     public function placeOrder(Request $request) {

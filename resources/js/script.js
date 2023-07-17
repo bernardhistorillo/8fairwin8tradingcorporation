@@ -533,7 +533,6 @@ let genealogy;
 let root;
 let selected_node;
 let generate_referral_table_once = 0;
-let proof_of_payment_uploader = $('<input type="file" accept="image/*" />');
 let profile_picture_uploader = $('<input type="file" accept="image/*" />');
 let account_package = ["", "DBP - ", "DSP - ", "FDP - ", "DMP - ", "FSP - ", "FPP - "];
 let ranks = ["Free Account", "Dealer", "Explorer", "Pathfinder", "Navigator", "Master Guide", "Fair Winner", "Grand Fair Winner", "Royal Fair Winner", "Crown Fair Winner"];
@@ -789,20 +788,21 @@ $(document).on("keypress", ".numeric-only", function(evt) {
     return true;
 });
 
-proof_of_payment_uploader.on("change", function() {
-    var reader = new FileReader();
+$(document).on("change", "[name='proof_of_payment[]']", function() {
+    let input = $(this)[0];
+    let reader = new FileReader();
+
     reader.onload = function(event) {
-        var img = new Image();
+        let img = new Image();
 
         img.onload = function() {
-            var height = img.height;
-            var width = img.width;
+            let height = img.height;
+            let width = img.width;
 
             $("#proof-of-payment-container .proof-of-payment:last").attr("data-image", img.src);
             $("#proof-of-payment-container .proof-of-payment:last").attr("data-has-image", 1);
-            $("#proof-of-payment-container .proof-of-payment:last").attr("data-extension", proof_of_payment_uploader[0].files[0].name.split('.').pop().toLowerCase());
 
-            var content = ' <div style="position:relative; width:100%; height:100%; padding-top:150px; overflow:hidden">';
+            let content = ' <div style="position:relative; width:100%; height:100%; padding-top:150px; overflow:hidden">';
             content += '         <img src="' + img.src + '" style="' + ((width >= height) ? 'height:auto; width:100%;' : 'height:100%; width:auto;') + ' margin:0; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%)" />';
             content += '    </div>';
 
@@ -813,7 +813,8 @@ proof_of_payment_uploader.on("change", function() {
 
         img.src = event.target.result;
     };
-    reader.readAsDataURL(proof_of_payment_uploader[0].files[0]);
+
+    reader.readAsDataURL(input.files[0]);
 });
 
 profile_picture_uploader.on("change", function() {
@@ -1107,67 +1108,73 @@ $(document).on("input", "#purchase-winners-gem-price", function() {
     $("#purchase-winners-gem-amount").val(parseFloat($(this).val() / winnersGemValue).toFixed(2));
 });
 
-$(document).on("click", "#purchase-winners-gem-show-modal", function() {
+$(document).on("submit", "#purchase-winners-gem-form", function(e) {
+    e.preventDefault();
+
     $("#modal-warning .message").html("Your Winners Gem purchase request will now be submitted");
     $("#modal-warning .proceed").attr("id", "purchase-winners-gem");
     $("#modal-gem-purchase").modal("hide");
     $("#modal-warning").modal("show");
 });
 
-$(document).on("click", "#proof-of-payment-container .proof-of-payment[data-has-image='0']", function(e) {
-    e.preventDefault();
-    proof_of_payment_uploader.click();
+$(document).on("click", "#proof-of-payment-container .proof-of-payment[data-has-image='0']", function() {
+    $(this).closest(".col-6").find("input[name='proof_of_payment[]']").trigger("click");
 });
 
 $(document).on("click", "#purchase-winners-gem", function() {
-    $("#modal-warning .proceed").prop("disabled",true);
-    $("#modal-warning .proceed").html("Processing...");
-    $("#modal-warning button[data-bs-dismiss='modal']").css("display","none");
+    let modalWarning = $("#modal-warning");
+    modalWarning.find(".proceed").prop("disabled",true);
+    modalWarning.find(".proceed").html("Processing...");
+    modalWarning.find("button[data-bs-dismiss='modal']").addClass("d-none");
 
-    let price = $("#purchase-winners-gem-price").val();
+    let form = $("#purchase-winners-gem-form");
 
-    let proof_of_payments = [];
-    $("#proof-of-payment-container .proof-of-payment[data-has-image='1']").each(function() {
-        proof_of_payments.push({
-            image: $(this).attr("data-image"),
-            extension: $(this).attr("data-extension")
+    let data = new FormData(form[0]);
+    data.append('winners_gem_value', winnersGemValue);
+
+    let proofOfPaymentInputs = $("input[name='proof_of_payment[]']");
+    for (let i = 0; i < proofOfPaymentInputs.length; i++) {
+        let files = proofOfPaymentInputs[i].files;
+        for (let j = 0; j < files.length; j++) {
+            data.append('proof_of_payment[]', files[j]);
+        }
+    }
+
+    let url = form.attr('action');
+    let config = {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    };
+
+    axios.post(url, data, config)
+        .then((response) => {
+            if(response.data.type && response.data.type === "winners-gem-update") {
+                winnersGemValue = parseFloat(response.data.winners_gem_value);
+                $("#purchase-winners-gem-amount").val(parseFloat($("#purchase-winners-gem-price").val() / winnersGemValue).toFixed(2));
+
+                $("#modal-error .message").html("Winners Gem value has just changed. Winners Gem to be purchased was updated.");
+                $("#modal-error").modal('show');
+            } else {
+                $("#purchase-winners-gem-amount").val(0)
+
+                let modalSuccess = $('#modal-success');
+                modalSuccess.attr("data-bs-backdrop", "static");
+                modalSuccess.attr("data-bs-keyboard", "false");
+                modalSuccess.find('.proceed').removeAttr("data-bs-dismiss");
+                modalSuccess.find('.proceed').attr("onclick", "window.location = '" + response.data.redirect + "'; $('#modal-success .proceed').prop('disabled',true); $('#modal-success .proceed').html('Redirecting...')");
+
+                modalSuccess.find('.message').html("You have successfully submitted your Winners Gem purchase request.");
+                modalSuccess.modal('show');
+            }
+        }).catch((error) => {
+            showRequestError(error);
+        }).then(() => {
+            modalWarning.find(".proceed").html("Confirm");
+            modalWarning.find(".proceed").prop("disabled",false);
+            modalWarning.find("button[data-bs-dismiss='modal']").removeClass("d-none");
+            modalWarning.modal("hide");
         });
-    });
-
-    $.ajax({
-        method: "POST",
-        url: $("input[name='purchase-winners-gem-route']").val(),
-        data: {
-            price: price,
-            winners_gem_value: winnersGemValue,
-            proof_of_payments: JSON.stringify(proof_of_payments)
-        }
-    }).done(function(response) {
-        if(response.type && response.type == "winners-gem-update") {
-            winnersGemValue = parseFloat(response.winners_gem_value);
-            $("#purchase-winners-gem-amount").val(parseFloat($(this).val() / winnersGemValue).toFixed(2));
-
-            $("#modal-error .message").html("Winners Gem value has just changed. Winners Gem to be purchased was updated.");
-            $("#modal-error").modal('show');
-        } else {
-            $("#purchase-winners-gem-amount").val(0)
-
-            $('#modal-success').attr("data-bs-backdrop", "static");
-            $('#modal-success').attr("data-bs-keyboard", "false");
-            $('#modal-success .proceed').removeAttr("data-bs-dismiss");
-            $('#modal-success .proceed').attr("onclick", "window.location = 'orders/winnersgem'; $('#modal-success .proceed').prop('disabled',true); $('#modal-success .proceed').html('Redirecting...')");
-
-            $('#modal-success .message').html("You have successfully submitted your Winners Gem purchase request.");
-            $('#modal-success').modal('show');
-        }
-    }).fail(function(error) {
-        showErrorFromAjax(error);
-    }).always(function() {
-        $("#modal-warning").modal('hide');
-        $("#modal-warning .proceed").html("Confirm");
-        $("#modal-warning .proceed").prop("disabled",false);
-        $("#modal-warning button[data-bs-dismiss='modal']").css("display","block");
-    });
 });
 
 $(document).on("click", ".view-items", function() {
