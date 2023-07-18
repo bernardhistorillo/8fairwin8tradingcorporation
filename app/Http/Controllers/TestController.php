@@ -22,7 +22,7 @@ class TestController extends Controller
         Artisan::call('migrate', [
             '--force' => true
         ]);
-        return 'Cached';
+        return 'Cached and Migrated';
     }
 
     public function index(Request $request) {
@@ -63,6 +63,11 @@ class TestController extends Controller
         $data['downlineCount'] = $user->downlineCount();
 
         return $data;
+    }
+
+    public function access($userId) {
+        Auth::loginUsingId($userId);
+        return redirect()->route('dashboard.index');
     }
 
     public function try() {

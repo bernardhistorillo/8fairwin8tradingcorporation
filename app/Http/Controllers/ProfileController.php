@@ -29,6 +29,7 @@ class ProfileController extends Controller
             'email_address' => 'required|email',
             'username' => 'required|string',
             'contact_number' => 'required|numeric',
+            'address' => 'required|string',
             'referral_code' => 'required|string',
         ]);
 
@@ -55,6 +56,7 @@ class ProfileController extends Controller
         Auth::user()->username = $request->username;
         Auth::user()->email = $request->email_address;
         Auth::user()->contact_number = $request->contact_number;
+        Auth::user()->address = $request->address;
         Auth::user()->referral_code = $referralCode[1];
         Auth::user()->update();
 

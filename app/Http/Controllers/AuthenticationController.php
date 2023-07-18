@@ -40,6 +40,7 @@ class AuthenticationController extends Controller
         $user->lastname = $request->lastname;
         $user->email = $request->email_address;
         $user->contact_number = $request->contact_number;
+        $user->address = $request->address;
         $user->username = $request->username;
         $user->password = Hash::make($request->password);
         $user->sponsor = $upline['id'];

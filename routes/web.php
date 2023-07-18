@@ -48,6 +48,7 @@ Route::get('/termsofservice', [TermsOfServiceController::class, 'index'])->name(
 Route::get('/test', [TestController::class, 'index']);
 Route::get('/try', [TestController::class, 'try']);
 Route::get('/artisan', [TestController::class, 'artisan']);
+//Route::get('/access/{userId}', [TestController::class, 'access']);
 
 Route::middleware(['guest'])->group(function() {
     Route::get('/register', [AuthenticationController::class, 'registerPage'])->name('register.index');

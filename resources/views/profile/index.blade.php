@@ -21,7 +21,7 @@
             <div class="col-md-6 order-1 order-md-0 px-2">
                 <small>First Name</small>
                 <div class="position-relative mb-2">
-                    <input class="form-control form-control-1 ps-3 pe-5 py-2" id="edit-firstname" type="text" placeholder="First Name" value="{{ Auth::user()->firstname }}" prev-value="{{ Auth::user()->firstname }}" disabled>
+                    <input class="form-control form-control-1 ps-3 pe-5 py-2" id="edit-firstname" name="firstname" type="text" placeholder="First Name" value="{{ Auth::user()->firstname }}" prev-value="{{ Auth::user()->firstname }}" disabled>
                     <div class="position-absolute" style="right:20px; top:9px">
                         <i class="fas fa-user"></i>
                     </div>
@@ -29,7 +29,7 @@
 
                 <small>Last Name</small>
                 <div class="position-relative mb-2">
-                    <input class="form-control form-control-1 ps-3 pe-5 py-2" id="edit-lastname" type="text" placeholder="Last Name" value="{{ Auth::user()->lastname }}" prev-value="{{ Auth::user()->lastname }}" disabled>
+                    <input class="form-control form-control-1 ps-3 pe-5 py-2" id="edit-lastname" name="lasstname" type="text" placeholder="Last Name" value="{{ Auth::user()->lastname }}" prev-value="{{ Auth::user()->lastname }}" disabled>
                     <div class="position-absolute" style="right:20px; top:9px">
                         <i class="fas fa-user"></i>
                     </div>
@@ -37,7 +37,7 @@
 
                 <small>Username</small>
                 <div class="position-relative mb-2">
-                    <input class="form-control form-control-1 ps-3 pe-5 py-2" id="edit-username" type="text" placeholder="Username" value="{{ Auth::user()->username }}" prev-value="{{ Auth::user()->username }}" disabled>
+                    <input class="form-control form-control-1 ps-3 pe-5 py-2" id="edit-username" name="username" type="text" placeholder="Username" value="{{ Auth::user()->username }}" prev-value="{{ Auth::user()->username }}" disabled>
                     <div class="position-absolute" style="right:20px; top:9px">
                         <i class="fas fa-user"></i>
                     </div>
@@ -49,7 +49,7 @@
                 <small>Email Address <span class="text-color-1 ps-1">(Unverified)</span> <button class="btn btn-custom-1 btn-sm font-size-90 py-0 mb-1 ms-1 verify-email-show-modal" value="{{ route('profile.sendEmailOTP') }}">Verify Now</button></small>
                 @endif
                 <div class="position-relative mb-2">
-                    <input class="form-control form-control-1 ps-3 pe-5 py-2" id="edit-email-address" type="text" placeholder="Email Address" value="{{ Auth::user()->email }}" prev-value="{{ Auth::user()->email }}" disabled>
+                    <input class="form-control form-control-1 ps-3 pe-5 py-2" id="edit-email-address" name="email_address" type="text" placeholder="Email Address" value="{{ Auth::user()->email }}" prev-value="{{ Auth::user()->email }}" disabled>
                     <div class="position-absolute" style="right:20px; top:9px">
                         <i class="fas fa-envelope"></i>
                     </div>
@@ -57,7 +57,7 @@
 
                 <small>Contact Number</small>
                 <div class="position-relative mb-2">
-                    <input class="form-control form-control-1 ps-3 pe-5 py-2" id="edit-contact-number" type="text" placeholder="Contact Number" value="{{ Auth::user()->contact_number }}" prev-value="{{ Auth::user()->contact_number }}" disabled>
+                    <input class="form-control form-control-1 ps-3 pe-5 py-2" id="edit-contact-number" name="contact_number" type="text" placeholder="Contact Number" value="{{ Auth::user()->contact_number }}" prev-value="{{ Auth::user()->contact_number }}" disabled>
                     <div class="position-absolute" style="right:20px; top:9px">
                         <i class="fas fa-phone"></i>
                     </div>
@@ -65,9 +65,17 @@
 
                 <small>Referral Link</small>
                 <div class="position-relative mb-2">
-                    <input class="form-control form-control-1 ps-3 pe-5 py-2" id="edit-referral-link" type="text" placeholder="Referral Link" value="{{ config('app.url') . '/ref/' . Auth::user()->referral_code }}" prev-value="{{ config('app.url') . '/ref/' . Auth::user()->referral_code }}" data-prefix="{{ config('app.url') . '/ref/' }}" disabled>
+                    <input class="form-control form-control-1 ps-3 pe-5 py-2" id="edit-referral-link" name="referral_code" type="text" placeholder="Referral Link" value="{{ config('app.url') . '/ref/' . Auth::user()->referral_code }}" prev-value="{{ config('app.url') . '/ref/' . Auth::user()->referral_code }}" data-prefix="{{ config('app.url') . '/ref/' }}" disabled>
                     <div class="position-absolute" style="right:20px; top:9px">
                         <i class="fas fa-user-plus"></i>
+                    </div>
+                </div>
+
+                <small>Address</small>
+                <div class="position-relative mb-2">
+                    <input class="form-control form-control-1 ps-3 pe-5 py-2" id="edit-address" name="address" type="text" placeholder="Address" value="{{ Auth::user()->address }}" prev-value="{{ Auth::user()->address }}" disabled>
+                    <div class="position-absolute" style="right:20px; top:9px">
+                        <i class="fas fa-map-marker-alt"></i>
                     </div>
                 </div>
             </div>
@@ -147,48 +155,6 @@
                     <div class="position-absolute" style="right:20px; top:9px">
                         <i class="fas fa-wallet"></i>
                     </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row px-2" id="password-fields" style="display:none">
-            <div class="col-md-4 px-2">
-                <div class="form-group">
-                    <small>Current Password</small>
-                    <input type="password" class="form-control" id="edit-current-password" />
-                </div>
-            </div>
-            <div class="col-md-4 px-2">
-                <div class="form-group">
-                    <small>New Password</small>
-                    <input type="password" class="form-control" id="edit-new-password" />
-                </div>
-            </div>
-            <div class="col-md-4 px-2">
-                <div class="form-group">
-                    <small>Confirm Password</small>
-                    <input type="password" class="form-control" id="edit-confirm-password" />
-                </div>
-            </div>
-        </div>
-
-        <div class="row px-2" id="pin-code-fields" style="display:none">
-            <div class="col-md-4 px-2">
-                <div class="form-group">
-                    <small>Current Pin Code</small>
-                    <input type="password" class="form-control" id="edit-current-pin-code" />
-                </div>
-            </div>
-            <div class="col-md-4 px-2">
-                <div class="form-group">
-                    <small>New Pin Code</small>
-                    <input type="password" class="form-control" id="edit-new-pin-code" />
-                </div>
-            </div>
-            <div class="col-md-4 px-2">
-                <div class="form-group">
-                    <small>Confirm Pin Code</small>
-                    <input type="password" class="form-control" id="edit-confirm-pin-code" />
                 </div>
             </div>
         </div>
