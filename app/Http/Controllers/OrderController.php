@@ -117,16 +117,18 @@ class OrderController extends Controller
         if($request->price > 0) {
             $proofOfPaymentsLocations = [];
 
-            $proofOfPayments = $request->file('proof_of_payment');
+            if($request->hasFile('proof_of_payment')) {
+                $proofOfPayments = $request->file('proof_of_payment');
 
-            foreach($proofOfPayments as $proofOfPayment) {
-                $name = $proofOfPayment->hashName();
+                foreach($proofOfPayments as $proofOfPayment) {
+                    $name = $proofOfPayment->hashName();
 
-                $path = $proofOfPayment->storeAs(
-                    config('filesystems.disks.do.folder') . '/gem_purchases/' . Auth::user()->id, $name, 'do'
-                );
+                    $path = $proofOfPayment->storeAs(
+                        config('filesystems.disks.do.folder') . '/gem_purchases/' . Auth::user()->id, $name, 'do'
+                    );
 
-                $proofOfPaymentsLocations[] = config('filesystems.disks.do.cdn_endpoint') . $path;
+                    $proofOfPaymentsLocations[] = config('filesystems.disks.do.cdn_endpoint') . $path;
+                }
             }
 
             $gemPurchase = new GemPurchase();

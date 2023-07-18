@@ -533,7 +533,6 @@ let genealogy;
 let root;
 let selected_node;
 let generate_referral_table_once = 0;
-let profile_picture_uploader = $('<input type="file" accept="image/*" />');
 let account_package = ["", "DBP - ", "DSP - ", "FDP - ", "DMP - ", "FSP - ", "FPP - "];
 let ranks = ["Free Account", "Dealer", "Explorer", "Pathfinder", "Navigator", "Master Guide", "Fair Winner", "Grand Fair Winner", "Royal Fair Winner", "Crown Fair Winner"];
 let numWords = require('num-words');
@@ -817,44 +816,45 @@ $(document).on("change", "[name='proof_of_payment[]']", function() {
     reader.readAsDataURL(input.files[0]);
 });
 
-profile_picture_uploader.on("change", function() {
+$(document).on("click", "#change-profile-picture", function() {
+    $("[name='profile_picture']").trigger("click");
+});
+
+$(document).on("change", "[name='profile_picture']", function() {
+    let input = $(this);
     $(".profile-picture-loading").removeClass("d-none");
 
-    var previous_photo = $(".change-profile-picture-container").css("background-image");
+    let previous_photo = $(".change-profile-picture-container").css("background-image");
 
     $(".change-profile-picture-container").css("background-image", "none")
 
-    var reader = new FileReader();
+    let reader = new FileReader();
     reader.onload = function(event) {
-        var img = new Image();
+        let img = new Image();
 
         img.onload = function() {
-            let formData = new FormData();
-            formData.append('image', profile_picture_uploader[0].files[0]);
-            formData.append('extension', profile_picture_uploader[0].files[0].name.split('.').pop().toLowerCase());
-
             $(".change-profile-picture-container").css("background-image", "url('" + img.src + "')");
 
-            $.ajax({
-                method: "POST",
-                url: $("#update-profile-picture").val(),
-                cache: false,
-                contentType: false,
-                processData: false,
-                data: formData
-            }).done(function(response) {
+            let url = $("[name='profile_picture']").attr("data-url");
 
-            }).fail(function(error) {
-                $(".change-profile-picture-container").css("background", previous_photo);
-                showErrorFromAjax(error);
-            }).always(function() {
-                $(".profile-picture-loading").addClass("d-none");
-            });
+            let data = new FormData();
+            data.append('profile_picture', input[0].files[0]);
+
+            axios.post(url, data)
+                .then((response) => {
+
+                }).catch((error) => {
+                    $(".change-profile-picture-container").css("background", previous_photo);
+                    showRequestError(error);
+                }).then(() => {
+                    $(".profile-picture-loading").addClass("d-none");
+                });
         };
 
         img.src = event.target.result;
     };
-    reader.readAsDataURL(profile_picture_uploader[0].files[0]);
+
+    reader.readAsDataURL(input[0].files[0]);
 });
 
 $(document).on("click", ".products-tab", function() {
@@ -1506,11 +1506,6 @@ $(document).on("change", "#number-of-levels-to-be-shown", function() {
         $("#modal-error .message").html("Invalid Input");
         $("#modal-error").modal("show");
     }
-});
-
-$(document).on("click", "#change-profile-picture", function(e) {
-    e.preventDefault();
-    profile_picture_uploader.click();
 });
 
 $(document).on("click", "#edit-personal-info-show-fields", function() {

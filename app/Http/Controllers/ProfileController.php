@@ -155,18 +155,20 @@ class ProfileController extends Controller
 
     public function updateProfilePicture(Request $request) {
         $request->validate([
-            'image' => 'required|mimes:jpg,jpeg,png,bmp,tiff|max:10240',
-            'extension' => 'required',
+            'profile_picture' => 'required|mimes:jpg,jpeg,png,bmp,tiff|max:10240',
         ]);
 
-        $file = file_get_contents($request->image);
-        $name = Str::random(40) . '.' . $request->extension;
+        if($request->hasFile('profile_picture')) {
+            $file = $request->file('profile_picture');
+            $name = $file->hashName();
 
-        $path = config('filesystems.disks.do.folder') . '/profile_pictures/' . Auth::user()->id . '/';
-        Storage::disk('do')->put($path . $name, $file);
+            $path = $file->storeAs(
+                config('filesystems.disks.do.folder') . '/profile_pictures/' . Auth::user()->id, $name, 'do'
+            );
 
-        Auth::user()->photo = config('filesystems.disks.do.cdn_endpoint') . $path . $name;
-        Auth::user()->update();
+            Auth::user()->photo = config('filesystems.disks.do.cdn_endpoint') . $path;
+            Auth::user()->update();
+        }
 
         return response()->json();
     }
