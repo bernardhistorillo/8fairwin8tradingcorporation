@@ -17,20 +17,20 @@
                             <p class="text-center code-pro-lc font-size-130">Log In</p>
                             <form id="login-form" action="{{ route('login.submit') }}">
                                 <div class="position-relative mb-3">
-                                    <input class="form-control form-control-1 ps-3 pe-5 py-2" id="login-username" type="text" placeholder="Username">
+                                    <input class="form-control form-control-1 ps-3 pe-5 py-2" name="username" type="text" placeholder="Username" required />
                                     <div class="position-absolute" style="right:20px; top:9px">
                                         <i class="fas fa-user"></i>
                                     </div>
                                 </div>
                                 <div class="position-relative mb-3">
-                                    <input class="form-control form-control-1 ps-3 pe-5 py-2" id="login-password" type="password" placeholder="Password">
+                                    <input class="form-control form-control-1 ps-3 pe-5 py-2" name="password" type="password" placeholder="Password" required />
                                     <div class="position-absolute" style="right:20px; top:9px">
                                         <i class="fas fa-lock"></i>
                                     </div>
                                 </div>
 
                                 <div class="text-center mt-2">
-                                    <button type="submit" class="btn btn-custom-2 px-5 py-3" id="login">Log In</button>
+                                    <button type="submit" class="btn btn-custom-2 px-5 py-3">Log In</button>
                                 </div>
                             </form>
                         </div>

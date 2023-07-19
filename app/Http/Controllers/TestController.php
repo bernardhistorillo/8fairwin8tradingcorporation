@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
@@ -71,7 +72,6 @@ class TestController extends Controller
     }
 
     public function try() {
-        Artisan::call('fairwin:add_domain_to_photo_links');
-        return 'Done';
+//        return Hash::make('Fairwin1');
     }
 }

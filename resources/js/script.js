@@ -395,108 +395,45 @@ $(document).on("click", ".navbar-toggler", function() {
 });
 
 // Start:  Registration
-// let referralCodeOnChange = function() {
-//     $("#register-sponsor-blank").css("display", "none");
-//     $("#register-sponsor-no-match").css("display", "none");
-//     $("#register-sponsor-has-match").css("display", "none");
-//     $("#register-sponsor-loading").css("display", "inline-block");
-//
-//     let referral_code = $("#register-sponsors-code").val();
-//
-//     let checkSponsor = function() {
-//         $.ajax({
-//             method: "POST",
-//             url: $("#register-sponsors-code").attr("data-action"),
-//             data: {
-//                 referral_code: referral_code
-//             }
-//         }).done(function(response) {
-//             if(!response.sponsor) {
-//                 $("#register-sponsor-blank").css("display", "none");
-//                 $("#register-sponsor-no-match").css("display", "inline-block");
-//                 $("#register-sponsor-has-match").css("display", "none");
-//                 $("#register-sponsor-loading").css("display", "none");
-//             } else {
-//                 $("#register-sponsor-has-match").html(response.sponsor);
-//
-//                 $("#register-sponsor-blank").css("display", "none");
-//                 $("#register-sponsor-no-match").css("display", "none");
-//                 $("#register-sponsor-has-match").css("display", "inline-block");
-//                 $("#register-sponsor-loading").css("display", "none");
-//             }
-//         }).fail(function(error) {
-//             showErrorFromAjax(error);
-//         });
-//     };
-//
-//     if(referral_code === "") {
-//         $("#register-sponsor-blank").css("display", "inline-block");
-//         $("#register-sponsor-no-match").css("display", "none");
-//         $("#register-sponsor-has-match").css("display", "none");
-//         $("#register-sponsor-loading").css("display", "none");
-//     } else {
-//         checkSponsor();
-//     }
-// };
-//
-// $(document).on("change", "#register-sponsors-code", function() {
-//     referralCodeOnChange();
-// });
+$(document).on("submit", "#registration-form", function(e) {
+    e.preventDefault();
 
-$(document).on("click", "#register-show-confirmation", function() {
-    $("#modal-warning .message").html("Your registration information will now be submitted.");
-    $("#modal-warning .proceed").html("Confirm");
-    $("#modal-warning .proceed").attr("id", "register");
-    $("#modal-warning").modal("show");
+    let modalWarning = $("#modal-warning");
+    modalWarning.find(".message").html("Your registration details will now be processed and recorded.");
+    modalWarning.find(".proceed").html("Confirm");
+    modalWarning.find(".proceed").attr("id", "register");
+    modalWarning.modal("show");
 });
 
 $(document).on("click", "#register", function() {
-    $("#modal-warning .cancel").css("display","none");
-    $("#modal-warning .proceed").prop("disabled",true);
-    $("#modal-warning .proceed").html("Processing...");
+    let modalWarning = $("#modal-warning");
+    modalWarning.find(".cancel").addClass("d-none");
+    modalWarning.find(".proceed").prop("disabled",true);
+    modalWarning.find(".proceed").html("Processing...");
 
-    var firstname = $("#register-firstname").val();
-    var lastname = $("#register-lastname").val();
-    var contact_number = $("#register-contact-number").val();
-    var email_address = $("#register-email-address").val();
-    var username = $("#register-username").val();
-    var password = $("#register-password").val();
-    var confirm_password = $("#register-confirm-password").val();
-    var pin_code = $("#register-pin-code").val();
-    var confirm_pin_code = $("#register-confirm-pin-code").val();
-    var sponsors_code = $("#register-sponsors-code").val();
+    let form = $("#registration-form");
+    let data = new FormData(form[0]);
+    let url = form.attr("action");
 
-    $.ajax({
-        method: "POST",
-        url: $("#register-show-confirmation").attr("data-action"),
-        data: {
-            firstname: firstname,
-            lastname: lastname,
-            contact_number: contact_number,
-            email_address: email_address,
-            username: username,
-            password: password,
-            confirm_password: confirm_password,
-            pin_code: pin_code,
-            confirm_pin_code: confirm_pin_code,
-            sponsors_code: sponsors_code
-        }
-    }).done(function(response) {
-        $('#modal-success').attr("data-bs-backdrop", "static");
-        $('#modal-success').attr("data-bs-keyboard", "false");
-        $("#modal-success button[data-bs-dismiss='modal']").removeAttr("data-bs-dismiss");
-        $('#modal-success .proceed').attr("onclick", "window.location = '/dashboard'; $('#modal-success .proceed').prop('disabled',true); $('#modal-success .proceed').html('Redirecting...')");
+    axios.post(url, data)
+        .then((response) => {
+            let modalSuccess = $("#modal-success");
 
-        $("#modal-success .message").html("Congratulations! You have successfully created your account.");
-        $("#modal-success").modal("show");
-    }).fail(function(error) {
-        showErrorFromAjax(error);
-    }).always(function() {
-        $("#modal-warning").modal("hide");
-        $("#modal-warning .proceed").html("Confirm");
-        $("#modal-warning .proceed").prop("disabled",false);
-        $("#modal-warning .cancel").css("display","block");
-    });
+            modalSuccess.attr("data-bs-backdrop", "static");
+            modalSuccess.attr("data-bs-keyboard", "false");
+            modalSuccess.find("[data-bs-dismiss='modal']").removeAttr("data-bs-dismiss");
+            modalSuccess.find(".proceed").attr("onclick", "window.location = '" + response.data.redirect + "'; $('#modal-success .proceed').prop('disabled',true); $('#modal-success .proceed').html('Redirecting...')");
+
+            modalSuccess.find(".message").html("Great news! Your account creation has been completed successfully.");
+            modalSuccess.modal("show");
+        }).catch((error) => {
+            showRequestError(error);
+        }).then(() => {
+            modalWarning.modal("hide");
+            modalWarning.find(".proceed").html("Confirm");
+            modalWarning.find(".proceed").prop("disabled",false);
+            modalWarning.find(".cancel").removeClass("d-none");
+        });
 });
 // End: Registration
 
@@ -504,28 +441,23 @@ $(document).on("click", "#register", function() {
 $(document).on("submit", "#login-form", function(e) {
     e.preventDefault();
 
-    $("#login").prop("disabled",true);
-    $("#login").html("Logging In...");
+    let button = $(this).find("[type='submit']");
+    button.prop("disabled",true);
+    button.html("Logging In...");
 
-    var username = $("#login-username").val();
-    var password = $("#login-password").val();
+    let url = $(this).attr("action");
+    let data = new FormData($(this)[0]);
 
-    $.ajax({
-        method: "POST",
-        url: $("#login-form").attr("action"),
-        data: {
-            username: username,
-            password: password
-        }
-    }).done(function(response) {
-        $("#login").html("Redirecting...");
-        window.location = "/dashboard";
-    }).fail(function(error) {
-        $("#login").prop("disabled",false);
-        $("#login").html("Log In");
+    axios.post(url, data)
+        .then((response) => {
+            button.html("Redirecting...");
+            window.location = response.data.redirect;
+        }).catch((error) => {
+            button.prop("disabled",false);
+            button.html("Log In");
 
-        showErrorFromAjax(error);
-    });
+            showRequestError(error);
+        });
 });
 // End: Log In
 
@@ -1070,7 +1002,7 @@ $(document).on("click", "#place-order", function() {
 
     modalWarning.find(".proceed").prop("disabled",true);
     modalWarning.find(".proceed").html("Processing...");
-    modalWarning.find("button[data-bs-dismiss='modal']").css("display","none");
+    modalWarning.find("[data-bs-dismiss='modal']").css("display","none");
 
     let form = $("#place-order-form");
 
@@ -1096,7 +1028,7 @@ $(document).on("click", "#place-order", function() {
             modalWarning.modal('hide');
             modalWarning.find(".proceed").html("Confirm");
             modalWarning.find(".proceed").prop("disabled",false);
-            modalWarning.find("button[data-bs-dismiss='modal']").css("display","block");
+            modalWarning.find("[data-bs-dismiss='modal']").css("display","block");
         });
 });
 
@@ -1125,7 +1057,7 @@ $(document).on("click", "#purchase-winners-gem", function() {
     let modalWarning = $("#modal-warning");
     modalWarning.find(".proceed").prop("disabled",true);
     modalWarning.find(".proceed").html("Processing...");
-    modalWarning.find("button[data-bs-dismiss='modal']").addClass("d-none");
+    modalWarning.find("[data-bs-dismiss='modal']").addClass("d-none");
 
     let form = $("#purchase-winners-gem-form");
 
@@ -1172,7 +1104,7 @@ $(document).on("click", "#purchase-winners-gem", function() {
         }).then(() => {
             modalWarning.find(".proceed").html("Confirm");
             modalWarning.find(".proceed").prop("disabled",false);
-            modalWarning.find("button[data-bs-dismiss='modal']").removeClass("d-none");
+            modalWarning.find("[data-bs-dismiss='modal']").removeClass("d-none");
             modalWarning.modal("hide");
         });
 });
@@ -1223,7 +1155,7 @@ $(document).on("click", ".view-items", function() {
         $("#modal-warning").modal('hide');
         $("#modal-warning .proceed").html("Confirm");
         $("#modal-warning .proceed").prop("disabled",false);
-        $("#modal-warning button[data-bs-dismiss='modal']").css("display","block");
+        $("#modal-warning [data-bs-dismiss='modal']").css("display","block");
     });
 });
 
@@ -1265,7 +1197,7 @@ $(document).on("change", "#transfer-receiver-username", function() {
         });
     };
 
-    if(username == "") {
+    if(username === "") {
         $("#register-sponsor-blank").css("display", "inline-block");
         $("#register-sponsor-no-match").css("display", "none");
         $("#register-sponsor-has-match").css("display", "none");
@@ -1291,7 +1223,7 @@ $(document).on("click", "#transfer-winners-gem-confirm", function() {
 $(document).on("click", "#transfer-winners-gem", function() {
     $("#modal-warning .proceed").prop("disabled",true);
     $("#modal-warning .proceed").html("Processing...");
-    $("#modal-warning button[data-bs-dismiss='modal']").css("display","none");
+    $("#modal-warning [data-bs-dismiss='modal']").css("display","none");
 
     var username = $("#transfer-receiver-username").val();
     var amount = parseFloat($("#transfer-winners-gem-amount").val());
@@ -1325,7 +1257,7 @@ $(document).on("click", "#transfer-winners-gem", function() {
         $("#modal-warning").modal('hide');
         $("#modal-warning .proceed").html("Confirm");
         $("#modal-warning .proceed").prop("disabled",false);
-        $("#modal-warning button[data-bs-dismiss='modal']").css("display","block");
+        $("#modal-warning [data-bs-dismiss='modal']").css("display","block");
     });
 });
 
@@ -1361,7 +1293,7 @@ $(document).on("click", "#convert-confirm", function() {
 $(document).on("click", "#convert", function() {
     $("#modal-warning .proceed").prop("disabled",true);
     $("#modal-warning .proceed").html("Processing...");
-    $("#modal-warning button[data-bs-dismiss='modal']").css("display","none");
+    $("#modal-warning [data-bs-dismiss='modal']").css("display","none");
 
     let type = $(".convert-tab.active").data("type");
     let amount = parseFloat($("#convert-" + type + "-amount").val());
@@ -1400,7 +1332,7 @@ $(document).on("click", "#convert", function() {
         $("#modal-warning").modal('hide');
         $("#modal-warning .proceed").html("Confirm");
         $("#modal-warning .proceed").prop("disabled",false);
-        $("#modal-warning button[data-bs-dismiss='modal']").css("display","block");
+        $("#modal-warning [data-bs-dismiss='modal']").css("display","block");
     });
 });
 
@@ -1424,7 +1356,7 @@ $(document).on("click", "#withdraw-confirm", function() {
 $(document).on("click", "#withdraw", function() {
     $("#modal-warning .proceed").prop("disabled",true);
     $("#modal-warning .proceed").html("Processing...");
-    $("#modal-warning button[data-bs-dismiss='modal']").css("display","none");
+    $("#modal-warning [data-bs-dismiss='modal']").css("display","none");
 
     $.ajax({
         method: "POST",
@@ -1446,7 +1378,7 @@ $(document).on("click", "#withdraw", function() {
         $("#modal-warning").modal('hide');
         $("#modal-warning .proceed").html("Confirm");
         $("#modal-warning .proceed").prop("disabled",false);
-        $("#modal-warning button[data-bs-dismiss='modal']").css("display","block");
+        $("#modal-warning [data-bs-dismiss='modal']").css("display","block");
     });
 });
 
@@ -1463,7 +1395,7 @@ $(document).on("click", "#contribute-to-pool-share-confirm", function() {
 $(document).on("click", "#contribute-to-pool-share", function() {
     $("#modal-warning .proceed").prop("disabled",true);
     $("#modal-warning .proceed").html("Processing...");
-    $("#modal-warning button[data-bs-dismiss='modal']").css("display","none");
+    $("#modal-warning [data-bs-dismiss='modal']").css("display","none");
 
     var amount = parseFloat($("#pool-share-contribution-amount").val());
 
@@ -1485,7 +1417,7 @@ $(document).on("click", "#contribute-to-pool-share", function() {
         $("#modal-warning").modal('hide');
         $("#modal-warning .proceed").html("Confirm");
         $("#modal-warning .proceed").prop("disabled",false);
-        $("#modal-warning button[data-bs-dismiss='modal']").css("display","block");
+        $("#modal-warning [data-bs-dismiss='modal']").css("display","block");
     });
 });
 
@@ -1556,7 +1488,7 @@ $(document).on("change", "input[name='payout-method']", function() {
 $(document).on("click", ".verify-email-show-modal", function() {
     $("#modal-verify-email .proceed").prop("disabled",true);
     $("#modal-verify-email .proceed").html("Sending OTP");
-    $("#modal-verify-email button[data-bs-dismiss='modal']").css("display","none");
+    $("#modal-verify-email [data-bs-dismiss='modal']").css("display","none");
 
     $("#sending-pin").removeClass("d-none");
     $("#pin-sent").addClass("d-none");
@@ -1577,7 +1509,7 @@ $(document).on("click", ".verify-email-show-modal", function() {
     }).always(function() {
         $("#modal-verify-email .proceed").prop("disabled",false);
         $("#modal-verify-email .proceed").html("Submit");
-        $("#modal-verify-email button[data-bs-dismiss='modal']").css("display","block");
+        $("#modal-verify-email [data-bs-dismiss='modal']").css("display","block");
     });
 });
 
@@ -1590,7 +1522,7 @@ $(document).on("submit", "#email-verification-form", function(e) {
 
     $("#modal-verify-email .proceed").prop("disabled",true);
     $("#modal-verify-email .proceed").html("Verifying");
-    $("#modal-verify-email button[data-bs-dismiss='modal']").css("display","none");
+    $("#modal-verify-email [data-bs-dismiss='modal']").css("display","none");
 
     let form = $(this);
     let formData = new FormData(form[0]);
@@ -1607,7 +1539,7 @@ $(document).on("submit", "#email-verification-form", function(e) {
 
         $('#modal-success').attr("data-bs-backdrop", "static");
         $('#modal-success').attr("data-bs-keyboard", "false");
-        $("#modal-success button[data-bs-dismiss='modal']").removeAttr("data-bs-dismiss");
+        $("#modal-success [data-bs-dismiss='modal']").removeAttr("data-bs-dismiss");
         $('#modal-success .proceed').attr("onclick", "window.location = '/profile'; $('#modal-success .proceed').prop('disabled',true); $('#modal-success .proceed').html('Reloading...')");
 
         $("#modal-success .message").html("You have successfully verified your email address.");
@@ -1630,7 +1562,7 @@ $(document).on("submit", "#email-verification-form", function(e) {
     }).always(function() {
         $("#modal-verify-email .proceed").prop("disabled",false);
         $("#modal-verify-email .proceed").html("Submit");
-        $("#modal-verify-email button[data-bs-dismiss='modal']").css("display","block");
+        $("#modal-verify-email [data-bs-dismiss='modal']").css("display","block");
     });
 });
 
@@ -1675,7 +1607,7 @@ $(document).on("submit", "#reset-password-form", function(e) {
     }).done(function(response) {
         $('#modal-success').attr("data-bs-backdrop", "static");
         $('#modal-success').attr("data-bs-keyboard", "false");
-        $("#modal-success button[data-bs-dismiss='modal']").removeAttr("data-bs-dismiss");
+        $("#modal-success [data-bs-dismiss='modal']").removeAttr("data-bs-dismiss");
         $('#modal-success .proceed').attr("onclick", "window.location = '" + response.redirect + "'; $('#modal-success .proceed').prop('disabled',true); $('#modal-success .proceed').html('Reloading...')");
 
         $("#modal-success .message").html("You have successfully updated your password.");
@@ -1902,7 +1834,7 @@ $(document).on("click", "#update-proof-of-payment-confirm", function() {
 $(document).on("click", "#update-proof-of-payment", function() {
     $("#modal-warning .proceed").prop("disabled",true);
     $("#modal-warning .proceed").html("Processing...");
-    $("#modal-warning button[data-bs-dismiss='modal']").css("display","none");
+    $("#modal-warning [data-bs-dismiss='modal']").css("display","none");
 
     var id = $(this).val();
 
@@ -1932,7 +1864,7 @@ $(document).on("click", "#update-proof-of-payment", function() {
         $("#modal-warning").modal('hide');
         $("#modal-warning .proceed").html("Confirm");
         $("#modal-warning .proceed").prop("disabled",false);
-        $("#modal-warning button[data-bs-dismiss='modal']").css("display","block");
+        $("#modal-warning [data-bs-dismiss='modal']").css("display","block");
     });
 });
 
@@ -1959,7 +1891,7 @@ $(document).on("click", ".mark-order-as-complete-confirm", function() {
 $(document).on("click", "#mark-order-as-complete", function() {
     $("#modal-warning .proceed").prop("disabled",true);
     $("#modal-warning .proceed").html("Processing...");
-    $("#modal-warning button[data-bs-dismiss='modal']").css("display","none");
+    $("#modal-warning [data-bs-dismiss='modal']").css("display","none");
 
     let id = $(this).val();
     let from = $(this).attr("data-from");
@@ -1985,7 +1917,7 @@ $(document).on("click", "#mark-order-as-complete", function() {
         showErrorFromAjax(error);
     }).always(function() {
         $('#modal-warning').modal('hide');
-        $("#modal-warning button[data-bs-dismiss='modal']").css("display","block");
+        $("#modal-warning [data-bs-dismiss='modal']").css("display","block");
         $("#modal-warning .proceed").html("Confirm");
         $("#modal-warning .proceed").prop("disabled",false);
     });
@@ -2016,7 +1948,7 @@ $(document).on("click", "#update-winners-gem-value", function() {
     let modalWarning = $("#modal-warning");
     modalWarning.find(".proceed").prop("disabled",true);
     modalWarning.find(".proceed").html("Processing...");
-    modalWarning.find("button[data-bs-dismiss='modal']").css("display","none");
+    modalWarning.find("[data-bs-dismiss='modal']").css("display","none");
 
     let form = $("#update-winners-gem-value-form");
     let data = new FormData(form[0]);
@@ -2035,7 +1967,7 @@ $(document).on("click", "#update-winners-gem-value", function() {
         }).then(() => {
             modalWarning.find(".proceed").html("Confirm");
             modalWarning.find(".proceed").prop("disabled",false);
-            modalWarning.find("button[data-bs-dismiss='modal']").css("display","block");
+            modalWarning.find("[data-bs-dismiss='modal']").css("display","block");
             modalWarning.modal("hide");
         });
 });
@@ -2064,7 +1996,7 @@ $(document).on("click", "#set-stockist", function() {
     let modalWarning = $("#modal-warning");
     modalWarning.find(".proceed").prop("disabled",true);
     modalWarning.find(".proceed").html("Processing...");
-    modalWarning.find("button[data-bs-dismiss='modal']").css("display","none");
+    modalWarning.find("[data-bs-dismiss='modal']").css("display","none");
 
     let stockist = parseInt($("#set-stockist").attr("data-stockist"));
     let userId = (stockist === 0) ? $("#removable-accounts").val() : $("#assignable-accounts").val();
@@ -2094,7 +2026,7 @@ $(document).on("click", "#set-stockist", function() {
         }).then(() => {
             modalWarning.find(".proceed").html("Confirm");
             modalWarning.find(".proceed").prop("disabled",false);
-            modalWarning.find("button[data-bs-dismiss='modal']").css("display","block");
+            modalWarning.find("[data-bs-dismiss='modal']").css("display","block");
             modalWarning.modal("hide");
         });
 });
@@ -2112,7 +2044,7 @@ $(document).on("click", "#approve-gem-purchase", function() {
     let modalWarning = $("#modal-warning");
     modalWarning.find(".proceed").prop("disabled",true);
     modalWarning.find(".proceed").html("Processing...");
-    modalWarning.find("button[data-bs-dismiss='modal']").css("display","none");
+    modalWarning.find("[data-bs-dismiss='modal']").css("display","none");
 
     let url = $("#approve-gem-purchase-route").val();
     let id = $(this).val();
@@ -2134,7 +2066,7 @@ $(document).on("click", "#approve-gem-purchase", function() {
         }).then(() => {
             modalWarning.find(".proceed").html("Confirm");
             modalWarning.find(".proceed").prop("disabled",false);
-            modalWarning.find("button[data-bs-dismiss='modal']").css("display","block");
+            modalWarning.find("[data-bs-dismiss='modal']").css("display","block");
             modalWarning.modal("hide");
         });
 });
@@ -2151,7 +2083,7 @@ $(document).on("click", "#remove-gem-purchase", function() {
     let modalWarning = $("#modal-warning");
     modalWarning.find(".proceed").prop("disabled",true);
     modalWarning.find(".proceed").html("Processing...");
-    modalWarning.find("button[data-bs-dismiss='modal']").css("display","none");
+    modalWarning.find("[data-bs-dismiss='modal']").css("display","none");
 
     let url = $("#remove-gem-purchase-route").val();
     let id = $(this).val();
@@ -2173,7 +2105,7 @@ $(document).on("click", "#remove-gem-purchase", function() {
         }).then(() => {
             modalWarning.find(".proceed").html("Confirm");
             modalWarning.find(".proceed").prop("disabled",false);
-            modalWarning.find("button[data-bs-dismiss='modal']").css("display","block");
+            modalWarning.find("[data-bs-dismiss='modal']").css("display","block");
             modalWarning.modal("hide");
         });
 });
@@ -2246,7 +2178,7 @@ $(document).on("submit", "#add-item-form", function(e) {
 
             modalSuccess.attr("data-bs-backdrop", "static");
             modalSuccess.attr("data-bs-keyboard", "false");
-            modalSuccess.find("button[data-bs-dismiss='modal']").removeAttr("data-bs-dismiss");
+            modalSuccess.find("[data-bs-dismiss='modal']").removeAttr("data-bs-dismiss");
             modalSuccess.find('.proceed').attr("onclick", "window.location = '" + response.data.redirect + "'; $('#modal-success .proceed').prop('disabled',true); $('#modal-success .proceed').html('Redirecting...')");
 
             modalSuccess.find(".message").html("Item added successfully.");
@@ -2347,7 +2279,7 @@ $(document).on("click", "#withdrawal-set-as-complete", function() {
     let modalWarning = $("#modal-warning");
     modalWarning.find(".proceed").prop("disabled",true);
     modalWarning.find(".proceed").html("Processing...");
-    modalWarning.find("button[data-bs-dismiss='modal']").css("display","none");
+    modalWarning.find("[data-bs-dismiss='modal']").css("display","none");
 
     let id = $(this).val();
 
@@ -2369,7 +2301,7 @@ $(document).on("click", "#withdrawal-set-as-complete", function() {
         }).then(() => {
             modalWarning.find(".proceed").html("Confirm");
             modalWarning.find(".proceed").prop("disabled",false);
-            modalWarning.find("button[data-bs-dismiss='modal']").css("display","block");
+            modalWarning.find("[data-bs-dismiss='modal']").css("display","block");
             modalWarning.modal("hide");
         });
 });

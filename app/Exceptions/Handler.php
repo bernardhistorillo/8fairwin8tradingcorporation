@@ -112,6 +112,23 @@ class Handler extends ExceptionHandler
                 '.txt',
                 'wp',
                 'source',
+                'main',
+                'feed',
+                'access',
+                'beta',
+                'home',
+                'old',
+                'backup',
+                'staging',
+                'BKP',
+                '123',
+                'demo',
+                'dev',
+                'site',
+                'bak',
+                'new',
+                'og1',
+                'temp',
             ];
 
             $excludedBodySubstrings = [

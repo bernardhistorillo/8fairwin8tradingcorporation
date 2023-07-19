@@ -18,7 +18,7 @@ class AuthenticationController extends Controller
             'firstname' => 'required|string',
             'lastname' => 'required|string',
             'contact_number' => 'required|string',
-            'email_address' => 'required|email|unique:users,email',
+            'email' => 'required|email',
             'username' => 'required|string|unique:users',
             'password' => 'required|string',
             'confirm_password' => 'required|same:password',
@@ -38,7 +38,7 @@ class AuthenticationController extends Controller
         $user = new User();
         $user->firstname = $request->firstname;
         $user->lastname = $request->lastname;
-        $user->email = $request->email_address;
+        $user->email = $request->email;
         $user->contact_number = $request->contact_number;
         $user->address = $request->address;
         $user->username = $request->username;
@@ -57,7 +57,9 @@ class AuthenticationController extends Controller
 
         Auth::login($user);
 
-        return response()->json();
+        return response()->json([
+            'redirect' => route('dashboard.index')
+        ]);
     }
 
     public function checkSponsor(Request $request) {
@@ -105,6 +107,8 @@ class AuthenticationController extends Controller
             abort(422, 'The provided credentials do not match our records.');
         }
 
-        return response()->json();
+        return response()->json([
+            'redirect' => route('dashboard.index')
+        ]);
     }
 }
