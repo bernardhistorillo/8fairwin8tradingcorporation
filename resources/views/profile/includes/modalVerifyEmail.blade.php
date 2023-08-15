@@ -14,7 +14,7 @@
                     <p class="text-center" id="pin-sent">We just sent a One-Time Pin to <span class="fw-bold">{{ Auth::user()->email }}</span>. Copy and paste the pin below.</p>
 
                     <div class="position-relative mb-2">
-                        <input class="form-control form-control-1 text-center px-5 py-2 numeric-only" name="otp" type="text" placeholder="Enter One-Time Pin" style="letter-spacing: 5px">
+                        <input class="form-control form-control-1 text-center px-5 py-2 numeric-only" name="otp" type="text" placeholder="Enter One-Time Pin" style="letter-spacing: 5px" required />
                         <div class="position-absolute" style="right:20px; top:9px">
                             <i class="fas fa-lock"></i>
                         </div>

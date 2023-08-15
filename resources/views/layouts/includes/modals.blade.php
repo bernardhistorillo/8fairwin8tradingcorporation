@@ -54,7 +54,7 @@
                 <div class="pt-2">
                     <i class="fa-regular fa-exclamation-circle font-size-450 text-color-4 mb-3"></i>
                 </div>
-                <p class="mb-0">You're email address must be verified before you can proceed.</p>
+                <p class="mb-0">Your email address must be verified before you can proceed.</p>
             </div>
             <div class="modal-footer justify-content-center">
                 <button type="button" class="btn btn-custom-4 font-size-90 px-4 verify-email-show-modal" data-bs-dismiss="modal" value="{{ route('profile.sendEmailOTP') }}">Verify Email Now</button>
