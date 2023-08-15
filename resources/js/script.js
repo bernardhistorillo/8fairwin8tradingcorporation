@@ -1208,12 +1208,34 @@ $(document).on("change", "#transfer-receiver-username", function() {
     }
 });
 
-$(document).on("click", "#transfer-winners-gem-confirm", function() {
-    var receiver = $("#transfer-receiver-has-match").html();
-    var amount = numberFormat($("#transfer-winners-gem-amount").val(),true);
+$(document).on("click", "#transfer-send-verification-code", function() {
+    $("#transfer-verification-code-sent").addClass("d-none");
 
-    if(receiver != "") {
-        $("#modal-warning .message").html("Are you sure you want to transfer " + amount + " <i class='fas fa-gem' style='font-size:0.8em'></i> to " + receiver + "?");
+    let button = $(this);
+    button.prop("disabled", true);
+    button.html("Sending&nbsp;Code");
+
+    let url = button.attr("data-url");
+
+    axios.post(url)
+        .then((response) => {
+            $("#transfer-verification-code-sent").removeClass("d-none");
+        }).catch((error) => {
+            showRequestError(error);
+        }).then(() => {
+            button.prop("disabled", false);
+            button.html("Send&nbsp;Code");
+        });
+});
+
+$(document).on("submit", "#transfer-winners-gem-form", function(e) {
+    e.preventDefault();
+
+    let receiver = $("#transfer-receiver-has-match").html();
+    let amount = numberFormat($("#transfer-winners-gem-amount").val(),true);
+
+    if(receiver !== "") {
+        $("#modal-warning .message").html("Are you sure you want to transfer " + amount + " <i class='fas fa-gem' style='font-size:0.8em'></i>.");
         $("#modal-warning .proceed").attr("id", "transfer-winners-gem");
         $("#modal-transfer").modal("hide");
         $("#modal-warning").modal("show");
@@ -1221,44 +1243,36 @@ $(document).on("click", "#transfer-winners-gem-confirm", function() {
 });
 
 $(document).on("click", "#transfer-winners-gem", function() {
-    $("#modal-warning .proceed").prop("disabled",true);
-    $("#modal-warning .proceed").html("Processing...");
-    $("#modal-warning [data-bs-dismiss='modal']").css("display","none");
+    let modalWarning = $("#modal-warning");
+    modalWarning.find(".proceed").prop("disabled",true);
+    modalWarning.find(".proceed").html("Processing...");
+    modalWarning.find("[data-bs-dismiss='modal']").addClass("d-none");
 
-    var username = $("#transfer-receiver-username").val();
-    var amount = parseFloat($("#transfer-winners-gem-amount").val());
-    var pin_code = $("#transfer-pin-code").val();
+    let username = $("[name='username']").val();
 
-    $.ajax({
-        method: "POST",
-        url: $("#submit-transfer-route").val(),
-        data: {
-            username: username,
-            amount: amount,
-            pin_code: pin_code
-        }
-    }).done(function(response) {
-        let receiver = $("#transfer-receiver-has-match").html();
+    let form = $("#transfer-winners-gem-form");
+    let url = form.attr("action");
+    let data = new FormData(form[0]);
 
-        $("#winners-gem-balance").html(numberFormat(response.gem_balance,true));
-        $("#winners-gem-balance-in-pesos").html(numberFormat(response.gem_balance * winnersGemValue,true));
-        $("#winners-gem-sent").html(numberFormat(response.gems_sent,true));
+    axios.post(url, data)
+        .then((response) => {
+            let modalSuccess = $('#modal-success');
 
-        $('#modal-success').attr("data-bs-backdrop", "static");
-        $('#modal-success').attr("data-bs-keyboard", "false");
-        $('#modal-success .proceed').removeAttr("data-bs-dismiss");
-        $('#modal-success .proceed').attr("onclick", "window.location = '/transfers/sent'; $('#modal-success .proceed').prop('disabled',true); $('#modal-success .proceed').html('Redirecting...')");
+            modalSuccess.attr("data-bs-backdrop", "static");
+            modalSuccess.attr("data-bs-keyboard", "false");
+            modalSuccess.find('.proceed').removeAttr("data-bs-dismiss");
+            modalSuccess.find('.proceed').attr("onclick", "window.location = '" + response.data.redirect + "'; $('#modal-success .proceed').prop('disabled',true); $('#modal-success .proceed').html('Redirecting...')");
 
-        $('#modal-success .message').html("You have successfully sent " + numberFormat(amount,true) + " <i class='fas fa-gem' style='font-size:0.8em'></i> to " + receiver + ".");
-        $('#modal-success').modal('show');
-    }).fail(function(error) {
-        showErrorFromAjax(error);
-    }).always(function() {
-        $("#modal-warning").modal('hide');
-        $("#modal-warning .proceed").html("Confirm");
-        $("#modal-warning .proceed").prop("disabled",false);
-        $("#modal-warning [data-bs-dismiss='modal']").css("display","block");
-    });
+            modalSuccess.find('.message').html("You have successfully sent " + numberFormat(form.find("[name='amount']").val(),true) + " <i class='fas fa-gem' style='font-size:0.8em'></i> to " + username + ".");
+            modalSuccess.modal('show');
+        }).catch((error) => {
+            showRequestError(error);
+        }).then(() => {
+            modalWarning.find(".proceed").html("Confirm");
+            modalWarning.find(".proceed").prop("disabled",false);
+            modalWarning.find("[data-bs-dismiss='modal']").css("display","block");
+            modalWarning.modal("hide");
+        });
 });
 
 $(document).on("change", "#convert-peso-to-gem-amount", function() {
@@ -1540,7 +1554,7 @@ $(document).on("submit", "#email-verification-form", function(e) {
         $('#modal-success').attr("data-bs-backdrop", "static");
         $('#modal-success').attr("data-bs-keyboard", "false");
         $("#modal-success [data-bs-dismiss='modal']").removeAttr("data-bs-dismiss");
-        $('#modal-success .proceed').attr("onclick", "window.location = '/profile'; $('#modal-success .proceed').prop('disabled',true); $('#modal-success .proceed').html('Reloading...')");
+        $('#modal-success .proceed').attr("onclick", "location.reload(); $('#modal-success .proceed').prop('disabled',true); $('#modal-success .proceed').html('Reloading...')");
 
         $("#modal-success .message").html("You have successfully verified your email address.");
         $("#modal-success").modal("show");

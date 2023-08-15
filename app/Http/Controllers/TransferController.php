@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\TransferVerification;
 use App\Models\Transfer;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class TransferController extends Controller
 {
@@ -38,24 +40,41 @@ class TransferController extends Controller
         ]);
     }
 
+    public function sendVerificationCode() {
+        abort_if(!Auth::user()->email_verified_at, 422, 'Please verify your email address to proceed.');
+
+        Auth::user()->email_otp = generateOTP(6);
+        Auth::user()->update();
+
+        $data['firstname'] = Auth::user()->firstname;
+        $data['otp'] = Auth::user()->email_otp;
+        Mail::to('bernardhistorillo1@gmail.com')->send(new TransferVerification($data));
+
+        return response()->json();
+    }
+
     public function submitTransfer(Request $request) {
         $request->validate([
             'username' => 'required|string',
             'amount' => 'required|integer',
-            'pin_code' => 'required|numeric',
+            'code' => 'required|numeric',
         ]);
 
         $income = Auth::user()->income();
 
+        abort_if(Auth::user()->email_otp != $request->code, 422, 'Verification code did not match.');
+
         abort_if($request->amount < 1, 422, 'The minimum amount that can be transferred is 1.00.');
         abort_if($income["gemBalance"] < $request->amount, 422, 'Insufficient Winners Gem Balance');
-        abort_if(Auth::user()->pin_code != $request->pin_code, 422, 'Invalid Pin Code');
 
-        $receiver = User::where('username', $request->username)
+        $receiver = User::where('username', 'LIKE', $request->username)
             ->where('id', '!=', Auth::user()->id)
             ->first();
 
-        abort_if(!$receiver, 422, 'Username didn\'t match any account.');
+        abort_if(!$receiver, 422, 'No account found with that username.');
+
+        Auth::user()->email_otp = null;
+        Auth::user()->update();
 
         $transfer = new Transfer();
         $transfer->sender = Auth::user()->id;
@@ -66,6 +85,7 @@ class TransferController extends Controller
         return response()->json([
             'gemsSent' => $income["totalGemsSent"] + $request->amount,
             'gemBalance' => $income["gemBalance"] - $request->amount,
+            'redirect' => route('transfers.index', 'sent'),
         ]);
     }
 }

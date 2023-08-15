@@ -27,12 +27,20 @@ class TestController extends Controller
     }
 
     public function index(Request $request) {
+        $data['firstname'] = 'Bernard';
+        $data['recipient'] = 'Jose P. Bermundo';
+        $data['otp'] = 182821;
+
+//        Mail::to('bernardhistorillo1@gmail.com')->send(new EmailVerification($data));
+
+        return view('emails.winnersGemTransferVerification', compact('data'));
+
         return 0;
 
         $data['firstname'] = 'Bernard';
         $data['otp'] = 182821;
 
-        Mail::to('bernardhistorillo1@gmail.com')->send(new EmailVerification($data));
+//        Mail::to('bernardhistorillo1@gmail.com')->send(new EmailVerification($data));
 
         return view('emails.emailVerification', compact('data'));
 

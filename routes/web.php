@@ -122,6 +122,7 @@ Route::middleware(['auth'])->group(function() {
     Route::prefix('transfers')->group(function () {
         Route::get('/{type?}', [TransferController::class, 'index'])->name('transfers.index');
         Route::post('/checkReceiver', [TransferController::class, 'checkReceiver'])->name('transfers.checkReceiver');
+        Route::post('/sendVerificationCode', [TransferController::class, 'sendVerificationCode'])->name('transfers.sendVerificationCode');
         Route::post('/submitTransfer', [TransferController::class, 'submitTransfer'])->name('transfers.submitTransfer');
     });
 

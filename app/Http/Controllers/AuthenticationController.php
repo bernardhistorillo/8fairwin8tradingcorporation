@@ -25,13 +25,6 @@ class AuthenticationController extends Controller
             'sponsors_code' => 'required|exists:users,referral_code',
         ]);
 
-        $user = User::where('email', $request->email)
-            ->first();
-
-        if($user) {
-            abort(422, 'Email address is already in use.');
-        }
-
         $upline = User::where('referral_code', $request->sponsors_code)
             ->first();
 

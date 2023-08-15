@@ -46,3 +46,19 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modal-email-not-verified" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <div class="modal-content border-radius-0">
+            <div class="modal-body text-center py-3">
+                <div class="pt-2">
+                    <i class="fa-regular fa-exclamation-circle font-size-450 text-color-4 mb-3"></i>
+                </div>
+                <p class="mb-0">You're email address must be verified before you can proceed.</p>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-custom-4 font-size-90 px-4 verify-email-show-modal" data-bs-dismiss="modal" value="{{ route('profile.sendEmailOTP') }}">Verify Email Now</button>
+            </div>
+        </div>
+    </div>
+</div>

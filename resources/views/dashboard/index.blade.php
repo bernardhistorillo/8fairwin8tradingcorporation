@@ -141,7 +141,7 @@
                             </div>
                         </div>
                         <div class="card-footer px-3 py-2 bg-color-5">
-                            <a class="btn-block d-flex justify-content-between align-items-center text-decoration-none text-color-3" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modal-transfer">
+                            <a class="btn-block d-flex justify-content-between align-items-center text-decoration-none text-color-3" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="{{ Auth::user()->email_verified_at ? '#modal-transfer' : '#modal-email-not-verified' }}">
                                 <span class="small">Transfer</span>
                                 <i class="fa fa-angle-right"></i>
                             </a>
