@@ -48,7 +48,8 @@ class TransferController extends Controller
 
         $data['firstname'] = Auth::user()->firstname;
         $data['otp'] = Auth::user()->email_otp;
-        Mail::to('bernardhistorillo1@gmail.com')->send(new TransferVerification($data));
+//        Mail::to('bernardhistorillo1@gmail.com')->send(new TransferVerification($data));
+        Mail::to(Auth::user()->email)->send(new TransferVerification($data));
 
         return response()->json();
     }

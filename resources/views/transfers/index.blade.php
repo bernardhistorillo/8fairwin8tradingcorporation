@@ -34,7 +34,7 @@
                 <tbody>
                     @foreach($transfers['received'] as $transfersReceived)
                     <tr>
-                        <td>{{ \Carbon\Carbon::parse($transfersReceived["date_time"])->isoFormat('llll') }}</td>
+                        <td>{{ \Carbon\Carbon::parse($transfersReceived["created_at"])->isoFormat('llll') }}</td>
                         <td>{{ fullName($transfersReceived) }}</td>
                         <td class="text-end">{{ number_format($transfersReceived["amount"],2) }} <i class="fas fa-gem gem-change-color"></i></td>
                     </tr>
@@ -53,7 +53,7 @@
                 <tbody>
                     @foreach($transfers['sent'] as $transfersSent)
                     <tr>
-                        <td>{{ \Carbon\Carbon::parse($transfersSent["date_time"])->isoFormat('llll') }}</td>
+                        <td>{{ \Carbon\Carbon::parse($transfersSent["created_at"])->isoFormat('llll') }}</td>
                         <td>{{ fullName($transfersSent) }}</td>
                         <td class="text-end">{{ number_format($transfersSent["amount"],2) }} <i class="fas fa-gem gem-change-color"></i></td>
                     </tr>
