@@ -65,11 +65,12 @@ class TestController extends Controller
         $data['fullName'] = $user->fullName();
         $data['packageAndRank'] = $user->packageAndRank();
         $data['income'] = $user->income();
-        $data['monthlyPVMaintenance'] = $user->monthlyPVMaintenance();
+        $data['monthlyPVMaintenance'] = $user->monthlyPVMaintenance(Carbon::now()->startOfMonth()->toDateTimeString());
         $data['requiredPVMaintenance'] = $user->requiredPVMaintenance();
         $data['totalRankPoints'] = $user->totalRankPoints();
         $data['directCount'] = $user->directCount();
         $data['downlineCount'] = $user->downlineCount();
+        $data['isDormant'] = $user->isDormant();
 
         return $data;
     }
@@ -80,6 +81,18 @@ class TestController extends Controller
     }
 
     public function try() {
-//        return Hash::make('Fairwin1');
+//        Artisan::call('fairwin:check_dormant_users');
+//        return 'check_dormant_users';
+
+//        if(Auth::user()->hasNoPurchaseFor180days()) {
+//            Auth::user()->is_dormant = 1;
+//            Auth::user()->update();
+//        }
+//
+//        if(Auth::user()->is_dormant == 0) {
+//            return 'promote';
+//        } else {
+//            return 'no promote';
+//        }
     }
 }

@@ -245,6 +245,27 @@ class User extends Authenticatable
         return $data;
     }
 
+    public function hasNoPurchaseFor180days() {
+        $order = $this->orders()
+            ->where('type', 2)
+            ->where('stockist', 0)
+            ->latest()
+            ->first();
+
+        $hasNoPurchaseFor180days = true;
+
+        if($order) {
+            $createdDate = Carbon::parse($order['created_at']);
+            $now = Carbon::now();
+
+            $diffInDays = $now->diffInDays($createdDate);
+
+            $hasNoPurchaseFor180days = $diffInDays > 180;
+        }
+
+        return $hasNoPurchaseFor180days;
+    }
+
     public function latestShippingInformation() {
         return $this->orders()
             ->whereNotNull('full_name')
@@ -257,12 +278,30 @@ class User extends Authenticatable
             ->first();
     }
 
-    public function monthlyPVMaintenance() {
+    public function maintainedMonthsOverSixMonths() {
+        $maintainedMonthsCount = 0;
+
+        for($i = 0; $i < 6; $i++) {
+            $startDate = Carbon::now()->startOfMonth()->subMonths($i)->toDateTimeString();
+
+            if($this->monthlyPVMaintenance($startDate) >= 100) {
+                $maintainedMonthsCount++;
+
+                if($maintainedMonthsCount >= 3) {
+                    break;
+                }
+            }
+        }
+
+        return $maintainedMonthsCount;
+    }
+
+    public function monthlyPVMaintenance($startDate) {
         return $this->orders
             ->where('type', 2)
             ->where('stockist', 0)
-            ->where('created_at', '>=', Carbon::now()->format('Y-m-01 00:00:00'))
-            ->where('created_at', '<=', Carbon::now()->format('Y-m-t 23:59:59'))
+            ->where('created_at', '>=', $startDate)
+            ->where('created_at', '<=', Carbon::parse($startDate)->endOfMonth()->toDateTimeString())
             ->sum('points_value');
     }
 

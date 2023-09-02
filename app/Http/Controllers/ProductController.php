@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
-    public function index() {
+    public function index(Request $request) {
         $items = Item::where('status', 1)
             ->orderBy('name')
             ->get();
@@ -20,6 +20,8 @@ class ProductController extends Controller
 
         $latestShippingInformation =  Auth::user()->latestShippingInformation();
 
-        return view('products.index', compact('items', 'showProductsTab', 'terminalUser', 'income', 'latestShippingInformation'));
+        $type = $request->type ?? 0;
+
+        return view('products.index', compact('items', 'showProductsTab', 'terminalUser', 'income', 'latestShippingInformation', 'type'));
     }
 }

@@ -7,14 +7,14 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
-class EncryptUserPasswords extends Command
+class CheckDormantUsers extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'fairwin:encrypt_user_passwords';
+    protected $signature = 'fairwin:check_dormant_users';
 
     /**
      * The console command description.
@@ -41,11 +41,15 @@ class EncryptUserPasswords extends Command
     public function handle()
     {
         $out = new ConsoleOutput();
+        $out->writeln('Checking for Dormant Users');
 
-        $out->writeln('Encrypting User Passwords');
-        $users = User::all();
+        $users = User::latest()
+            ->get();
+
         foreach($users as $user) {
-            $user->password = Hash::make($user->password);
+            $out->writeln($user['id']);
+
+            $user->is_dormant = $user->hasNoPurchaseFor180days() ? 1 : 0;
             $user->update();
         }
 

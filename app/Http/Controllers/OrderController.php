@@ -293,6 +293,15 @@ class OrderController extends Controller
             $orderedItem->save();
         }
 
+        $purchaser->refresh();
+
+        if($purchaser['is_dormant'] == 1) {
+            if($purchaser->maintainedMonthsOverSixMonths() >= 3) {
+                $purchaser->is_dormant = 0;
+                $purchaser->update();
+            }
+        }
+
         if($requestStockist == 0) {
             if($type == 1 && $purchaser['id'] > 1) { // Package Purchase
                 if($purchaser['rank'] == 0) {
@@ -737,7 +746,7 @@ class OrderController extends Controller
             if($upline) {
                 $referralUplines[] = $upline;
                 $uplinePackageId = $upline['package_id'];
-                $monthlyPVMaintenance = $upline->monthlyPVMaintenance();
+                $monthlyPVMaintenance = $upline->monthlyPVMaintenance(Carbon::now()->startOfMonth()->toDateTimeString());
                 $upline = $upline['id'];
             } else {
                 break;
@@ -945,7 +954,7 @@ class OrderController extends Controller
                         $minusLower = $stairstepIncome[$upline['rank']];
                     }
 
-                    $monthlyPVMaintenance = User::find($upline['upline'])->monthlyPVMaintenance();
+                    $monthlyPVMaintenance = User::find($upline['upline'])->monthlyPVMaintenance(Carbon::now()->startOfMonth()->toDateTimeString());
                     $received = (($upline['rank'] >= 2 && $upline['rank'] <= 5 && $monthlyPVMaintenance >= 200) || ($upline['rank'] == 6 && $monthlyPVMaintenance >= 300) || ($upline['rank'] >= 7 && $upline['rank'] <= 9 && $monthlyPVMaintenance >= 500) || in_array($upline['upline'], $this->exemptedAccounts())) ? 1 : 0;
 
                     $stairstepIncomes[] = [
@@ -972,7 +981,7 @@ class OrderController extends Controller
     }
 
     public function processIncomeDueToMonthlyPVChange(User $purchaser) {
-        $monthlyPVMaintenance = $purchaser->monthlyPVMaintenance();
+        $monthlyPVMaintenance = $purchaser->monthlyPVMaintenance(Carbon::now()->startOfMonth()->toDateTimeString());
 
         if($monthlyPVMaintenance >= 100) {
             UnilevelIncome::where('upline', $purchaser['id'])
@@ -1066,17 +1075,24 @@ class OrderController extends Controller
         }
 
         if ($isPromoted) {
-            $user->rank = $user['rank'] + 1;
-            $user->update();
+            if($user->hasNoPurchaseFor180days()) {
+                $user->is_dormant = 1;
+                $user->update();
+            }
 
-            if($user['rank'] >= 2 && $user['rank'] <= 6) {
-                $rankIncentiveIncomes = [0, 0, 1000, 5000, 15000, 30000, 50000];
+            if($user['is_dormant'] == 0) {
+                $user->rank = $user['rank'] + 1;
+                $user->update();
 
-                $rankIncentiveIncome = new RankIncentiveIncome();
-                $rankIncentiveIncome->user_id = $user['id'];
-                $rankIncentiveIncome->rank = $user['rank'];
-                $rankIncentiveIncome->amount = $rankIncentiveIncomes[$user['rank']];
-                $rankIncentiveIncome->save();
+                if($user['rank'] >= 2 && $user['rank'] <= 6) {
+                    $rankIncentiveIncomes = [0, 0, 1000, 5000, 15000, 30000, 50000];
+
+                    $rankIncentiveIncome = new RankIncentiveIncome();
+                    $rankIncentiveIncome->user_id = $user['id'];
+                    $rankIncentiveIncome->rank = $user['rank'];
+                    $rankIncentiveIncome->amount = $rankIncentiveIncomes[$user['rank']];
+                    $rankIncentiveIncome->save();
+                }
             }
         }
     }

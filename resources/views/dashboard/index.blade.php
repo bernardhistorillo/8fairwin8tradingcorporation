@@ -9,26 +9,52 @@
         </div>
 
         <div class="animated fadeIn">
+            @if(Auth::user()->is_dormant == 1)
+            <div class="card mb-4">
+                <div class="card-body px-3 px-sm-4 px-md-5 py-4">
+                    <div class="d-flex flex-column flex-md-row align-items-center">
+                        <div class="bg-color-2 d-flex justify-content-center align-items-center rounded-circle me-md-5 mb-3 mb-md-0" style="min-height:100px; min-width:100px">
+                            <div class="text-center">
+                                <i class="fa fa-user-tie p-3 font-size-300 text-white"></i>
+                            </div>
+                        </div>
+
+                        <div class="flex-fill">
+                            <p class="text-center text-md-start font-size-xl-110 font-size-xxl-130 line-height-130 mb-3">Your account has been inactive for 6 months and is currently classified as dormant. To reactivate and regain the ability to rank up, a total of 3 months of consistent maintenance is required. Currently, you have completed {{ Auth::user()->maintainedMonthsOverSixMonths() }} of the required 3 months. Start your activity now to move towards restoring your account to active status!</p>
+                            <div class="text-center text-md-start">
+                                <a class="btn btn-custom-2 py-3 px-5" href="{{ route('products.index') }}">
+                                    <i class="fas fa-gift"></i>&nbsp;&nbsp;Purchase Now!
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endif
+
             @if(Auth::user()->package_id == 0)
             <div class="card mb-4">
-                <div class="card-body">
-                    <div class="d-flex justify-content-center">
-                        <div class="bg-color-2 d-flex justify-content-center align-items-center rounded-circle me-3" style="height:100px; width:100px">
+                <div class="card-body px-3 px-sm-4 px-md-5 py-4">
+                    <div class="d-flex flex-column flex-md-row align-items-center">
+                        <div class="bg-color-2 d-flex justify-content-center align-items-center rounded-circle me-md-5 mb-3 mb-md-0" style="min-height:100px; min-width:100px">
                             <div class="text-center">
                                 <i class="fa fa-gem p-3 font-size-300 text-white"></i>
                             </div>
                         </div>
-                    </div>
-                    <h5 class="text-center mt-4">Join the thriving community of Fairwin Resellers and start earning more today! <br class="d-none d-xl-block">Simply purchase one of our packages to become a part of the team.</h5>
-                    <div class="text-center mt-4 mb-3">
-                        <a class="btn btn-custom-2 py-3 px-5" href="{{ route('products.index', ['type' => 1]) }}">
-                            <i class="fas fa-box"></i>&nbsp;&nbsp;Go to Packages
-                        </a>
+
+                        <div class="flex-fill">
+                            <p class="text-center text-md-start font-size-xl-110 font-size-xxl-130 line-height-130 mb-3">Join the thriving community of Fairwin Resellers and start earning more today! <br class="d-none d-xl-block">Simply purchase one of our packages to become a part of the team.</p>
+                            <div class="text-center text-md-start">
+                                <a class="btn btn-custom-2 py-3 px-5" href="{{ route('products.index', ['type' => 1]) }}">
+                                    <i class="fas fa-box"></i>&nbsp;&nbsp;Go to Packages
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <hr class="mb-4" style="background-color:#444444">
+            <hr class="mb-4" style="background-color:#444444" />
             @endif
 
             <div class="row align-items-stretch">
@@ -159,7 +185,7 @@
                             </div>
 
                             <div>
-                                <div class="text-value-sm font-size-140" style="color:#0e4d22">{{ number_format(Auth::user()->monthlyPVMaintenance()) }} / {{ number_format(Auth::user()->requiredPVMaintenance()) }} PV</div>
+                                <div class="text-value-sm font-size-140" style="color:#0e4d22">{{ number_format(Auth::user()->monthlyPVMaintenance(\Carbon\Carbon::now()->startOfMonth()->toDateTimeString())) }} / {{ number_format(Auth::user()->requiredPVMaintenance()) }} PV</div>
                                 <div class="text-uppercase small" style="font-size:0.75em">Monthly PV Maintenance
                                 </div>
                             </div>

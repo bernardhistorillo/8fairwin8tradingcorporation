@@ -1,3 +1,4 @@
+console.log(1);
 let appUrl;
 let currentRouteName;
 let winnersGemValue;
@@ -43,6 +44,8 @@ let pageOnload = async function() {
         ordersOnload();
     } else if(currentRouteName === "network.index") {
         networkOnload();
+    } else if(currentRouteName === "products.index") {
+        productsOnload();
     } else if(currentRouteName === "transfers.index") {
         transfersOnload();
     } else if(currentRouteName === "conversions.index") {
@@ -183,6 +186,9 @@ let ordersOnload = function() {
 let networkOnload = function() {
     getGenealogy(2);
     initializeDataTables();
+};
+let productsOnload = function() {
+    $(".products-tab.active").trigger("click");
 };
 let transfersOnload = function() {
     initializeDataTables();
@@ -929,7 +935,7 @@ $(document).on("submit", "#place-order-form", function(e) {
     let terminalUser = $(this).find("[name='terminal_user']").val();
 
     if(terminalUser === '0') {
-        $("#modal-warning .message").html("Your order will now be placed.");
+        $("#modal-warning .message").html("Would you like to proceed with placing your order?");
     } else {
         let lessInStock = 0;
 
@@ -1020,7 +1026,7 @@ $(document).on("click", "#place-order", function() {
             modalSuccess.attr("data-bs-keyboard", "false");
             modalSuccess.find('.proceed').removeAttr("data-bs-dismiss");
             modalSuccess.find('.proceed').attr("onclick", "window.location = '" + redirect + "'; $('#modal-success .proceed').prop('disabled',true); $('#modal-success .proceed').html('Redirecting...')");
-            modalSuccess.find('.message').html("You have successfully submitted your order request.");
+            modalSuccess.find('.message').html("Awesome!<br/> Your order request is in!");
             modalSuccess.modal('show');
         }).catch((error) => {
             showRequestError(error);
