@@ -20,4 +20,20 @@ class Order extends Model
     public function referralIncomes() {
         return $this->hasMany(ReferralIncome::class);
     }
+
+    public function infinityPlusIncomes() {
+        return $this->hasMany(InfinityPlusIncome::class);
+    }
+
+    public function unilevelIncomes() {
+        return $this->hasMany(UnilevelIncome::class);
+    }
+
+    public function stairstepIncomes() {
+        return $this->hasMany(StairstepIncome::class);
+    }
+
+    public function personalRebateIncome() {
+        return $this->hasMany(PersonalRebateIncome::class);
+    }
 }
