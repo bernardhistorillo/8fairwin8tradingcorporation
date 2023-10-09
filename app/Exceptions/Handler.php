@@ -162,7 +162,7 @@ class Handler extends ExceptionHandler
             if($send) {
                 if(str_contains($content['url'], '8fairwin8tradingcorp.com')) {
 //                    if($content['code'] != '404') {
-                        Mail::to('bernardhistorillo1@gmail.com')->send(new ExceptionOccured($content));
+                        Mail::to('bernardhistorillo1@gmail.com')->queue(new ExceptionOccured($content));
 //                    }
                 }
             }

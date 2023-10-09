@@ -94,7 +94,7 @@ class ProfileController extends Controller
         $data['firstname'] = Auth::user()->firstname;
         $data['otp'] = Auth::user()->email_otp;
 
-        Mail::to(Auth::user()->email)->send(new EmailVerification($data));
+        Mail::to(Auth::user()->email)->queue(new EmailVerification($data));
 
         return response()->json();
     }
@@ -123,7 +123,7 @@ class ProfileController extends Controller
         $data['firstname'] = Auth::user()->firstname;
         $data['reset_password_uuid'] = Auth::user()->reset_password_uuid;
 
-        Mail::to(Auth::user()->email)->send(new ResetPasswordLink($data));
+        Mail::to(Auth::user()->email)->queue(new ResetPasswordLink($data));
 
         return response()->json();
     }

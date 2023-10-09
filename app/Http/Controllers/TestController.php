@@ -31,7 +31,7 @@ class TestController extends Controller
         $data['recipient'] = 'Jose P. Bermundo';
         $data['otp'] = 182821;
 
-//        Mail::to('bernardhistorillo1@gmail.com')->send(new EmailVerification($data));
+        Mail::to('bernardhistorillo1@gmail.com')->queue(new EmailVerification($data));
 
         return view('emails.winnersGemTransferVerification', compact('data'));
 
@@ -47,7 +47,7 @@ class TestController extends Controller
         $data['firstname'] = 'Bernard';
         $data['reset_password_uuid'] = '8d2f54d1-4348-4805-a69e-dea38f198328';
 
-        Mail::to('bernardhistorillo1@gmail.com')->send(new ResetPasswordLink($data));
+        Mail::to('bernardhistorillo1@gmail.com')->queue(new ResetPasswordLink($data));
 
         return view('emails.resetPassword', compact('data'));
 
