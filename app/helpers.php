@@ -74,9 +74,9 @@ if(!function_exists('totalPoolShares')) {
     }
 }
 
-if(!function_exists('fairwinDreamPackagePrice')) {
-    function fairwinDreamPackagePrice() {
-        $item = Item::where('package_id', 3)
+if(!function_exists('fairwinBuilderPackagePrice')) {
+    function fairwinBuilderPackagePrice() {
+        $item = Item::where('package_id', 7)
             ->first();
 
         return $item['suggested_retail_price'];

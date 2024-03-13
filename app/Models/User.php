@@ -336,7 +336,7 @@ class User extends Authenticatable
     }
 
     public function photo() {
-        return ($this->photo) ? asset($this->photo) : 'https://avatars.dicebear.com/api/avataaars/' . $this->id . '.svg';
+        return ($this->photo) ? asset($this->photo) : 'https://api.dicebear.com/7.x/avataaars/svg?seed=' . $this->id . '&mouth=smile&eyebrows=default&backgroundColor=b6e3f4,c0aede,d1d4f9';
     }
 
     public function terminalWinnersGem() {

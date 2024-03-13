@@ -315,10 +315,10 @@ class OrderController extends Controller
 
                 $purchasedPackage = $item['package_id'];
 
-                // Packages Order: 0 -> (4 / 5) -> (2 / 6) -> (1 / 3)
+                // Packages Order: 0 -> (4 / 5) -> (2 / 6) -> (1 / 3 / 7)
                 $isFromFreeAccountUpgrade = $packageId == 0;
-                $isFromDreamMakerUpgrade = ($packageId == 4 || $packageId == 5) && ($purchasedPackage == 2 || $purchasedPackage == 6 || $purchasedPackage == 1 || $purchasedPackage == 3);
-                $isFromDreamStarterUpgrade = ($packageId == 2 || $packageId == 6) && ($purchasedPackage == 1 || $purchasedPackage == 3);
+                $isFromDreamMakerUpgrade = ($packageId == 4 || $packageId == 5) && ($purchasedPackage == 2 || $purchasedPackage == 6 || $purchasedPackage == 1 || $purchasedPackage == 3 || $purchasedPackage == 7);
+                $isFromDreamStarterUpgrade = ($packageId == 2 || $packageId == 6) && ($purchasedPackage == 1 || $purchasedPackage == 3 || $purchasedPackage == 7);
 
                 if ($isFromFreeAccountUpgrade || $isFromDreamMakerUpgrade || $isFromDreamStarterUpgrade) {
                     $packageId = $purchasedPackage;
@@ -416,7 +416,7 @@ class OrderController extends Controller
                 ->first();
 
             while($upline) {
-                if ($type == 1 && ($upline["package_id"] == 2 || $upline["package_id"] == 6) && isset($packageId) && ($packageId == 1 || $packageId == 3)) {
+                if ($type == 1 && ($upline["package_id"] == 2 || $upline["package_id"] == 6) && isset($packageId) && ($packageId == 1 || $packageId == 3 || $packageId == 7)) {
                     $rankPoints = 25;
                 } else {
                     $rankPoints = $totalPointsValue;
@@ -483,6 +483,8 @@ class OrderController extends Controller
                 $amount = $fairwinStarterIncome[$i - 1];
             } else if($packageId == 6) {
                 $amount = $fairwinPowerIncome[$i - 1];
+            } else if($packageId == 7) {
+                $amount = $fairwinDreamIncome[$i - 1];
             }
 
             if($uplinePackageId == 4 || $uplinePackageId == 5) {
@@ -504,6 +506,7 @@ class OrderController extends Controller
                         $join->orWhere('package_id', 2);
                         $join->orWhere('package_id', 3);
                         $join->orWhere('package_id', 6);
+                        $join->orWhere('package_id', 7);
                     })
                     ->where('downline', $upline)
                     ->orderBy('level')
@@ -640,7 +643,7 @@ class OrderController extends Controller
             }
         }
 
-        if($packageId == 3 || $packageId == 1) { // FDP Entry
+        if($packageId == 3 || $packageId == 1 || $packageId == 7) { // FDP Entry
             $infinityPlusIncome = array(0, 0, 60, 120, 180, 240, 300, 330, 360, 390);
         } else if($packageId == 2) { // DSP Entry
             $infinityPlusIncome = array(0, 0, 40, 80, 120, 160, 200, 240, 280, 320);
@@ -703,6 +706,7 @@ class OrderController extends Controller
                         $query->orWhere('package_id', 2);
                         $query->orWhere('package_id', 3);
                         $query->orWhere('package_id', 6);
+                        $query->orWhere('package_id', 7);
                     })
                     ->orderBy('level')
                     ->first();
@@ -781,6 +785,7 @@ class OrderController extends Controller
                         $query->orWhere('package_id', 2);
                         $query->orWhere('package_id', 3);
                         $query->orWhere('package_id', 6);
+                        $query->orWhere('package_id', 7);
                     })
                     ->orderBy('level')
                     ->first();
@@ -1008,17 +1013,17 @@ class OrderController extends Controller
         // if a Dealer with Dream Starter Package earned an amount equivalent to the price of
 
         if($user['rank'] == 1 && $user['package_id'] == 2) {
-            $fairwinDreamPackagePrice = fairwinDreamPackagePrice();
-            $fairwinDreamPackagePriceInPeso = $fairwinDreamPackagePrice * winnersGemValue();
+            $fairwinBuilderPackagePrice = fairwinBuilderPackagePrice();
+            $fairwinBuilderPackagePriceInPeso = $fairwinBuilderPackagePrice * winnersGemValue();
 
             $income = $user->income();
 
-            if($income["pesoBalance"] >= $fairwinDreamPackagePriceInPeso) {
+            if($income["pesoBalance"] >= $fairwinBuilderPackagePriceInPeso) {
                 $conversion = new Conversion();
                 $conversion->user_id = $user['id'];
                 $conversion->type = 2;
-                $conversion->gem = $fairwinDreamPackagePrice;
-                $conversion->peso = $fairwinDreamPackagePriceInPeso;
+                $conversion->gem = $fairwinBuilderPackagePrice;
+                $conversion->peso = $fairwinBuilderPackagePriceInPeso;
                 $conversion->save();
 
                 $previousOrder = $user->orders()
@@ -1040,7 +1045,7 @@ class OrderController extends Controller
 
         $isPromoted = false;
 
-        if ($totalRankPoints >= 10000 && $totalRankPoints < 50000 && $user['rank'] == 1 && ($user["package_id"] == 1 || $user["package_id"] == 3)) {
+        if ($totalRankPoints >= 10000 && $totalRankPoints < 50000 && $user['rank'] == 1 && ($user["package_id"] == 1 || $user["package_id"] == 3 || $user["package_id"] == 7)) {
             $isPromoted = ($directCount >= 5);
         } else if ($totalRankPoints >= 50000 && $totalRankPoints < 200000 && ($user['rank'] >= 1 && $user['rank'] <= 2)) {
             $explorerLegCount = $user->rankLegCount(2);
