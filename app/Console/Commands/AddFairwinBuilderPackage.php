@@ -87,7 +87,7 @@ class AddFairwinBuilderPackage extends Command
             $item->points_level_6 = 10;
             $item->points_level_7 = 10;
             $item->points_level_8 = 10;
-            $item->photo = 'https://8fairwin8tradingcorp.com/img/items/FBP-5980.png';
+            $item->photo = 'https://8fairwin8tradingcorp.com/img/items/FBP5980.png';
             $item->dimension = '[925,527]';
             $item->status = 1;
             $item->save();
