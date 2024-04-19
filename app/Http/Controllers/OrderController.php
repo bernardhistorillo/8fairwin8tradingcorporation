@@ -305,7 +305,7 @@ class OrderController extends Controller
         if($requestStockist == 0) {
             if($type == 1 && $purchaser['id'] > 1) { // Package Purchase
                 if($purchaser['rank'] == 0) {
-                    $purchaser['rank'] = 1;
+                    $purchaser->rank = 1;
                     $purchaser->update();
                 }
 
@@ -317,8 +317,8 @@ class OrderController extends Controller
 
                 // Packages Order: 0 -> (4 / 5) -> (2 / 6) -> (1 / 3 / 7)
                 $isFromFreeAccountUpgrade = $packageId == 0;
-                $isFromDreamMakerUpgrade = ($packageId == 4 || $packageId == 5) && ($purchasedPackage == 2 || $purchasedPackage == 6 || $purchasedPackage == 1 || $purchasedPackage == 3 || $purchasedPackage == 7);
-                $isFromDreamStarterUpgrade = ($packageId == 2 || $packageId == 6) && ($purchasedPackage == 1 || $purchasedPackage == 3 || $purchasedPackage == 7);
+                $isFromDreamMakerUpgrade = in_array($packageId, levelPackages(1)) && (in_array($purchasedPackage, levelPackages(2)) || in_array($purchasedPackage, levelPackages(3)));
+                $isFromDreamStarterUpgrade = in_array($packageId, levelPackages(2)) && in_array($purchasedPackage, levelPackages(3));
 
                 if ($isFromFreeAccountUpgrade || $isFromDreamMakerUpgrade || $isFromDreamStarterUpgrade) {
                     $packageId = $purchasedPackage;
@@ -416,7 +416,7 @@ class OrderController extends Controller
                 ->first();
 
             while($upline) {
-                if ($type == 1 && ($upline["package_id"] == 2 || $upline["package_id"] == 6) && isset($packageId) && ($packageId == 1 || $packageId == 3 || $packageId == 7)) {
+                if ($type == 1 && in_array($upline["package_id"], levelPackages(2)) && isset($packageId) && in_array($packageId, levelPackages(3))) {
                     $rankPoints = 25;
                 } else {
                     $rankPoints = $totalPointsValue;
@@ -428,7 +428,7 @@ class OrderController extends Controller
                 $newRankPoints->points_value = $rankPoints;
                 $newRankPoints->save();
 
-                $this->checkForRankPromotion($purchaser);
+                $this->checkForRankPromotion($upline);
 
                 $upline = User::select('users.*')
                     ->join('downlines', function($join) use ($upline) {
@@ -502,11 +502,21 @@ class OrderController extends Controller
                 $dspFppDbpFdpUpline = Downline::select('upline')
                     ->join('users', function($join) {
                         $join->on('upline', 'users.id');
-                        $join->where('package_id', 1);
-                        $join->orWhere('package_id', 2);
-                        $join->orWhere('package_id', 3);
-                        $join->orWhere('package_id', 6);
-                        $join->orWhere('package_id', 7);
+
+                        $secondLevelPackages = levelPackages(2);
+                        $thirdLevelPackages = levelPackages(3);
+
+                        for($j = 0; $j < 1; $j++) {
+                            $join->where('package_id', $secondLevelPackages[$j]);
+                        }
+
+                        for($j = 1; $j < count($secondLevelPackages); $j++) {
+                            $join->orWhere('package_id', $secondLevelPackages[$j]);
+                        }
+
+                        for($j = 0; $j < count($thirdLevelPackages); $j++) {
+                            $join->orWhere('package_id', $thirdLevelPackages[$j]);
+                        }
                     })
                     ->where('downline', $upline)
                     ->orderBy('level')
@@ -690,7 +700,7 @@ class OrderController extends Controller
         if($purchaser["rank"] >= 1) {
             $personalRebatePercentages = array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.6, 0.6, 0.6);
 
-            if($purchaser['package_id'] == 4 || $purchaser['package_id'] == 5) {
+            if(in_array($purchaser['package_id'], levelPackages(1))) {
                 $personalRebateIncome = new PersonalRebateIncome();
                 $personalRebateIncome->order_id = $order['id'];
                 $personalRebateIncome->user_id = $purchaser['id'];
@@ -702,11 +712,20 @@ class OrderController extends Controller
                     ->join('users', 'upline', 'users.id')
                     ->where('downline', $purchaser['id'])
                     ->where(function($query) {
-                        $query->where('package_id', 1);
-                        $query->orWhere('package_id', 2);
-                        $query->orWhere('package_id', 3);
-                        $query->orWhere('package_id', 6);
-                        $query->orWhere('package_id', 7);
+                        $secondLevelPackages = levelPackages(2);
+                        $thirdLevelPackages = levelPackages(3);
+
+                        for($j = 0; $j < 1; $j++) {
+                            $query->where('package_id', $secondLevelPackages[$j]);
+                        }
+
+                        for($j = 1; $j < count($secondLevelPackages); $j++) {
+                            $query->orWhere('package_id', $secondLevelPackages[$j]);
+                        }
+
+                        for($j = 0; $j < count($thirdLevelPackages); $j++) {
+                            $query->orWhere('package_id', $thirdLevelPackages[$j]);
+                        }
                     })
                     ->orderBy('level')
                     ->first();
@@ -781,11 +800,20 @@ class OrderController extends Controller
                     ->join('users', 'upline', 'users.id')
                     ->where('downline', $purchaser['id'])
                     ->where(function($query) {
-                        $query->where('package_id', 1);
-                        $query->orWhere('package_id', 2);
-                        $query->orWhere('package_id', 3);
-                        $query->orWhere('package_id', 6);
-                        $query->orWhere('package_id', 7);
+                        $secondLevelPackages = levelPackages(2);
+                        $thirdLevelPackages = levelPackages(3);
+
+                        for($j = 0; $j < 1; $j++) {
+                            $query->where('package_id', $secondLevelPackages[$j]);
+                        }
+
+                        for($j = 1; $j < count($secondLevelPackages); $j++) {
+                            $query->orWhere('package_id', $secondLevelPackages[$j]);
+                        }
+
+                        for($j = 0; $j < count($thirdLevelPackages); $j++) {
+                            $query->orWhere('package_id', $thirdLevelPackages[$j]);
+                        }
                     })
                     ->orderBy('level')
                     ->first();
@@ -1012,7 +1040,7 @@ class OrderController extends Controller
     public function automaticFdpUpgrade(User $user) {
         // if a Dealer with Dream Starter Package earned an amount equivalent to the price of
 
-        if($user['rank'] == 1 && $user['package_id'] == 2) {
+        if($user['rank'] == 1 && in_array($user['package_id'], levelPackages(2))) {
             $fairwinBuilderPackagePrice = fairwinBuilderPackagePrice();
             $fairwinBuilderPackagePriceInPeso = $fairwinBuilderPackagePrice * winnersGemValue();
 

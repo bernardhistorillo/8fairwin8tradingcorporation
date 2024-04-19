@@ -121,3 +121,55 @@ if(!function_exists('numberToWords')) {
         return $formatter->format($number);
     }
 }
+
+if(!function_exists('packages')) {
+    function packages() {
+        // Package Levels: 0 -> (4 / 5) -> (2 / 6) -> (1 / 3 / 7)
+
+        return [
+            [
+                'package_id' => 4,
+                'availed' => false,
+                'level' => 1
+            ], [
+                'package_id' => 5,
+                'availed' => false,
+                'level' => 1
+            ], [
+                'package_id' => 2,
+                'availed' => false,
+                'level' => 2
+            ], [
+                'package_id' => 6,
+                'availed' => false,
+                'level' => 2
+            ], [
+                'package_id' => 1,
+                'availed' => false,
+                'level' => 3
+            ], [
+                'package_id' => 3,
+                'availed' => false,
+                'level' => 3
+            ], [
+                'package_id' => 7,
+                'availed' => false,
+                'level' => 3
+            ]
+        ];
+    }
+}
+
+if(!function_exists('levelPackages')) {
+    function levelPackages($level) {
+        $levelPackages = [];
+
+        foreach(packages() as $package) {
+            if($package['level'] == $level) {
+                $levelPackages[] = $package['package_id'];
+            }
+        }
+
+        return $levelPackages;
+    }
+}

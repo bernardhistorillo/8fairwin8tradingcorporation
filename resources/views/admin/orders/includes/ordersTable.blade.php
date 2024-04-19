@@ -21,20 +21,20 @@
                         @if(!$order["date_time_completed"])
                     <tr>
                         <td class="pt-2">
-                            <div class="d-flex justify-content-center align-items-center flex-wrap flex-xl-nowrap">
-                                <div class="me-1 mb-1 mb-xl-0">
-                                    <button class="btn btn-custom-2 btn-sm font-size-90 view-items" value="{{ $order["id"] }}" data-reference="{{ $order["reference"] }}">Items</button>
+                            <div class="d-flex justify-content-center align-items-center flex-wrap">
+                                <div class="mb-1">
+                                    <button class="btn btn-custom-2 btn-sm font-size-80 view-items" value="{{ $order["id"] }}" data-reference="{{ $order["reference"] }}" style="min-width:142px">Items</button>
                                 </div>
-                                <div class="me-xl-1 mb-1 mb-xl-0">
-                                    <button class="btn btn-custom-2 btn-sm font-size-90 view-shipment" data-reference="{{ $order["reference"] }}" data-full-name="{{ $order["full_name"] }}" data-contact-number="{{ $order["contact_number"] }}" data-barangay="{{ $order["barangay"] }}" data-city="{{ $order["city"] }}" data-province="{{ $order["province"] }}" data-zip-code="{{ $order["zip_code"] }}">Shipment</button>
+                                <div class="mb-1">
+                                    <button class="btn btn-custom-2 btn-sm font-size-80 view-shipment" data-reference="{{ $order["reference"] }}" data-full-name="{{ $order["full_name"] }}" data-contact-number="{{ $order["contact_number"] }}" data-barangay="{{ $order["barangay"] }}" data-city="{{ $order["city"] }}" data-province="{{ $order["province"] }}" data-zip-code="{{ $order["zip_code"] }}" style="min-width:142px">Shipment</button>
                                 </div>
                                 @if($order["terminal_user_id"] == 0)
                                 <div class="">
-                                    <button class="btn btn-custom-2 btn-sm font-size-90 mark-order-as-complete-confirm" value="{{ $order["id"] }}" data-reference="{{ $order["reference"] }}" data-from="admin">Mark&nbsp;as&nbsp;Complete</button>
+                                    <button class="btn btn-custom-2 btn-sm font-size-80 mark-order-as-complete-confirm" value="{{ $order["id"] }}" data-reference="{{ $order["reference"] }}" data-from="admin" style="min-width:142px">Mark&nbsp;as&nbsp;Complete</button>
                                 </div>
                                 @else
                                 <div class="">
-                                    <button class="btn btn-custom-2 btn-sm font-size-90 show-stockist" data-name="{{ fullName($stockists[$order["terminal_user_id"]]) }}" data-rank="{{ $stockists[$order["terminal_user_id"]]["rank"] }}" data-email-address="{{ $stockists[$order["terminal_user_id"]]["email"] }}">Stockist</button>
+                                    <button class="btn btn-custom-2 btn-sm font-size-80 show-stockist" data-name="{{ fullName($stockists[$order["terminal_user_id"]]) }}" data-rank="{{ $stockists[$order["terminal_user_id"]]["rank"] }}" data-email-address="{{ $stockists[$order["terminal_user_id"]]["email"] }}" style="min-width:142px">Stockist</button>
                                 </div>
                                 @endif
                             </div>

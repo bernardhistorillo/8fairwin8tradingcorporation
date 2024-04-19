@@ -518,4 +518,118 @@ class User extends Authenticatable
             ->get();
     }
 
+    public function updateRank() {
+        $totalRankPoints = $this->totalRankPoints();
+        $directCount = $this->directCount();
+
+        if($this->hasNoPurchaseFor180days()) {
+            $this->is_dormant = 1;
+            $this->update();
+        }
+
+        if($this->is_dormant == 0) {
+            if($directCount >= 5) {
+                // Crown Fair Winner, Royal Fair Winner, Grand Fair Winner, Fair Winner
+                if ($totalRankPoints >= 1500000) {
+                    $fairWinnerLegCount = $this->rankLegCount(6);
+
+                    // Crown Fair Winner
+                    if($fairWinnerLegCount >= 3) {
+                        $this->rank = 9;
+                        $this->update();
+
+                        return 0;
+                    }
+
+                    // Royal Fair Winner
+                    if($fairWinnerLegCount >= 2) {
+                        $this->rank = 8;
+                        $this->update();
+
+                        return 0;
+                    }
+
+                    // Grand Fair Winner
+                    if($fairWinnerLegCount >= 1) {
+                        $this->rank = 7;
+                        $this->update();
+
+                        return 0;
+                    }
+
+                    // Fair Winner
+                    $masterGuideLegCount = $this->rankLegCount(5);
+                    if($masterGuideLegCount >= 2) {
+                        $this->rank = 6;
+                        $this->update();
+
+                        return 0;
+                    }
+                }
+
+                // Master Guide
+                if($totalRankPoints >= 600000) {
+                    $navigatorLegCount = $this->rankLegCount(4);
+                    $pathfinderLegCount = $this->rankLegCount(3);
+
+                    if($navigatorLegCount >= 2 || ($navigatorLegCount >= 1 && $pathfinderLegCount >= 3)) {
+                        $this->rank = 5;
+                        $this->update();
+
+                        return 0;
+                    }
+                }
+
+                // Navigator
+                if($totalRankPoints >= 200000) {
+                    $pathfinderLegCount = $this->rankLegCount(3);
+                    $explorerLegCount = $this->rankLegCount(2);
+
+                    if($pathfinderLegCount >= 2 || ($pathfinderLegCount >= 1 && $explorerLegCount >= 3)) {
+                        $this->rank = 4;
+                        $this->update();
+
+                        return 0;
+                    }
+                }
+
+                // Pathfinder
+                if($totalRankPoints >= 50000) {
+                    $explorerLegCount = $this->rankLegCount(2);
+
+                    if($explorerLegCount >= 2) {
+                        $this->rank = 3;
+                        $this->update();
+
+                        return 0;
+                    }
+                }
+
+                // Explorer
+                if($totalRankPoints >= 10000 && in_array($this['package_id'], levelPackages(3))) {
+                    $this->rank = 2;
+                    $this->update();
+
+                    return 0;
+                }
+            }
+
+            // Dealer
+            if($this["package_id"] != 0) {
+                $this->rank = 1;
+                $this->update();
+
+                return 0;
+            }
+
+            $this->rank = 0;
+            $this->update();
+        }
+
+        RankIncentiveIncome::where('user_id', $this['id'])
+            ->where('rank', '>', $this['rank'])
+            ->delete();
+
+        return 0;
+    }
 }
