@@ -78,6 +78,7 @@
                     <tr>
                         <th></th>
                         <th class="text-center">Name</th>
+                        <th class="text-center">Points Value</th>
                         <th class="text-center">In Stock</th>
                         <th class="text-center">Pending Order</th>
                     </tr>
@@ -91,8 +92,9 @@
                             </a>
                         </td>
                         <td>{{ $item["name"] }}</td>
-                        <td style="width:10%">{{ number_format($item["terminalItemStock"]["inStock"]) }}</td>
-                        <td style="width:10%">{{ number_format($item["terminalItemStock"]["pending"]) }}</td>
+                        <td class="text-end">{{ number_format($item["points_value"]) }} PV</td>
+                        <td class="text-end" style="width:10%">{{ number_format($item["terminalItemStock"]["inStock"]) }}</td>
+                        <td class="text-end" style="width:10%">{{ number_format($item["terminalItemStock"]["pending"]) }}</td>
                     </tr>
                     @endforeach
                 </tbody>

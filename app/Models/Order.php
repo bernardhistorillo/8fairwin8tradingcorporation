@@ -40,6 +40,12 @@ class Order extends Model
 
         DB::beginTransaction();
 
+        if($out) {
+            $out->writeln('Peso Balance: ' . User::find(26)->income()['pesoBalance']);
+            $out->writeln('Winners Gem Balance: ' . User::find(26)->income()['gemBalance']);
+            $out->writeln('Terminal Winners Gem: ' . User::find(26)->terminalWinnersGem()['balance']);
+        }
+
         try {
             $order = $this;
             $user = $this->user;
@@ -159,10 +165,16 @@ class Order extends Model
             }
 
             if($out) {
-                $out->writeln('');
+                $out->writeln('Peso Balance: ' . User::find(26)->income()['pesoBalance']);
+                $out->writeln('Winners Gem Balance: ' . User::find(26)->income()['gemBalance']);
+                $out->writeln('Terminal Winners Gem: ' . User::find(26)->terminalWinnersGem()['balance']);
             }
 
-            //            DB::commit();
+//            DB::commit();
+
+            if($out) {
+                $out->writeln('');
+            }
         } catch (\Exception $e) {
             DB::rollback();
             $out->writeln($e->getMessage());
@@ -171,6 +183,10 @@ class Order extends Model
 
     public function stairstepIncomes() {
         return $this->hasMany(StairstepIncome::class);
+    }
+
+    public function orderedItems() {
+        return $this->hasMany(OrderedItem::class);
     }
 
     public function personalRebateIncome() {

@@ -208,7 +208,7 @@ let terminalOnload = function() {
     $("#items-table").DataTable({
         "aaSorting": [],
         "pageLength": 5,
-        "order": [[ 2, "desc" ]]
+        "order": [[ 3, "desc" ]]
     });
 
     $(".loading-text").css("display", "none");

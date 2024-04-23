@@ -6,7 +6,7 @@
         "watch": "mix watch",
         "watch-poll": "mix watch -- --watch-options-poll=1000",
         "hot": "mix watch --hot",
-        "prod": "npm run production",
+        "prod": "npm run production && npm run obfuscate",
         "obfuscate": "javascript-obfuscator public/js/app.js --output public/js/app.js",
         "production": "mix --production"
     },

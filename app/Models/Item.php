@@ -58,6 +58,27 @@ class Item extends Model
             })
             ->sum('quantity');
 
+        $terminalItemStock['total_points_value'] = $this->orderedItems()
+            ->join('orders', function($join) use ($user) {
+                $join->on('ordered_items.order_id', 'orders.id');
+                $join->whereNotNull('date_time_completed');
+                $join->where('user_id', $user['id']);
+                $join->where('stockist', $user['stockist']);
+            })
+            ->leftjoin('items', 'ordered_items.item_id', 'items.id')
+            ->sum('items.points_value');
+
+        $terminalItemStock['ordered_points_value'] = $this->orderedItems()
+            ->join('orders', function($join) use ($user) {
+                $join->on('ordered_items.order_id', 'orders.id');
+                $join->whereNotNull('date_time_completed');
+                $join->where('terminal_user_id', $user['id']);
+            })
+            ->leftjoin('items', 'ordered_items.item_id', 'items.id')
+            ->sum('items.points_value');
+
+        $terminalItemStock['points_value'] = $terminalItemStock['total_points_value'] - $terminalItemStock['ordered_points_value'];
+
         return $terminalItemStock;
     }
 

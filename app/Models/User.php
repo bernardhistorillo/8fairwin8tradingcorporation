@@ -340,27 +340,29 @@ class User extends Authenticatable
     }
 
     public function terminalWinnersGem() {
-        $stockedItems = $this->orders()
-            ->select('ordered_items.*')
-            ->join('ordered_items', 'orders.id', 'ordered_items.order_id')
+        $ordersFromStockist = $this->orders()
             ->where('stockist', $this->stockist)
             ->whereNotNull('date_time_completed')
+            ->with('orderedItems.item')
             ->get();
 
         $terminalWinnersGem["stockedPoints"] = 0;
-        foreach($stockedItems as $stockedItem) {
-            $terminalWinnersGem["stockedPoints"] += $stockedItem["quantity"] * $stockedItem["points_value"];
+        foreach($ordersFromStockist as $orderFromStockist) {
+            foreach($orderFromStockist['orderedItems'] as $orderedItem) {
+                $terminalWinnersGem["stockedPoints"] += $orderedItem["quantity"] * $orderedItem['item']["points_value"];
+            }
         }
 
-        $orderedItems = $this->ordersAsATerminal()
-            ->select('ordered_items.*')
-            ->join('ordered_items', 'orders.id', 'ordered_items.order_id')
+        $ordersAsATerminal = $this->ordersAsATerminal()
             ->whereNotNull('date_time_completed')
+            ->with('orderedItems.item')
             ->get();
 
         $terminalWinnersGem["orderedPoints"] = 0;
-        foreach($orderedItems as $orderedItem) {
-            $terminalWinnersGem["orderedPoints"] += $orderedItem["quantity"] * $orderedItem["points_value"];
+        foreach($ordersAsATerminal as $orderAsATerminal) {
+            foreach($orderAsATerminal['orderedItems'] as $orderedItem) {
+                $terminalWinnersGem["orderedPoints"] += $orderedItem["quantity"] * $orderedItem['item']["points_value"];
+            }
         }
 
         $terminalWinnersGem["balance"] = $terminalWinnersGem["stockedPoints"] - $terminalWinnersGem["orderedPoints"];

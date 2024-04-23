@@ -71,22 +71,22 @@ class TestController extends Controller
 //        return redirect()->route('dashboard.index');
 //    }
 
-//    public function try() {
-//        Auth::loginUsingId(182);
-//        return redirect()->route('products.index');
+    public function try() {
+        Auth::loginUsingId(1);
+        return redirect()->route('admin.dashboard.index');
 
-//        Artisan::call('fairwin:check_dormant_users');
-//        return 'check_dormant_users';
+        Artisan::call('fairwin:check_dormant_users');
+        return 'check_dormant_users';
 
-//        if(Auth::user()->hasNoPurchaseFor180days()) {
-//            Auth::user()->is_dormant = 1;
-//            Auth::user()->update();
-//        }
-//
-//        if(Auth::user()->is_dormant == 0) {
-//            return 'promote';
-//        } else {
-//            return 'no promote';
-//        }
-//    }
+        if(Auth::user()->hasNoPurchaseFor180days()) {
+            Auth::user()->is_dormant = 1;
+            Auth::user()->update();
+        }
+
+        if(Auth::user()->is_dormant == 0) {
+            return 'promote';
+        } else {
+            return 'no promote';
+        }
+    }
 }
