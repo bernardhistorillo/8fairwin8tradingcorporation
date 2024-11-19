@@ -448,6 +448,7 @@ class OrderController extends Controller
         $fairwinDreamIncome = array(500, 20, 20, 20, 20, 10, 10, 10);
         $fairwinStarterIncome = array(150, 30, 30, 30, 30, 10, 10, 10);
         $fairwinPowerIncome = array(300, 75, 75, 75, 75, 30, 30, 30);
+        $fairwinBusinessIncome = array(1000, 200, 200, 200, 200, 100, 100, 100);
 
         $downline = $purchaser['id'];
 
@@ -484,7 +485,7 @@ class OrderController extends Controller
             } else if($packageId == 6) {
                 $amount = $fairwinPowerIncome[$i - 1];
             } else if($packageId == 7) {
-                $amount = $fairwinDreamIncome[$i - 1];
+                $amount = $fairwinBusinessIncome[$i - 1];
             }
 
             if($uplinePackageId == 4 || $uplinePackageId == 5) {
