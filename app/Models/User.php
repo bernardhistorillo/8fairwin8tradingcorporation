@@ -330,7 +330,7 @@ class User extends Authenticatable
     }
 
     public function packageAndRank() {
-        $packages = ["", "DBP", "DSP", "FDP", "DMP", "FSP", "FPP"];
+        $packages = ["", "DBP", "DSP", "FDP", "DMP", "FSP", "FPP", "FBP"];
 
         return $packages[$this->package_id] . (($this->package_id > 0) ? ' - ' : '') . ranks()[$this->rank];
     }

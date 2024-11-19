@@ -471,7 +471,7 @@ let genealogy;
 let root;
 let selected_node;
 let generate_referral_table_once = 0;
-let account_package = ["", "DBP - ", "DSP - ", "FDP - ", "DMP - ", "FSP - ", "FPP - "];
+let account_package = ["", "DBP - ", "DSP - ", "FDP - ", "DMP - ", "FSP - ", "FPP - ", "FBP - "];
 let ranks = ["Free Account", "Dealer", "Explorer", "Pathfinder", "Navigator", "Master Guide", "Fair Winner", "Grand Fair Winner", "Royal Fair Winner", "Crown Fair Winner"];
 let numWords = require('num-words');
 
