@@ -72,7 +72,7 @@ class TestController extends Controller
 //    }
 
     public function try() {
-        Auth::loginUsingId(1);
+//        Auth::loginUsingId(1);
         return redirect()->route('admin.dashboard.index');
 
         Artisan::call('fairwin:check_dormant_users');
